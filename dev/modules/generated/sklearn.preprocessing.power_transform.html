@@ -202,41 +202,37 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.preprocessing" title="sklearn.preprocessing"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.preprocessing</span></code></a>.power_transform<a class="headerlink" href="#sklearn-preprocessing-power-transform" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.preprocessing.power_transform">
-<code class="descclassname">sklearn.preprocessing.</code><code class="descname">power_transform</code><span class="sig-paren">(</span><em>X</em>, <em>method=’box-cox’</em>, <em>copy=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c429a4d7/sklearn/preprocessing/data.py#L2768"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.power_transform" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sklearn.preprocessing.</code><code class="descname">power_transform</code><span class="sig-paren">(</span><em>X</em>, <em>method=’box-cox’</em>, <em>standardize=True</em>, <em>copy=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/d8483dfe/sklearn/preprocessing/data.py#L2789"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.power_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply a power transform featurewise to make data more Gaussian-like.</p>
-<blockquote>
-<div>Power transforms are a family of parametric, monotonic transformations
+<p>Power transforms are a family of parametric, monotonic transformations
 that are applied to make data more Gaussian-like. This is useful for
 modeling issues related to heteroscedasticity (non-constant variance),
-or other situations where normality is desired. Note that power
-transforms do not result in standard normal distributions (i.e. the
-transformed data could be far from zero-mean, unit-variance).</div></blockquote>
-<p>.</p>
-<blockquote>
-<div><p>Currently, power_transform() supports the Box-Cox transform. Box-Cox
+or other situations where normality is desired.</p>
+<p>Currently, power_transform() supports the Box-Cox transform. Box-Cox
 requires input data to be strictly positive. The optimal parameter
 for stabilizing variance and minimizing skewness is estimated
 through maximum likelihood.</p>
+<p>By default, zero-mean, unit-variance normalization is applied to the
+transformed data.</p>
 <p>Read more in the <a class="reference internal" href="../preprocessing.html#preprocessing-transformer"><span class="std std-ref">User Guide</span></a>.</p>
-</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
 <dt>X <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_samples, n_features)</span></dt>
-<dd><blockquote class="first">
-<div><p>The data to be transformed using a power transformation.</p>
-</div></blockquote>
-<dl class="last docutils">
+<dd><p class="first last">The data to be transformed using a power transformation.</p>
+</dd>
 <dt>method <span class="classifier-delimiter">:</span> <span class="classifier">str, (default=’box-cox’)</span></dt>
 <dd><p class="first last">The power transform method. Currently, ‘box-cox’ (Box-Cox transform)
 is the only option available.</p>
 </dd>
+<dt>standardize <span class="classifier-delimiter">:</span> <span class="classifier">boolean, default=True</span></dt>
+<dd><p class="first last">Set to True to apply zero-mean, unit-variance normalization to the
+transformed output.</p>
+</dd>
 <dt>copy <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional, default=True</span></dt>
 <dd><p class="first last">Set to False to perform inplace computation.</p>
-</dd>
-</dl>
 </dd>
 </dl>
 </td>
@@ -255,14 +251,17 @@ is the only option available.</p>
 <p class="rubric">Notes</p>
 <p>For a comparison of the different scalers, transformers, and normalizers,
 see <a class="reference internal" href="../../auto_examples/preprocessing/plot_all_scaling.html#sphx-glr-auto-examples-preprocessing-plot-all-scaling-py"><span class="std std-ref">examples/preprocessing/plot_all_scaling.py</span></a>.</p>
+<p class="rubric">References</p>
+<p>G.E.P. Box and D.R. Cox, “An Analysis of Transformations”, Journal of the
+Royal Statistical Society B, 26, 211-252 (1964).</p>
 <p class="rubric">Examples</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">power_transform</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">power_transform</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;box-cox&#39;</span><span class="p">))</span>  
-<span class="go">[[ 0...      0.342...]</span>
-<span class="go"> [ 2.068...  0.342...]</span>
-<span class="go"> [ 3.135...  0.416...]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">power_transform</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>  
+<span class="go">[[-1.332... -0.707...]</span>
+<span class="go"> [ 0.256... -0.707...]</span>
+<span class="go"> [ 1.076...  1.414...]]</span>
 </pre></div>
 </div>
 </dd></dl>
