@@ -90,6 +90,7 @@
             <li><a href="../tutorial/index.html">Tutorials</a></li>
             <li><a href="../user_guide.html">User guide</a></li>
             <li><a href="../modules/classes.html">API</a></li>
+            <li><a href="../glossary.html">Glossary</a></li>
             <li><a href="../faq.html">FAQ</a></li>
             <li><a href="#">Contributing</a></li>
             <li class="divider"></li>
@@ -935,7 +936,7 @@ it should produce an identical model both times,
 hence the validation in <code class="docutils literal"><span class="pre">fit</span></code>, not <code class="docutils literal"><span class="pre">__init__</span></code>.</p>
 </div>
 <div class="section" id="deprecation">
-<h3>Deprecation<a class="headerlink" href="#deprecation" title="Permalink to this headline">¶</a></h3>
+<span id="contributing-deprecation"></span><h3>Deprecation<a class="headerlink" href="#deprecation" title="Permalink to this headline">¶</a></h3>
 <p>If any publicly accessible method, function, attribute or parameter
 is renamed, we still support the old one for two releases and issue
 a deprecation warning when it is called/passed/accessed.
@@ -1055,11 +1056,13 @@ instructive?</li>
 <p><a class="reference internal" href="tips.html#saved-replies"><span class="std std-ref">Standard replies for reviewing</span></a> includes some frequent comments that reviewers may make.</p>
 </div>
 <div class="section" id="apis-of-scikit-learn-objects">
-<h2>APIs of scikit-learn objects<a class="headerlink" href="#apis-of-scikit-learn-objects" title="Permalink to this headline">¶</a></h2>
+<span id="api-overview"></span><h2>APIs of scikit-learn objects<a class="headerlink" href="#apis-of-scikit-learn-objects" title="Permalink to this headline">¶</a></h2>
 <p>To have a uniform API, we try to have a common basic API for all the
 objects. In addition, to avoid the proliferation of framework code, we
 try to adopt simple conventions and limit to a minimum the number of
 methods an object must implement.</p>
+<p>Elements of the scikit-learn API are described more definitively in the
+<a class="reference internal" href="../glossary.html#glossary"><span class="std std-ref">Glossary of Common Terms and API Elements</span></a>.</p>
 <div class="section" id="different-objects">
 <h3>Different objects<a class="headerlink" href="#different-objects" title="Permalink to this headline">¶</a></h3>
 <p>The main objects in scikit-learn are (one class can implement
@@ -1411,7 +1414,9 @@ is implemented using the <code class="docutils literal"><span class="pre">_estim
 It should be <code class="docutils literal"><span class="pre">&quot;classifier&quot;</span></code> for classifiers and <code class="docutils literal"><span class="pre">&quot;regressor&quot;</span></code> for
 regressors and <code class="docutils literal"><span class="pre">&quot;clusterer&quot;</span></code> for clustering methods, to work as expected.
 Inheriting from <code class="docutils literal"><span class="pre">ClassifierMixin</span></code>, <code class="docutils literal"><span class="pre">RegressorMixin</span></code> or <code class="docutils literal"><span class="pre">ClusterMixin</span></code>
-will set the attribute automatically.</p>
+will set the attribute automatically.  When a meta-estimator needs to distinguish
+among estimator types, instead of checking <code class="docutils literal"><span class="pre">_estimator_type</span></code> directly, helpers
+like <a class="reference internal" href="../modules/generated/sklearn.base.is_classifier.html#sklearn.base.is_classifier" title="sklearn.base.is_classifier"><code class="xref py py-func docutils literal"><span class="pre">base.is_classifier</span></code></a> should be used.</p>
 </div>
 <div class="section" id="working-notes">
 <h3>Working notes<a class="headerlink" href="#working-notes" title="Permalink to this headline">¶</a></h3>
