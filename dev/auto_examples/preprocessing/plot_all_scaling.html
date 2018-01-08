@@ -249,7 +249,7 @@ of the <a class="reference internal" href="#results">results</a>.</p>
 
 <span class="kn">import</span> <span class="nn">matplotlib</span> <span class="kn">as</span> <span class="nn">mpl</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <a href="https://matplotlib.org/api/cm_api.html#module-matplotlib.cm" title="View documentation for matplotlib.cm"><span class="n">cm</span></a>
 
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.preprocessing.MinMaxScaler.html#sklearn.preprocessing.MinMaxScaler" title="View documentation for sklearn.preprocessing.MinMaxScaler"><span class="n">MinMaxScaler</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.preprocessing.minmax_scale.html#sklearn.preprocessing.minmax_scale" title="View documentation for sklearn.preprocessing.minmax_scale"><span class="n">minmax_scale</span></a>
@@ -298,6 +298,8 @@ of the <a class="reference internal" href="#results">results</a>.</p>
 <span class="c1"># scale the output between 0 and 1 for the colorbar</span>
 <span class="n">y</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.preprocessing.minmax_scale.html#sklearn.preprocessing.minmax_scale" title="View documentation for sklearn.preprocessing.minmax_scale"><span class="n">minmax_scale</span></a><span class="p">(</span><span class="n">y_full</span><span class="p">)</span>
 
+<span class="c1"># plasma does not exist in matplotlib &lt; 1.5</span>
+<span class="n">cmap</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><a href="https://matplotlib.org/api/cm_api.html#module-matplotlib.cm" title="View documentation for matplotlib.cm"><span class="n">cm</span></a><span class="p">,</span> <span class="s1">&#39;plasma_r&#39;</span><span class="p">,</span> <a href="https://matplotlib.org/api/cm_api.html#module-matplotlib.cm" title="View documentation for matplotlib.cm"><span class="n">cm</span></a><span class="o">.</span><span class="n">hot_r</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">create_axes</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">6</span><span class="p">)):</span>
     <span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
@@ -349,7 +351,7 @@ of the <a class="reference internal" href="#results">results</a>.</p>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">x1_label</span><span class="p">)</span>
 
     <span class="c1"># The scatter plot</span>
-    <span class="n">colors</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">plasma_r</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">colors</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
 
     <span class="c1"># Removing the top and the right spine for aesthetics</span>
@@ -403,7 +405,7 @@ feature will be shown on the side of the scatter plot.</p>
                       <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Zoom-in&quot;</span><span class="p">)</span>
 
     <span class="n">norm</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.colors.Normalize.html#matplotlib.colors.Normalize" title="View documentation for matplotlib.colors.Normalize"><span class="n">mpl</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span></a><span class="p">(</span><span class="n">y_full</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">y_full</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
-    <a href="https://matplotlib.org/api/colorbar_api.html#matplotlib.colorbar.ColorbarBase" title="View documentation for matplotlib.colorbar.ColorbarBase"><span class="n">mpl</span><span class="o">.</span><span class="n">colorbar</span><span class="o">.</span><span class="n">ColorbarBase</span></a><span class="p">(</span><span class="n">ax_colorbar</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">plasma_r</span><span class="p">,</span>
+    <a href="https://matplotlib.org/api/colorbar_api.html#matplotlib.colorbar.ColorbarBase" title="View documentation for matplotlib.colorbar.ColorbarBase"><span class="n">mpl</span><span class="o">.</span><span class="n">colorbar</span><span class="o">.</span><span class="n">ColorbarBase</span></a><span class="p">(</span><span class="n">ax_colorbar</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span>
                               <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;vertical&#39;</span><span class="p">,</span>
                               <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Color mapping for values of y&#39;</span><span class="p">)</span>
 </pre></div>
@@ -540,7 +542,7 @@ case if some original features had a mix of positive and negative values.</p>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_all_scaling_009.png" class="align-center" src="../../_images/sphx_glr_plot_all_scaling_009.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  7.107 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  7.324 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/plot_all_scaling.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_all_scaling.py</span></code></a></div>
