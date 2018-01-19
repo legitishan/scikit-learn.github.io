@@ -351,6 +351,7 @@ clustering an image:</p>
 
 <span class="kn">from</span> <span class="nn">sklearn.feature_extraction.image</span> <span class="k">import</span> <span class="n">grid_to_graph</span>
 <span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="k">import</span> <span class="n">AgglomerativeClustering</span>
+<span class="kn">from</span> <span class="nn">sklearn.externals._pilutil</span> <span class="k">import</span> <span class="n">imresize</span>
 
 
 <span class="c1"># #############################################################################</span>
@@ -362,7 +363,7 @@ clustering an image:</p>
     <span class="n">face</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">face</span><span class="p">(</span><span class="n">gray</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Resize it to 10% of the original size to speed up the processing</span>
-<span class="n">face</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">imresize</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">)</span> <span class="o">/</span> <span class="mf">255.</span>
+<span class="n">face</span> <span class="o">=</span> <span class="n">imresize</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">)</span> <span class="o">/</span> <span class="mf">255.</span>
 
 <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 
@@ -370,7 +371,6 @@ clustering an image:</p>
 <span class="c1"># Define the structure A of the data. Pixels connected to their neighbors.</span>
 <span class="n">connectivity</span> <span class="o">=</span> <span class="n">grid_to_graph</span><span class="p">(</span><span class="o">*</span><span class="n">face</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
-<span class="c1"># #############################################################################</span>
 </pre></div>
 </div>
 </div>
