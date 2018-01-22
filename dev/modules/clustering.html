@@ -196,9 +196,8 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#hierarchical-clustering">2.3.6. Hierarchical clustering</a><ul>
-<li><a class="reference internal" href="#different-linkage-type-ward-complete-and-average-linkage">2.3.6.1. Different linkage type: Ward, complete and average linkage</a></li>
-<li><a class="reference internal" href="#adding-connectivity-constraints">2.3.6.2. Adding connectivity constraints</a></li>
-<li><a class="reference internal" href="#varying-the-metric">2.3.6.3. Varying the metric</a></li>
+<li><a class="reference internal" href="#adding-connectivity-constraints">2.3.6.1. Adding connectivity constraints</a></li>
+<li><a class="reference internal" href="#varying-the-metric">2.3.6.2. Varying the metric</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#dbscan">2.3.7. DBSCAN</a></li>
@@ -750,18 +749,19 @@ group together features that look very similar, thus decreasing the
 number of features. It is a dimensionality reduction tool, see
 <a class="reference internal" href="unsupervised_reduction.html#data-reduction"><span class="std std-ref">Unsupervised dimensionality reduction</span></a>.</p>
 </div>
-<div class="section" id="different-linkage-type-ward-complete-and-average-linkage">
-<h3>2.3.6.1. Different linkage type: Ward, complete and average linkage<a class="headerlink" href="#different-linkage-type-ward-complete-and-average-linkage" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference internal" href="generated/sklearn.cluster.AgglomerativeClustering.html#sklearn.cluster.AgglomerativeClustering" title="sklearn.cluster.AgglomerativeClustering"><code class="xref py py-class docutils literal"><span class="pre">AgglomerativeClustering</span></code></a> supports Ward, average, and complete
+<p>Different linkage type: Ward, complete, average, and single linkage
+—————————————————————–)-</p>
+<p><a class="reference internal" href="generated/sklearn.cluster.AgglomerativeClustering.html#sklearn.cluster.AgglomerativeClustering" title="sklearn.cluster.AgglomerativeClustering"><code class="xref py py-class docutils literal"><span class="pre">AgglomerativeClustering</span></code></a> supports Ward, single, average, and complete
 linkage strategies.</p>
-<a class="reference external image-reference" href="../auto_examples/cluster/plot_digits_linkage.html"><img alt="../_images/sphx_glr_plot_digits_linkage_0011.png" src="../_images/sphx_glr_plot_digits_linkage_0011.png" style="width: 258.0px; height: 172.0px;" /></a>
-<a class="reference external image-reference" href="../auto_examples/cluster/plot_digits_linkage.html"><img alt="../_images/sphx_glr_plot_digits_linkage_0021.png" src="../_images/sphx_glr_plot_digits_linkage_0021.png" style="width: 258.0px; height: 172.0px;" /></a>
-<a class="reference external image-reference" href="../auto_examples/cluster/plot_digits_linkage.html"><img alt="../_images/sphx_glr_plot_digits_linkage_0031.png" src="../_images/sphx_glr_plot_digits_linkage_0031.png" style="width: 258.0px; height: 172.0px;" /></a>
+<a class="reference external image-reference" href="../auto_examples/cluster/plot_linkage_comparison.html"><img alt="../_images/sphx_glr_plot_linkage_comparison_0011.png" src="../_images/sphx_glr_plot_linkage_comparison_0011.png" style="width: 589.1px; height: 623.5px;" /></a>
 <p>Agglomerative cluster has a “rich get richer” behavior that leads to
-uneven cluster sizes. In this regard, complete linkage is the worst
+uneven cluster sizes. In this regard, single linkage is the worst
 strategy, and Ward gives the most regular sizes. However, the affinity
 (or distance used in clustering) cannot be varied with Ward, thus for non
-Euclidean metrics, average linkage is a good alternative.</p>
+Euclidean metrics, average linkage is a good alternative. Single linkage,
+while not robust to noisy data, can be computed very efficiently and can
+therefore be useful to provide hierarchical clustering of larger datasets.
+Single linkage can also perform well on non-globular data.</p>
 <div class="topic">
 <p class="topic-title first">Examples:</p>
 <ul class="simple">
@@ -769,9 +769,8 @@ Euclidean metrics, average linkage is a good alternative.</p>
 different linkage strategies in a real dataset.</li>
 </ul>
 </div>
-</div>
 <div class="section" id="adding-connectivity-constraints">
-<h3>2.3.6.2. Adding connectivity constraints<a class="headerlink" href="#adding-connectivity-constraints" title="Permalink to this headline">¶</a></h3>
+<h3>2.3.6.1. Adding connectivity constraints<a class="headerlink" href="#adding-connectivity-constraints" title="Permalink to this headline">¶</a></h3>
 <p>An interesting aspect of <a class="reference internal" href="generated/sklearn.cluster.AgglomerativeClustering.html#sklearn.cluster.AgglomerativeClustering" title="sklearn.cluster.AgglomerativeClustering"><code class="xref py py-class docutils literal"><span class="pre">AgglomerativeClustering</span></code></a> is that
 connectivity constraints can be added to this algorithm (only adjacent
 clusters can be merged together), through a connectivity matrix that defines
@@ -811,14 +810,15 @@ Ward hierarchical clustering.</li>
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p><strong>Connectivity constraints with average and complete linkage</strong></p>
-<p class="last">Connectivity constraints and complete or average linkage can enhance
+<p><strong>Connectivity constraints with single, average and complete linkage</strong></p>
+<p class="last">Connectivity constraints and single, complete or average linkage can enhance
 the ‘rich getting richer’ aspect of agglomerative clustering,
 particularly so if they are built with
 <a class="reference internal" href="generated/sklearn.neighbors.kneighbors_graph.html#sklearn.neighbors.kneighbors_graph" title="sklearn.neighbors.kneighbors_graph"><code class="xref py py-func docutils literal"><span class="pre">sklearn.neighbors.kneighbors_graph</span></code></a>. In the limit of a small
 number of clusters, they tend to give a few macroscopically occupied
 clusters and almost empty ones. (see the discussion in
-<a class="reference internal" href="../auto_examples/cluster/plot_agglomerative_clustering.html#sphx-glr-auto-examples-cluster-plot-agglomerative-clustering-py"><span class="std std-ref">Agglomerative clustering with and without structure</span></a>).</p>
+<a class="reference internal" href="../auto_examples/cluster/plot_agglomerative_clustering.html#sphx-glr-auto-examples-cluster-plot-agglomerative-clustering-py"><span class="std std-ref">Agglomerative clustering with and without structure</span></a>).
+Single linkage is the most brittle linkage option with regard to this issue.</p>
 </div>
 <a class="reference external image-reference" href="../auto_examples/cluster/plot_agglomerative_clustering.html"><img alt="../_images/sphx_glr_plot_agglomerative_clustering_0011.png" src="../_images/sphx_glr_plot_agglomerative_clustering_0011.png" style="width: 380.0px; height: 152.0px;" /></a>
 <a class="reference external image-reference" href="../auto_examples/cluster/plot_agglomerative_clustering.html"><img alt="../_images/sphx_glr_plot_agglomerative_clustering_0021.png" src="../_images/sphx_glr_plot_agglomerative_clustering_0021.png" style="width: 380.0px; height: 152.0px;" /></a>
@@ -826,8 +826,8 @@ clusters and almost empty ones. (see the discussion in
 <a class="reference external image-reference" href="../auto_examples/cluster/plot_agglomerative_clustering.html"><img alt="../_images/sphx_glr_plot_agglomerative_clustering_0041.png" src="../_images/sphx_glr_plot_agglomerative_clustering_0041.png" style="width: 380.0px; height: 152.0px;" /></a>
 </div>
 <div class="section" id="varying-the-metric">
-<h3>2.3.6.3. Varying the metric<a class="headerlink" href="#varying-the-metric" title="Permalink to this headline">¶</a></h3>
-<p>Average and complete linkage can be used with a variety of distances (or
+<h3>2.3.6.2. Varying the metric<a class="headerlink" href="#varying-the-metric" title="Permalink to this headline">¶</a></h3>
+<p>Single, average and complete linkage can be used with a variety of distances (or
 affinities), in particular Euclidean distance (<em>l2</em>), Manhattan distance
 (or Cityblock, or <em>l1</em>), cosine distance, or any precomputed affinity
 matrix.</p>
