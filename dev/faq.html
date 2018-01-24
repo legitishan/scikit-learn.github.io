@@ -202,6 +202,7 @@
 <li><a class="reference internal" href="#why-is-there-no-support-for-deep-or-reinforcement-learning-will-there-be-support-for-deep-or-reinforcement-learning-in-scikit-learn">Why is there no support for deep or reinforcement learning / Will there be support for deep or reinforcement learning in scikit-learn?</a></li>
 <li><a class="reference internal" href="#why-is-my-pull-request-not-getting-any-attention">Why is my pull request not getting any attention?</a></li>
 <li><a class="reference internal" href="#how-do-i-set-a-random-state-for-an-entire-execution">How do I set a <code class="docutils literal"><span class="pre">random_state</span></code> for an entire execution?</a></li>
+<li><a class="reference internal" href="#why-do-categorical-variables-need-preprocessing-in-scikit-learn-compared-to-other-tools">Why do categorical variables need preprocessing in scikit-learn, compared to other tools?</a></li>
 </ul>
 </li>
 </ul>
@@ -516,6 +517,21 @@ execute the following in his or her script:</p>
 execution. Thus, the only way to ensure replicability is to pass <code class="docutils literal"><span class="pre">RandomState</span></code>
 instances everywhere and ensure that both estimators and cross-validation
 splitters have their <code class="docutils literal"><span class="pre">random_state</span></code> parameter set.</p>
+</div>
+<div class="section" id="why-do-categorical-variables-need-preprocessing-in-scikit-learn-compared-to-other-tools">
+<h2>Why do categorical variables need preprocessing in scikit-learn, compared to other tools?<a class="headerlink" href="#why-do-categorical-variables-need-preprocessing-in-scikit-learn-compared-to-other-tools" title="Permalink to this headline">¶</a></h2>
+<p>Most of scikit-learn assumes data is in NumPy arrays or SciPy sparse matrices of
+a single numeric dtype. These do not directly explicitly categorical variables at
+present. See the <code class="xref py py-class docutils literal"><span class="pre">preprocessing.CategoricalEncoder</span></code> for a tool to encode
+categorical variables, say within a pandas.DataFrame, as numeric data.
+See <a class="reference internal" href="auto_examples/hetero_feature_union.html#sphx-glr-auto-examples-hetero-feature-union-py"><span class="std std-ref">Feature Union with Heterogeneous Data Sources</span></a> for an example of
+working with heterogeneous (e.g. categorical and numeric) data.</p>
+<p>Why does Scikit-learn not directly work with, for example, pandas.DataFrame?</p>
+<p>The homogeneous NumPy and SciPy data objects currently expected are most
+efficient to process for most operations. Extensive work would also be needed
+to support Pandas categorical types. Restricting input to homogeneous
+types therefore reduces maintenance cost and encourages usage of efficient
+data structures.</p>
 </div>
 </div>
 
