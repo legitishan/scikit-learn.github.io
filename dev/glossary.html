@@ -810,11 +810,11 @@ matrices).</p>
 <dt id="term-supervised">supervised<dt id="term-supervised-learning">supervised learning</dt>
 <dd>Learning where the expected prediction (label or ground truth) is
 available for each sample when <a class="reference internal" href="#term-fitting"><span class="xref std std-term">fitting</span></a> the model, provided as
-<a class="reference internal" href="#term-160"><span class="xref std std-term">y</span></a>.  This is the approach taken in a <a class="reference internal" href="#term-classifier"><span class="xref std std-term">classifier</span></a> or
+<a class="reference internal" href="#term-164"><span class="xref std std-term">y</span></a>.  This is the approach taken in a <a class="reference internal" href="#term-classifier"><span class="xref std std-term">classifier</span></a> or
 <a class="reference internal" href="#term-regressor"><span class="xref std std-term">regressor</span></a> among other estimators.</dd>
 <dt id="term-target">target<dt id="term-targets">targets</dt>
 <dd>The <em>dependent variable</em> in <a class="reference internal" href="#term-supervised"><span class="xref std std-term">supervised</span></a> (and
-<a class="reference internal" href="#term-semisupervised"><span class="xref std std-term">semisupervised</span></a>) learning, passed as <a class="reference internal" href="#term-160"><span class="xref std std-term">y</span></a> to an estimator’s
+<a class="reference internal" href="#term-semisupervised"><span class="xref std std-term">semisupervised</span></a>) learning, passed as <a class="reference internal" href="#term-164"><span class="xref std std-term">y</span></a> to an estimator’s
 <a class="reference internal" href="#term-fit"><span class="xref std std-term">fit</span></a> method.  Also known as <em>dependent variable</em>, <em>outcome
 variable</em>, <em>response variable</em>, <em>ground truth</em> or <em>label</em>. Scikit-learn
 works with targets that have minimal structure: a class from a finite
@@ -834,7 +834,7 @@ model to unseen data.  Examples include <a class="reference internal" href="modu
 <dd>Learning where the expected prediction (label or ground truth) is not
 available for each sample when <a class="reference internal" href="#term-fitting"><span class="xref std std-term">fitting</span></a> the model, as in
 <a class="reference internal" href="#term-clusterers"><span class="xref std std-term">clusterers</span></a> and <a class="reference internal" href="#term-outlier-detectors"><span class="xref std std-term">outlier detectors</span></a>.  Unsupervised
-estimators ignore any <a class="reference internal" href="#term-160"><span class="xref std std-term">y</span></a> passed to <a class="reference internal" href="#term-fit"><span class="xref std std-term">fit</span></a>.</dd>
+estimators ignore any <a class="reference internal" href="#term-164"><span class="xref std std-term">y</span></a> passed to <a class="reference internal" href="#term-fit"><span class="xref std std-term">fit</span></a>.</dd>
 </dl>
 </div>
 <div class="section" id="class-apis-and-estimator-types">
@@ -986,6 +986,19 @@ A purely <a class="reference internal" href="#term-transductive"><span class="xr
 </dl>
 <p>There are further APIs specifically related to a small family of estimators,
 such as:</p>
+<dl class="glossary docutils">
+<dt id="term-cross-validation-splitter">cross-validation splitter<dt id="term-cv-splitter">CV splitter<dt id="term-cross-validation-generator">cross-validation generator</dt>
+<dd>A non-estimator family of classes used to split a dataset into a
+sequence of train and test portions (see <a class="reference internal" href="modules/cross_validation.html#cross-validation"><span class="std std-ref">Cross-validation: evaluating estimator performance</span></a>),
+by providing <a class="reference internal" href="#term-split"><span class="xref std std-term">split</span></a> and <a class="reference internal" href="#term-get-n-splits"><span class="xref std std-term">get_n_splits</span></a> methods.
+Note that unlike estimators, these do not have <a class="reference internal" href="#term-fit"><span class="xref std std-term">fit</span></a> methods
+and do not provide <a class="reference internal" href="#term-set-params"><span class="xref std std-term">set_params</span></a> or <a class="reference internal" href="#term-get-params"><span class="xref std std-term">get_params</span></a>.
+Parameter validation may be performed in <code class="docutils literal"><span class="pre">__init__</span></code>.</dd>
+<dt id="term-scorer">scorer</dt>
+<dd>A non-estimator callable object which evaluates an estimator on given
+test data, returning a number. See <a class="reference internal" href="modules/model_evaluation.html#scoring-parameter"><span class="std std-ref">The scoring parameter: defining model evaluation rules</span></a>; see also
+<a class="reference internal" href="#term-evaluation-metric"><span class="xref std std-term">evaluation metric</span></a>.</dd>
+</dl>
 <p>Further examples:</p>
 <ul class="simple">
 <li><a class="reference internal" href="modules/generated/sklearn.neighbors.DistanceMetric.html#sklearn.neighbors.DistanceMetric" title="sklearn.neighbors.DistanceMetric"><code class="xref py py-class docutils literal"><span class="pre">neighbors.DistanceMetric</span></code></a></li>
@@ -1186,7 +1199,7 @@ strings, and may take a list of strings as input, corresponding
 to the names of input columns from which output column names can
 be generated.  By default input features are named x0, x1, ….</dd>
 <dt id="term-get-n-splits"><code class="docutils literal"><span class="pre">get_n_splits</span></code></dt>
-<dd>On a <span class="xref std std-term">CV splitter</span> (not an estimator), returns the number of
+<dd>On a <a class="reference internal" href="#term-cv-splitter"><span class="xref std std-term">CV splitter</span></a> (not an estimator), returns the number of
 elements one would get if iterating through the return value of
 <a class="reference internal" href="#term-split"><span class="xref std std-term">split</span></a> given the same parameters.  Takes the same parameters as
 split.</dd>
@@ -1305,8 +1318,8 @@ otherwise sets the parameter as an attribute on the estimator.
 The method is overridden in <a class="reference internal" href="modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal"><span class="pre">pipeline.Pipeline</span></code></a> and related
 estimators.</dd>
 <dt id="term-split"><code class="docutils literal"><span class="pre">split</span></code></dt>
-<dd>On a <span class="xref std std-term">CV splitter</span> (not an estimator), this method accepts
-parameters (<a class="reference internal" href="#term-x"><span class="xref std std-term">X</span></a>, <a class="reference internal" href="#term-160"><span class="xref std std-term">y</span></a>, <a class="reference internal" href="#term-groups"><span class="xref std std-term">groups</span></a>), where all may be
+<dd>On a <a class="reference internal" href="#term-cv-splitter"><span class="xref std std-term">CV splitter</span></a> (not an estimator), this method accepts
+parameters (<a class="reference internal" href="#term-x"><span class="xref std std-term">X</span></a>, <a class="reference internal" href="#term-164"><span class="xref std std-term">y</span></a>, <a class="reference internal" href="#term-groups"><span class="xref std std-term">groups</span></a>), where all may be
 optional, and returns an iterator over <code class="docutils literal"><span class="pre">(train_idx,</span> <span class="pre">test_idx)</span></code>
 pairs.  Each of {train,test}_idx is a 1d integer array, with values
 from 0 from <code class="docutils literal"><span class="pre">X.shape[0]</span> <span class="pre">-</span> <span class="pre">1</span></code> of any length, such that no values
@@ -1367,7 +1380,7 @@ is a classifier (determined by <a class="reference internal" href="modules/gener
 <a class="reference internal" href="#term-targets"><span class="xref std std-term">targets</span></a> may represent a binary or multiclass (but not
 multioutput) classification problem (determined by
 <a class="reference internal" href="modules/generated/sklearn.utils.multiclass.type_of_target.html#sklearn.utils.multiclass.type_of_target" title="sklearn.utils.multiclass.type_of_target"><code class="xref py py-func docutils literal"><span class="pre">utils.multiclass.type_of_target</span></code></a>).</li>
-<li>A <span class="xref std std-term">cross-validation splitter</span> instance. Refer to the
+<li>A <a class="reference internal" href="#term-cross-validation-splitter"><span class="xref std std-term">cross-validation splitter</span></a> instance. Refer to the
 <a class="reference internal" href="modules/cross_validation.html#cross-validation"><span class="std std-ref">User Guide</span></a> for splitters available
 within Scikit-learn.</li>
 <li>An iterable yielding train/test splits.</li>
@@ -1475,7 +1488,7 @@ instance.</p>
 <dd><p class="first">Specifies the score function to be maximized (usually by <a class="reference internal" href="modules/cross_validation.html#cross-validation"><span class="std std-ref">cross
 validation</span></a>), or – in some cases – multiple score
 functions to be reported. The score function can be a string accepted
-by <a class="reference internal" href="modules/generated/sklearn.metrics.get_scorer.html#sklearn.metrics.get_scorer" title="sklearn.metrics.get_scorer"><code class="xref py py-func docutils literal"><span class="pre">metrics.get_scorer</span></code></a> or a callable <span class="xref std std-term">scorer</span>, not to be
+by <a class="reference internal" href="modules/generated/sklearn.metrics.get_scorer.html#sklearn.metrics.get_scorer" title="sklearn.metrics.get_scorer"><code class="xref py py-func docutils literal"><span class="pre">metrics.get_scorer</span></code></a> or a callable <a class="reference internal" href="#term-scorer"><span class="xref std std-term">scorer</span></a>, not to be
 confused with an <a class="reference internal" href="#term-evaluation-metric"><span class="xref std std-term">evaluation metric</span></a>, as the latter have a more
 diverse API.  <code class="docutils literal"><span class="pre">scoring</span></code> may also be set to None, in which case the
 estimator’s <a class="reference internal" href="#term-score"><span class="xref std std-term">score</span></a> method is used.  See <a class="reference internal" href="modules/model_evaluation.html#scoring-parameter"><span class="std std-ref">The scoring parameter: defining model evaluation rules</span></a>
@@ -1577,7 +1590,7 @@ data in <a class="reference internal" href="#term-clusterers"><span class="xref 
 <dt id="term-groups"><code class="docutils literal"><span class="pre">groups</span></code></dt>
 <dd>Used in cross validation routines to identify samples which are
 correlated.  Each value is an identifier such that, in a supporting
-<span class="xref std std-term">CV splitter</span>, samples from some <code class="docutils literal"><span class="pre">groups</span></code> value may not
+<a class="reference internal" href="#term-cv-splitter"><span class="xref std std-term">CV splitter</span></a>, samples from some <code class="docutils literal"><span class="pre">groups</span></code> value may not
 appear in both a training set and its corresponding test set.
 See <a class="reference internal" href="modules/cross_validation.html#group-cv"><span class="std std-ref">Cross-validation iterators for grouped data.</span></a>.</dd>
 <dt id="term-sample-weight"><code class="docutils literal"><span class="pre">sample_weight</span></code></dt>
@@ -1609,7 +1622,7 @@ training sample. <code class="docutils literal"><span class="pre">X</span></code
 one before learning a model.</dd>
 <dt id="term-xt"><code class="docutils literal"><span class="pre">Xt</span></code></dt>
 <dd>Shorthand for “transformed <a class="reference internal" href="#term-x"><span class="xref std std-term">X</span></a>”.</dd>
-<dt id="term-y"><code class="docutils literal"><span class="pre">y</span></code><dt id="term-160"><code class="docutils literal"><span class="pre">Y</span></code></dt>
+<dt id="term-y"><code class="docutils literal"><span class="pre">y</span></code><dt id="term-164"><code class="docutils literal"><span class="pre">Y</span></code></dt>
 <dd>Denotes data that may be observed at training time as the dependent
 variable in learning, but which is unavailable at prediction time, and
 is usually the <a class="reference internal" href="#term-target"><span class="xref std std-term">target</span></a> of prediction.  The notation may be
