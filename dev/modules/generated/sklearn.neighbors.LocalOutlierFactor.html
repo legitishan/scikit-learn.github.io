@@ -207,7 +207,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.neighbors" title="sklearn.neighbors"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.neighbors</span></code></a>.LocalOutlierFactor<a class="headerlink" href="#sklearn-neighbors-localoutlierfactor" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="sklearn.neighbors.LocalOutlierFactor">
-<em class="property">class </em><code class="descclassname">sklearn.neighbors.</code><code class="descname">LocalOutlierFactor</code><span class="sig-paren">(</span><em>n_neighbors=20</em>, <em>algorithm=’auto’</em>, <em>leaf_size=30</em>, <em>metric=’minkowski’</em>, <em>p=2</em>, <em>metric_params=None</em>, <em>contamination=0.1</em>, <em>n_jobs=1</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/6919a22/sklearn/neighbors/lof.py#L19"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.LocalOutlierFactor" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">sklearn.neighbors.</code><code class="descname">LocalOutlierFactor</code><span class="sig-paren">(</span><em>n_neighbors=20</em>, <em>algorithm=’auto’</em>, <em>leaf_size=30</em>, <em>metric=’minkowski’</em>, <em>p=2</em>, <em>metric_params=None</em>, <em>contamination=’legacy’</em>, <em>n_jobs=1</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/0788cd0/sklearn/neighbors/lof.py#L19"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.LocalOutlierFactor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Unsupervised Outlier Detection using Local Outlier Factor (LOF)</p>
 <p>The anomaly score of each sample is called Local Outlier Factor.
 It measures the local deviation of density of a given sample with
@@ -283,7 +283,8 @@ is equivalent to using manhattan_distance (l1), and euclidean_distance
 <dt>contamination <span class="classifier-delimiter">:</span> <span class="classifier">float in (0., 0.5), optional (default=0.1)</span></dt>
 <dd><p class="first last">The amount of contamination of the data set, i.e. the proportion
 of outliers in the data set. When fitting this is used to define the
-threshold on the decision function.</p>
+threshold on the decision function. If “auto”, the decision function
+threshold is determined as in the original paper.</p>
 </dd>
 <dt>n_jobs <span class="classifier-delimiter">:</span> <span class="classifier">int, optional (default=1)</span></dt>
 <dd><p class="first last">The number of parallel jobs to run for neighbors search.
@@ -295,16 +296,25 @@ Affects only <a class="reference internal" href="#sklearn.neighbors.LocalOutlier
 </tr>
 <tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><a href="#id5"><span class="problematic" id="id6">negative_outlier_factor_</span></a> <span class="classifier-delimiter">:</span> <span class="classifier">numpy array, shape (n_samples,)</span></dt>
-<dd><p class="first">The opposite LOF of the training samples. The lower, the more abnormal.
-Inliers tend to have a LOF score close to 1, while outliers tend
-to have a larger LOF score.</p>
+<dd><p class="first">The opposite LOF of the training samples. The higher, the more normal.
+Inliers tend to have a LOF score close to 1 (<a href="#id7"><span class="problematic" id="id8">negative_outlier_factor_</span></a>
+close to -1), while outliers tend to have a larger LOF score.</p>
 <p class="last">The local outlier factor (LOF) of a sample captures its
 supposed ‘degree of abnormality’.
 It is the average of the ratio of the local reachability density of
 a sample and those of its k-nearest neighbors.</p>
 </dd>
-<dt><a href="#id7"><span class="problematic" id="id8">n_neighbors_</span></a> <span class="classifier-delimiter">:</span> <span class="classifier">integer</span></dt>
+<dt><a href="#id9"><span class="problematic" id="id10">n_neighbors_</span></a> <span class="classifier-delimiter">:</span> <span class="classifier">integer</span></dt>
 <dd><p class="first last">The actual number of neighbors used for <a class="reference internal" href="#sklearn.neighbors.LocalOutlierFactor.kneighbors" title="sklearn.neighbors.LocalOutlierFactor.kneighbors"><code class="xref py py-meth docutils literal"><span class="pre">kneighbors</span></code></a> queries.</p>
+</dd>
+<dt><a href="#id11"><span class="problematic" id="id12">offset_</span></a> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Offset used to obtain binary labels from the raw scores.
+Observations having a negative_outlier_factor smaller than <a href="#id13"><span class="problematic" id="id14">offset_</span></a> are
+detected as abnormal.
+The offset is set to -1.5 (inliers score around -1), except when a
+contamination parameter different than “auto” is provided. In that
+case, the offset is defined in such a way we obtain the expected
+number of outliers in training.</p>
 </dd>
 </dl>
 </td>
@@ -348,12 +358,12 @@ LOF: identifying density-based local outliers. In ACM sigmod record.</td></tr>
 </table>
 <dl class="method">
 <dt id="sklearn.neighbors.LocalOutlierFactor.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>n_neighbors=20</em>, <em>algorithm=’auto’</em>, <em>leaf_size=30</em>, <em>metric=’minkowski’</em>, <em>p=2</em>, <em>metric_params=None</em>, <em>contamination=0.1</em>, <em>n_jobs=1</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/6919a22/sklearn/neighbors/lof.py#L126"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.LocalOutlierFactor.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>n_neighbors=20</em>, <em>algorithm=’auto’</em>, <em>leaf_size=30</em>, <em>metric=’minkowski’</em>, <em>p=2</em>, <em>metric_params=None</em>, <em>contamination=’legacy’</em>, <em>n_jobs=1</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/0788cd0/sklearn/neighbors/lof.py#L136"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.LocalOutlierFactor.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="sklearn.neighbors.LocalOutlierFactor.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/6919a22/sklearn/neighbors/lof.py#L157"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.LocalOutlierFactor.fit" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/0788cd0/sklearn/neighbors/lof.py#L172"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.LocalOutlierFactor.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the model using X as training data.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -379,7 +389,7 @@ or [n_samples, n_samples] if metric=’precomputed’.</p>
 
 <dl class="method">
 <dt id="sklearn.neighbors.LocalOutlierFactor.fit_predict">
-<code class="descname">fit_predict</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/6919a22/sklearn/neighbors/lof.py#L137"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.LocalOutlierFactor.fit_predict" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit_predict</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/0788cd0/sklearn/neighbors/lof.py#L152"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.LocalOutlierFactor.fit_predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>“Fits the model to the training set X and returns the labels
 (1 inlier, -1 outlier) on the training set according to the LOF score
 and the contamination parameter.</p>
@@ -408,7 +418,7 @@ w.r.t. to the training samples.</p>
 
 <dl class="method">
 <dt id="sklearn.neighbors.LocalOutlierFactor.get_params">
-<code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/6919a22/sklearn/base.py#L213"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.LocalOutlierFactor.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/0788cd0/sklearn/base.py#L213"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.LocalOutlierFactor.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -435,7 +445,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.neighbors.LocalOutlierFactor.kneighbors">
-<code class="descname">kneighbors</code><span class="sig-paren">(</span><em>X=None</em>, <em>n_neighbors=None</em>, <em>return_distance=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/6919a22/sklearn/neighbors/base.py#L273"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.LocalOutlierFactor.kneighbors" title="Permalink to this definition">¶</a></dt>
+<code class="descname">kneighbors</code><span class="sig-paren">(</span><em>X=None</em>, <em>n_neighbors=None</em>, <em>return_distance=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/0788cd0/sklearn/neighbors/base.py#L273"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.LocalOutlierFactor.kneighbors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the K-neighbors of a point.</p>
 <p>Returns indices of and distances to the neighbors of each point.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -497,7 +507,7 @@ element is at distance 0.5 and is the third element of samples
 
 <dl class="method">
 <dt id="sklearn.neighbors.LocalOutlierFactor.kneighbors_graph">
-<code class="descname">kneighbors_graph</code><span class="sig-paren">(</span><em>X=None</em>, <em>n_neighbors=None</em>, <em>mode=’connectivity’</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/6919a22/sklearn/neighbors/base.py#L423"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.LocalOutlierFactor.kneighbors_graph" title="Permalink to this definition">¶</a></dt>
+<code class="descname">kneighbors_graph</code><span class="sig-paren">(</span><em>X=None</em>, <em>n_neighbors=None</em>, <em>mode=’connectivity’</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/0788cd0/sklearn/neighbors/base.py#L423"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.LocalOutlierFactor.kneighbors_graph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the (weighted) graph of k-Neighbors for points in X</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -552,7 +562,7 @@ A[i, j] is assigned the weight of edge that connects i to j.</p>
 
 <dl class="method">
 <dt id="sklearn.neighbors.LocalOutlierFactor.set_params">
-<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/6919a22/sklearn/base.py#L236"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.LocalOutlierFactor.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/0788cd0/sklearn/base.py#L236"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.LocalOutlierFactor.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form

@@ -239,11 +239,24 @@ implemented with objects learning in an unsupervised way from the data:</p>
 </pre></div>
 </div>
 <p>new observations can then be sorted as inliers or outliers with a
-<cite>predict</cite> method:</p>
+<code class="docutils literal"><span class="pre">predict</span></code> method:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">estimator</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Inliers are labeled 1, while outliers are labeled -1.</p>
+<p>Inliers are labeled 1, while outliers are labeled -1. The predict method
+makes use of a threshold on the raw scoring function computed by the
+estimator. This scoring function is accessible through the <code class="docutils literal"><span class="pre">score_samples</span></code>
+method, while the threshold can be controlled by the <code class="docutils literal"><span class="pre">contamination</span></code>
+parameter.</p>
+<p>The <code class="docutils literal"><span class="pre">decision_function</span></code> method is also defined from the scoring function,
+in such a way that negative values are outliers and non-negative ones are
+inliers:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">estimator</span><span class="o">.</span><span class="n">decision_function</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that <a class="reference internal" href="generated/sklearn.neighbors.LocalOutlierFactor.html#sklearn.neighbors.LocalOutlierFactor" title="sklearn.neighbors.LocalOutlierFactor"><code class="xref py py-class docutils literal"><span class="pre">neighbors.LocalOutlierFactor</span></code></a> does not support
+<code class="docutils literal"><span class="pre">predict</span></code> and <code class="docutils literal"><span class="pre">decision_function</span></code> methods, as this algorithm is
+purely transductive and is thus not designed to deal with new data.</p>
 <div class="section" id="overview-of-outlier-detection-methods">
 <h2>2.7.1. Overview of outlier detection methods<a class="headerlink" href="#overview-of-outlier-detection-methods" title="Permalink to this headline">¶</a></h2>
 <div class="figure align-center" id="id3">

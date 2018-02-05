@@ -253,7 +253,7 @@ S. J. Phillips, R. P. Anderson, R. E. Schapire - Ecological Modelling,
 
  <span class="n">Area</span> <span class="n">under</span> <span class="n">the</span> <span class="n">ROC</span> <span class="n">curve</span> <span class="p">:</span> <span class="mf">0.993919</span>
 
-<span class="n">time</span> <span class="n">elapsed</span><span class="p">:</span> <span class="mf">28.89</span><span class="n">s</span>
+<span class="n">time</span> <span class="n">elapsed</span><span class="p">:</span> <span class="mf">30.88</span><span class="n">s</span>
 </pre></div>
 </div>
 <div class="line-block">
@@ -391,7 +391,7 @@ S. J. Phillips, R. P. Anderson, R. E. Schapire - Ecological Modelling,
         <span class="n">idx</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.where.html#numpy.where" title="View documentation for numpy.where"><span class="n">np</span><span class="o">.</span><span class="n">where</span></a><span class="p">(</span><span class="n">land_reference</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">9999</span><span class="p">)</span>
         <span class="n">coverages_land</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">coverages</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">idx</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">T</span>
 
-        <span class="n">pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">decision_function</span><span class="p">((</span><span class="n">coverages_land</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">std</span><span class="p">)[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">decision_function</span><span class="p">((</span><span class="n">coverages_land</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">std</span><span class="p">)</span>
         <span class="n">Z</span> <span class="o">*=</span> <span class="n">pred</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
         <span class="n">Z</span><span class="p">[</span><span class="n">idx</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">idx</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">pred</span>
 
@@ -415,8 +415,7 @@ S. J. Phillips, R. P. Anderson, R. E. Schapire - Ecological Modelling,
 
         <span class="c1"># Compute AUC with regards to background points</span>
         <span class="n">pred_background</span> <span class="o">=</span> <span class="n">Z</span><span class="p">[</span><span class="n">background_points</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">background_points</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
-        <span class="n">pred_test</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">decision_function</span><span class="p">((</span><span class="n">species</span><span class="o">.</span><span class="n">cov_test</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span>
-                                          <span class="o">/</span> <span class="n">std</span><span class="p">)[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">pred_test</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">decision_function</span><span class="p">((</span><span class="n">species</span><span class="o">.</span><span class="n">cov_test</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">std</span><span class="p">)</span>
         <span class="n">scores</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.r_.html#numpy.r_" title="View documentation for numpy.r_"><span class="n">np</span><span class="o">.</span><span class="n">r_</span></a><span class="p">[</span><span class="n">pred_test</span><span class="p">,</span> <span class="n">pred_background</span><span class="p">]</span>
         <span class="n">y</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.r_.html#numpy.r_" title="View documentation for numpy.r_"><span class="n">np</span><span class="o">.</span><span class="n">r_</span></a><span class="p">[</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ones.html#numpy.ones" title="View documentation for numpy.ones"><span class="n">np</span><span class="o">.</span><span class="n">ones</span></a><span class="p">(</span><span class="n">pred_test</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.zeros.html#numpy.zeros" title="View documentation for numpy.zeros"><span class="n">np</span><span class="o">.</span><span class="n">zeros</span></a><span class="p">(</span><span class="n">pred_background</span><span class="o">.</span><span class="n">shape</span><span class="p">)]</span>
         <span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">thresholds</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.metrics.roc_curve.html#sklearn.metrics.roc_curve" title="View documentation for sklearn.metrics.roc_curve"><span class="n">metrics</span><span class="o">.</span><span class="n">roc_curve</span></a><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">scores</span><span class="p">)</span>
@@ -431,7 +430,7 @@ S. J. Phillips, R. P. Anderson, R. E. Schapire - Ecological Modelling,
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  28.897 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  30.887 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/plot_species_distribution_modeling.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_species_distribution_modeling.py</span></code></a></div>

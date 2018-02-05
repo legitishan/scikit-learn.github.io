@@ -480,7 +480,7 @@ the number of samples now raises an error.
 Similarly, the <code class="docutils literal"><span class="pre">n_components=None</span></code> case now selects the minimum of
 n_samples and n_features. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/8484">#8484</a>. By <a class="reference external" href="https://github.com/wallygauze">Wally Gauze</a>.</li>
 <li>Fixed a bug in <a class="reference internal" href="modules/generated/sklearn.datasets.fetch_kddcup99.html#sklearn.datasets.fetch_kddcup99" title="sklearn.datasets.fetch_kddcup99"><code class="xref py py-func docutils literal"><span class="pre">datasets.fetch_kddcup99</span></code></a>, where data were not properly
-shuffled. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/9731">#9731</a> by <a class="reference external" href="https://perso.telecom-paristech.fr/~goix/">Nicolas Goix</a>.</li>
+shuffled. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/9731">#9731</a> by <a class="reference external" href="http://ngoix.github.io">Nicolas Goix</a>.</li>
 <li>Fixed a bug in <a class="reference internal" href="modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="sklearn.decomposition.PCA"><code class="xref py py-class docutils literal"><span class="pre">decomposition.PCA</span></code></a> where users will get unexpected error
 with large datasets when <code class="docutils literal"><span class="pre">n_components='mle'</span></code> on Python 3 versions.
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/9886">#9886</a> by <a class="reference external" href="https://github.com/qinhanmin2014">Hanmin Qin</a>.</li>
@@ -566,6 +566,24 @@ due to floating point error in the input.
 <ul class="simple">
 <li>Deprecate <code class="docutils literal"><span class="pre">pooling_func</span></code> unused parameter in
 <a class="reference internal" href="modules/generated/sklearn.cluster.AgglomerativeClustering.html#sklearn.cluster.AgglomerativeClustering" title="sklearn.cluster.AgglomerativeClustering"><code class="xref py py-class docutils literal"><span class="pre">cluster.AgglomerativeClustering</span></code></a>. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/9875">#9875</a> by <a class="reference external" href="https://github.com/thechargedneutron">Kumar Ashutosh</a>.</li>
+</ul>
+<p>Outlier Detection models</p>
+<ul class="simple">
+<li>More consistent outlier detection API:
+Add a <code class="docutils literal"><span class="pre">score_samples</span></code> method in <a class="reference internal" href="modules/generated/sklearn.svm.OneClassSVM.html#sklearn.svm.OneClassSVM" title="sklearn.svm.OneClassSVM"><code class="xref py py-class docutils literal"><span class="pre">svm.OneClassSVM</span></code></a>,
+<a class="reference internal" href="modules/generated/sklearn.ensemble.IsolationForest.html#sklearn.ensemble.IsolationForest" title="sklearn.ensemble.IsolationForest"><code class="xref py py-class docutils literal"><span class="pre">ensemble.IsolationForest</span></code></a>, <a class="reference internal" href="modules/generated/sklearn.neighbors.LocalOutlierFactor.html#sklearn.neighbors.LocalOutlierFactor" title="sklearn.neighbors.LocalOutlierFactor"><code class="xref py py-class docutils literal"><span class="pre">neighbors.LocalOutlierFactor</span></code></a>,
+<a class="reference internal" href="modules/generated/sklearn.covariance.EllipticEnvelope.html#sklearn.covariance.EllipticEnvelope" title="sklearn.covariance.EllipticEnvelope"><code class="xref py py-class docutils literal"><span class="pre">covariance.EllipticEnvelope</span></code></a>. It allows to access raw score
+functions from original papers. A new <code class="docutils literal"><span class="pre">offset_</span></code> parameter allows to link
+<code class="docutils literal"><span class="pre">score_samples</span></code> and <code class="docutils literal"><span class="pre">decision_function</span></code> methods.
+The <code class="docutils literal"><span class="pre">contamination</span></code> parameter of <a class="reference internal" href="modules/generated/sklearn.ensemble.IsolationForest.html#sklearn.ensemble.IsolationForest" title="sklearn.ensemble.IsolationForest"><code class="xref py py-class docutils literal"><span class="pre">ensemble.IsolationForest</span></code></a> and
+<a class="reference internal" href="modules/generated/sklearn.neighbors.LocalOutlierFactor.html#sklearn.neighbors.LocalOutlierFactor" title="sklearn.neighbors.LocalOutlierFactor"><code class="xref py py-class docutils literal"><span class="pre">neighbors.LocalOutlierFactor</span></code></a> <code class="docutils literal"><span class="pre">decision_function</span></code> methods is used
+to define this <code class="docutils literal"><span class="pre">offset_</span></code> such that outliers (resp. inliers) have negative (resp.
+positive) <code class="docutils literal"><span class="pre">decision_function</span></code> values. By default, <code class="docutils literal"><span class="pre">contamination</span></code> is
+kept unchanged to 0.1 for a deprecation period. In 0.22, it will be set to “auto”,
+thus using method-specific score offsets.
+In <a class="reference internal" href="modules/generated/sklearn.covariance.EllipticEnvelope.html#sklearn.covariance.EllipticEnvelope" title="sklearn.covariance.EllipticEnvelope"><code class="xref py py-class docutils literal"><span class="pre">covariance.EllipticEnvelope</span></code></a> <code class="docutils literal"><span class="pre">decision_function</span></code> method, the
+<code class="docutils literal"><span class="pre">raw_values</span></code> parameter is deprecated as the shifted Mahalanobis distance
+will be always returned in 0.22. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/9015">#9015</a> by <a class="reference external" href="http://ngoix.github.io">Nicolas Goix</a>.</li>
 </ul>
 </div>
 <div class="section" id="changes-to-estimator-checks">
@@ -766,7 +784,7 @@ during the first epochs of ridge and logistic regression.
 <ul class="simple">
 <li>Added the <a class="reference internal" href="modules/generated/sklearn.neighbors.LocalOutlierFactor.html#sklearn.neighbors.LocalOutlierFactor" title="sklearn.neighbors.LocalOutlierFactor"><code class="xref py py-class docutils literal"><span class="pre">neighbors.LocalOutlierFactor</span></code></a> class for anomaly
 detection based on nearest neighbors.
-<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/5279">#5279</a> by <a class="reference external" href="https://perso.telecom-paristech.fr/~goix/">Nicolas Goix</a> and <a class="reference external" href="http://alexandre.gramfort.net">Alexandre Gramfort</a>.</li>
+<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/5279">#5279</a> by <a class="reference external" href="http://ngoix.github.io">Nicolas Goix</a> and <a class="reference external" href="http://alexandre.gramfort.net">Alexandre Gramfort</a>.</li>
 <li>Added <a class="reference internal" href="modules/generated/sklearn.preprocessing.QuantileTransformer.html#sklearn.preprocessing.QuantileTransformer" title="sklearn.preprocessing.QuantileTransformer"><code class="xref py py-class docutils literal"><span class="pre">preprocessing.QuantileTransformer</span></code></a> class and
 <a class="reference internal" href="modules/generated/sklearn.preprocessing.quantile_transform.html#sklearn.preprocessing.quantile_transform" title="sklearn.preprocessing.quantile_transform"><code class="xref py py-func docutils literal"><span class="pre">preprocessing.quantile_transform</span></code></a> function for features
 normalization based on quantiles.
