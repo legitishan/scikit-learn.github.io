@@ -37,8 +37,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Joint feature selection with multi-task Lasso" href="plot_multi_task_lasso_support.html" />
-    <link rel="prev" title="Comparing various online solvers" href="plot_sgd_comparison.html" />
+    <link rel="next" title="Ordinary Least Squares and Ridge Regression Variance" href="plot_ols_ridge_variance.html" />
+    <link rel="prev" title="Plot Ridge coefficients as a function of the L2 regularization" href="plot_ridge_coeffs.html" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -132,14 +132,14 @@
         <div class="rel">
     
         <div class="rellink">
-        <a href="plot_sgd_comparison.html"
+        <a href="plot_ridge_coeffs.html"
         accesskey="P">Previous
         <br/>
         <span class="smallrellink">
-        Comparing var...
+        Plot Ridge co...
         </span>
             <span class="hiddenrellink">
-            Comparing various online solvers
+            Plot Ridge coefficients as a function of the L2 regularization
             </span>
         </a>
         </div>
@@ -147,14 +147,14 @@
             &nbsp;
             </div>
         <div class="rellink">
-        <a href="plot_multi_task_lasso_support.html"
+        <a href="plot_ols_ridge_variance.html"
         accesskey="N">Next
         <br/>
         <span class="smallrellink">
-        Joint feature...
+        Ordinary Leas...
         </span>
             <span class="hiddenrellink">
-            Joint feature selection with multi-task Lasso
+            Ordinary Least Squares and Ridge Regression Variance
             </span>
         </a>
         </div>
@@ -202,74 +202,53 @@
             
   <div class="section" id="sgd-penalties">
 <span id="sphx-glr-auto-examples-linear-model-plot-sgd-penalties-py"></span><h1>SGD: Penalties<a class="headerlink" href="#sgd-penalties" title="Permalink to this headline">¶</a></h1>
-<p>Plot the contours of the three penalties.</p>
+<p>Contours of where the penalty is equal to 1
+for the three penalties L1, L2 and elastic-net.</p>
 <p>All of the above are supported by
 <code class="xref py py-class docutils literal"><span class="pre">sklearn.linear_model.stochastic_gradient</span></code>.</p>
 <img alt="../../_images/sphx_glr_plot_sgd_penalties_001.png" class="align-center" src="../../_images/sphx_glr_plot_sgd_penalties_001.png" />
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
-<span class="k">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 
-
-<span class="k">def</span> <span class="nf">l1</span><span class="p">(</span><span class="n">xs</span><span class="p">):</span>
-    <span class="k">return</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.sqrt.html#numpy.sqrt" title="View documentation for numpy.sqrt"><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span></a><span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.sqrt.html#numpy.sqrt" title="View documentation for numpy.sqrt"><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span></a><span class="p">(</span><span class="n">x</span> <span class="o">**</span> <span class="mf">2.0</span><span class="p">))</span> <span class="o">**</span> <span class="mf">2.0</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xs</span><span class="p">])</span>
-
-
-<span class="k">def</span> <span class="nf">l2</span><span class="p">(</span><span class="n">xs</span><span class="p">):</span>
-    <span class="k">return</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.sqrt.html#numpy.sqrt" title="View documentation for numpy.sqrt"><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span></a><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">x</span> <span class="o">**</span> <span class="mf">2.0</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xs</span><span class="p">])</span>
-
-
-<span class="k">def</span> <span class="nf">el</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
-    <span class="k">return</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([(</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">z</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">z</span> <span class="o">-</span>
-                      <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">z</span> <span class="o">**</span> <span class="mi">2</span>
-                       <span class="o">-</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">z</span> <span class="o">**</span> <span class="mi">2</span>
-                       <span class="o">+</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">z</span> <span class="o">**</span> <span class="mi">2</span>
-                       <span class="o">-</span> <span class="mi">16</span> <span class="o">*</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">z</span> <span class="o">**</span> <span class="mi">3</span>
-                       <span class="o">+</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">z</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">z</span> <span class="o">**</span> <span class="mi">4</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-                      <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">z</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">z</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xs</span><span class="p">])</span>
-
-
-<span class="k">def</span> <span class="nf">cross</span><span class="p">(</span><span class="n">ext</span><span class="p">):</span>
-    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">([</span><span class="o">-</span><span class="n">ext</span><span class="p">,</span> <span class="n">ext</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;k-&quot;</span><span class="p">)</span>
-    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="n">ext</span><span class="p">,</span> <span class="n">ext</span><span class="p">],</span> <span class="s2">&quot;k-&quot;</span><span class="p">)</span>
-
-<span class="n">xs</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.linspace.html#numpy.linspace" title="View documentation for numpy.linspace"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-
-<span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.501</span>  <span class="c1"># 0.5 division throuh zero</span>
-
-<span class="n">cross</span><span class="p">(</span><span class="mf">1.2</span><span class="p">)</span>
-
 <span class="n">l1_color</span> <span class="o">=</span> <span class="s2">&quot;navy&quot;</span>
 <span class="n">l2_color</span> <span class="o">=</span> <span class="s2">&quot;c&quot;</span>
 <span class="n">elastic_net_color</span> <span class="o">=</span> <span class="s2">&quot;darkorange&quot;</span>
-<span class="n">lw</span> <span class="o">=</span> <span class="mi">2</span>
 
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">l1</span><span class="p">(</span><span class="n">xs</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">l1_color</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;L1&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="n">lw</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">l1</span><span class="p">(</span><span class="n">xs</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">l1_color</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="n">lw</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">xs</span><span class="p">,</span> <span class="n">l1</span><span class="p">(</span><span class="n">xs</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">l1_color</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="n">lw</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">xs</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">l1</span><span class="p">(</span><span class="n">xs</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">l1_color</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="n">lw</span><span class="p">)</span>
+<span class="n">line</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.linspace.html#numpy.linspace" title="View documentation for numpy.linspace"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">1001</span><span class="p">)</span>
+<span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.meshgrid.html#numpy.meshgrid" title="View documentation for numpy.meshgrid"><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span></a><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
 
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">l2</span><span class="p">(</span><span class="n">xs</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">l2_color</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;L2&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="n">lw</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">l2</span><span class="p">(</span><span class="n">xs</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">l2_color</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="n">lw</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">xs</span><span class="p">,</span> <span class="n">l2</span><span class="p">(</span><span class="n">xs</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">l2_color</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="n">lw</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">xs</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">l2</span><span class="p">(</span><span class="n">xs</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">l2_color</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="n">lw</span><span class="p">)</span>
+<span class="n">l2</span> <span class="o">=</span> <span class="n">xx</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">yy</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="n">l1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">xx</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">yy</span><span class="p">)</span>
+<span class="n">rho</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">elastic_net</span> <span class="o">=</span> <span class="n">rho</span> <span class="o">*</span> <span class="n">l1</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">rho</span><span class="p">)</span> <span class="o">*</span> <span class="n">l2</span>
 
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">el</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">alpha</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">elastic_net_color</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Elastic Net&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="n">lw</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">el</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">alpha</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">elastic_net_color</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="n">lw</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">xs</span><span class="p">,</span> <span class="n">el</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">alpha</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">elastic_net_color</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="n">lw</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">xs</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">el</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">alpha</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">elastic_net_color</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="n">lw</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.gca.html#matplotlib.pyplot.gca" title="View documentation for matplotlib.pyplot.gca"><span class="n">plt</span><span class="o">.</span><span class="n">gca</span></a><span class="p">()</span>
 
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="View documentation for matplotlib.pyplot.xlabel"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$w_0$&quot;</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="View documentation for matplotlib.pyplot.ylabel"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$w_1$&quot;</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.legend.html#matplotlib.pyplot.legend" title="View documentation for matplotlib.pyplot.legend"><span class="n">plt</span><span class="o">.</span><span class="n">legend</span></a><span class="p">()</span>
+<span class="n">elastic_net_contour</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.contour.html#matplotlib.pyplot.contour" title="View documentation for matplotlib.pyplot.contour"><span class="n">plt</span><span class="o">.</span><span class="n">contour</span></a><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">elastic_net</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                  <span class="n">colors</span><span class="o">=</span><span class="n">elastic_net_color</span><span class="p">)</span>
+<span class="n">l2_contour</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.contour.html#matplotlib.pyplot.contour" title="View documentation for matplotlib.pyplot.contour"><span class="n">plt</span><span class="o">.</span><span class="n">contour</span></a><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">l2</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="n">l2_color</span><span class="p">)</span>
+<span class="n">l1_contour</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.contour.html#matplotlib.pyplot.contour" title="View documentation for matplotlib.pyplot.contour"><span class="n">plt</span><span class="o">.</span><span class="n">contour</span></a><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">l1</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="n">l1_color</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;left&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;bottom&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
 
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.axis.html#matplotlib.pyplot.axis" title="View documentation for matplotlib.pyplot.axis"><span class="n">plt</span><span class="o">.</span><span class="n">axis</span></a><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.clabel.html#matplotlib.pyplot.clabel" title="View documentation for matplotlib.pyplot.clabel"><span class="n">plt</span><span class="o">.</span><span class="n">clabel</span></a><span class="p">(</span><span class="n">elastic_net_contour</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span>
+           <span class="n">fmt</span><span class="o">=</span><span class="p">{</span><span class="mf">1.0</span><span class="p">:</span> <span class="s1">&#39;elastic-net&#39;</span><span class="p">},</span> <span class="n">manual</span><span class="o">=</span><span class="p">[(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)])</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.clabel.html#matplotlib.pyplot.clabel" title="View documentation for matplotlib.pyplot.clabel"><span class="n">plt</span><span class="o">.</span><span class="n">clabel</span></a><span class="p">(</span><span class="n">l2_contour</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span>
+           <span class="n">fmt</span><span class="o">=</span><span class="p">{</span><span class="mf">1.0</span><span class="p">:</span> <span class="s1">&#39;L2&#39;</span><span class="p">},</span> <span class="n">manual</span><span class="o">=</span><span class="p">[(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)])</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.clabel.html#matplotlib.pyplot.clabel" title="View documentation for matplotlib.pyplot.clabel"><span class="n">plt</span><span class="o">.</span><span class="n">clabel</span></a><span class="p">(</span><span class="n">l1_contour</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span>
+           <span class="n">fmt</span><span class="o">=</span><span class="p">{</span><span class="mf">1.0</span><span class="p">:</span> <span class="s1">&#39;L1&#39;</span><span class="p">},</span> <span class="n">manual</span><span class="o">=</span><span class="p">[(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)])</span>
+
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="View documentation for matplotlib.pyplot.tight_layout"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.066 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.186 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/plot_sgd_penalties.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_sgd_penalties.py</span></code></a></div>
@@ -294,11 +273,11 @@
      <div class="rel">
     
     <div class="buttonPrevious">
-      <a href="plot_sgd_comparison.html">Previous
+      <a href="plot_ridge_coeffs.html">Previous
       </a>
     </div>
     <div class="buttonNext">
-      <a href="plot_multi_task_lasso_support.html">Next
+      <a href="plot_ols_ridge_variance.html">Next
       </a>
     </div>
     
