@@ -38,7 +38,7 @@
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="A demo of structured Ward hierarchical clustering on a raccoon face image" href="plot_face_ward_segmentation.html" />
-    <link rel="prev" title="Demonstration of k-means assumptions" href="plot_kmeans_assumptions.html" />
+    <link rel="prev" title="Demo of affinity propagation clustering algorithm" href="plot_affinity_propagation.html" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -132,14 +132,14 @@
         <div class="rel">
     
         <div class="rellink">
-        <a href="plot_kmeans_assumptions.html"
+        <a href="plot_affinity_propagation.html"
         accesskey="P">Previous
         <br/>
         <span class="smallrellink">
-        Demonstration...
+        Demo of affin...
         </span>
             <span class="hiddenrellink">
-            Demonstration of k-means assumptions
+            Demo of affinity propagation clustering algorithm
             </span>
         </a>
         </div>
@@ -223,26 +223,31 @@ space to the embedding space.</li>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">scipy</span> <span class="kn">as</span> <span class="nn">sp</span>
+<span class="kn">from</span> <span class="nn">scipy.ndimage.filters</span> <span class="kn">import</span> <span class="n">gaussian_filter</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">skimage</span> <span class="kn">import</span> <span class="n">img_as_float</span>
+<span class="kn">from</span> <span class="nn">skimage.transform</span> <span class="kn">import</span> <span class="n">rescale</span>
 
 <span class="kn">from</span> <span class="nn">sklearn.feature_extraction</span> <span class="kn">import</span> <span class="n">image</span>
 <span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.cluster.spectral_clustering.html#sklearn.cluster.spectral_clustering" title="View documentation for sklearn.cluster.spectral_clustering"><span class="n">spectral_clustering</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.externals._pilutil</span> <span class="kn">import</span> <span class="n">imresize</span>
 
 
 <span class="c1"># load the raccoon face as a numpy array</span>
 <span class="k">try</span><span class="p">:</span>  <span class="c1"># SciPy &gt;= 0.16 have face in misc</span>
     <span class="kn">from</span> <span class="nn">scipy.misc</span> <span class="kn">import</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.misc.face.html#scipy.misc.face" title="View documentation for scipy.misc.face"><span class="n">face</span></a>
-    <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.misc.face.html#scipy.misc.face" title="View documentation for scipy.misc.face"><span class="n">face</span></a> <span class="o">=</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.misc.face.html#scipy.misc.face" title="View documentation for scipy.misc.face"><span class="n">face</span></a><span class="p">(</span><span class="n">gray</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">orig_face</span> <span class="o">=</span> <span class="n">img_as_float</span><span class="p">(</span><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.misc.face.html#scipy.misc.face" title="View documentation for scipy.misc.face"><span class="n">face</span></a><span class="p">(</span><span class="n">gray</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.misc.face.html#scipy.misc.face" title="View documentation for scipy.misc.face"><span class="n">face</span></a> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.misc.face.html#scipy.misc.face" title="View documentation for scipy.misc.face"><span class="n">face</span></a><span class="p">(</span><span class="n">gray</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">orig_face</span> <span class="o">=</span> <span class="n">img_as_float</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.misc.face.html#scipy.misc.face" title="View documentation for scipy.misc.face"><span class="n">face</span></a><span class="p">(</span><span class="n">gray</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
 
 <span class="c1"># Resize it to 10% of the original size to speed up the processing</span>
-<a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.misc.face.html#scipy.misc.face" title="View documentation for scipy.misc.face"><span class="n">face</span></a> <span class="o">=</span> <span class="n">imresize</span><span class="p">(</span><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.misc.face.html#scipy.misc.face" title="View documentation for scipy.misc.face"><span class="n">face</span></a><span class="p">,</span> <span class="mf">0.10</span><span class="p">)</span> <span class="o">/</span> <span class="mf">255.</span>
+<span class="c1"># Applying a Gaussian filter for smoothing prior to down-scaling</span>
+<span class="c1"># reduces aliasing artifacts.</span>
+<span class="n">smoothened_face</span> <span class="o">=</span> <span class="n">gaussian_filter</span><span class="p">(</span><span class="n">orig_face</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">4.5</span><span class="p">)</span>
+<span class="n">rescaled_face</span> <span class="o">=</span> <span class="n">rescale</span><span class="p">(</span><span class="n">smoothened_face</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;reflect&quot;</span><span class="p">)</span>
 
 <span class="c1"># Convert the image into a graph with the value of the gradient on the</span>
 <span class="c1"># edges.</span>
-<span class="n">graph</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">img_to_graph</span><span class="p">(</span><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.misc.face.html#scipy.misc.face" title="View documentation for scipy.misc.face"><span class="n">face</span></a><span class="p">)</span>
+<span class="n">graph</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">img_to_graph</span><span class="p">(</span><span class="n">rescaled_face</span><span class="p">)</span>
 
 <span class="c1"># Take a decreasing function of the gradient: an exponential</span>
 <span class="c1"># The smaller beta is, the more independent the segmentation is of the</span>
@@ -262,10 +267,10 @@ space to the embedding space.</li>
     <span class="n">labels</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.cluster.spectral_clustering.html#sklearn.cluster.spectral_clustering" title="View documentation for sklearn.cluster.spectral_clustering"><span class="n">spectral_clustering</span></a><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="n">N_REGIONS</span><span class="p">,</span>
                                  <span class="n">assign_labels</span><span class="o">=</span><span class="n">assign_labels</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
     <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-    <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.misc.face.html#scipy.misc.face" title="View documentation for scipy.misc.face"><span class="n">face</span></a><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">rescaled_face</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
     <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.imshow.html#matplotlib.pyplot.imshow" title="View documentation for matplotlib.pyplot.imshow"><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span></a><span class="p">(</span><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.misc.face.html#scipy.misc.face" title="View documentation for scipy.misc.face"><span class="n">face</span></a><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
+    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.imshow.html#matplotlib.pyplot.imshow" title="View documentation for matplotlib.pyplot.imshow"><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span></a><span class="p">(</span><span class="n">rescaled_face</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_REGIONS</span><span class="p">):</span>
         <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.contour.html#matplotlib.pyplot.contour" title="View documentation for matplotlib.pyplot.contour"><span class="n">plt</span><span class="o">.</span><span class="n">contour</span></a><span class="p">(</span><span class="n">labels</span> <span class="o">==</span> <span class="n">l</span><span class="p">,</span>
                     <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">spectral</span><span class="p">(</span><span class="n">l</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N_REGIONS</span><span class="p">))])</span>
@@ -284,11 +289,11 @@ space to the embedding space.</li>
 </li>
 </ul>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="n">Spectral</span> <span class="n">clustering</span><span class="p">:</span> <span class="n">kmeans</span><span class="p">,</span> <span class="mf">9.80</span><span class="n">s</span>
-<span class="n">Spectral</span> <span class="n">clustering</span><span class="p">:</span> <span class="n">discretize</span><span class="p">,</span> <span class="mf">7.62</span><span class="n">s</span>
+<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="n">Spectral</span> <span class="n">clustering</span><span class="p">:</span> <span class="n">kmeans</span><span class="p">,</span> <span class="mf">12.00</span><span class="n">s</span>
+<span class="n">Spectral</span> <span class="n">clustering</span><span class="p">:</span> <span class="n">discretize</span><span class="p">,</span> <span class="mf">12.20</span><span class="n">s</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  18.264 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  25.257 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/plot_face_segmentation.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_face_segmentation.py</span></code></a></div>
@@ -313,7 +318,7 @@ space to the embedding space.</li>
      <div class="rel">
     
     <div class="buttonPrevious">
-      <a href="plot_kmeans_assumptions.html">Previous
+      <a href="plot_affinity_propagation.html">Previous
       </a>
     </div>
     <div class="buttonNext">
