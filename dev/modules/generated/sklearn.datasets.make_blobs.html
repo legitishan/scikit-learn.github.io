@@ -207,7 +207,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.datasets" title="sklearn.datasets"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.datasets</span></code></a>.make_blobs<a class="headerlink" href="#sklearn-datasets-make-blobs" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.datasets.make_blobs">
-<code class="descclassname">sklearn.datasets.</code><code class="descname">make_blobs</code><span class="sig-paren">(</span><em>n_samples=100</em>, <em>n_features=2</em>, <em>centers=3</em>, <em>cluster_std=1.0</em>, <em>center_box=(-10.0</em>, <em>10.0)</em>, <em>shuffle=True</em>, <em>random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/bda7be0/sklearn/datasets/samples_generator.py#L699"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.datasets.make_blobs" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sklearn.datasets.</code><code class="descname">make_blobs</code><span class="sig-paren">(</span><em>n_samples=100</em>, <em>n_features=2</em>, <em>centers=None</em>, <em>cluster_std=1.0</em>, <em>center_box=(-10.0</em>, <em>10.0)</em>, <em>shuffle=True</em>, <em>random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/34f12da/sklearn/datasets/samples_generator.py#L700"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.datasets.make_blobs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate isotropic Gaussian blobs for clustering.</p>
 <p>Read more in the <a class="reference internal" href="../../datasets/index.html#sample-generators"><span class="std std-ref">User Guide</span></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -215,15 +215,21 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt>n_samples <span class="classifier-delimiter">:</span> <span class="classifier">int, optional (default=100)</span></dt>
-<dd><p class="first last">The total number of points equally divided among clusters.</p>
+<dt>n_samples <span class="classifier-delimiter">:</span> <span class="classifier">int or array-like, optional (default=100)</span></dt>
+<dd><p class="first last">If int, it is the the total number of points equally divided among
+clusters.
+If array-like, each element of the sequence indicates
+the number of samples per cluster.</p>
 </dd>
 <dt>n_features <span class="classifier-delimiter">:</span> <span class="classifier">int, optional (default=2)</span></dt>
 <dd><p class="first last">The number of features for each sample.</p>
 </dd>
 <dt>centers <span class="classifier-delimiter">:</span> <span class="classifier">int or array of shape [n_centers, n_features], optional</span></dt>
-<dd><p class="first last">(default=3)
-The number of centers to generate, or the fixed center locations.</p>
+<dd><p class="first last">(default=None)
+The number of centers to generate, or the fixed center locations.
+If n_samples is an int and centers is None, 3 centers are generated.
+If n_samples is array-like, centers must be
+either None or an array of length equal to the length of n_samples.</p>
 </dd>
 <dt>cluster_std <span class="classifier-delimiter">:</span> <span class="classifier">float or sequence of floats, optional (default=1.0)</span></dt>
 <dd><p class="first last">The standard deviation of the clusters.</p>
@@ -271,6 +277,12 @@ by <cite>np.random</cite>.</p>
 <span class="go">(10, 2)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span>
 <span class="go">array([0, 0, 1, 0, 2, 2, 2, 1, 1, 0])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">centers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="gp">... </span>                  <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="go">(10, 2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span>
+<span class="go">array([0, 1, 2, 0, 2, 2, 2, 1, 1, 0])</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -344,6 +356,10 @@ by <cite>np.random</cite>.</p>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Plot the maximum margin separating hyperplane within a two-class separable dataset using a Supp..."><div class="figure" id="id17">
 <img alt="../../_images/sphx_glr_plot_separating_hyperplane_thumb.png" src="../../_images/sphx_glr_plot_separating_hyperplane_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/svm/plot_separating_hyperplane.html#sphx-glr-auto-examples-svm-plot-separating-hyperplane-py"><span class="std std-ref">SVM: Maximum margin separating hyperplane</span></a></span></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Find the optimal separating hyperplane using an SVC for classes that are unbalanced."><div class="figure" id="id18">
+<img alt="../../_images/sphx_glr_plot_separating_hyperplane_unbalanced_thumb.png" src="../../_images/sphx_glr_plot_separating_hyperplane_unbalanced_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/svm/plot_separating_hyperplane_unbalanced.html#sphx-glr-auto-examples-svm-plot-separating-hyperplane-unbalanced-py"><span class="std std-ref">SVM: Separating hyperplane for unbalanced classes</span></a></span></p>
 </div>
 </div><div class="clearer"></div></div>
 </div>
