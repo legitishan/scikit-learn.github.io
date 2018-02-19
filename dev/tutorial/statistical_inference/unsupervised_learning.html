@@ -345,12 +345,11 @@ are represented by their adjacency matrix. Often, a sparse matrix is used.
 This can be useful, for instance, to retrieve connected regions (sometimes
 also referred to as connected components) when
 clustering an image:</p>
-<a class="reference external image-reference" href="../../auto_examples/cluster/plot_face_ward_segmentation.html"><img alt="../../_images/sphx_glr_plot_face_ward_segmentation_001.png" class="align-right" src="../../_images/sphx_glr_plot_face_ward_segmentation_001.png" style="width: 200.0px; height: 200.0px;" /></a>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.ndimage.filters</span> <span class="k">import</span> <span class="n">gaussian_filter</span>
-
+<a class="reference external image-reference" href="../../auto_examples/cluster/plot_coin_ward_segmentation.html"><img alt="../../_images/sphx_glr_plot_coin_ward_segmentation_001.png" class="align-right" src="../../_images/sphx_glr_plot_coin_ward_segmentation_001.png" style="width: 200.0px; height: 200.0px;" /></a>
+<div class="highlight-default"><div class="highlight"><pre><span></span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
-<span class="kn">from</span> <span class="nn">skimage</span> <span class="k">import</span> <span class="n">img_as_float</span>
+<span class="kn">from</span> <span class="nn">skimage.data</span> <span class="k">import</span> <span class="n">coins</span>
 <span class="kn">from</span> <span class="nn">skimage.transform</span> <span class="k">import</span> <span class="n">rescale</span>
 
 <span class="kn">from</span> <span class="nn">sklearn.feature_extraction.image</span> <span class="k">import</span> <span class="n">grid_to_graph</span>
@@ -359,18 +358,19 @@ clustering an image:</p>
 
 <span class="c1"># #############################################################################</span>
 <span class="c1"># Generate data</span>
-<span class="k">try</span><span class="p">:</span>  <span class="c1"># SciPy &gt;= 0.16 have face in misc</span>
-    <span class="kn">from</span> <span class="nn">scipy.misc</span> <span class="k">import</span> <span class="n">face</span>
-    <span class="n">orig_face</span> <span class="o">=</span> <span class="n">img_as_float</span><span class="p">(</span><span class="n">face</span><span class="p">(</span><span class="n">gray</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="n">orig_face</span> <span class="o">=</span> <span class="n">img_as_float</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">face</span><span class="p">(</span><span class="n">gray</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="n">orig_coins</span> <span class="o">=</span> <span class="n">coins</span><span class="p">()</span>
 
-<span class="c1"># Resize it to 10% of the original size to speed up the processing</span>
+<span class="c1"># Resize it to 20% of the original size to speed up the processing</span>
 <span class="c1"># Applying a Gaussian filter for smoothing prior to down-scaling</span>
 <span class="c1"># reduces aliasing artifacts.</span>
-<span class="n">smoothened_face</span> <span class="o">=</span> <span class="n">gaussian_filter</span><span class="p">(</span><span class="n">orig_face</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">4.5</span><span class="p">)</span>
-<span class="n">rescaled_face</span> <span class="o">=</span> <span class="n">rescale</span><span class="p">(</span><span class="n">smoothened_face</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;reflect&quot;</span><span class="p">)</span>
+<span class="n">smoothened_coins</span> <span class="o">=</span> <span class="n">gaussian_filter</span><span class="p">(</span><span class="n">orig_coins</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">rescaled_coins</span> <span class="o">=</span> <span class="n">rescale</span><span class="p">(</span><span class="n">smoothened_coins</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;reflect&quot;</span><span class="p">)</span>
 
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">rescaled_coins</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="c1"># #############################################################################</span>
+<span class="c1"># Define the structure A of the data. Pixels connected to their neighbors.</span>
+<span class="n">connectivity</span> <span class="o">=</span> <span class="n">grid_to_graph</span><span class="p">(</span><span class="o">*</span><span class="n">rescaled_coins</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

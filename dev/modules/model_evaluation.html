@@ -495,24 +495,23 @@ False.</li>
 <p>Here is an example of building custom scorers, and of using the
 <code class="docutils literal"><span class="pre">greater_is_better</span></code> parameter:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">my_custom_loss_func</span><span class="p">(</span><span class="n">ground_truth</span><span class="p">,</span> <span class="n">predictions</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="n">diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ground_truth</span> <span class="o">-</span> <span class="n">predictions</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">my_custom_loss_func</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y_true</span> <span class="o">-</span> <span class="n">y_pred</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 <span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">diff</span><span class="p">)</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># loss_func will negate the return value of my_custom_loss_func,</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1">#  which will be np.log(2), 0.693, given the values for ground_truth</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1">#  and predictions defined below.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">loss</span>  <span class="o">=</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">my_custom_loss_func</span><span class="p">,</span> <span class="n">greater_is_better</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">score</span> <span class="o">=</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">my_custom_loss_func</span><span class="p">,</span> <span class="n">greater_is_better</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ground_truth</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">predictions</span>  <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># score will negate the return value of my_custom_loss_func,</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># which will be np.log(2), 0.693, given the values for X</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># and y defined below.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">score</span> <span class="o">=</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">my_custom_loss_func</span><span class="p">,</span> <span class="n">greater_is_better</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span>  <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.dummy</span> <span class="k">import</span> <span class="n">DummyClassifier</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">DummyClassifier</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;most_frequent&#39;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">ground_truth</span><span class="p">,</span> <span class="n">predictions</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">loss</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span><span class="n">ground_truth</span><span class="p">,</span> <span class="n">predictions</span><span class="p">)</span> 
-<span class="go">-0.69...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">score</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span><span class="n">ground_truth</span><span class="p">,</span> <span class="n">predictions</span><span class="p">)</span> 
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_custom_loss_func</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">y</span><span class="p">)</span> 
 <span class="go">0.69...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">score</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> 
+<span class="go">-0.69...</span>
 </pre></div>
 </div>
 </div>
