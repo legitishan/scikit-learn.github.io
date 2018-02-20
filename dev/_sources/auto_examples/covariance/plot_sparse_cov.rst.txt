@@ -7,7 +7,7 @@
 Sparse inverse covariance estimation
 ======================================
 
-Using the GraphLasso estimator to learn a covariance and sparse precision
+Using the GraphicalLasso estimator to learn a covariance and sparse precision
 from a small number of samples.
 
 To estimate a probabilistic model (e.g. a Gaussian model), estimating the
@@ -47,8 +47,8 @@ Note that, the color range of the precision matrices is tweaked to
 improve readability of the figure. The full range of values of the
 empirical precision is not displayed.
 
-The alpha parameter of the GraphLasso setting the sparsity of the model is
-set by internal cross-validation in the GraphLassoCV. As can be
+The alpha parameter of the GraphicalLasso setting the sparsity of the model is
+set by internal cross-validation in the GraphicalLassoCV. As can be
 seen on figure 2, the grid to compute the cross-validation score is
 iteratively refined in the neighborhood of the maximum.
 
@@ -82,7 +82,7 @@ iteratively refined in the neighborhood of the maximum.
     import numpy as np
     from scipy import linalg
     from sklearn.datasets import make_sparse_spd_matrix
-    from sklearn.covariance import GraphLassoCV, ledoit_wolf
+    from sklearn.covariance import GraphicalLassoCV, ledoit_wolf
     import matplotlib.pyplot as plt
 
     # #############################################################################
@@ -109,7 +109,7 @@ iteratively refined in the neighborhood of the maximum.
     # Estimate the covariance
     emp_cov = np.dot(X.T, X) / n_samples
 
-    model = GraphLassoCV()
+    model = GraphicalLassoCV()
     model.fit(X)
     cov_ = model.covariance_
     prec_ = model.precision_
@@ -124,7 +124,7 @@ iteratively refined in the neighborhood of the maximum.
 
     # plot the covariances
     covs = [('Empirical', emp_cov), ('Ledoit-Wolf', lw_cov_),
-            ('GraphLasso', cov_), ('True', cov)]
+            ('GraphicalLassoCV', cov_), ('True', cov)]
     vmax = cov_.max()
     for i, (name, this_cov) in enumerate(covs):
         plt.subplot(2, 4, i + 1)
@@ -137,7 +137,7 @@ iteratively refined in the neighborhood of the maximum.
 
     # plot the precisions
     precs = [('Empirical', linalg.inv(emp_cov)), ('Ledoit-Wolf', lw_prec_),
-             ('GraphLasso', prec_), ('True', prec)]
+             ('GraphicalLasso', prec_), ('True', prec)]
     vmax = .9 * prec_.max()
     for i, (name, this_prec) in enumerate(precs):
         ax = plt.subplot(2, 4, i + 5)
@@ -160,7 +160,7 @@ iteratively refined in the neighborhood of the maximum.
 
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  1.304 seconds)
+**Total running time of the script:** ( 0 minutes  1.800 seconds)
 
 
 
