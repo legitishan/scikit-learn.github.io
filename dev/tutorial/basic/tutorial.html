@@ -228,7 +228,7 @@ data and then tries to predict properties of unknown data. If each sample is
 more than a single number and, for instance, a multi-dimensional entry
 (aka <a class="reference external" href="https://en.wikipedia.org/wiki/Multivariate_random_variable">multivariate</a>
 data), it is said to have several attributes or <strong>features</strong>.</p>
-<p>We can separate learning problems in a few large categories:</p>
+<p>Learning problems fall into a few categories:</p>
 <blockquote>
 <div><ul>
 <li><p class="first"><a class="reference external" href="https://en.wikipedia.org/wiki/Supervised_learning">supervised learning</a>,
@@ -241,8 +241,8 @@ can be either:</p>
 <li><a class="reference external" href="https://en.wikipedia.org/wiki/Classification_in_machine_learning">classification</a>:
 samples belong to two or more classes and we
 want to learn from already labeled data how to predict the class
-of unlabeled data. An example of classification problem would
-be the handwritten digit recognition example, in which the aim is
+of unlabeled data. An example of a classification problem would
+be handwritten digit recognition, in which the aim is
 to assign each input vector to one of a finite number of discrete
 categories.  Another way to think of classification is as a discrete
 (as opposed to continuous) form of supervised learning where one has a
@@ -273,11 +273,11 @@ to go to the Scikit-Learn unsupervised learning page).</p>
 <div class="topic">
 <p class="topic-title first">Training set and testing set</p>
 <p>Machine learning is about learning some properties of a data set
-and applying them to new data. This is why a common practice in
-machine learning to evaluate an algorithm is to split the data
-at hand into two sets, one that we call the <strong>training set</strong> on which
-we learn data properties and one that we call the <strong>testing set</strong>
-on which we test these properties.</p>
+and then testing those properties against another data set. A common
+practice in machine learning is to evaluate an algorithm by splitting a data
+set into two. We call one of those sets the <strong>training set</strong>, on which we
+learn some properties; we call the other set the <strong>testing set</strong>, on which
+we test the learned properties.</p>
 </div>
 </div>
 <div class="section" id="loading-an-example-dataset">
@@ -355,28 +355,27 @@ possible classes (the digits zero through nine) on which we <em>fit</em> an
 the classes to which unseen samples belong.</p>
 <p>In scikit-learn, an estimator for classification is a Python object that
 implements the methods <code class="docutils literal"><span class="pre">fit(X,</span> <span class="pre">y)</span></code> and <code class="docutils literal"><span class="pre">predict(T)</span></code>.</p>
-<p>An example of an estimator is the class <code class="docutils literal"><span class="pre">sklearn.svm.SVC</span></code> that
+<p>An example of an estimator is the class <code class="docutils literal"><span class="pre">sklearn.svm.SVC</span></code>, which
 implements <a class="reference external" href="https://en.wikipedia.org/wiki/Support_vector_machine">support vector classification</a>. The
-constructor of an estimator takes as arguments the parameters of the
-model, but for the time being, we will consider the estimator as a black
-box:</p>
+estimator’s constructor takes as arguments the model’s parameters.</p>
+<p>For now, we will consider the estimator as a black box:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">svm</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">gamma</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">100.</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="topic">
 <p class="topic-title first">Choosing the parameters of the model</p>
-<p>In this example we set the value of <code class="docutils literal"><span class="pre">gamma</span></code> manually. It is possible
-to automatically find good values for the parameters by using tools
+<p>In this example, we set the value of <code class="docutils literal"><span class="pre">gamma</span></code> manually.
+To find good values for these parameters, we can use tools
 such as <a class="reference internal" href="../../modules/grid_search.html#grid-search"><span class="std std-ref">grid search</span></a> and <a class="reference internal" href="../../modules/cross_validation.html#cross-validation"><span class="std std-ref">cross validation</span></a>.</p>
 </div>
-<p>We call our estimator instance <code class="docutils literal"><span class="pre">clf</span></code>, as it is a classifier. It now must
-be fitted to the model, that is, it must <em>learn</em> from the model. This is
-done by passing our training set to the <code class="docutils literal"><span class="pre">fit</span></code> method. As a training
-set, let us use all the images of our dataset apart from the last
-one. We select this training set with the <code class="docutils literal"><span class="pre">[:-1]</span></code> Python syntax,
-which produces a new array that contains all but
-the last entry of <code class="docutils literal"><span class="pre">digits.data</span></code>:</p>
+<p>The <code class="docutils literal"><span class="pre">clf</span></code> (for classifier) estimator instance is first
+fitted to the model; that is, it must <em>learn</em> from the model. This is
+done by passing our training set to the <code class="docutils literal"><span class="pre">fit</span></code> method. For the training
+set, we’ll use all the images from our dataset, except for the last
+image, which we’ll reserve for our predicting. We select the training set with
+the <code class="docutils literal"><span class="pre">[:-1]</span></code> Python syntax, which produces a new array that contains all but
+the last item from <code class="docutils literal"><span class="pre">digits.data</span></code>:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">digits</span><span class="o">.</span><span class="n">target</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>  
 <span class="go">SVC(C=100.0, cache_size=200, class_weight=None, coef0=0.0,</span>
 <span class="go">  decision_function_shape=&#39;ovr&#39;, degree=3, gamma=0.001, kernel=&#39;rbf&#39;,</span>
@@ -384,16 +383,16 @@ the last entry of <code class="docutils literal"><span class="pre">digits.data</
 <span class="go">  tol=0.001, verbose=False)</span>
 </pre></div>
 </div>
-<p>Now you can predict new values, in particular, we can ask to the
-classifier what is the digit of our last image in the <code class="docutils literal"><span class="pre">digits</span></code> dataset,
-which we have not used to train the classifier:</p>
+<p>Now you can <em>predict</em> new values. In this case, you’ll predict using the last
+image from <code class="docutils literal"><span class="pre">digits.data</span></code>. By predicting, you’ll determine the image from the
+training set that best matches the last image.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:])</span>
 <span class="go">array([8])</span>
 </pre></div>
 </div>
-<p>The corresponding image is the following:</p>
+<p>The corresponding image is:</p>
 <a class="reference external image-reference" href="../../auto_examples/datasets/plot_digits_last_image.html"><img alt="../../_images/sphx_glr_plot_digits_last_image_001.png" class="align-center" src="../../_images/sphx_glr_plot_digits_last_image_001.png" style="width: 150.0px; height: 150.0px;" /></a>
-<p>As you can see, it is a challenging task: the images are of poor
+<p>As you can see, it is a challenging task: after all, the images are of poor
 resolution. Do you agree with the classifier?</p>
 <p>A complete example of this classification problem is available as an
 example that you can run and study:
@@ -402,7 +401,7 @@ example that you can run and study:
 <div class="section" id="model-persistence">
 <h2>Model persistence<a class="headerlink" href="#model-persistence" title="Permalink to this headline">¶</a></h2>
 <p>It is possible to save a model in scikit-learn by using Python’s built-in
-persistence model, namely <a class="reference external" href="https://docs.python.org/2/library/pickle.html">pickle</a>:</p>
+persistence model, <a class="reference external" href="https://docs.python.org/2/library/pickle.html">pickle</a>:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">svm</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">datasets</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">()</span>
@@ -424,14 +423,14 @@ persistence model, namely <a class="reference external" href="https://docs.pytho
 </pre></div>
 </div>
 <p>In the specific case of scikit-learn, it may be more interesting to use
-joblib’s replacement of pickle (<code class="docutils literal"><span class="pre">joblib.dump</span></code> &amp; <code class="docutils literal"><span class="pre">joblib.load</span></code>),
-which is more efficient on big data, but can only pickle to the disk
+joblib’s replacement for pickle (<code class="docutils literal"><span class="pre">joblib.dump</span></code> &amp; <code class="docutils literal"><span class="pre">joblib.load</span></code>),
+which is more efficient on big data but it can only pickle to the disk
 and not to a string:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.externals</span> <span class="k">import</span> <span class="n">joblib</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="s1">&#39;filename.pkl&#39;</span><span class="p">)</span> 
 </pre></div>
 </div>
-<p>Later you can load back the pickled model (possibly in another Python process)
+<p>Later, you can reload the pickled model (possibly in another Python process)
 with:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;filename.pkl&#39;</span><span class="p">)</span> 
 </pre></div>
@@ -470,7 +469,7 @@ predictive.  These are described in more detail in the <a class="reference inter
 </div>
 <p>In this example, <code class="docutils literal"><span class="pre">X</span></code> is <code class="docutils literal"><span class="pre">float32</span></code>, which is cast to <code class="docutils literal"><span class="pre">float64</span></code> by
 <code class="docutils literal"><span class="pre">fit_transform(X)</span></code>.</p>
-<p>Regression targets are cast to <code class="docutils literal"><span class="pre">float64</span></code>, classification targets are
+<p>Regression targets are cast to <code class="docutils literal"><span class="pre">float64</span></code> and classification targets are
 maintained:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">datasets</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="k">import</span> <span class="n">SVC</span>
