@@ -1523,10 +1523,15 @@ parameters, and even some orders of parameter values. For example,
 <code class="docutils literal"><span class="pre">warm_start</span></code> may be used when building random forests to add more
 trees to the forest (increasing <code class="docutils literal"><span class="pre">n_estimators</span></code>) but not to reduce
 their number.</p>
-<p class="last"><a class="reference internal" href="#term-partial-fit"><span class="xref std std-term">partial_fit</span></a> also retains the model between calls, but differs:
-with <code class="docutils literal"><span class="pre">warm_start</span></code> the parameters change and the data is constant
-across calls to <code class="docutils literal"><span class="pre">fit</span></code>; with <code class="docutils literal"><span class="pre">partial_fit</span></code>, the mini-batch of data
-changes and model parameters stay fixed.</p>
+<p><a class="reference internal" href="#term-partial-fit"><span class="xref std std-term">partial_fit</span></a> also retains the model between calls, but differs:
+with <code class="docutils literal"><span class="pre">warm_start</span></code> the parameters change and the data is
+(more-or-less) constant across calls to <code class="docutils literal"><span class="pre">fit</span></code>; with <code class="docutils literal"><span class="pre">partial_fit</span></code>,
+the mini-batch of data changes and model parameters stay fixed.</p>
+<p class="last">There are cases where you want to use <code class="docutils literal"><span class="pre">warm_start</span></code> to fit on
+different, but closely related data. For example, one may initially fit
+to a subset of the data, then fine-tune the parameter search on the
+full dataset. For classification, all data in a sequence of
+<code class="docutils literal"><span class="pre">warm_start</span></code> calls to <code class="docutils literal"><span class="pre">fit</span></code> must include samples from each class.</p>
 </dd>
 </dl>
 </div>
