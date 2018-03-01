@@ -207,16 +207,20 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.datasets" title="sklearn.datasets"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.datasets</span></code></a>.make_classification<a class="headerlink" href="#sklearn-datasets-make-classification" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.datasets.make_classification">
-<code class="descclassname">sklearn.datasets.</code><code class="descname">make_classification</code><span class="sig-paren">(</span><em>n_samples=100</em>, <em>n_features=20</em>, <em>n_informative=2</em>, <em>n_redundant=2</em>, <em>n_repeated=0</em>, <em>n_classes=2</em>, <em>n_clusters_per_class=2</em>, <em>weights=None</em>, <em>flip_y=0.01</em>, <em>class_sep=1.0</em>, <em>hypercube=True</em>, <em>shift=0.0</em>, <em>scale=1.0</em>, <em>shuffle=True</em>, <em>random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/ec691e9/sklearn/datasets/samples_generator.py#L38"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.datasets.make_classification" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sklearn.datasets.</code><code class="descname">make_classification</code><span class="sig-paren">(</span><em>n_samples=100</em>, <em>n_features=20</em>, <em>n_informative=2</em>, <em>n_redundant=2</em>, <em>n_repeated=0</em>, <em>n_classes=2</em>, <em>n_clusters_per_class=2</em>, <em>weights=None</em>, <em>flip_y=0.01</em>, <em>class_sep=1.0</em>, <em>hypercube=True</em>, <em>shift=0.0</em>, <em>scale=1.0</em>, <em>shuffle=True</em>, <em>random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/b8a1bcf/sklearn/datasets/samples_generator.py#L38"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.datasets.make_classification" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a random n-class classification problem.</p>
 <p>This initially creates clusters of points normally distributed (std=1)
-about vertices of an <cite>n_informative</cite>-dimensional hypercube with sides of
-length <cite>2*class_sep</cite> and assigns an equal number of clusters to each
+about vertices of an <code class="docutils literal"><span class="pre">n_informative</span></code>-dimensional hypercube with sides of
+length <code class="docutils literal"><span class="pre">2*class_sep</span></code> and assigns an equal number of clusters to each
 class. It introduces interdependence between these features and adds
 various types of further noise to the data.</p>
-<p>Prior to shuffling, <cite>X</cite> stacks a number of these primary “informative”
-features, “redundant” linear combinations of these, “repeated” duplicates
-of sampled features, and arbitrary noise for and remaining features.</p>
+<p>Without shuffling, <code class="docutils literal"><span class="pre">X</span></code> horizontally stacks features in the following
+order: the primary <code class="docutils literal"><span class="pre">n_informative</span></code> features, followed by <code class="docutils literal"><span class="pre">n_redundant</span></code>
+linear combinations of the informative features, followed by <code class="docutils literal"><span class="pre">n_repeated</span></code>
+duplicates, drawn randomly with replacement from the informative and
+redundant features. The remaining features are filled with random noise.
+Thus, without shuffling, all useful features are contained in the columns
+<code class="docutils literal"><span class="pre">X[:,</span> <span class="pre">:n_informative</span> <span class="pre">+</span> <span class="pre">n_redundant</span> <span class="pre">+</span> <span class="pre">n_repeated]</span></code>.</p>
 <p>Read more in the <a class="reference internal" href="../../datasets/index.html#sample-generators"><span class="std std-ref">User Guide</span></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -227,15 +231,16 @@ of sampled features, and arbitrary noise for and remaining features.</p>
 <dd><p class="first last">The number of samples.</p>
 </dd>
 <dt>n_features <span class="classifier-delimiter">:</span> <span class="classifier">int, optional (default=20)</span></dt>
-<dd><p class="first last">The total number of features. These comprise <cite>n_informative</cite>
-informative features, <cite>n_redundant</cite> redundant features, <cite>n_repeated</cite>
-duplicated features and <cite>n_features-n_informative-n_redundant-
-n_repeated</cite> useless features drawn at random.</p>
+<dd><p class="first last">The total number of features. These comprise <code class="docutils literal"><span class="pre">n_informative</span></code>
+informative features, <code class="docutils literal"><span class="pre">n_redundant</span></code> redundant features,
+<code class="docutils literal"><span class="pre">n_repeated</span></code> duplicated features and
+<code class="docutils literal"><span class="pre">n_features-n_informative-n_redundant-n_repeated</span></code> useless features
+drawn at random.</p>
 </dd>
 <dt>n_informative <span class="classifier-delimiter">:</span> <span class="classifier">int, optional (default=2)</span></dt>
 <dd><p class="first last">The number of informative features. Each class is composed of a number
 of gaussian clusters each located around the vertices of a hypercube
-in a subspace of dimension <cite>n_informative</cite>. For each cluster,
+in a subspace of dimension <code class="docutils literal"><span class="pre">n_informative</span></code>. For each cluster,
 informative features are drawn independently from  N(0, 1) and then
 randomly linearly combined within each cluster in order to add
 covariance. The clusters are then placed on the vertices of the
@@ -257,10 +262,10 @@ and the redundant features.</p>
 </dd>
 <dt>weights <span class="classifier-delimiter">:</span> <span class="classifier">list of floats or None (default=None)</span></dt>
 <dd><p class="first last">The proportions of samples assigned to each class. If None, then
-classes are balanced. Note that if <cite>len(weights) == n_classes - 1</cite>,
+classes are balanced. Note that if <code class="docutils literal"><span class="pre">len(weights)</span> <span class="pre">==</span> <span class="pre">n_classes</span> <span class="pre">-</span> <span class="pre">1</span></code>,
 then the last class weight is automatically inferred.
-More than <cite>n_samples</cite> samples may be returned if the sum of <cite>weights</cite>
-exceeds 1.</p>
+More than <code class="docutils literal"><span class="pre">n_samples</span></code> samples may be returned if the sum of
+<code class="docutils literal"><span class="pre">weights</span></code> exceeds 1.</p>
 </dd>
 <dt>flip_y <span class="classifier-delimiter">:</span> <span class="classifier">float, optional (default=0.01)</span></dt>
 <dd><p class="first last">The fraction of samples whose class are randomly exchanged. Larger
@@ -291,7 +296,7 @@ happens after shifting.</p>
 <dd><p class="first last">If int, random_state is the seed used by the random number generator;
 If RandomState instance, random_state is the random number generator;
 If None, the random number generator is the RandomState instance used
-by <cite>np.random</cite>.</p>
+by <code class="docutils literal"><span class="pre">np.random</span></code>.</p>
 </dd>
 </dl>
 </td>
