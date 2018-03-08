@@ -457,16 +457,26 @@ predefined scorer names:</p>
 prediction that was obtained for that element when it was in the test set. Only
 cross-validation strategies that assign all elements to a test set exactly once
 can be used (otherwise, an exception is raised).</p>
-<p>These prediction can then be used to evaluate the classifier:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">cross_val_predict</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">predicted</span> <span class="o">=</span> <span class="n">cross_val_predict</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">predicted</span><span class="p">)</span> 
-<span class="go">0.973...</span>
-</pre></div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>Note on inappropriate usage of cross_val_predict</p>
+<p class="last">The result of <a class="reference internal" href="generated/sklearn.model_selection.cross_val_predict.html#sklearn.model_selection.cross_val_predict" title="sklearn.model_selection.cross_val_predict"><code class="xref py py-func docutils literal"><span class="pre">cross_val_predict</span></code></a> may be different from those
+obtained using <a class="reference internal" href="generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score" title="sklearn.model_selection.cross_val_score"><code class="xref py py-func docutils literal"><span class="pre">cross_val_score</span></code></a> as the elements are grouped in
+different ways. The function <a class="reference internal" href="generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score" title="sklearn.model_selection.cross_val_score"><code class="xref py py-func docutils literal"><span class="pre">cross_val_score</span></code></a> takes an average
+over cross-validation folds, whereas <a class="reference internal" href="generated/sklearn.model_selection.cross_val_predict.html#sklearn.model_selection.cross_val_predict" title="sklearn.model_selection.cross_val_predict"><code class="xref py py-func docutils literal"><span class="pre">cross_val_predict</span></code></a> simply
+returns the labels (or probabilities) from several distinct models
+undistinguished. Thus, <a class="reference internal" href="generated/sklearn.model_selection.cross_val_predict.html#sklearn.model_selection.cross_val_predict" title="sklearn.model_selection.cross_val_predict"><code class="xref py py-func docutils literal"><span class="pre">cross_val_predict</span></code></a> is not an appropriate
+measure of generalisation error.</p>
 </div>
-<p>Note that the result of this computation may be slightly different from those
-obtained using <a class="reference internal" href="generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score" title="sklearn.model_selection.cross_val_score"><code class="xref py py-func docutils literal"><span class="pre">cross_val_score</span></code></a> as the elements are grouped in different
-ways.</p>
+<dl class="docutils">
+<dt>The function <a class="reference internal" href="generated/sklearn.model_selection.cross_val_predict.html#sklearn.model_selection.cross_val_predict" title="sklearn.model_selection.cross_val_predict"><code class="xref py py-func docutils literal"><span class="pre">cross_val_predict</span></code></a> is appropriate for:</dt>
+<dd><ul class="first last simple">
+<li>Visualization of predictions obtained from different models.</li>
+<li>Model blending: When predictions of one supervised estimator are used to
+train another estimator in ensemble methods.</li>
+</ul>
+</dd>
+</dl>
 <p>The available cross validation iterators are introduced in the following
 section.</p>
 <div class="topic">
