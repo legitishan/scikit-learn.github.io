@@ -740,51 +740,7 @@ as a dict, not as scalars.</p>
 </div>
 <div class="section" id="imputation-of-missing-values">
 <span id="imputation"></span><h2>4.3.6. Imputation of missing values<a class="headerlink" href="#imputation-of-missing-values" title="Permalink to this headline">¶</a></h2>
-<p>For various reasons, many real world datasets contain missing values, often
-encoded as blanks, NaNs or other placeholders. Such datasets however are
-incompatible with scikit-learn estimators which assume that all values in an
-array are numerical, and that all have and hold meaning. A basic strategy to use
-incomplete datasets is to discard entire rows and/or columns containing missing
-values. However, this comes at the price of losing data which may be valuable
-(even though incomplete). A better strategy is to impute the missing values,
-i.e., to infer them from the known part of the data.</p>
-<p>The <a class="reference internal" href="generated/sklearn.preprocessing.Imputer.html#sklearn.preprocessing.Imputer" title="sklearn.preprocessing.Imputer"><code class="xref py py-class docutils literal"><span class="pre">Imputer</span></code></a> class provides basic strategies for imputing missing
-values, either using the mean, the median or the most frequent value of
-the row or column in which the missing values are located. This class
-also allows for different missing values encodings.</p>
-<p>The following snippet demonstrates how to replace missing values,
-encoded as <code class="docutils literal"><span class="pre">np.nan</span></code>, using the mean value of the columns (axis 0)
-that contain the missing values:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">Imputer</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">imp</span> <span class="o">=</span> <span class="n">Imputer</span><span class="p">(</span><span class="n">missing_values</span><span class="o">=</span><span class="s1">&#39;NaN&#39;</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">imp</span><span class="o">.</span><span class="n">fit</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
-<span class="go">Imputer(axis=0, copy=True, missing_values=&#39;NaN&#39;, strategy=&#39;mean&#39;, verbose=0)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">imp</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>                           
-<span class="go">[[ 4.          2.        ]</span>
-<span class="go"> [ 6.          3.666...]</span>
-<span class="go"> [ 7.          6.        ]]</span>
-</pre></div>
-</div>
-<p>The <a class="reference internal" href="generated/sklearn.preprocessing.Imputer.html#sklearn.preprocessing.Imputer" title="sklearn.preprocessing.Imputer"><code class="xref py py-class docutils literal"><span class="pre">Imputer</span></code></a> class also supports sparse matrices:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">scipy.sparse</span> <span class="k">as</span> <span class="nn">sp</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">csc_matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">imp</span> <span class="o">=</span> <span class="n">Imputer</span><span class="p">(</span><span class="n">missing_values</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">imp</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-<span class="go">Imputer(axis=0, copy=True, missing_values=0, strategy=&#39;mean&#39;, verbose=0)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X_test</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">csc_matrix</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">imp</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>                      
-<span class="go">[[ 4.          2.        ]</span>
-<span class="go"> [ 6.          3.666...]</span>
-<span class="go"> [ 7.          6.        ]]</span>
-</pre></div>
-</div>
-<p>Note that, here, missing values are encoded by 0 and are thus implicitly stored
-in the matrix. This format is thus suitable when there are many more missing
-values than observed values.</p>
-<p><a class="reference internal" href="generated/sklearn.preprocessing.Imputer.html#sklearn.preprocessing.Imputer" title="sklearn.preprocessing.Imputer"><code class="xref py py-class docutils literal"><span class="pre">Imputer</span></code></a> can be used in a Pipeline as a way to build a composite
-estimator that supports imputation. See <a class="reference internal" href="../auto_examples/plot_missing_values.html#sphx-glr-auto-examples-plot-missing-values-py"><span class="std std-ref">Imputing missing values before building an estimator</span></a>.</p>
+<p>Tools for imputing missing values are discussed at <a class="reference internal" href="impute.html#impute"><span class="std std-ref">Imputation of missing values</span></a>.</p>
 </div>
 <div class="section" id="generating-polynomial-features">
 <span id="polynomial-features"></span><h2>4.3.7. Generating polynomial features<a class="headerlink" href="#generating-polynomial-features" title="Permalink to this headline">¶</a></h2>
