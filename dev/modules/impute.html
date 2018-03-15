@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
   
-    <title>Imputation of missing values &#8212; scikit-learn 0.20.dev0 documentation</title>
+    <title>4.4. Imputation of missing values &#8212; scikit-learn 0.20.dev0 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../_static/css/bootstrap.min.css" media="screen" />
@@ -37,6 +37,8 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4.5. Unsupervised dimensionality reduction" href="unsupervised_reduction.html" />
+    <link rel="prev" title="4.3. Preprocessing data" href="preprocessing.html" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -127,11 +129,60 @@
 <div class="content-wrapper">
     <div class="sphinxsidebar">
     <div class="sphinxsidebarwrapper">
+        <div class="rel">
+    
+        <div class="rellink">
+        <a href="preprocessing.html"
+        accesskey="P">Previous
+        <br/>
+        <span class="smallrellink">
+        4.3. Preproce...
+        </span>
+            <span class="hiddenrellink">
+            4.3. Preprocessing data
+            </span>
+        </a>
+        </div>
+            <div class="spacer">
+            &nbsp;
+            </div>
+        <div class="rellink">
+        <a href="unsupervised_reduction.html"
+        accesskey="N">Next
+        <br/>
+        <span class="smallrellink">
+        4.5. Unsuperv...
+        </span>
+            <span class="hiddenrellink">
+            4.5. Unsupervised dimensionality reduction
+            </span>
+        </a>
+        </div>
+
+    <!-- Ad a link to the 'up' page -->
+        <div class="spacer">
+        &nbsp;
+        </div>
+        <div class="rellink">
+        <a href="../data_transforms.html">
+        Up
+        <br/>
+        <span class="smallrellink">
+        4. Dataset tr...
+        </span>
+            <span class="hiddenrellink">
+            4. Dataset transformations
+            </span>
+            
+        </a>
+        </div>
+    </div>
+    
       <p class="doc-version"><b>scikit-learn v0.20.dev0</b><br/>
       <a href="http://scikit-learn.org/stable/support.html#documentation-resources">Other versions</a></p>
     <p class="citing">Please <b><a href="../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
-<li><a class="reference internal" href="#">Imputation of missing values</a></li>
+<li><a class="reference internal" href="#">4.4. Imputation of missing values</a></li>
 </ul>
 
     </div>
@@ -150,7 +201,7 @@
           <div class="body" role="main">
             
   <div class="section" id="imputation-of-missing-values">
-<span id="impute"></span><h1>Imputation of missing values<a class="headerlink" href="#imputation-of-missing-values" title="Permalink to this headline">¶</a></h1>
+<span id="impute"></span><h1>4.4. Imputation of missing values<a class="headerlink" href="#imputation-of-missing-values" title="Permalink to this headline">¶</a></h1>
 <p>For various reasons, many real world datasets contain missing values, often
 encoded as blanks, NaNs or other placeholders. Such datasets however are
 incompatible with scikit-learn estimators which assume that all values in an
@@ -159,7 +210,7 @@ incomplete datasets is to discard entire rows and/or columns containing missing
 values. However, this comes at the price of losing data which may be valuable
 (even though incomplete). A better strategy is to impute the missing values,
 i.e., to infer them from the known part of the data.</p>
-<p>The <code class="xref py py-class docutils literal"><span class="pre">SimpleImputer</span></code> class provides basic strategies for imputing missing
+<p>The <a class="reference internal" href="generated/sklearn.impute.SimpleImputer.html#sklearn.impute.SimpleImputer" title="sklearn.impute.SimpleImputer"><code class="xref py py-class docutils literal"><span class="pre">SimpleImputer</span></code></a> class provides basic strategies for imputing missing
 values, either using the mean, the median or the most frequent value of
 the row or column in which the missing values are located. This class
 also allows for different missing values encodings.</p>
@@ -178,7 +229,7 @@ that contain the missing values:</p>
 <span class="go"> [ 7.          6.        ]]</span>
 </pre></div>
 </div>
-<p>The <code class="xref py py-class docutils literal"><span class="pre">SimpleImputer</span></code> class also supports sparse matrices:</p>
+<p>The <a class="reference internal" href="generated/sklearn.impute.SimpleImputer.html#sklearn.impute.SimpleImputer" title="sklearn.impute.SimpleImputer"><code class="xref py py-class docutils literal"><span class="pre">SimpleImputer</span></code></a> class also supports sparse matrices:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">scipy.sparse</span> <span class="k">as</span> <span class="nn">sp</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">csc_matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">imp</span> <span class="o">=</span> <span class="n">SimpleImputer</span><span class="p">(</span><span class="n">missing_values</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -194,7 +245,7 @@ that contain the missing values:</p>
 <p>Note that, here, missing values are encoded by 0 and are thus implicitly stored
 in the matrix. This format is thus suitable when there are many more missing
 values than observed values.</p>
-<p><code class="xref py py-class docutils literal"><span class="pre">SimpleImputer</span></code> can be used in a Pipeline as a way to build a composite
+<p><a class="reference internal" href="generated/sklearn.impute.SimpleImputer.html#sklearn.impute.SimpleImputer" title="sklearn.impute.SimpleImputer"><code class="xref py py-class docutils literal"><span class="pre">SimpleImputer</span></code></a> can be used in a Pipeline as a way to build a composite
 estimator that supports imputation. See <a class="reference internal" href="../auto_examples/plot_missing_values.html#sphx-glr-auto-examples-plot-missing-values-py"><span class="std std-ref">Imputing missing values before building an estimator</span></a>.</p>
 </div>
 
@@ -210,8 +261,16 @@ estimator that supports imputation. See <a class="reference internal" href="../a
         &copy; 2007 - 2018, scikit-learn developers (BSD License).
       <a href="../_sources/modules/impute.rst.txt" rel="nofollow">Show this page source</a>
     </div>
-     <div class="rel rellarge">
+     <div class="rel">
     
+    <div class="buttonPrevious">
+      <a href="preprocessing.html">Previous
+      </a>
+    </div>
+    <div class="buttonNext">
+      <a href="unsupervised_reduction.html">Next
+      </a>
+    </div>
     
      </div>
 
