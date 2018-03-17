@@ -183,9 +183,8 @@
     <p class="citing">Please <b><a href="../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
 <li><a class="reference internal" href="#">4.9. Transforming the prediction target (<code class="docutils literal"><span class="pre">y</span></code>)</a><ul>
-<li><a class="reference internal" href="#transforming-target-in-regression">4.9.1. Transforming target in regression</a></li>
-<li><a class="reference internal" href="#label-binarization">4.9.2. Label binarization</a></li>
-<li><a class="reference internal" href="#label-encoding">4.9.3. Label encoding</a></li>
+<li><a class="reference internal" href="#label-binarization">4.9.1. Label binarization</a></li>
+<li><a class="reference internal" href="#label-encoding">4.9.2. Label encoding</a></li>
 </ul>
 </li>
 </ul>
@@ -207,78 +206,12 @@
             
   <div class="section" id="transforming-the-prediction-target-y">
 <span id="preprocessing-targets"></span><h1>4.9. Transforming the prediction target (<code class="docutils literal"><span class="pre">y</span></code>)<a class="headerlink" href="#transforming-the-prediction-target-y" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="transforming-target-in-regression">
-<h2>4.9.1. Transforming target in regression<a class="headerlink" href="#transforming-target-in-regression" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference internal" href="generated/sklearn.preprocessing.TransformedTargetRegressor.html#sklearn.preprocessing.TransformedTargetRegressor" title="sklearn.preprocessing.TransformedTargetRegressor"><code class="xref py py-class docutils literal"><span class="pre">TransformedTargetRegressor</span></code></a> transforms the targets <code class="docutils literal"><span class="pre">y</span></code> before fitting a
-regression model. The predictions are mapped back to the original space via an
-inverse transform. It takes as an argument the regressor that will be used for
-prediction, and the transformer that will be applied to the target variable:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">load_boston</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="p">(</span><span class="n">TransformedTargetRegressor</span><span class="p">,</span>
-<span class="gp">... </span>                                   <span class="n">QuantileTransformer</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LinearRegression</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">boston</span> <span class="o">=</span> <span class="n">load_boston</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">boston</span><span class="o">.</span><span class="n">data</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">boston</span><span class="o">.</span><span class="n">target</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">transformer</span> <span class="o">=</span> <span class="n">QuantileTransformer</span><span class="p">(</span><span class="n">output_distribution</span><span class="o">=</span><span class="s1">&#39;normal&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">regressor</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">regr</span> <span class="o">=</span> <span class="n">TransformedTargetRegressor</span><span class="p">(</span><span class="n">regressor</span><span class="o">=</span><span class="n">regressor</span><span class="p">,</span>
-<span class="gp">... </span>                                  <span class="n">transformer</span><span class="o">=</span><span class="n">transformer</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">regr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span> 
-<span class="go">TransformedTargetRegressor(...)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;R2 score: </span><span class="si">{0:.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">regr</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
-<span class="go">R2 score: 0.67</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">raw_target_regr</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;R2 score: </span><span class="si">{0:.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">raw_target_regr</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
-<span class="go">R2 score: 0.64</span>
-</pre></div>
-</div>
-<p>For simple transformations, instead of a Transformer object, a pair of
-functions can be passed, defining the transformation and its inverse mapping:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">inverse_func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Subsequently, the object is created as:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">regr</span> <span class="o">=</span> <span class="n">TransformedTargetRegressor</span><span class="p">(</span><span class="n">regressor</span><span class="o">=</span><span class="n">regressor</span><span class="p">,</span>
-<span class="gp">... </span>                                  <span class="n">func</span><span class="o">=</span><span class="n">func</span><span class="p">,</span>
-<span class="gp">... </span>                                  <span class="n">inverse_func</span><span class="o">=</span><span class="n">inverse_func</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">regr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span> 
-<span class="go">TransformedTargetRegressor(...)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;R2 score: </span><span class="si">{0:.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">regr</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
-<span class="go">R2 score: 0.65</span>
-</pre></div>
-</div>
-<p>By default, the provided functions are checked at each fit to be the inverse of
-each other. However, it is possible to bypass this checking by setting
-<code class="docutils literal"><span class="pre">check_inverse</span></code> to <code class="docutils literal"><span class="pre">False</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">inverse_func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="k">return</span> <span class="n">x</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">regr</span> <span class="o">=</span> <span class="n">TransformedTargetRegressor</span><span class="p">(</span><span class="n">regressor</span><span class="o">=</span><span class="n">regressor</span><span class="p">,</span>
-<span class="gp">... </span>                                  <span class="n">func</span><span class="o">=</span><span class="n">func</span><span class="p">,</span>
-<span class="gp">... </span>                                  <span class="n">inverse_func</span><span class="o">=</span><span class="n">inverse_func</span><span class="p">,</span>
-<span class="gp">... </span>                                  <span class="n">check_inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">regr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span> 
-<span class="go">TransformedTargetRegressor(...)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;R2 score: </span><span class="si">{0:.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">regr</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
-<span class="go">R2 score: -4.50</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The transformation can be triggered by setting either <code class="docutils literal"><span class="pre">transformer</span></code> or the
-pair of functions <code class="docutils literal"><span class="pre">func</span></code> and <code class="docutils literal"><span class="pre">inverse_func</span></code>. However, setting both
-options will raise an error.</p>
-</div>
-</div>
+<p>These are transformers that are not intended to be used on features, only on
+supervised learning targets. See also <a class="reference internal" href="compose.html#transformed-target-regressor"><span class="std std-ref">Transforming target in regression</span></a> if
+you want to transform the prediction target for learning, but evaluate the
+model in the original (untransformed) space.</p>
 <div class="section" id="label-binarization">
-<h2>4.9.2. Label binarization<a class="headerlink" href="#label-binarization" title="Permalink to this headline">¶</a></h2>
+<h2>4.9.1. Label binarization<a class="headerlink" href="#label-binarization" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference internal" href="generated/sklearn.preprocessing.LabelBinarizer.html#sklearn.preprocessing.LabelBinarizer" title="sklearn.preprocessing.LabelBinarizer"><code class="xref py py-class docutils literal"><span class="pre">LabelBinarizer</span></code></a> is a utility class to help create a label indicator
 matrix from a list of multi-class labels:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">preprocessing</span>
@@ -303,7 +236,7 @@ matrix from a list of multi-class labels:</p>
 </div>
 </div>
 <div class="section" id="label-encoding">
-<h2>4.9.3. Label encoding<a class="headerlink" href="#label-encoding" title="Permalink to this headline">¶</a></h2>
+<h2>4.9.2. Label encoding<a class="headerlink" href="#label-encoding" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference internal" href="generated/sklearn.preprocessing.LabelEncoder.html#sklearn.preprocessing.LabelEncoder" title="sklearn.preprocessing.LabelEncoder"><code class="xref py py-class docutils literal"><span class="pre">LabelEncoder</span></code></a> is a utility class to help normalize labels such that
 they contain only values between 0 and n_classes-1. This is sometimes useful
 for writing efficient Cython routines. <a class="reference internal" href="generated/sklearn.preprocessing.LabelEncoder.html#sklearn.preprocessing.LabelEncoder" title="sklearn.preprocessing.LabelEncoder"><code class="xref py py-class docutils literal"><span class="pre">LabelEncoder</span></code></a> can be used as
