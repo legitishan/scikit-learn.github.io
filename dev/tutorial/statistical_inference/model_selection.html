@@ -222,7 +222,7 @@ better</strong>.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y_digits</span> <span class="o">=</span> <span class="n">digits</span><span class="o">.</span><span class="n">target</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">svc</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">svc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_digits</span><span class="p">[:</span><span class="o">-</span><span class="mi">100</span><span class="p">],</span> <span class="n">y_digits</span><span class="p">[:</span><span class="o">-</span><span class="mi">100</span><span class="p">])</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_digits</span><span class="p">[</span><span class="o">-</span><span class="mi">100</span><span class="p">:],</span> <span class="n">y_digits</span><span class="p">[</span><span class="o">-</span><span class="mi">100</span><span class="p">:])</span>
-<span class="go">0.97999999999999998</span>
+<span class="go">0.98</span>
 </pre></div>
 </div>
 <p>To get a better measure of prediction accuracy (which we can use as a
@@ -241,8 +241,8 @@ data in <em>folds</em> that we use for training and testing:</p>
 <span class="gp">... </span>    <span class="n">y_test</span>  <span class="o">=</span> <span class="n">y_train</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">y_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">svc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
-<span class="go">[0.93489148580968284, 0.95659432387312182, 0.93989983305509184]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>  
+<span class="go">[0.934..., 0.956..., 0.939...]</span>
 </pre></div>
 </div>
 <p>This is called a <a class="reference internal" href="../../modules/generated/sklearn.model_selection.KFold.html#sklearn.model_selection.KFold" title="sklearn.model_selection.KFold"><code class="xref py py-class docutils literal"><span class="pre">KFold</span></code></a> cross-validation.</p>
@@ -267,8 +267,8 @@ of the chosen cross-validation strategy.</p>
 </div>
 <p>The cross-validation can then be performed easily:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">svc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_digits</span><span class="p">[</span><span class="n">train</span><span class="p">],</span> <span class="n">y_digits</span><span class="p">[</span><span class="n">train</span><span class="p">])</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_digits</span><span class="p">[</span><span class="n">test</span><span class="p">],</span> <span class="n">y_digits</span><span class="p">[</span><span class="n">test</span><span class="p">])</span>
-<span class="gp">... </span>         <span class="k">for</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="ow">in</span> <span class="n">k_fold</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X_digits</span><span class="p">)]</span>
-<span class="go">[0.93489148580968284, 0.95659432387312182, 0.93989983305509184]</span>
+<span class="gp">... </span>         <span class="k">for</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="ow">in</span> <span class="n">k_fold</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X_digits</span><span class="p">)]</span>  
+<span class="go">[0.934..., 0.956..., 0.939...]</span>
 </pre></div>
 </div>
 <p>The cross-validation score can be directly calculated using the
@@ -280,7 +280,7 @@ computes the scores based on the testing set for each iteration of cross-validat
 <p>Refer the <a class="reference internal" href="../../modules/metrics.html#metrics"><span class="std std-ref">metrics module</span></a> to learn more on the available scoring
 methods.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cross_val_score</span><span class="p">(</span><span class="n">svc</span><span class="p">,</span> <span class="n">X_digits</span><span class="p">,</span> <span class="n">y_digits</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">k_fold</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-<span class="go">array([ 0.93489149,  0.95659432,  0.93989983])</span>
+<span class="go">array([0.93489149, 0.95659432, 0.93989983])</span>
 </pre></div>
 </div>
 <p><cite>n_jobs=-1</cite> means that the computation will be dispatched on all the CPUs
@@ -290,7 +290,7 @@ scoring method.</p>
 <blockquote>
 <div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cross_val_score</span><span class="p">(</span><span class="n">svc</span><span class="p">,</span> <span class="n">X_digits</span><span class="p">,</span> <span class="n">y_digits</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">k_fold</span><span class="p">,</span>
 <span class="gp">... </span>                <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;precision_macro&#39;</span><span class="p">)</span>
-<span class="go">array([ 0.93969761,  0.95911415,  0.94041254])</span>
+<span class="go">array([0.93969761, 0.95911415, 0.94041254])</span>
 </pre></div>
 </div>
 <p><strong>Cross-validation generators</strong></p>
@@ -413,7 +413,7 @@ a stratified 3-fold.</p>
 <p class="topic-title first">Nested cross-validation</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cross_val_score</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">X_digits</span><span class="p">,</span> <span class="n">y_digits</span><span class="p">)</span>
 <span class="gp">... </span>                                              
-<span class="go">array([ 0.938...,  0.963...,  0.944...])</span>
+<span class="go">array([0.938..., 0.963..., 0.944...])</span>
 </pre></div>
 </div>
 <p>Two cross-validation loops are performed in parallel: one by the

@@ -262,9 +262,9 @@ is a traditional numerical feature:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">vec</span> <span class="o">=</span> <span class="n">DictVectorizer</span><span class="p">()</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">vec</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">measurements</span><span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
-<span class="go">array([[  1.,   0.,   0.,  33.],</span>
-<span class="go">       [  0.,   1.,   0.,  12.],</span>
-<span class="go">       [  0.,   0.,   1.,  18.]])</span>
+<span class="go">array([[ 1.,  0.,  0., 33.],</span>
+<span class="go">       [ 0.,  1.,  0., 12.],</span>
+<span class="go">       [ 0.,  0.,  1., 18.]])</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">vec</span><span class="o">.</span><span class="n">get_feature_names</span><span class="p">()</span>
 <span class="go">[&#39;city=Dubai&#39;, &#39;city=London&#39;, &#39;city=San Francisco&#39;, &#39;temperature&#39;]</span>
@@ -301,7 +301,7 @@ suitable for feeding into a classifier (maybe after being piped into a
 <span class="go">&lt;1x6 sparse matrix of type &#39;&lt;... &#39;numpy.float64&#39;&gt;&#39;</span>
 <span class="go">    with 6 stored elements in Compressed Sparse ... format&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pos_vectorized</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
-<span class="go">array([[ 1.,  1.,  1.,  1.,  1.,  1.]])</span>
+<span class="go">array([[1., 1., 1., 1., 1., 1.]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">vec</span><span class="o">.</span><span class="n">get_feature_names</span><span class="p">()</span>
 <span class="go">[&#39;pos+1=PP&#39;, &#39;pos-1=NN&#39;, &#39;pos-2=DT&#39;, &#39;word+1=on&#39;, &#39;word-1=cat&#39;, &#39;word-2=the&#39;]</span>
 </pre></div>
@@ -621,12 +621,12 @@ content of the documents:</p>
 <span class="go">    with 9 stored elements in Compressed Sparse ... format&gt;</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tfidf</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>                        
-<span class="go">array([[ 0.81940995,  0.        ,  0.57320793],</span>
-<span class="go">       [ 1.        ,  0.        ,  0.        ],</span>
-<span class="go">       [ 1.        ,  0.        ,  0.        ],</span>
-<span class="go">       [ 1.        ,  0.        ,  0.        ],</span>
-<span class="go">       [ 0.47330339,  0.88089948,  0.        ],</span>
-<span class="go">       [ 0.58149261,  0.        ,  0.81355169]])</span>
+<span class="go">array([[0.81940995, 0.        , 0.57320793],</span>
+<span class="go">       [1.        , 0.        , 0.        ],</span>
+<span class="go">       [1.        , 0.        , 0.        ],</span>
+<span class="go">       [1.        , 0.        , 0.        ],</span>
+<span class="go">       [0.47330339, 0.88089948, 0.        ],</span>
+<span class="go">       [0.58149261, 0.        , 0.81355169]])</span>
 </pre></div>
 </div>
 <p>Each row is normalized to have unit Euclidean norm:</p>
@@ -661,19 +661,19 @@ collection exactly once, which prevents zero divisions:</p>
 = [0.8515, 0, 0.5243]"/>:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transformer</span> <span class="o">=</span> <span class="n">TfidfTransformer</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">transformer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
-<span class="go">array([[ 0.85151335,  0.        ,  0.52433293],</span>
-<span class="go">       [ 1.        ,  0.        ,  0.        ],</span>
-<span class="go">       [ 1.        ,  0.        ,  0.        ],</span>
-<span class="go">       [ 1.        ,  0.        ,  0.        ],</span>
-<span class="go">       [ 0.55422893,  0.83236428,  0.        ],</span>
-<span class="go">       [ 0.63035731,  0.        ,  0.77630514]])</span>
+<span class="go">array([[0.85151335, 0.        , 0.52433293],</span>
+<span class="go">       [1.        , 0.        , 0.        ],</span>
+<span class="go">       [1.        , 0.        , 0.        ],</span>
+<span class="go">       [1.        , 0.        , 0.        ],</span>
+<span class="go">       [0.55422893, 0.83236428, 0.        ],</span>
+<span class="go">       [0.63035731, 0.        , 0.77630514]])</span>
 </pre></div>
 </div>
 <p>The weights of each
 feature computed by the <code class="docutils literal"><span class="pre">fit</span></code> method call are stored in a model
 attribute:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transformer</span><span class="o">.</span><span class="n">idf_</span>                       
-<span class="go">array([ 1. ...,  2.25...,  1.84...])</span>
+<span class="go">array([1. ..., 2.25..., 1.84...])</span>
 </pre></div>
 </div>
 <p>As tf–idf is very often used for text features, there is also another
