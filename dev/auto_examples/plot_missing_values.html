@@ -38,8 +38,8 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Face completion with a multi-output estimators" href="plot_multioutput_face_completion.html" />
-    <link rel="prev" title="Isotonic Regression" href="plot_isotonic_regression.html" />
+    <link rel="next" title="Comparison of kernel ridge regression and SVR" href="plot_kernel_ridge_regression.html" />
+    <link rel="prev" title="The Johnson-Lindenstrauss bound for embedding with random projections" href="plot_johnson_lindenstrauss_bound.html" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -133,14 +133,14 @@
         <div class="rel">
     
         <div class="rellink">
-        <a href="plot_isotonic_regression.html"
+        <a href="plot_johnson_lindenstrauss_bound.html"
         accesskey="P">Previous
         <br/>
         <span class="smallrellink">
-        Isotonic Regression
+        The Johnson-L...
         </span>
             <span class="hiddenrellink">
-            Isotonic Regression
+            The Johnson-Lindenstrauss bound for embedding with random projections
             </span>
         </a>
         </div>
@@ -148,14 +148,14 @@
             &nbsp;
             </div>
         <div class="rellink">
-        <a href="plot_multioutput_face_completion.html"
+        <a href="plot_kernel_ridge_regression.html"
         accesskey="N">Next
         <br/>
         <span class="smallrellink">
-        Face completi...
+        Comparison of...
         </span>
             <span class="hiddenrellink">
-            Face completion with a multi-output estimators
+            Comparison of kernel ridge regression and SVR
             </span>
         </a>
         </div>
@@ -203,81 +203,129 @@
             
   <div class="section" id="imputing-missing-values-before-building-an-estimator">
 <span id="sphx-glr-auto-examples-plot-missing-values-py"></span><h1>Imputing missing values before building an estimator<a class="headerlink" href="#imputing-missing-values-before-building-an-estimator" title="Permalink to this headline">¶</a></h1>
-<p>This example shows that imputing the missing values can give better
-results than discarding the samples containing any missing value.
-Imputing does not always improve the predictions, so please check via
-cross-validation.  Sometimes dropping rows or using marker values is
-more effective.</p>
 <p>Missing values can be replaced by the mean, the median or the most frequent
-value using the <code class="docutils literal"><span class="pre">strategy</span></code> hyper-parameter.
+value using the basic <code class="docutils literal"><span class="pre">SimpleImputer</span></code>.
 The median is a more robust estimator for data with high magnitude variables
 which could dominate results (otherwise known as a ‘long tail’).</p>
-<p>Script output:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Score</span> <span class="k">with</span> <span class="n">the</span> <span class="n">entire</span> <span class="n">dataset</span> <span class="o">=</span> <span class="mf">0.56</span>
-<span class="n">Score</span> <span class="n">without</span> <span class="n">the</span> <span class="n">samples</span> <span class="n">containing</span> <span class="n">missing</span> <span class="n">values</span> <span class="o">=</span> <span class="mf">0.48</span>
-<span class="n">Score</span> <span class="n">after</span> <span class="n">imputation</span> <span class="n">of</span> <span class="n">the</span> <span class="n">missing</span> <span class="n">values</span> <span class="o">=</span> <span class="mf">0.55</span>
-</pre></div>
-</div>
-<p>In this case, imputing helps the classifier get close to the original score.</p>
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="n">Score</span> <span class="k">with</span> <span class="n">the</span> <span class="n">entire</span> <span class="n">dataset</span> <span class="o">=</span> <span class="mf">0.56</span>
-<span class="n">Score</span> <span class="n">without</span> <span class="n">the</span> <span class="n">samples</span> <span class="n">containing</span> <span class="n">missing</span> <span class="n">values</span> <span class="o">=</span> <span class="mf">0.48</span>
-<span class="n">Score</span> <span class="n">after</span> <span class="n">imputation</span> <span class="n">of</span> <span class="n">the</span> <span class="n">missing</span> <span class="n">values</span> <span class="o">=</span> <span class="mf">0.57</span>
-</pre></div>
-</div>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
+<p>Another option is the MICE imputer. This uses round-robin linear regression,
+treating every variable as an output in turn. The version implemented assumes
+Gaussian (output) variables. If your features are obviously non-Normal,
+consider transforming them to look more Normal so as to improve performance.</p>
+<img alt="../_images/sphx_glr_plot_missing_values_001.png" class="align-center" src="../_images/sphx_glr_plot_missing_values_001.png" />
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <a href="../modules/generated/sklearn.datasets.load_diabetes.html#sklearn.datasets.load_diabetes" title="View documentation for sklearn.datasets.load_diabetes"><span class="n">load_diabetes</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <a href="../modules/generated/sklearn.datasets.load_boston.html#sklearn.datasets.load_boston" title="View documentation for sklearn.datasets.load_boston"><span class="n">load_boston</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <a href="../modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor" title="View documentation for sklearn.ensemble.RandomForestRegressor"><span class="n">RandomForestRegressor</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <a href="../modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="View documentation for sklearn.pipeline.Pipeline"><span class="n">Pipeline</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.impute</span> <span class="kn">import</span> <a href="../modules/generated/sklearn.impute.SimpleImputer.html#sklearn.impute.SimpleImputer" title="View documentation for sklearn.impute.SimpleImputer"><span class="n">SimpleImputer</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.impute</span> <span class="kn">import</span> <a href="../modules/generated/sklearn.impute.SimpleImputer.html#sklearn.impute.SimpleImputer" title="View documentation for sklearn.impute.SimpleImputer"><span class="n">SimpleImputer</span></a><span class="p">,</span> <a href="../modules/generated/sklearn.impute.MICEImputer.html#sklearn.impute.MICEImputer" title="View documentation for sklearn.impute.MICEImputer"><span class="n">MICEImputer</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <a href="../modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score" title="View documentation for sklearn.model_selection.cross_val_score"><span class="n">cross_val_score</span></a>
 
 <span class="n">rng</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.RandomState.html#numpy.random.RandomState" title="View documentation for numpy.random.RandomState"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span></a><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
-<span class="n">dataset</span> <span class="o">=</span> <a href="../modules/generated/sklearn.datasets.load_boston.html#sklearn.datasets.load_boston" title="View documentation for sklearn.datasets.load_boston"><span class="n">load_boston</span></a><span class="p">()</span>
-<span class="n">X_full</span><span class="p">,</span> <span class="n">y_full</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">target</span>
-<span class="n">n_samples</span> <span class="o">=</span> <span class="n">X_full</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">n_features</span> <span class="o">=</span> <span class="n">X_full</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
-<span class="c1"># Estimate the score on the entire dataset, with no missing values</span>
-<span class="n">estimator</span> <span class="o">=</span> <a href="../modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor" title="View documentation for sklearn.ensemble.RandomForestRegressor"><span class="n">RandomForestRegressor</span></a><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">score</span> <span class="o">=</span> <a href="../modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score" title="View documentation for sklearn.model_selection.cross_val_score"><span class="n">cross_val_score</span></a><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">X_full</span><span class="p">,</span> <span class="n">y_full</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Score with the entire dataset = </span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">score</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_results</span><span class="p">(</span><span class="n">dataset</span><span class="p">):</span>
+    <span class="n">X_full</span><span class="p">,</span> <span class="n">y_full</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">target</span>
+    <span class="n">n_samples</span> <span class="o">=</span> <span class="n">X_full</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">n_features</span> <span class="o">=</span> <span class="n">X_full</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
-<span class="c1"># Add missing values in 75% of the lines</span>
-<span class="n">missing_rate</span> <span class="o">=</span> <span class="mf">0.75</span>
-<span class="n">n_missing_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.floor.html#numpy.floor" title="View documentation for numpy.floor"><span class="n">np</span><span class="o">.</span><span class="n">floor</span></a><span class="p">(</span><span class="n">n_samples</span> <span class="o">*</span> <span class="n">missing_rate</span><span class="p">))</span>
-<span class="n">missing_samples</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.hstack.html#numpy.hstack" title="View documentation for numpy.hstack"><span class="n">np</span><span class="o">.</span><span class="n">hstack</span></a><span class="p">((</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.zeros.html#numpy.zeros" title="View documentation for numpy.zeros"><span class="n">np</span><span class="o">.</span><span class="n">zeros</span></a><span class="p">(</span><span class="n">n_samples</span> <span class="o">-</span> <span class="n">n_missing_samples</span><span class="p">,</span>
-                                      <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">bool</span><span class="p">),</span>
-                             <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ones.html#numpy.ones" title="View documentation for numpy.ones"><span class="n">np</span><span class="o">.</span><span class="n">ones</span></a><span class="p">(</span><span class="n">n_missing_samples</span><span class="p">,</span>
-                                     <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">bool</span><span class="p">)))</span>
-<span class="n">rng</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">missing_samples</span><span class="p">)</span>
-<span class="n">missing_features</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_features</span><span class="p">,</span> <span class="n">n_missing_samples</span><span class="p">)</span>
+    <span class="c1"># Estimate the score on the entire dataset, with no missing values</span>
+    <span class="n">estimator</span> <span class="o">=</span> <a href="../modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor" title="View documentation for sklearn.ensemble.RandomForestRegressor"><span class="n">RandomForestRegressor</span></a><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">full_scores</span> <span class="o">=</span> <a href="../modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score" title="View documentation for sklearn.model_selection.cross_val_score"><span class="n">cross_val_score</span></a><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">X_full</span><span class="p">,</span> <span class="n">y_full</span><span class="p">,</span>
+                                  <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;neg_mean_squared_error&#39;</span><span class="p">)</span>
 
-<span class="c1"># Estimate the score without the lines containing missing values</span>
-<span class="n">X_filtered</span> <span class="o">=</span> <span class="n">X_full</span><span class="p">[</span><span class="o">~</span><span class="n">missing_samples</span><span class="p">,</span> <span class="p">:]</span>
-<span class="n">y_filtered</span> <span class="o">=</span> <span class="n">y_full</span><span class="p">[</span><span class="o">~</span><span class="n">missing_samples</span><span class="p">]</span>
-<span class="n">estimator</span> <span class="o">=</span> <a href="../modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor" title="View documentation for sklearn.ensemble.RandomForestRegressor"><span class="n">RandomForestRegressor</span></a><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">score</span> <span class="o">=</span> <a href="../modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score" title="View documentation for sklearn.model_selection.cross_val_score"><span class="n">cross_val_score</span></a><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">X_filtered</span><span class="p">,</span> <span class="n">y_filtered</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Score without the samples containing missing values = </span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">score</span><span class="p">)</span>
+    <span class="c1"># Add missing values in 75% of the lines</span>
+    <span class="n">missing_rate</span> <span class="o">=</span> <span class="mf">0.75</span>
+    <span class="n">n_missing_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.floor.html#numpy.floor" title="View documentation for numpy.floor"><span class="n">np</span><span class="o">.</span><span class="n">floor</span></a><span class="p">(</span><span class="n">n_samples</span> <span class="o">*</span> <span class="n">missing_rate</span><span class="p">))</span>
+    <span class="n">missing_samples</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.hstack.html#numpy.hstack" title="View documentation for numpy.hstack"><span class="n">np</span><span class="o">.</span><span class="n">hstack</span></a><span class="p">((</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.zeros.html#numpy.zeros" title="View documentation for numpy.zeros"><span class="n">np</span><span class="o">.</span><span class="n">zeros</span></a><span class="p">(</span><span class="n">n_samples</span> <span class="o">-</span> <span class="n">n_missing_samples</span><span class="p">,</span>
+                                          <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">bool</span><span class="p">),</span>
+                                 <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ones.html#numpy.ones" title="View documentation for numpy.ones"><span class="n">np</span><span class="o">.</span><span class="n">ones</span></a><span class="p">(</span><span class="n">n_missing_samples</span><span class="p">,</span>
+                                         <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">bool</span><span class="p">)))</span>
+    <span class="n">rng</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">missing_samples</span><span class="p">)</span>
+    <span class="n">missing_features</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_features</span><span class="p">,</span> <span class="n">n_missing_samples</span><span class="p">)</span>
 
-<span class="c1"># Estimate the score after imputation of the missing values</span>
-<span class="n">X_missing</span> <span class="o">=</span> <span class="n">X_full</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">X_missing</span><span class="p">[</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.where.html#numpy.where" title="View documentation for numpy.where"><span class="n">np</span><span class="o">.</span><span class="n">where</span></a><span class="p">(</span><span class="n">missing_samples</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">missing_features</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">y_missing</span> <span class="o">=</span> <span class="n">y_full</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">estimator</span> <span class="o">=</span> <a href="../modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="View documentation for sklearn.pipeline.Pipeline"><span class="n">Pipeline</span></a><span class="p">([(</span><span class="s2">&quot;imputer&quot;</span><span class="p">,</span> <a href="../modules/generated/sklearn.impute.SimpleImputer.html#sklearn.impute.SimpleImputer" title="View documentation for sklearn.impute.SimpleImputer"><span class="n">SimpleImputer</span></a><span class="p">(</span><span class="n">missing_values</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                                                <span class="n">strategy</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">)),</span>
-                      <span class="p">(</span><span class="s2">&quot;forest&quot;</span><span class="p">,</span> <a href="../modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor" title="View documentation for sklearn.ensemble.RandomForestRegressor"><span class="n">RandomForestRegressor</span></a><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                                                       <span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">))])</span>
-<span class="n">score</span> <span class="o">=</span> <a href="../modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score" title="View documentation for sklearn.model_selection.cross_val_score"><span class="n">cross_val_score</span></a><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">X_missing</span><span class="p">,</span> <span class="n">y_missing</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Score after imputation of the missing values = </span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">score</span><span class="p">)</span>
+    <span class="c1"># Estimate the score after replacing missing values by 0</span>
+    <span class="n">X_missing</span> <span class="o">=</span> <span class="n">X_full</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">X_missing</span><span class="p">[</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.where.html#numpy.where" title="View documentation for numpy.where"><span class="n">np</span><span class="o">.</span><span class="n">where</span></a><span class="p">(</span><span class="n">missing_samples</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">missing_features</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">y_missing</span> <span class="o">=</span> <span class="n">y_full</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">estimator</span> <span class="o">=</span> <a href="../modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor" title="View documentation for sklearn.ensemble.RandomForestRegressor"><span class="n">RandomForestRegressor</span></a><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">zero_impute_scores</span> <span class="o">=</span> <a href="../modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score" title="View documentation for sklearn.model_selection.cross_val_score"><span class="n">cross_val_score</span></a><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">X_missing</span><span class="p">,</span> <span class="n">y_missing</span><span class="p">,</span>
+                                         <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;neg_mean_squared_error&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Estimate the score after imputation (mean strategy) of the missing values</span>
+    <span class="n">X_missing</span> <span class="o">=</span> <span class="n">X_full</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">X_missing</span><span class="p">[</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.where.html#numpy.where" title="View documentation for numpy.where"><span class="n">np</span><span class="o">.</span><span class="n">where</span></a><span class="p">(</span><span class="n">missing_samples</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">missing_features</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">y_missing</span> <span class="o">=</span> <span class="n">y_full</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">estimator</span> <span class="o">=</span> <a href="../modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="View documentation for sklearn.pipeline.Pipeline"><span class="n">Pipeline</span></a><span class="p">([(</span><span class="s2">&quot;imputer&quot;</span><span class="p">,</span> <a href="../modules/generated/sklearn.impute.SimpleImputer.html#sklearn.impute.SimpleImputer" title="View documentation for sklearn.impute.SimpleImputer"><span class="n">SimpleImputer</span></a><span class="p">(</span><span class="n">missing_values</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                                    <span class="n">strategy</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">)),</span>
+                          <span class="p">(</span><span class="s2">&quot;forest&quot;</span><span class="p">,</span> <a href="../modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor" title="View documentation for sklearn.ensemble.RandomForestRegressor"><span class="n">RandomForestRegressor</span></a><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                                           <span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">))])</span>
+    <span class="n">mean_impute_scores</span> <span class="o">=</span> <a href="../modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score" title="View documentation for sklearn.model_selection.cross_val_score"><span class="n">cross_val_score</span></a><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">X_missing</span><span class="p">,</span> <span class="n">y_missing</span><span class="p">,</span>
+                                         <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;neg_mean_squared_error&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Estimate the score after imputation (MICE strategy) of the missing values</span>
+    <span class="n">estimator</span> <span class="o">=</span> <a href="../modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="View documentation for sklearn.pipeline.Pipeline"><span class="n">Pipeline</span></a><span class="p">([(</span><span class="s2">&quot;imputer&quot;</span><span class="p">,</span> <a href="../modules/generated/sklearn.impute.MICEImputer.html#sklearn.impute.MICEImputer" title="View documentation for sklearn.impute.MICEImputer"><span class="n">MICEImputer</span></a><span class="p">(</span><span class="n">missing_values</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                                  <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
+                          <span class="p">(</span><span class="s2">&quot;forest&quot;</span><span class="p">,</span> <a href="../modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor" title="View documentation for sklearn.ensemble.RandomForestRegressor"><span class="n">RandomForestRegressor</span></a><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                                           <span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">))])</span>
+    <span class="n">mice_impute_scores</span> <span class="o">=</span> <a href="../modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score" title="View documentation for sklearn.model_selection.cross_val_score"><span class="n">cross_val_score</span></a><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">X_missing</span><span class="p">,</span> <span class="n">y_missing</span><span class="p">,</span>
+                                         <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;neg_mean_squared_error&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">((</span><span class="n">full_scores</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">full_scores</span><span class="o">.</span><span class="n">std</span><span class="p">()),</span>
+            <span class="p">(</span><span class="n">zero_impute_scores</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">zero_impute_scores</span><span class="o">.</span><span class="n">std</span><span class="p">()),</span>
+            <span class="p">(</span><span class="n">mean_impute_scores</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">mean_impute_scores</span><span class="o">.</span><span class="n">std</span><span class="p">()),</span>
+            <span class="p">(</span><span class="n">mice_impute_scores</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">mice_impute_scores</span><span class="o">.</span><span class="n">std</span><span class="p">()))</span>
+
+
+<span class="n">results_diabetes</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">get_results</span><span class="p">(</span><a href="../modules/generated/sklearn.datasets.load_diabetes.html#sklearn.datasets.load_diabetes" title="View documentation for sklearn.datasets.load_diabetes"><span class="n">load_diabetes</span></a><span class="p">()))</span>
+<span class="n">mses_diabetes</span> <span class="o">=</span> <span class="n">results_diabetes</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">stds_diabetes</span> <span class="o">=</span> <span class="n">results_diabetes</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+
+<span class="n">results_boston</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">get_results</span><span class="p">(</span><a href="../modules/generated/sklearn.datasets.load_boston.html#sklearn.datasets.load_boston" title="View documentation for sklearn.datasets.load_boston"><span class="n">load_boston</span></a><span class="p">()))</span>
+<span class="n">mses_boston</span> <span class="o">=</span> <span class="n">results_boston</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">stds_boston</span> <span class="o">=</span> <span class="n">results_boston</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+
+<span class="n">n_bars</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mses_diabetes</span><span class="p">)</span>
+<span class="n">xval</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="View documentation for numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="n">n_bars</span><span class="p">)</span>
+
+<span class="n">x_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Full data&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Zero imputation&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Mean Imputation&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;MICE Imputation&#39;</span><span class="p">]</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">]</span>
+
+<span class="c1"># plot diabetes results</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax1</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplot.html#matplotlib.pyplot.subplot" title="View documentation for matplotlib.pyplot.subplot"><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span></a><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">xval</span><span class="p">:</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">mses_diabetes</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">xerr</span><span class="o">=</span><span class="n">stds_diabetes</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
+             <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Feature Selection Techniques with Diabetes Data&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">mses_diabetes</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">,</span>
+             <span class="n">right</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">mses_diabetes</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.1</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">xval</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;MSE&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">x_labels</span><span class="p">)</span>
+
+<span class="c1"># plot boston results</span>
+<span class="n">ax2</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplot.html#matplotlib.pyplot.subplot" title="View documentation for matplotlib.pyplot.subplot"><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span></a><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">xval</span><span class="p">:</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">mses_boston</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">xerr</span><span class="o">=</span><span class="n">stds_boston</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
+             <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Feature Selection Techniques with Boston Data&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">xval</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;MSE&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="s1">&#39;&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_bars</span><span class="p">)</span>
+
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  1.552 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  34.712 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/plot_missing_values.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_missing_values.py</span></code></a></div>
@@ -302,11 +350,11 @@ which could dominate results (otherwise known as a ‘long tail’).</p>
      <div class="rel">
     
     <div class="buttonPrevious">
-      <a href="plot_isotonic_regression.html">Previous
+      <a href="plot_johnson_lindenstrauss_bound.html">Previous
       </a>
     </div>
     <div class="buttonNext">
-      <a href="plot_multioutput_face_completion.html">Next
+      <a href="plot_kernel_ridge_regression.html">Next
       </a>
     </div>
     

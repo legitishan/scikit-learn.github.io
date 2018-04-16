@@ -183,7 +183,11 @@
       <a href="http://scikit-learn.org/stable/support.html#documentation-resources">Other versions</a></p>
     <p class="citing">Please <b><a href="../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
-<li><a class="reference internal" href="#">4.4. Imputation of missing values</a></li>
+<li><a class="reference internal" href="#">4.4. Imputation of missing values</a><ul>
+<li><a class="reference internal" href="#univariate-feature-imputation">4.4.1. Univariate feature imputation</a></li>
+<li><a class="reference internal" href="#multivariate-feature-imputation">4.4.2. Multivariate feature imputation</a></li>
+</ul>
+</li>
 </ul>
 
     </div>
@@ -211,6 +215,8 @@ incomplete datasets is to discard entire rows and/or columns containing missing
 values. However, this comes at the price of losing data which may be valuable
 (even though incomplete). A better strategy is to impute the missing values,
 i.e., to infer them from the known part of the data.</p>
+<div class="section" id="univariate-feature-imputation">
+<h2>4.4.1. Univariate feature imputation<a class="headerlink" href="#univariate-feature-imputation" title="Permalink to this headline">¶</a></h2>
 <p>The <a class="reference internal" href="generated/sklearn.impute.SimpleImputer.html#sklearn.impute.SimpleImputer" title="sklearn.impute.SimpleImputer"><code class="xref py py-class docutils literal"><span class="pre">SimpleImputer</span></code></a> class provides basic strategies for imputing missing
 values, either using the mean, the median or the most frequent value of
 the row or column in which the missing values are located. This class
@@ -246,8 +252,37 @@ that contain the missing values:</p>
 <p>Note that, here, missing values are encoded by 0 and are thus implicitly stored
 in the matrix. This format is thus suitable when there are many more missing
 values than observed values.</p>
-<p><a class="reference internal" href="generated/sklearn.impute.SimpleImputer.html#sklearn.impute.SimpleImputer" title="sklearn.impute.SimpleImputer"><code class="xref py py-class docutils literal"><span class="pre">SimpleImputer</span></code></a> can be used in a Pipeline as a way to build a composite
-estimator that supports imputation. See <a class="reference internal" href="../auto_examples/plot_missing_values.html#sphx-glr-auto-examples-plot-missing-values-py"><span class="std std-ref">Imputing missing values before building an estimator</span></a>.</p>
+</div>
+<div class="section" id="multivariate-feature-imputation">
+<h2>4.4.2. Multivariate feature imputation<a class="headerlink" href="#multivariate-feature-imputation" title="Permalink to this headline">¶</a></h2>
+<p>A more sophisticated approach is to use the <a class="reference internal" href="generated/sklearn.impute.MICEImputer.html#sklearn.impute.MICEImputer" title="sklearn.impute.MICEImputer"><code class="xref py py-class docutils literal"><span class="pre">MICEImputer</span></code></a> class, which
+implements the Multivariate Imputation by Chained Equations technique. MICE
+models each feature with missing values as a function of other features, and
+uses that estimate for imputation. It does so in a round-robin fashion: at
+each step, a feature column is designated as output <cite>y</cite> and the other feature
+columns are treated as inputs <cite>X</cite>. A regressor is fit on <cite>(X, y)</cite> for known <cite>y</cite>.
+Then, the regressor is used to predict the unknown values of <cite>y</cite>. This is
+repeated for each feature, and then is done for a number of imputation rounds.
+Here is an example snippet:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.impute</span> <span class="k">import</span> <span class="n">MICEImputer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">imp</span> <span class="o">=</span> <span class="n">MICEImputer</span><span class="p">(</span><span class="n">n_imputations</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">imp</span><span class="o">.</span><span class="n">fit</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]])</span>
+<span class="go">MICEImputer(imputation_order=&#39;ascending&#39;, initial_strategy=&#39;mean&#39;,</span>
+<span class="go">      max_value=None, min_value=None, missing_values=&#39;NaN&#39;, n_burn_in=10,</span>
+<span class="go">      n_imputations=10, n_nearest_features=None, predictor=None,</span>
+<span class="go">      random_state=0, verbose=False)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_test</span> <span class="o">=</span> <span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">6</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">imp</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)))</span>
+<span class="go">[[ 1.  2.]</span>
+<span class="go"> [ 6.  4.]</span>
+<span class="go"> [13.  6.]]</span>
+</pre></div>
+</div>
+<p>Both <a class="reference internal" href="generated/sklearn.impute.SimpleImputer.html#sklearn.impute.SimpleImputer" title="sklearn.impute.SimpleImputer"><code class="xref py py-class docutils literal"><span class="pre">SimpleImputer</span></code></a> and <a class="reference internal" href="generated/sklearn.impute.MICEImputer.html#sklearn.impute.MICEImputer" title="sklearn.impute.MICEImputer"><code class="xref py py-class docutils literal"><span class="pre">MICEImputer</span></code></a> can be used in a Pipeline
+as a way to build a composite estimator that supports imputation.
+See <a class="reference internal" href="../auto_examples/plot_missing_values.html#sphx-glr-auto-examples-plot-missing-values-py"><span class="std std-ref">Imputing missing values before building an estimator</span></a>.</p>
+</div>
 </div>
 
 
