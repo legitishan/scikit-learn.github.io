@@ -34,6 +34,7 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="../_static/js/copybutton.js"></script>
     <script type="text/javascript" src="../_static/js/extra.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_SVG"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -432,11 +433,11 @@ useful in some specific case.</p>
 </div>
 <div class="section" id="centering-kernel-matrices">
 <span id="kernel-centering"></span><h3>4.3.1.4. Centering kernel matrices<a class="headerlink" href="#centering-kernel-matrices" title="Permalink to this headline">¶</a></h3>
-<p>If you have a kernel matrix of a kernel <img class="math" src="../_images/math/684381a21cd73ebbf43b63a087d3f7410ee99ce8.png" alt="K"/> that computes a dot product
-in a feature space defined by function <img class="math" src="../_images/math/4efb887d0d27f3caa83f8913c0426dc73021d3e0.png" alt="phi"/>,
+<p>If you have a kernel matrix of a kernel <span class="math">\(K\)</span> that computes a dot product
+in a feature space defined by function <span class="math">\(phi\)</span>,
 a <a class="reference internal" href="generated/sklearn.preprocessing.KernelCenterer.html#sklearn.preprocessing.KernelCenterer" title="sklearn.preprocessing.KernelCenterer"><code class="xref py py-class docutils literal"><span class="pre">KernelCenterer</span></code></a> can transform the kernel matrix
 so that it contains inner products in the feature space
-defined by <img class="math" src="../_images/math/4efb887d0d27f3caa83f8913c0426dc73021d3e0.png" alt="phi"/> followed by removal of the mean in that space.</p>
+defined by <span class="math">\(phi\)</span> followed by removal of the mean in that space.</p>
 </div>
 </div>
 <div class="section" id="non-linear-transformation">
@@ -490,13 +491,13 @@ possible in order to stabilize variance and minimize skewness.</p>
 <p><a class="reference internal" href="generated/sklearn.preprocessing.PowerTransformer.html#sklearn.preprocessing.PowerTransformer" title="sklearn.preprocessing.PowerTransformer"><code class="xref py py-class docutils literal"><span class="pre">PowerTransformer</span></code></a> currently provides one such power transformation,
 the Box-Cox transform. The Box-Cox transform is given by:</p>
 <div class="math">
-<p><img src="../_images/math/2f60310f124a843549a94bf4c0d1b91c10708046.png" alt="y_i^{(\lambda)} =
+\[\begin{split}y_i^{(\lambda)} =
 \begin{cases}
 \dfrac{y_i^\lambda - 1}{\lambda} &amp; \text{if } \lambda \neq 0, \\[8pt]
 \ln{(y_i)} &amp; \text{if } \lambda = 0,
-\end{cases}"/></p>
-</div><p>Box-Cox can only be applied to strictly positive data. The transformation is
-parameterized by <img class="math" src="../_images/math/76f1d8ace30435987c01a00ca53a71cba1f40e6c.png" alt="\lambda"/>, which is determined through maximum likelihood
+\end{cases}\end{split}\]</div>
+<p>Box-Cox can only be applied to strictly positive data. The transformation is
+parameterized by <span class="math">\(\lambda\)</span>, which is determined through maximum likelihood
 estimation. Here is an example of using Box-Cox to map samples drawn from a
 lognormal distribution to a normal distribution:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pt</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">PowerTransformer</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;box-cox&#39;</span><span class="p">,</span> <span class="n">standardize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -759,7 +760,7 @@ as a dict, not as scalars.</p>
 <span class="go">       [ 1.,  4.,  5., 16., 20., 25.]])</span>
 </pre></div>
 </div>
-<p>The features of X have been transformed from <img class="math" src="../_images/math/a3467971af74cf4d0d715c8993728c938a210a8d.png" alt="(X_1, X_2)"/> to <img class="math" src="../_images/math/c0f6053cc12189d4a29b94ef5f4ab95ff6d5d564.png" alt="(1, X_1, X_2, X_1^2, X_1X_2, X_2^2)"/>.</p>
+<p>The features of X have been transformed from <span class="math">\((X_1, X_2)\)</span> to <span class="math">\((1, X_1, X_2, X_1^2, X_1X_2, X_2^2)\)</span>.</p>
 <p>In some cases, only interaction terms among features are required, and it can be gotten with the setting <code class="docutils literal"><span class="pre">interaction_only=True</span></code>:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span>                                                 
@@ -773,7 +774,7 @@ as a dict, not as scalars.</p>
 <span class="go">       [  1.,   6.,   7.,   8.,  42.,  48.,  56., 336.]])</span>
 </pre></div>
 </div>
-<p>The features of X have been transformed from <img class="math" src="../_images/math/0c25c58cb40d41d9a34486a1e653a578865a172c.png" alt="(X_1, X_2, X_3)"/> to <img class="math" src="../_images/math/9d43c1bb5e85155c5244707ea22930734835c589.png" alt="(1, X_1, X_2, X_3, X_1X_2, X_1X_3, X_2X_3, X_1X_2X_3)"/>.</p>
+<p>The features of X have been transformed from <span class="math">\((X_1, X_2, X_3)\)</span> to <span class="math">\((1, X_1, X_2, X_3, X_1X_2, X_1X_3, X_2X_3, X_1X_2X_3)\)</span>.</p>
 <p>Note that polynomial features are used implicitly in <a class="reference external" href="https://en.wikipedia.org/wiki/Kernel_method">kernel methods</a> (e.g., <a class="reference internal" href="generated/sklearn.svm.SVC.html#sklearn.svm.SVC" title="sklearn.svm.SVC"><code class="xref py py-class docutils literal"><span class="pre">sklearn.svm.SVC</span></code></a>, <a class="reference internal" href="generated/sklearn.decomposition.KernelPCA.html#sklearn.decomposition.KernelPCA" title="sklearn.decomposition.KernelPCA"><code class="xref py py-class docutils literal"><span class="pre">sklearn.decomposition.KernelPCA</span></code></a>) when using polynomial <a class="reference internal" href="svm.html#svm-kernels"><span class="std std-ref">Kernel functions</span></a>.</p>
 <p>See <a class="reference internal" href="../auto_examples/linear_model/plot_polynomial_interpolation.html#sphx-glr-auto-examples-linear-model-plot-polynomial-interpolation-py"><span class="std std-ref">Polynomial interpolation</span></a> for Ridge regression using created polynomial features.</p>
 </div>

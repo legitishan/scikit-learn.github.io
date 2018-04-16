@@ -34,6 +34,7 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="../_static/js/copybutton.js"></script>
     <script type="text/javascript" src="../_static/js/extra.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_SVG"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -234,7 +235,7 @@
 <p>PCA is used to decompose a multivariate dataset in a set of successive
 orthogonal components that explain a maximum amount of the variance. In
 scikit-learn, <a class="reference internal" href="generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="sklearn.decomposition.PCA"><code class="xref py py-class docutils literal"><span class="pre">PCA</span></code></a> is implemented as a <em>transformer</em> object
-that learns <img class="math" src="../_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/> components in its <code class="docutils literal"><span class="pre">fit</span></code> method, and can be used on new
+that learns <span class="math">\(n\)</span> components in its <code class="docutils literal"><span class="pre">fit</span></code> method, and can be used on new
 data to project it on these components.</p>
 <p>The optional parameter <code class="docutils literal"><span class="pre">whiten=True</span></code> makes it possible to
 project the data onto the singular space while scaling each component
@@ -319,21 +320,21 @@ to actually perform the transform.</p>
 <p>For instance, the following shows 16 sample portraits (centered around
 0.0) from the Olivetti dataset. On the right hand side are the first 16
 singular vectors reshaped as portraits. Since we only require the top
-16 singular vectors of a dataset with size <img class="math" src="../_images/math/7c790b4bc24b1251b9968c990c77b543d958386e.png" alt="n_{samples} = 400"/>
-and <img class="math" src="../_images/math/c75475811b373526edf4afe866021d364748ed2a.png" alt="n_{features} = 64 \times 64 = 4096"/>, the computation time is
+16 singular vectors of a dataset with size <span class="math">\(n_{samples} = 400\)</span>
+and <span class="math">\(n_{features} = 64 \times 64 = 4096\)</span>, the computation time is
 less than 1s:</p>
 <p class="centered">
 <strong><a class="reference external" href="../auto_examples/decomposition/plot_faces_decomposition.html"><img alt="orig_img" src="../_images/sphx_glr_plot_faces_decomposition_0011.png" style="width: 360.0px; height: 270.59999999999997px;" /></a> <a class="reference external" href="../auto_examples/decomposition/plot_faces_decomposition.html"><img alt="pca_img" src="../_images/sphx_glr_plot_faces_decomposition_0021.png" style="width: 360.0px; height: 270.59999999999997px;" /></a></strong></p><p>Note: with the optional parameter <code class="docutils literal"><span class="pre">svd_solver='randomized'</span></code>, we also
 need to give <a class="reference internal" href="generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="sklearn.decomposition.PCA"><code class="xref py py-class docutils literal"><span class="pre">PCA</span></code></a> the size of the lower-dimensional space
 <code class="docutils literal"><span class="pre">n_components</span></code> as a mandatory input parameter.</p>
-<p>If we note <img class="math" src="../_images/math/b2311534bc9300f102e06457cc7f98120a6cc1c7.png" alt="n_{\max} = \max(n_{\mathrm{samples}}, n_{\mathrm{features}})"/> and
-<img class="math" src="../_images/math/fe25361f3e87e0176917ccda08d9f51fa96247d2.png" alt="n_{\min} = \min(n_{\mathrm{samples}}, n_{\mathrm{features}})"/>, the time complexity
-of the randomized <a class="reference internal" href="generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="sklearn.decomposition.PCA"><code class="xref py py-class docutils literal"><span class="pre">PCA</span></code></a> is <img class="math" src="../_images/math/0f2fc3350d8c8b67047364de60e33c941148628a.png" alt="O(n_{\max}^2 \cdot n_{\mathrm{components}})"/>
-instead of <img class="math" src="../_images/math/db652b900078b2c70ea28508a75b3ac0085a1ed9.png" alt="O(n_{\max}^2 \cdot n_{\min})"/> for the exact method
+<p>If we note <span class="math">\(n_{\max} = \max(n_{\mathrm{samples}}, n_{\mathrm{features}})\)</span> and
+<span class="math">\(n_{\min} = \min(n_{\mathrm{samples}}, n_{\mathrm{features}})\)</span>, the time complexity
+of the randomized <a class="reference internal" href="generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="sklearn.decomposition.PCA"><code class="xref py py-class docutils literal"><span class="pre">PCA</span></code></a> is <span class="math">\(O(n_{\max}^2 \cdot n_{\mathrm{components}})\)</span>
+instead of <span class="math">\(O(n_{\max}^2 \cdot n_{\min})\)</span> for the exact method
 implemented in <a class="reference internal" href="generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="sklearn.decomposition.PCA"><code class="xref py py-class docutils literal"><span class="pre">PCA</span></code></a>.</p>
 <p>The memory footprint of randomized <a class="reference internal" href="generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="sklearn.decomposition.PCA"><code class="xref py py-class docutils literal"><span class="pre">PCA</span></code></a> is also proportional to
-<img class="math" src="../_images/math/d683b04e0d560fca88ee6b50ad6eafc0a447d60e.png" alt="2 \cdot n_{\max} \cdot n_{\mathrm{components}}"/> instead of <img class="math" src="../_images/math/ae80db94c7dc77cade36aa7f2ec7e943a51c728c.png" alt="n_{\max}
-\cdot n_{\min}"/> for the exact method.</p>
+<span class="math">\(2 \cdot n_{\max} \cdot n_{\mathrm{components}}\)</span> instead of <span class="math">\(n_{\max}
+\cdot n_{\min}\)</span> for the exact method.</p>
 <p>Note: the implementation of <code class="docutils literal"><span class="pre">inverse_transform</span></code> in <a class="reference internal" href="generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="sklearn.decomposition.PCA"><code class="xref py py-class docutils literal"><span class="pre">PCA</span></code></a> with
 <code class="docutils literal"><span class="pre">svd_solver='randomized'</span></code> is not the exact inverse transform of
 <code class="docutils literal"><span class="pre">transform</span></code> even when <code class="docutils literal"><span class="pre">whiten=False</span></code> (default).</p>
@@ -392,7 +393,7 @@ to the differences between samples.</p>
 the Olivetti faces dataset.  It can be seen how the regularization term induces
 many zeros. Furthermore, the natural structure of the data causes the non-zero
 coefficients to be vertically adjacent. The model does not enforce this
-mathematically: each component is a vector <img class="math" src="../_images/math/23927a9bff1e327391ef879d44a26a7a15a71142.png" alt="h \in \mathbf{R}^{4096}"/>, and
+mathematically: each component is a vector <span class="math">\(h \in \mathbf{R}^{4096}\)</span>, and
 there is no notion of vertical adjacency except during the human-friendly
 visualization as 64x64 pixel images. The fact that the components shown below
 appear local is the effect of the inherent structure of the data, which makes
@@ -404,13 +405,13 @@ For more details on how to use Sparse PCA, see the Examples section, below.</p>
 <strong><a class="reference external" href="../auto_examples/decomposition/plot_faces_decomposition.html"><img alt="pca_img" src="../_images/sphx_glr_plot_faces_decomposition_0021.png" style="width: 360.0px; height: 270.59999999999997px;" /></a> <a class="reference external" href="../auto_examples/decomposition/plot_faces_decomposition.html"><img alt="spca_img" src="../_images/sphx_glr_plot_faces_decomposition_0051.png" style="width: 360.0px; height: 270.59999999999997px;" /></a></strong></p><p>Note that there are many different formulations for the Sparse PCA
 problem. The one implemented here is based on <a class="reference internal" href="#mrl09" id="id3">[Mrl09]</a> . The optimization
 problem solved is a PCA problem (dictionary learning) with an
-<img class="math" src="../_images/math/a301afaec3a8e4e639ad1d14140c7c5470a8eef2.png" alt="\ell_1"/> penalty on the components:</p>
+<span class="math">\(\ell_1\)</span> penalty on the components:</p>
 <div class="math">
-<p><img src="../_images/math/335af27459a81a353944c860fb01ae4f19f6a18c.png" alt="(U^*, V^*) = \underset{U, V}{\operatorname{arg\,min\,}} &amp; \frac{1}{2}
+\[\begin{split}(U^*, V^*) = \underset{U, V}{\operatorname{arg\,min\,}} &amp; \frac{1}{2}
              ||X-UV||_2^2+\alpha||V||_1 \\
              \text{subject to\,} &amp; ||U_k||_2 = 1 \text{ for all }
-             0 \leq k &lt; n_{components}"/></p>
-</div><p>The sparsity-inducing <img class="math" src="../_images/math/a301afaec3a8e4e639ad1d14140c7c5470a8eef2.png" alt="\ell_1"/> norm also prevents learning
+             0 \leq k &lt; n_{components}\end{split}\]</div>
+<p>The sparsity-inducing <span class="math">\(\ell_1\)</span> norm also prevents learning
 components from noise when few training samples are available. The degree
 of penalization (and thus sparsity) can be adjusted through the
 hyperparameter <code class="docutils literal"><span class="pre">alpha</span></code>. Small values lead to a gently regularized
@@ -450,8 +451,8 @@ R. Jenatton, G. Obozinski, F. Bach, 2009</td></tr>
 <div class="section" id="truncated-singular-value-decomposition-and-latent-semantic-analysis">
 <span id="lsa"></span><h2>2.5.2. Truncated singular value decomposition and latent semantic analysis<a class="headerlink" href="#truncated-singular-value-decomposition-and-latent-semantic-analysis" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference internal" href="generated/sklearn.decomposition.TruncatedSVD.html#sklearn.decomposition.TruncatedSVD" title="sklearn.decomposition.TruncatedSVD"><code class="xref py py-class docutils literal"><span class="pre">TruncatedSVD</span></code></a> implements a variant of singular value decomposition
-(SVD) that only computes the <img class="math" src="../_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f30438.png" alt="k"/> largest singular values,
-where <img class="math" src="../_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f30438.png" alt="k"/> is a user-specified parameter.</p>
+(SVD) that only computes the <span class="math">\(k\)</span> largest singular values,
+where <span class="math">\(k\)</span> is a user-specified parameter.</p>
 <p>When truncated SVD is applied to term-document matrices
 (as returned by <code class="docutils literal"><span class="pre">CountVectorizer</span></code> or <code class="docutils literal"><span class="pre">TfidfVectorizer</span></code>),
 this transformation is known as
@@ -468,29 +469,29 @@ and exhibit poor similarity under measures such as cosine similarity.</p>
 though strictly that refers to its use in persistent indexes
 for information retrieval purposes.</p>
 </div>
-<p>Mathematically, truncated SVD applied to training samples <img class="math" src="../_images/math/7a7bb470119808e2db2879fc2b2526f467b7a40b.png" alt="X"/>
-produces a low-rank approximation <img class="math" src="../_images/math/7a7bb470119808e2db2879fc2b2526f467b7a40b.png" alt="X"/>:</p>
+<p>Mathematically, truncated SVD applied to training samples <span class="math">\(X\)</span>
+produces a low-rank approximation <span class="math">\(X\)</span>:</p>
 <div class="math">
-<p><img src="../_images/math/971743681a20f3ebf86e325069d6777add13e94d.png" alt="X \approx X_k = U_k \Sigma_k V_k^\top"/></p>
-</div><p>After this operation, <img class="math" src="../_images/math/6ea603ff310adc3f2b5b4a4e149832b4020e6f95.png" alt="U_k \Sigma_k^\top"/>
-is the transformed training set with <img class="math" src="../_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f30438.png" alt="k"/> features
+\[X \approx X_k = U_k \Sigma_k V_k^\top\]</div>
+<p>After this operation, <span class="math">\(U_k \Sigma_k^\top\)</span>
+is the transformed training set with <span class="math">\(k\)</span> features
 (called <code class="docutils literal"><span class="pre">n_components</span></code> in the API).</p>
-<p>To also transform a test set <img class="math" src="../_images/math/7a7bb470119808e2db2879fc2b2526f467b7a40b.png" alt="X"/>, we multiply it with <img class="math" src="../_images/math/635157e4f7d2751399e64d631236f6e67a9742a6.png" alt="V_k"/>:</p>
+<p>To also transform a test set <span class="math">\(X\)</span>, we multiply it with <span class="math">\(V_k\)</span>:</p>
 <div class="math">
-<p><img src="../_images/math/412863914fb65558d712b7bf8c8d6a90985991c0.png" alt="X' = X V_k"/></p>
-</div><div class="admonition note">
+\[X' = X V_k\]</div>
+<div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Most treatments of LSA in the natural language processing (NLP)
 and information retrieval (IR) literature
-swap the axes of the matrix <img class="math" src="../_images/math/7a7bb470119808e2db2879fc2b2526f467b7a40b.png" alt="X"/> so that it has shape
+swap the axes of the matrix <span class="math">\(X\)</span> so that it has shape
 <code class="docutils literal"><span class="pre">n_features</span></code> × <code class="docutils literal"><span class="pre">n_samples</span></code>.
 We present LSA in a different way that matches the scikit-learn API better,
 but the singular values found are the same.</p>
 </div>
 <p><a class="reference internal" href="generated/sklearn.decomposition.TruncatedSVD.html#sklearn.decomposition.TruncatedSVD" title="sklearn.decomposition.TruncatedSVD"><code class="xref py py-class docutils literal"><span class="pre">TruncatedSVD</span></code></a> is very similar to <a class="reference internal" href="generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="sklearn.decomposition.PCA"><code class="xref py py-class docutils literal"><span class="pre">PCA</span></code></a>, but differs
-in that it works on sample matrices <img class="math" src="../_images/math/7a7bb470119808e2db2879fc2b2526f467b7a40b.png" alt="X"/> directly
+in that it works on sample matrices <span class="math">\(X\)</span> directly
 instead of their covariance matrices.
-When the columnwise (per-feature) means of <img class="math" src="../_images/math/7a7bb470119808e2db2879fc2b2526f467b7a40b.png" alt="X"/>
+When the columnwise (per-feature) means of <span class="math">\(X\)</span>
 are subtracted from the feature values,
 truncated SVD on the resulting matrix is equivalent to PCA.
 In practical terms, this means
@@ -577,11 +578,11 @@ inpainting and denoising, as well as for supervised recognition tasks.</p>
 the sparse code, as a solution to multiple Lasso problems, considering the
 dictionary fixed, and then updating the dictionary to best fit the sparse code.</p>
 <div class="math">
-<p><img src="../_images/math/dcfdd836e7c1065c97372f03d38ba7f218300803.png" alt="(U^*, V^*) = \underset{U, V}{\operatorname{arg\,min\,}} &amp; \frac{1}{2}
+\[\begin{split}(U^*, V^*) = \underset{U, V}{\operatorname{arg\,min\,}} &amp; \frac{1}{2}
              ||X-UV||_2^2+\alpha||U||_1 \\
              \text{subject to\,} &amp; ||V_k||_2 = 1 \text{ for all }
-             0 \leq k &lt; n_{\mathrm{atoms}}"/></p>
-</div><p class="centered">
+             0 \leq k &lt; n_{\mathrm{atoms}}\end{split}\]</div>
+<p class="centered">
 <strong><a class="reference external" href="../auto_examples/decomposition/plot_faces_decomposition.html"><img alt="pca_img2" src="../_images/sphx_glr_plot_faces_decomposition_0021.png" style="width: 360.0px; height: 270.59999999999997px;" /></a> <a class="reference external" href="../auto_examples/decomposition/plot_faces_decomposition.html"><img alt="dict_img2" src="../_images/sphx_glr_plot_faces_decomposition_0061.png" style="width: 360.0px; height: 270.59999999999997px;" /></a></strong></p><p>After using such a procedure to fit the dictionary, the transform is simply a
 sparse coding step that shares the same implementation with all dictionary
 learning objects (see <a class="reference internal" href="#sparsecoder"><span class="std std-ref">Sparse coding with a precomputed dictionary</span></a>).</p>
@@ -632,40 +633,40 @@ computationally efficient and implements on-line learning with a
 </div>
 <div class="section" id="factor-analysis">
 <span id="fa"></span><h2>2.5.4. Factor Analysis<a class="headerlink" href="#factor-analysis" title="Permalink to this headline">¶</a></h2>
-<p>In unsupervised learning we only have a dataset <img class="math" src="../_images/math/9558e3a20b5c0a5c3ca4abf4d7b1d09a8d82bf6e.png" alt="X = \{x_1, x_2, \dots, x_n
-\}"/>. How can this dataset be described mathematically? A very simple
-<cite>continuous latent variable</cite> model for <img class="math" src="../_images/math/7a7bb470119808e2db2879fc2b2526f467b7a40b.png" alt="X"/> is</p>
+<p>In unsupervised learning we only have a dataset <span class="math">\(X = \{x_1, x_2, \dots, x_n
+\}\)</span>. How can this dataset be described mathematically? A very simple
+<cite>continuous latent variable</cite> model for <span class="math">\(X\)</span> is</p>
 <div class="math">
-<p><img src="../_images/math/2928a798e1df010dd146706bd3c8af380fecd5bc.png" alt="x_i = W h_i + \mu + \epsilon"/></p>
-</div><p>The vector <img class="math" src="../_images/math/d03a4b38f7e618d6826778cf0a8b906fbbaa935a.png" alt="h_i"/> is called “latent” because it is unobserved. <img class="math" src="../_images/math/65d19c66c148d5016c6a89d26486bf6d1966ded1.png" alt="\epsilon"/> is
+\[x_i = W h_i + \mu + \epsilon\]</div>
+<p>The vector <span class="math">\(h_i\)</span> is called “latent” because it is unobserved. <span class="math">\(\epsilon\)</span> is
 considered a noise term distributed according to a Gaussian with mean 0 and
-covariance <img class="math" src="../_images/math/334b0728f25dd84a28e483181038a307ea6e483e.png" alt="\Psi"/> (i.e. <img class="math" src="../_images/math/9d080efe7a0db146b4b749440967386423dce761.png" alt="\epsilon \sim \mathcal{N}(0, \Psi)"/>), <img class="math" src="../_images/math/d79e8a2c7ce54906c2b25549da38bdbe02cf40d6.png" alt="\mu"/> is some
+covariance <span class="math">\(\Psi\)</span> (i.e. <span class="math">\(\epsilon \sim \mathcal{N}(0, \Psi)\)</span>), <span class="math">\(\mu\)</span> is some
 arbitrary offset vector. Such a model is called “generative” as it describes
-how <img class="math" src="../_images/math/7720e563212e11bf72de255ab82c2a3b97c1a7f5.png" alt="x_i"/> is generated from <img class="math" src="../_images/math/d03a4b38f7e618d6826778cf0a8b906fbbaa935a.png" alt="h_i"/>. If we use all the <img class="math" src="../_images/math/7720e563212e11bf72de255ab82c2a3b97c1a7f5.png" alt="x_i"/>‘s as columns to form
-a matrix <img class="math" src="../_images/math/c20f7f9210a91b8aeba2e85d2bcb23e29bcab3f4.png" alt="\mathbf{X}"/> and all the <img class="math" src="../_images/math/d03a4b38f7e618d6826778cf0a8b906fbbaa935a.png" alt="h_i"/>‘s as columns of a matrix <img class="math" src="../_images/math/5b376574393838c7d3de2a4f8c01a6f1c41f276e.png" alt="\mathbf{H}"/>
-then we can write (with suitably defined <img class="math" src="../_images/math/6a9403af9e7b26aa7c54b37e1adf8f4c120fe637.png" alt="\mathbf{M}"/> and <img class="math" src="../_images/math/a05518e70679fd7c3be91f014e20981910b20c9a.png" alt="\mathbf{E}"/>):</p>
+how <span class="math">\(x_i\)</span> is generated from <span class="math">\(h_i\)</span>. If we use all the <span class="math">\(x_i\)</span>‘s as columns to form
+a matrix <span class="math">\(\mathbf{X}\)</span> and all the <span class="math">\(h_i\)</span>‘s as columns of a matrix <span class="math">\(\mathbf{H}\)</span>
+then we can write (with suitably defined <span class="math">\(\mathbf{M}\)</span> and <span class="math">\(\mathbf{E}\)</span>):</p>
 <div class="math">
-<p><img src="../_images/math/6b05de5a49aafaf7214f8d14d3aafaf03e3ffd15.png" alt="\mathbf{X} = W \mathbf{H} + \mathbf{M} + \mathbf{E}"/></p>
-</div><p>In other words, we <em>decomposed</em> matrix <img class="math" src="../_images/math/c20f7f9210a91b8aeba2e85d2bcb23e29bcab3f4.png" alt="\mathbf{X}"/>.</p>
-<p>If <img class="math" src="../_images/math/d03a4b38f7e618d6826778cf0a8b906fbbaa935a.png" alt="h_i"/> is given, the above equation automatically implies the following
+\[\mathbf{X} = W \mathbf{H} + \mathbf{M} + \mathbf{E}\]</div>
+<p>In other words, we <em>decomposed</em> matrix <span class="math">\(\mathbf{X}\)</span>.</p>
+<p>If <span class="math">\(h_i\)</span> is given, the above equation automatically implies the following
 probabilistic interpretation:</p>
 <div class="math">
-<p><img src="../_images/math/52f6d87abfac0f47772ac7ee8772526df4d4cba1.png" alt="p(x_i|h_i) = \mathcal{N}(Wh_i + \mu, \Psi)"/></p>
-</div><p>For a complete probabilistic model we also need a prior distribution for the
-latent variable <img class="math" src="../_images/math/293fb39e1b93282c804a86186e721b32f829f1b2.png" alt="h"/>. The most straightforward assumption (based on the nice
-properties of the Gaussian distribution) is <img class="math" src="../_images/math/dde36e93b2cb0b9e54d8c2f67d446dfc62c3707e.png" alt="h \sim \mathcal{N}(0,
-\mathbf{I})"/>.  This yields a Gaussian as the marginal distribution of <img class="math" src="../_images/math/a59f68a4202623bb859a7093f0316bf466e6f75d.png" alt="x"/>:</p>
+\[p(x_i|h_i) = \mathcal{N}(Wh_i + \mu, \Psi)\]</div>
+<p>For a complete probabilistic model we also need a prior distribution for the
+latent variable <span class="math">\(h\)</span>. The most straightforward assumption (based on the nice
+properties of the Gaussian distribution) is <span class="math">\(h \sim \mathcal{N}(0,
+\mathbf{I})\)</span>.  This yields a Gaussian as the marginal distribution of <span class="math">\(x\)</span>:</p>
 <div class="math">
-<p><img src="../_images/math/fc114f553a1484ac7a44174b8c750fa5fa8a95ed.png" alt="p(x) = \mathcal{N}(\mu, WW^T + \Psi)"/></p>
-</div><p>Now, without any further assumptions the idea of having a latent variable <img class="math" src="../_images/math/293fb39e1b93282c804a86186e721b32f829f1b2.png" alt="h"/>
-would be superfluous – <img class="math" src="../_images/math/a59f68a4202623bb859a7093f0316bf466e6f75d.png" alt="x"/> can be completely modelled with a mean
+\[p(x) = \mathcal{N}(\mu, WW^T + \Psi)\]</div>
+<p>Now, without any further assumptions the idea of having a latent variable <span class="math">\(h\)</span>
+would be superfluous – <span class="math">\(x\)</span> can be completely modelled with a mean
 and a covariance. We need to impose some more specific structure on one
 of these two parameters. A simple additional assumption regards the
-structure of the error covariance <img class="math" src="../_images/math/334b0728f25dd84a28e483181038a307ea6e483e.png" alt="\Psi"/>:</p>
+structure of the error covariance <span class="math">\(\Psi\)</span>:</p>
 <ul class="simple">
-<li><img class="math" src="../_images/math/da4420e600a84ae2cb75938f0b0928084b3b8cd9.png" alt="\Psi = \sigma^2 \mathbf{I}"/>: This assumption leads to
+<li><span class="math">\(\Psi = \sigma^2 \mathbf{I}\)</span>: This assumption leads to
 the probabilistic model of <a class="reference internal" href="generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="sklearn.decomposition.PCA"><code class="xref py py-class docutils literal"><span class="pre">PCA</span></code></a>.</li>
-<li><img class="math" src="../_images/math/ef3e564f87f497508cec1baae6385b5575ee176e.png" alt="\Psi = \mathrm{diag}(\psi_1, \psi_2, \dots, \psi_n)"/>: This model is called
+<li><span class="math">\(\Psi = \mathrm{diag}(\psi_1, \psi_2, \dots, \psi_n)\)</span>: This model is called
 <a class="reference internal" href="generated/sklearn.decomposition.FactorAnalysis.html#sklearn.decomposition.FactorAnalysis" title="sklearn.decomposition.FactorAnalysis"><code class="xref py py-class docutils literal"><span class="pre">FactorAnalysis</span></code></a>, a classical statistical model. The matrix W is
 sometimes called the “factor loading matrix”.</li>
 </ul>
@@ -730,13 +731,13 @@ components with some sparsity:</p>
 data and the components are non-negative. <a class="reference internal" href="generated/sklearn.decomposition.NMF.html#sklearn.decomposition.NMF" title="sklearn.decomposition.NMF"><code class="xref py py-class docutils literal"><span class="pre">NMF</span></code></a> can be plugged in
 instead of <a class="reference internal" href="generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="sklearn.decomposition.PCA"><code class="xref py py-class docutils literal"><span class="pre">PCA</span></code></a> or its variants, in the cases where the data matrix
 does not contain negative values. It finds a decomposition of samples
-<img class="math" src="../_images/math/7a7bb470119808e2db2879fc2b2526f467b7a40b.png" alt="X"/> into two matrices <img class="math" src="../_images/math/953bde2ab2fca30897f66185e5b37b73747b8b46.png" alt="W"/> and <img class="math" src="../_images/math/44d4c3f22452acebfb3ac644e23508b67500be90.png" alt="H"/> of non-negative elements,
-by optimizing the distance <img class="math" src="../_images/math/b9d10b54744d07746b97f53c55eb98046fd76c8c.png" alt="d"/> between <img class="math" src="../_images/math/7a7bb470119808e2db2879fc2b2526f467b7a40b.png" alt="X"/> and the matrix product
-<img class="math" src="../_images/math/1b4db00cd413d967fa2a37e3e5721438674a6b06.png" alt="WH"/>. The most widely used distance function is the squared Frobenius
+<span class="math">\(X\)</span> into two matrices <span class="math">\(W\)</span> and <span class="math">\(H\)</span> of non-negative elements,
+by optimizing the distance <span class="math">\(d\)</span> between <span class="math">\(X\)</span> and the matrix product
+<span class="math">\(WH\)</span>. The most widely used distance function is the squared Frobenius
 norm, which is an obvious extension of the Euclidean norm to matrices:</p>
 <div class="math">
-<p><img src="../_images/math/840ea75beb60826146d5d6a0241d89f05cec37d5.png" alt="d_{\mathrm{Fro}}(X, Y) = \frac{1}{2} ||X - Y||_{\mathrm{Fro}}^2 = \frac{1}{2} \sum_{i,j} (X_{ij} - {Y}_{ij})^2"/></p>
-</div><p>Unlike <a class="reference internal" href="generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="sklearn.decomposition.PCA"><code class="xref py py-class docutils literal"><span class="pre">PCA</span></code></a>, the representation of a vector is obtained in an additive
+\[d_{\mathrm{Fro}}(X, Y) = \frac{1}{2} ||X - Y||_{\mathrm{Fro}}^2 = \frac{1}{2} \sum_{i,j} (X_{ij} - {Y}_{ij})^2\]</div>
+<p>Unlike <a class="reference internal" href="generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="sklearn.decomposition.PCA"><code class="xref py py-class docutils literal"><span class="pre">PCA</span></code></a>, the representation of a vector is obtained in an additive
 fashion, by superimposing the components, without subtracting. Such additive
 models are efficient for representing images and text.</p>
 <p>It has been observed in [Hoyer, 2004] <a class="footnote-reference" href="#id12" id="id6">[2]</a> that, when carefully constrained,
@@ -766,20 +767,20 @@ reproducibility.</p>
 <p>In <a class="reference internal" href="generated/sklearn.decomposition.NMF.html#sklearn.decomposition.NMF" title="sklearn.decomposition.NMF"><code class="xref py py-class docutils literal"><span class="pre">NMF</span></code></a>, L1 and L2 priors can be added to the loss function in order
 to regularize the model. The L2 prior uses the Frobenius norm, while the L1
 prior uses an elementwise L1 norm. As in <code class="xref py py-class docutils literal"><span class="pre">ElasticNet</span></code>, we control the
-combination of L1 and L2 with the <code class="xref py py-attr docutils literal"><span class="pre">l1_ratio</span></code> (<img class="math" src="../_images/math/9a51ab9a0b521705e1e8762fac6bdd6f11771758.png" alt="\rho"/>) parameter,
+combination of L1 and L2 with the <code class="xref py py-attr docutils literal"><span class="pre">l1_ratio</span></code> (<span class="math">\(\rho\)</span>) parameter,
 and the intensity of the regularization with the <code class="xref py py-attr docutils literal"><span class="pre">alpha</span></code>
-(<img class="math" src="../_images/math/877d234f4cec6974ce218fc2e975a486a7972dfd.png" alt="\alpha"/>) parameter. Then the priors terms are:</p>
+(<span class="math">\(\alpha\)</span>) parameter. Then the priors terms are:</p>
 <div class="math">
-<p><img src="../_images/math/ff82a9975f244b0b6ab33fc9dcaf987d58cb7434.png" alt="\alpha \rho ||W||_1 + \alpha \rho ||H||_1
+\[\alpha \rho ||W||_1 + \alpha \rho ||H||_1
 + \frac{\alpha(1-\rho)}{2} ||W||_{\mathrm{Fro}} ^ 2
-+ \frac{\alpha(1-\rho)}{2} ||H||_{\mathrm{Fro}} ^ 2"/></p>
-</div><p>and the regularized objective function is:</p>
++ \frac{\alpha(1-\rho)}{2} ||H||_{\mathrm{Fro}} ^ 2\]</div>
+<p>and the regularized objective function is:</p>
 <div class="math">
-<p><img src="../_images/math/f3fb3a76653c94e9a66c6f268832edb6f7ed5033.png" alt="d_{\mathrm{Fro}}(X, WH)
+\[d_{\mathrm{Fro}}(X, WH)
 + \alpha \rho ||W||_1 + \alpha \rho ||H||_1
 + \frac{\alpha(1-\rho)}{2} ||W||_{\mathrm{Fro}} ^ 2
-+ \frac{\alpha(1-\rho)}{2} ||H||_{\mathrm{Fro}} ^ 2"/></p>
-</div><p><a class="reference internal" href="generated/sklearn.decomposition.NMF.html#sklearn.decomposition.NMF" title="sklearn.decomposition.NMF"><code class="xref py py-class docutils literal"><span class="pre">NMF</span></code></a> regularizes both W and H. The public function
++ \frac{\alpha(1-\rho)}{2} ||H||_{\mathrm{Fro}} ^ 2\]</div>
+<p><a class="reference internal" href="generated/sklearn.decomposition.NMF.html#sklearn.decomposition.NMF" title="sklearn.decomposition.NMF"><code class="xref py py-class docutils literal"><span class="pre">NMF</span></code></a> regularizes both W and H. The public function
 <code class="xref py py-func docutils literal"><span class="pre">non_negative_factorization</span></code> allows a finer control through the
 <code class="xref py py-attr docutils literal"><span class="pre">regularization</span></code> attribute, and may regularize only W, only H, or both.</p>
 </div>
@@ -789,33 +790,33 @@ and the intensity of the regularization with the <code class="xref py py-attr do
 Frobenius norm, which is an obvious extension of the Euclidean norm to
 matrices:</p>
 <div class="math">
-<p><img src="../_images/math/978ad14e245bf6f49d1f9c47ee2462550b006748.png" alt="d_{\mathrm{Fro}}(X, Y) = \frac{1}{2} ||X - Y||_{Fro}^2 = \frac{1}{2} \sum_{i,j} (X_{ij} - {Y}_{ij})^2"/></p>
-</div><p>Other distance functions can be used in NMF as, for example, the (generalized)
+\[d_{\mathrm{Fro}}(X, Y) = \frac{1}{2} ||X - Y||_{Fro}^2 = \frac{1}{2} \sum_{i,j} (X_{ij} - {Y}_{ij})^2\]</div>
+<p>Other distance functions can be used in NMF as, for example, the (generalized)
 Kullback-Leibler (KL) divergence, also referred as I-divergence:</p>
 <div class="math">
-<p><img src="../_images/math/e491d68ddb32cafeb79af2557a6d6082f6f8f9cd.png" alt="d_{KL}(X, Y) = \sum_{i,j} (X_{ij} \log(\frac{X_{ij}}{Y_{ij}}) - X_{ij} + Y_{ij})"/></p>
-</div><p>Or, the Itakura-Saito (IS) divergence:</p>
+\[d_{KL}(X, Y) = \sum_{i,j} (X_{ij} \log(\frac{X_{ij}}{Y_{ij}}) - X_{ij} + Y_{ij})\]</div>
+<p>Or, the Itakura-Saito (IS) divergence:</p>
 <div class="math">
-<p><img src="../_images/math/c16a268fef337aa06a9ecfa2d346c71ab35091a4.png" alt="d_{IS}(X, Y) = \sum_{i,j} (\frac{X_{ij}}{Y_{ij}} - \log(\frac{X_{ij}}{Y_{ij}}) - 1)"/></p>
-</div><p>These three distances are special cases of the beta-divergence family, with
-<img class="math" src="../_images/math/ad2168a54df2336163a312cceaa0a524c645930e.png" alt="\beta = 2, 1, 0"/> respectively <a class="footnote-reference" href="#id15" id="id8">[6]</a>. The beta-divergence are
+\[d_{IS}(X, Y) = \sum_{i,j} (\frac{X_{ij}}{Y_{ij}} - \log(\frac{X_{ij}}{Y_{ij}}) - 1)\]</div>
+<p>These three distances are special cases of the beta-divergence family, with
+<span class="math">\(\beta = 2, 1, 0\)</span> respectively <a class="footnote-reference" href="#id15" id="id8">[6]</a>. The beta-divergence are
 defined by :</p>
 <div class="math">
-<p><img src="../_images/math/067402b7a1cd3286f306a90af9c3619e23d3fc56.png" alt="d_{\beta}(X, Y) = \sum_{i,j} \frac{1}{\beta(\beta - 1)}(X_{ij}^\beta + (\beta-1)Y_{ij}^\beta - \beta X_{ij} Y_{ij}^{\beta - 1})"/></p>
-</div><div class="figure align-center">
+\[d_{\beta}(X, Y) = \sum_{i,j} \frac{1}{\beta(\beta - 1)}(X_{ij}^\beta + (\beta-1)Y_{ij}^\beta - \beta X_{ij} Y_{ij}^{\beta - 1})\]</div>
+<div class="figure align-center">
 <a class="reference external image-reference" href="../auto_examples/decomposition/plot_beta_divergence.html"><img alt="../_images/sphx_glr_plot_beta_divergence_0011.png" src="../_images/sphx_glr_plot_beta_divergence_0011.png" style="width: 480.0px; height: 360.0px;" /></a>
 </div>
-<p>Note that this definition is not valid if <img class="math" src="../_images/math/356b4945a263737f9c34582c0c9bc75c51d7905a.png" alt="\beta \in (0; 1)"/>, yet it can
-be continuously extended to the definitions of <img class="math" src="../_images/math/85b7b2d17f3f1bfd9cbac24dddbaf9f13c22dc07.png" alt="d_{KL}"/> and <img class="math" src="../_images/math/0f320c4bf07ed8d3f3f79e63c38fbbfb43941594.png" alt="d_{IS}"/>
+<p>Note that this definition is not valid if <span class="math">\(\beta \in (0; 1)\)</span>, yet it can
+be continuously extended to the definitions of <span class="math">\(d_{KL}\)</span> and <span class="math">\(d_{IS}\)</span>
 respectively.</p>
 <p><a class="reference internal" href="generated/sklearn.decomposition.NMF.html#sklearn.decomposition.NMF" title="sklearn.decomposition.NMF"><code class="xref py py-class docutils literal"><span class="pre">NMF</span></code></a> implements two solvers, using Coordinate Descent (‘cd’) <a class="footnote-reference" href="#id14" id="id9">[5]</a>, and
 Multiplicative Update (‘mu’) <a class="footnote-reference" href="#id15" id="id10">[6]</a>. The ‘mu’ solver can optimize every
-beta-divergence, including of course the Frobenius norm (<img class="math" src="../_images/math/e5facfe2a9c1fcd63d83b75b18609221e7d11a98.png" alt="\beta=2"/>), the
-(generalized) Kullback-Leibler divergence (<img class="math" src="../_images/math/e1e3123978cac3a86e6e487fcc0def25743222ac.png" alt="\beta=1"/>) and the
-Itakura-Saito divergence (<img class="math" src="../_images/math/7f08c020f0489d1fe7d0b8faacc21b3cae786645.png" alt="\beta=0"/>). Note that for
-<img class="math" src="../_images/math/5f01fc0317d37ae8f52bd63fb722f6a51eabdaab.png" alt="\beta \in (1; 2)"/>, the ‘mu’ solver is significantly faster than for other
-values of <img class="math" src="../_images/math/410a9d0df9c135dd73b269cba7ef04dcfd932b1f.png" alt="\beta"/>. Note also that with a negative (or 0, i.e.
-‘itakura-saito’) <img class="math" src="../_images/math/410a9d0df9c135dd73b269cba7ef04dcfd932b1f.png" alt="\beta"/>, the input matrix cannot contain zero values.</p>
+beta-divergence, including of course the Frobenius norm (<span class="math">\(\beta=2\)</span>), the
+(generalized) Kullback-Leibler divergence (<span class="math">\(\beta=1\)</span>) and the
+Itakura-Saito divergence (<span class="math">\(\beta=0\)</span>). Note that for
+<span class="math">\(\beta \in (1; 2)\)</span>, the ‘mu’ solver is significantly faster than for other
+values of <span class="math">\(\beta\)</span>. Note also that with a negative (or 0, i.e.
+‘itakura-saito’) <span class="math">\(\beta\)</span>, the input matrix cannot contain zero values.</p>
 <p>The ‘cd’ solver can only optimize the Frobenius norm. Due to the
 underlying non-convexity of NMF, the different solvers may converge to
 different minima, even when optimizing the same distance function.</p>
@@ -891,34 +892,34 @@ discovering abstract topics from a collection of documents.</p>
 <p>The graphical model of LDA is a three-level Bayesian model:</p>
 <img alt="../_images/lda_model_graph.png" class="align-center" src="../_images/lda_model_graph.png" />
 <p>When modeling text corpora, the model assumes the following generative process for
-a corpus with <img class="math" src="../_images/math/3cf5aa5abe312e6fd4996975341a43aa566e8d8d.png" alt="D"/> documents and <img class="math" src="../_images/math/684381a21cd73ebbf43b63a087d3f7410ee99ce8.png" alt="K"/> topics:</p>
+a corpus with <span class="math">\(D\)</span> documents and <span class="math">\(K\)</span> topics:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>For each topic <img class="math" src="../_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f30438.png" alt="k"/>, draw <img class="math" src="../_images/math/2c1ff5b3d6f342d7dad0395210c8a13947de451c.png" alt="\beta_k \sim \mathrm{Dirichlet}(\eta),\: k =1...K"/></li>
-<li>For each document <img class="math" src="../_images/math/b9d10b54744d07746b97f53c55eb98046fd76c8c.png" alt="d"/>, draw <img class="math" src="../_images/math/530c80986933767c9d182af83075c13d72cdef97.png" alt="\theta_d \sim \mathrm{Dirichlet}(\alpha), \: d=1...D"/></li>
-<li>For each word <img class="math" src="../_images/math/df0deb143e5ac127f00bd248ee8001ecae572adc.png" alt="i"/> in document <img class="math" src="../_images/math/b9d10b54744d07746b97f53c55eb98046fd76c8c.png" alt="d"/>:</li>
+<li>For each topic <span class="math">\(k\)</span>, draw <span class="math">\(\beta_k \sim \mathrm{Dirichlet}(\eta),\: k =1...K\)</span></li>
+<li>For each document <span class="math">\(d\)</span>, draw <span class="math">\(\theta_d \sim \mathrm{Dirichlet}(\alpha), \: d=1...D\)</span></li>
+<li>For each word <span class="math">\(i\)</span> in document <span class="math">\(d\)</span>:</li>
 </ol>
 <blockquote>
 <div><ol class="loweralpha simple">
-<li>Draw a topic index <img class="math" src="../_images/math/0bb078c0fe621366a147231b5c8240efacdb895b.png" alt="z_{di} \sim \mathrm{Multinomial}(\theta_d)"/></li>
-<li>Draw the observed word <img class="math" src="../_images/math/f7960e06327c64a1e9da6769e68aa4342b7de73d.png" alt="w_{ij} \sim \mathrm{Multinomial}(beta_{z_{di}}.)"/></li>
+<li>Draw a topic index <span class="math">\(z_{di} \sim \mathrm{Multinomial}(\theta_d)\)</span></li>
+<li>Draw the observed word <span class="math">\(w_{ij} \sim \mathrm{Multinomial}(beta_{z_{di}}.)\)</span></li>
 </ol>
 </div></blockquote>
 </div></blockquote>
 <p>For parameter estimation, the posterior distribution is:</p>
 <div class="math">
-<p><img src="../_images/math/404da44d7b41d98a2191fb2cd02c3f4ac1c68b2b.png" alt="p(z, \theta, \beta |w, \alpha, \eta) =
-  \frac{p(z, \theta, \beta|\alpha, \eta)}{p(w|\alpha, \eta)}"/></p>
-</div><p>Since the posterior is intractable, variational Bayesian method
-uses a simpler distribution <img class="math" src="../_images/math/0510b5c618c540bbb500c44ee4086a3e17e18696.png" alt="q(z,\theta,\beta | \lambda, \phi, \gamma)"/>
-to approximate it, and those variational parameters <img class="math" src="../_images/math/76f1d8ace30435987c01a00ca53a71cba1f40e6c.png" alt="\lambda"/>, <img class="math" src="../_images/math/c2f31c22645274c375eff7920cfdfdc18d60341f.png" alt="\phi"/>,
-<img class="math" src="../_images/math/3666981dc77862de77b6ecfcb64aad59b425cbaf.png" alt="\gamma"/> are optimized to maximize the Evidence Lower Bound (ELBO):</p>
+\[p(z, \theta, \beta |w, \alpha, \eta) =
+  \frac{p(z, \theta, \beta|\alpha, \eta)}{p(w|\alpha, \eta)}\]</div>
+<p>Since the posterior is intractable, variational Bayesian method
+uses a simpler distribution <span class="math">\(q(z,\theta,\beta | \lambda, \phi, \gamma)\)</span>
+to approximate it, and those variational parameters <span class="math">\(\lambda\)</span>, <span class="math">\(\phi\)</span>,
+<span class="math">\(\gamma\)</span> are optimized to maximize the Evidence Lower Bound (ELBO):</p>
 <div class="math">
-<p><img src="../_images/math/7d5e786cb897f1fa254c517025885f31d5996a9e.png" alt="\log\: P(w | \alpha, \eta) \geq L(w,\phi,\gamma,\lambda) \overset{\triangle}{=}
-  E_{q}[\log\:p(w,z,\theta,\beta|\alpha,\eta)] - E_{q}[\log\:q(z, \theta, \beta)]"/></p>
-</div><p>Maximizing ELBO is equivalent to minimizing the Kullback-Leibler(KL) divergence
-between <img class="math" src="../_images/math/30e44216f8466495285af2e10ecf0677614f10d5.png" alt="q(z,\theta,\beta)"/> and the true posterior
-<img class="math" src="../_images/math/4fdab4dc628d7c9a10b0cc7a1b99d672868cb4ed.png" alt="p(z, \theta, \beta |w, \alpha, \eta)"/>.</p>
+\[\log\: P(w | \alpha, \eta) \geq L(w,\phi,\gamma,\lambda) \overset{\triangle}{=}
+  E_{q}[\log\:p(w,z,\theta,\beta|\alpha,\eta)] - E_{q}[\log\:q(z, \theta, \beta)]\]</div>
+<p>Maximizing ELBO is equivalent to minimizing the Kullback-Leibler(KL) divergence
+between <span class="math">\(q(z,\theta,\beta)\)</span> and the true posterior
+<span class="math">\(p(z, \theta, \beta |w, \alpha, \eta)\)</span>.</p>
 <p><a class="reference internal" href="generated/sklearn.decomposition.LatentDirichletAllocation.html#sklearn.decomposition.LatentDirichletAllocation" title="sklearn.decomposition.LatentDirichletAllocation"><code class="xref py py-class docutils literal"><span class="pre">LatentDirichletAllocation</span></code></a> implements online variational Bayes algorithm and supports
 both online and batch update method.
 While batch method updates variational variables after each full pass through the data,

@@ -34,6 +34,7 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="../_static/js/copybutton.js"></script>
     <script type="text/javascript" src="../_static/js/extra.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_SVG"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -257,28 +258,28 @@
 <span id="linear-model"></span><h1>1.1. Generalized Linear Models<a class="headerlink" href="#generalized-linear-models" title="Permalink to this headline">¶</a></h1>
 <p>The following are a set of methods intended for regression in which
 the target value is expected to be a linear combination of the input
-variables. In mathematical notion, if <img class="math" src="../_images/math/480dcbe70367e5f775ea3004cce070d91315d6a2.png" alt="\hat{y}"/> is the predicted
+variables. In mathematical notion, if <span class="math">\(\hat{y}\)</span> is the predicted
 value.</p>
 <div class="math">
-<p><img src="../_images/math/334dd847bce79ed52a760f02b3efd8faefdb6e8b.png" alt="\hat{y}(w, x) = w_0 + w_1 x_1 + ... + w_p x_p"/></p>
-</div><p>Across the module, we designate the vector <img class="math" src="../_images/math/843835b028b47682b57b538b10dc03336f27a34d.png" alt="w = (w_1,
-..., w_p)"/> as <code class="docutils literal"><span class="pre">coef_</span></code> and <img class="math" src="../_images/math/faafb19d9d95d41a5554bd1b8d8ca2e16a89935d.png" alt="w_0"/> as <code class="docutils literal"><span class="pre">intercept_</span></code>.</p>
+\[\hat{y}(w, x) = w_0 + w_1 x_1 + ... + w_p x_p\]</div>
+<p>Across the module, we designate the vector <span class="math">\(w = (w_1,
+..., w_p)\)</span> as <code class="docutils literal"><span class="pre">coef_</span></code> and <span class="math">\(w_0\)</span> as <code class="docutils literal"><span class="pre">intercept_</span></code>.</p>
 <p>To perform classification with generalized linear models, see
 <a class="reference internal" href="#logistic-regression"><span class="std std-ref">Logistic regression</span></a>.</p>
 <div class="section" id="ordinary-least-squares">
 <span id="id1"></span><h2>1.1.1. Ordinary Least Squares<a class="headerlink" href="#ordinary-least-squares" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference internal" href="generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression" title="sklearn.linear_model.LinearRegression"><code class="xref py py-class docutils literal"><span class="pre">LinearRegression</span></code></a> fits a linear model with coefficients
-<img class="math" src="../_images/math/872414c3660f264ddafc518783bd27a3a18ff486.png" alt="w = (w_1, ..., w_p)"/> to minimize the residual sum
+<span class="math">\(w = (w_1, ..., w_p)\)</span> to minimize the residual sum
 of squares between the observed responses in the dataset, and the
 responses predicted by the linear approximation. Mathematically it
 solves a problem of the form:</p>
 <div class="math">
-<p><img src="../_images/math/e8e92a5482d9327d939e7a17946a8a1b98006018.png" alt="\underset{w}{min\,} {|| X w - y||_2}^2"/></p>
-</div><div class="figure align-center">
+\[\underset{w}{min\,} {|| X w - y||_2}^2\]</div>
+<div class="figure align-center">
 <a class="reference external image-reference" href="../auto_examples/linear_model/plot_ols.html"><img alt="../_images/sphx_glr_plot_ols_0011.png" src="../_images/sphx_glr_plot_ols_0011.png" style="width: 320.0px; height: 240.0px;" /></a>
 </div>
 <p><a class="reference internal" href="generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression" title="sklearn.linear_model.LinearRegression"><code class="xref py py-class docutils literal"><span class="pre">LinearRegression</span></code></a> will take in its <code class="docutils literal"><span class="pre">fit</span></code> method arrays X, y
-and will store the coefficients <img class="math" src="../_images/math/ecd1ee2a1cd226b40c37e079aca62398d4b774f5.png" alt="w"/> of the linear model in its
+and will store the coefficients <span class="math">\(w\)</span> of the linear model in its
 <code class="docutils literal"><span class="pre">coef_</span></code> member:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">linear_model</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">reg</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">LinearRegression</span><span class="p">()</span>
@@ -290,7 +291,7 @@ and will store the coefficients <img class="math" src="../_images/math/ecd1ee2a1
 </div>
 <p>However, coefficient estimates for Ordinary Least Squares rely on the
 independence of the model terms. When terms are correlated and the
-columns of the design matrix <img class="math" src="../_images/math/7a7bb470119808e2db2879fc2b2526f467b7a40b.png" alt="X"/> have an approximate linear
+columns of the design matrix <span class="math">\(X\)</span> have an approximate linear
 dependence, the design matrix becomes close to singular
 and as a result, the least-squares estimate becomes highly sensitive
 to random errors in the observed response, producing a large
@@ -306,7 +307,7 @@ example, when data are collected without an experimental design.</p>
 <h3>1.1.1.1. Ordinary Least Squares Complexity<a class="headerlink" href="#ordinary-least-squares-complexity" title="Permalink to this headline">¶</a></h3>
 <p>This method computes the least squares solution using a singular value
 decomposition of X. If X is a matrix of size (n, p) this method has a
-cost of <img class="math" src="../_images/math/ed6ddbbf57a29a1b9e7a4afd3898df76d7cff16e.png" alt="O(n p^2)"/>, assuming that <img class="math" src="../_images/math/06403bebf610a3c6eb454c503158c34977a418f0.png" alt="n \geq p"/>.</p>
+cost of <span class="math">\(O(n p^2)\)</span>, assuming that <span class="math">\(n \geq p\)</span>.</p>
 </div>
 </div>
 <div class="section" id="ridge-regression">
@@ -316,15 +317,15 @@ cost of <img class="math" src="../_images/math/ed6ddbbf57a29a1b9e7a4afd3898df76d
 coefficients. The ridge coefficients minimize a penalized residual sum
 of squares,</p>
 <div class="math">
-<p><img src="../_images/math/48dbdad39c89539c714a825c0c0d5524eb526851.png" alt="\underset{w}{min\,} {{|| X w - y||_2}^2 + \alpha {||w||_2}^2}"/></p>
-</div><p>Here, <img class="math" src="../_images/math/48196aec5f482605914f9498015d86600e59c0d9.png" alt="\alpha \geq 0"/> is a complexity parameter that controls the amount
-of shrinkage: the larger the value of <img class="math" src="../_images/math/877d234f4cec6974ce218fc2e975a486a7972dfd.png" alt="\alpha"/>, the greater the amount
+\[\underset{w}{min\,} {{|| X w - y||_2}^2 + \alpha {||w||_2}^2}\]</div>
+<p>Here, <span class="math">\(\alpha \geq 0\)</span> is a complexity parameter that controls the amount
+of shrinkage: the larger the value of <span class="math">\(\alpha\)</span>, the greater the amount
 of shrinkage and thus the coefficients become more robust to collinearity.</p>
 <div class="figure align-center">
 <a class="reference external image-reference" href="../auto_examples/linear_model/plot_ridge_path.html"><img alt="../_images/sphx_glr_plot_ridge_path_0011.png" src="../_images/sphx_glr_plot_ridge_path_0011.png" style="width: 320.0px; height: 240.0px;" /></a>
 </div>
 <p>As with other linear models, <a class="reference internal" href="generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge" title="sklearn.linear_model.Ridge"><code class="xref py py-class docutils literal"><span class="pre">Ridge</span></code></a> will take in its <code class="docutils literal"><span class="pre">fit</span></code> method
-arrays X, y and will store the coefficients <img class="math" src="../_images/math/ecd1ee2a1cd226b40c37e079aca62398d4b774f5.png" alt="w"/> of the linear model in
+arrays X, y and will store the coefficients <span class="math">\(w\)</span> of the linear model in
 its <code class="docutils literal"><span class="pre">coef_</span></code> member:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">linear_model</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">reg</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">Ridge</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">=</span> <span class="o">.</span><span class="mi">5</span><span class="p">)</span>
@@ -383,13 +384,13 @@ and its variants are fundamental to the field of compressed sensing.
 Under certain conditions, it can recover the exact set of non-zero
 weights (see
 <a class="reference internal" href="../auto_examples/applications/plot_tomography_l1_reconstruction.html#sphx-glr-auto-examples-applications-plot-tomography-l1-reconstruction-py"><span class="std std-ref">Compressive sensing: tomography reconstruction with L1 prior (Lasso)</span></a>).</p>
-<p>Mathematically, it consists of a linear model trained with <img class="math" src="../_images/math/a301afaec3a8e4e639ad1d14140c7c5470a8eef2.png" alt="\ell_1"/> prior
+<p>Mathematically, it consists of a linear model trained with <span class="math">\(\ell_1\)</span> prior
 as regularizer. The objective function to minimize is:</p>
 <div class="math">
-<p><img src="../_images/math/07c30d8004d4406105b2547be4f3050048531656.png" alt="\underset{w}{min\,} { \frac{1}{2n_{samples}} ||X w - y||_2 ^ 2 + \alpha ||w||_1}"/></p>
-</div><p>The lasso estimate thus solves the minimization of the
-least-squares penalty with <img class="math" src="../_images/math/7f5743fd8d7d5f38ac1c1b69264a46a7db7c5ef8.png" alt="\alpha ||w||_1"/> added, where
-<img class="math" src="../_images/math/877d234f4cec6974ce218fc2e975a486a7972dfd.png" alt="\alpha"/> is a constant and <img class="math" src="../_images/math/99c2ab1cc7a9538a1f081f7391fa368fa6f25799.png" alt="||w||_1"/> is the <img class="math" src="../_images/math/a301afaec3a8e4e639ad1d14140c7c5470a8eef2.png" alt="\ell_1"/>-norm of
+\[\underset{w}{min\,} { \frac{1}{2n_{samples}} ||X w - y||_2 ^ 2 + \alpha ||w||_1}\]</div>
+<p>The lasso estimate thus solves the minimization of the
+least-squares penalty with <span class="math">\(\alpha ||w||_1\)</span> added, where
+<span class="math">\(\alpha\)</span> is a constant and <span class="math">\(||w||_1\)</span> is the <span class="math">\(\ell_1\)</span>-norm of
 the parameter vector.</p>
 <p>The implementation in the class <a class="reference internal" href="generated/sklearn.linear_model.Lasso.html#sklearn.linear_model.Lasso" title="sklearn.linear_model.Lasso"><code class="xref py py-class docutils literal"><span class="pre">Lasso</span></code></a> uses coordinate descent as
 the algorithm to fit the coefficients. See <a class="reference internal" href="#least-angle-regression"><span class="std std-ref">Least Angle Regression</span></a>
@@ -487,17 +488,17 @@ columns.</p>
 </ul>
 </div>
 <p>Mathematically, it consists of a linear model trained with a mixed
-<img class="math" src="../_images/math/a301afaec3a8e4e639ad1d14140c7c5470a8eef2.png" alt="\ell_1"/> <img class="math" src="../_images/math/4cdcdbcd7242f4bc56b5900649a2839bc9689fef.png" alt="\ell_2"/> prior as regularizer.
+<span class="math">\(\ell_1\)</span> <span class="math">\(\ell_2\)</span> prior as regularizer.
 The objective function to minimize is:</p>
 <div class="math">
-<p><img src="../_images/math/fb8862ba8a0bbd86df74a2d45e115042abaaf337.png" alt="\underset{w}{min\,} { \frac{1}{2n_{samples}} ||X W - Y||_{Fro} ^ 2 + \alpha ||W||_{21}}"/></p>
-</div><p>where <img class="math" src="../_images/math/86f8a2f1cc06338a5c5a9211184a8ce6e87bbd76.png" alt="Fro"/> indicates the Frobenius norm:</p>
+\[\underset{w}{min\,} { \frac{1}{2n_{samples}} ||X W - Y||_{Fro} ^ 2 + \alpha ||W||_{21}}\]</div>
+<p>where <span class="math">\(Fro\)</span> indicates the Frobenius norm:</p>
 <div class="math">
-<p><img src="../_images/math/ab1b1502d6ca4bf16f01209e3b0a37593249271f.png" alt="||A||_{Fro} = \sqrt{\sum_{ij} a_{ij}^2}"/></p>
-</div><p>and <img class="math" src="../_images/math/a301afaec3a8e4e639ad1d14140c7c5470a8eef2.png" alt="\ell_1"/> <img class="math" src="../_images/math/4cdcdbcd7242f4bc56b5900649a2839bc9689fef.png" alt="\ell_2"/> reads:</p>
+\[||A||_{Fro} = \sqrt{\sum_{ij} a_{ij}^2}\]</div>
+<p>and <span class="math">\(\ell_1\)</span> <span class="math">\(\ell_2\)</span> reads:</p>
 <div class="math">
-<p><img src="../_images/math/95a01d8b63169b1769176434fe57ec5a02e43b0d.png" alt="||A||_{2 1} = \sum_i \sqrt{\sum_j a_{ij}^2}"/></p>
-</div><p>The implementation in the class <a class="reference internal" href="generated/sklearn.linear_model.MultiTaskLasso.html#sklearn.linear_model.MultiTaskLasso" title="sklearn.linear_model.MultiTaskLasso"><code class="xref py py-class docutils literal"><span class="pre">MultiTaskLasso</span></code></a> uses coordinate descent as
+\[||A||_{2 1} = \sum_i \sqrt{\sum_j a_{ij}^2}\]</div>
+<p>The implementation in the class <a class="reference internal" href="generated/sklearn.linear_model.MultiTaskLasso.html#sklearn.linear_model.MultiTaskLasso" title="sklearn.linear_model.MultiTaskLasso"><code class="xref py py-class docutils literal"><span class="pre">MultiTaskLasso</span></code></a> uses coordinate descent as
 the algorithm to fit the coefficients.</p>
 </div>
 <div class="section" id="elastic-net">
@@ -514,13 +515,13 @@ at random, while elastic-net is likely to pick both.</p>
 Elastic-Net to inherit some of Ridge’s stability under rotation.</p>
 <p>The objective function to minimize is in this case</p>
 <div class="math">
-<p><img src="../_images/math/51443eb62398fc5253e0a0d06a5695686e972d08.png" alt="\underset{w}{min\,} { \frac{1}{2n_{samples}} ||X w - y||_2 ^ 2 + \alpha \rho ||w||_1 +
-\frac{\alpha(1-\rho)}{2} ||w||_2 ^ 2}"/></p>
-</div><div class="figure align-center">
+\[\underset{w}{min\,} { \frac{1}{2n_{samples}} ||X w - y||_2 ^ 2 + \alpha \rho ||w||_1 +
+\frac{\alpha(1-\rho)}{2} ||w||_2 ^ 2}\]</div>
+<div class="figure align-center">
 <a class="reference external image-reference" href="../auto_examples/linear_model/plot_lasso_coordinate_descent_path.html"><img alt="../_images/sphx_glr_plot_lasso_coordinate_descent_path_0011.png" src="../_images/sphx_glr_plot_lasso_coordinate_descent_path_0011.png" style="width: 320.0px; height: 240.0px;" /></a>
 </div>
 <p>The class <a class="reference internal" href="generated/sklearn.linear_model.ElasticNetCV.html#sklearn.linear_model.ElasticNetCV" title="sklearn.linear_model.ElasticNetCV"><code class="xref py py-class docutils literal"><span class="pre">ElasticNetCV</span></code></a> can be used to set the parameters
-<code class="docutils literal"><span class="pre">alpha</span></code> (<img class="math" src="../_images/math/877d234f4cec6974ce218fc2e975a486a7972dfd.png" alt="\alpha"/>) and <code class="docutils literal"><span class="pre">l1_ratio</span></code> (<img class="math" src="../_images/math/9a51ab9a0b521705e1e8762fac6bdd6f11771758.png" alt="\rho"/>) by cross-validation.</p>
+<code class="docutils literal"><span class="pre">alpha</span></code> (<span class="math">\(\alpha\)</span>) and <code class="docutils literal"><span class="pre">l1_ratio</span></code> (<span class="math">\(\rho\)</span>) by cross-validation.</p>
 <div class="topic">
 <p class="topic-title first">Examples:</p>
 <ul class="simple">
@@ -536,15 +537,15 @@ coefficients for multiple regression problems jointly: <code class="docutils lit
 of shape <code class="docutils literal"><span class="pre">(n_samples,</span> <span class="pre">n_tasks)</span></code>. The constraint is that the selected
 features are the same for all the regression problems, also called tasks.</p>
 <p>Mathematically, it consists of a linear model trained with a mixed
-<img class="math" src="../_images/math/a301afaec3a8e4e639ad1d14140c7c5470a8eef2.png" alt="\ell_1"/> <img class="math" src="../_images/math/4cdcdbcd7242f4bc56b5900649a2839bc9689fef.png" alt="\ell_2"/> prior and <img class="math" src="../_images/math/4cdcdbcd7242f4bc56b5900649a2839bc9689fef.png" alt="\ell_2"/> prior as regularizer.
+<span class="math">\(\ell_1\)</span> <span class="math">\(\ell_2\)</span> prior and <span class="math">\(\ell_2\)</span> prior as regularizer.
 The objective function to minimize is:</p>
 <div class="math">
-<p><img src="../_images/math/a0ef45ea26ee66211e7a17d2192da2a21e2ce714.png" alt="\underset{W}{min\,} { \frac{1}{2n_{samples}} ||X W - Y||_{Fro}^2 + \alpha \rho ||W||_{2 1} +
-\frac{\alpha(1-\rho)}{2} ||W||_{Fro}^2}"/></p>
-</div><p>The implementation in the class <a class="reference internal" href="generated/sklearn.linear_model.MultiTaskElasticNet.html#sklearn.linear_model.MultiTaskElasticNet" title="sklearn.linear_model.MultiTaskElasticNet"><code class="xref py py-class docutils literal"><span class="pre">MultiTaskElasticNet</span></code></a> uses coordinate descent as
+\[\underset{W}{min\,} { \frac{1}{2n_{samples}} ||X W - Y||_{Fro}^2 + \alpha \rho ||W||_{2 1} +
+\frac{\alpha(1-\rho)}{2} ||W||_{Fro}^2}\]</div>
+<p>The implementation in the class <a class="reference internal" href="generated/sklearn.linear_model.MultiTaskElasticNet.html#sklearn.linear_model.MultiTaskElasticNet" title="sklearn.linear_model.MultiTaskElasticNet"><code class="xref py py-class docutils literal"><span class="pre">MultiTaskElasticNet</span></code></a> uses coordinate descent as
 the algorithm to fit the coefficients.</p>
 <p>The class <a class="reference internal" href="generated/sklearn.linear_model.MultiTaskElasticNetCV.html#sklearn.linear_model.MultiTaskElasticNetCV" title="sklearn.linear_model.MultiTaskElasticNetCV"><code class="xref py py-class docutils literal"><span class="pre">MultiTaskElasticNetCV</span></code></a> can be used to set the parameters
-<code class="docutils literal"><span class="pre">alpha</span></code> (<img class="math" src="../_images/math/877d234f4cec6974ce218fc2e975a486a7972dfd.png" alt="\alpha"/>) and <code class="docutils literal"><span class="pre">l1_ratio</span></code> (<img class="math" src="../_images/math/9a51ab9a0b521705e1e8762fac6bdd6f11771758.png" alt="\rho"/>) by cross-validation.</p>
+<code class="docutils literal"><span class="pre">alpha</span></code> (<span class="math">\(\alpha\)</span>) and <code class="docutils literal"><span class="pre">l1_ratio</span></code> (<span class="math">\(\rho\)</span>) by cross-validation.</p>
 </div>
 <div class="section" id="least-angle-regression">
 <span id="id7"></span><h2>1.1.7. Least Angle Regression<a class="headerlink" href="#least-angle-regression" title="Permalink to this headline">¶</a></h2>
@@ -643,14 +644,14 @@ on the number of non-zero coefficients (ie. the L <sub>0</sub> pseudo-norm).</p>
 orthogonal matching pursuit can approximate the optimum solution vector with a
 fixed number of non-zero elements:</p>
 <div class="math">
-<p><img src="../_images/math/a4acdafd29eec35831ca225d906e7691941d9567.png" alt="\text{arg\,min\,} ||y - X\gamma||_2^2 \text{ subject to } \
-||\gamma||_0 \leq n_{nonzero\_coefs}"/></p>
-</div><p>Alternatively, orthogonal matching pursuit can target a specific error instead
+\[\text{arg\,min\,} ||y - X\gamma||_2^2 \text{ subject to } \
+||\gamma||_0 \leq n_{nonzero\_coefs}\]</div>
+<p>Alternatively, orthogonal matching pursuit can target a specific error instead
 of a specific number of non-zero coefficients. This can be expressed as:</p>
 <div class="math">
-<p><img src="../_images/math/c6ed31043514c4aa6af8b14f9a6d51d162fed543.png" alt="\text{arg\,min\,} ||\gamma||_0 \text{ subject to } ||y-X\gamma||_2^2 \
-\leq \text{tol}"/></p>
-</div><p>OMP is based on a greedy algorithm that includes at each step the atom most
+\[\text{arg\,min\,} ||\gamma||_0 \text{ subject to } ||y-X\gamma||_2^2 \
+\leq \text{tol}\]</div>
+<p>OMP is based on a greedy algorithm that includes at each step the atom most
 highly correlated with the current residual. It is similar to the simpler
 matching pursuit (MP) method, but better in that at each iteration, the
 residual is recomputed using an orthogonal projection on the space of the
@@ -677,16 +678,16 @@ parameters in the estimation procedure: the regularization parameter is
 not set in a hard sense but tuned to the data at hand.</p>
 <p>This can be done by introducing <a class="reference external" href="https://en.wikipedia.org/wiki/Non-informative_prior#Uninformative_priors">uninformative priors</a>
 over the hyper parameters of the model.
-The <img class="math" src="../_images/math/f77f5b2c6971d3c72c400d10b87707edc1d7156d.png" alt="\ell_{2}"/> regularization used in <a class="reference internal" href="#id2">Ridge Regression</a> is equivalent
+The <span class="math">\(\ell_{2}\)</span> regularization used in <a class="reference internal" href="#id2">Ridge Regression</a> is equivalent
 to finding a maximum a posteriori estimation under a Gaussian prior over the
-parameters <img class="math" src="../_images/math/ecd1ee2a1cd226b40c37e079aca62398d4b774f5.png" alt="w"/> with precision <img class="math" src="../_images/math/8ff5bcb304f802cddf50b2f358ace41499c92e5e.png" alt="\lambda^{-1}"/>.  Instead of setting
+parameters <span class="math">\(w\)</span> with precision <span class="math">\(\lambda^{-1}\)</span>.  Instead of setting
 <cite>lambda</cite> manually, it is possible to treat it as a random variable to be
 estimated from the data.</p>
-<p>To obtain a fully probabilistic model, the output <img class="math" src="../_images/math/276f7e256cbddeb81eee42e1efc348f3cb4ab5f8.png" alt="y"/> is assumed
-to be Gaussian distributed around <img class="math" src="../_images/math/4dc06edd94309641af4846043fe7c7b650e40037.png" alt="X w"/>:</p>
+<p>To obtain a fully probabilistic model, the output <span class="math">\(y\)</span> is assumed
+to be Gaussian distributed around <span class="math">\(X w\)</span>:</p>
 <div class="math">
-<p><img src="../_images/math/f478d5b226c02754ede31ce247d4d9870ff7c416.png" alt="p(y|X,w,\alpha) = \mathcal{N}(y|X w,\alpha)"/></p>
-</div><p>Alpha is again treated as a random variable that is to be estimated from the
+\[p(y|X,w,\alpha) = \mathcal{N}(y|X w,\alpha)\]</div>
+<p>Alpha is again treated as a random variable that is to be estimated from the
 data.</p>
 <p>The advantages of Bayesian Regression are:</p>
 <blockquote>
@@ -715,21 +716,21 @@ networks</cite> by Radford M. Neal</li>
 <span id="id10"></span><h3>1.1.10.1. Bayesian Ridge Regression<a class="headerlink" href="#bayesian-ridge-regression" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference internal" href="generated/sklearn.linear_model.BayesianRidge.html#sklearn.linear_model.BayesianRidge" title="sklearn.linear_model.BayesianRidge"><code class="xref py py-class docutils literal"><span class="pre">BayesianRidge</span></code></a> estimates a probabilistic model of the
 regression problem as described above.
-The prior for the parameter <img class="math" src="../_images/math/ecd1ee2a1cd226b40c37e079aca62398d4b774f5.png" alt="w"/> is given by a spherical Gaussian:</p>
+The prior for the parameter <span class="math">\(w\)</span> is given by a spherical Gaussian:</p>
 <div class="math">
-<p><img src="../_images/math/ebf24e7f03ce757cbfab29367628715eb161fc38.png" alt="p(w|\lambda) =
-\mathcal{N}(w|0,\lambda^{-1}\bold{I_{p}})"/></p>
-</div><p>The priors over <img class="math" src="../_images/math/877d234f4cec6974ce218fc2e975a486a7972dfd.png" alt="\alpha"/> and <img class="math" src="../_images/math/76f1d8ace30435987c01a00ca53a71cba1f40e6c.png" alt="\lambda"/> are chosen to be <a class="reference external" href="https://en.wikipedia.org/wiki/Gamma_distribution">gamma
+\[p(w|\lambda) =
+\mathcal{N}(w|0,\lambda^{-1}\bold{I_{p}})\]</div>
+<p>The priors over <span class="math">\(\alpha\)</span> and <span class="math">\(\lambda\)</span> are chosen to be <a class="reference external" href="https://en.wikipedia.org/wiki/Gamma_distribution">gamma
 distributions</a>, the
 conjugate prior for the precision of the Gaussian.</p>
 <p>The resulting model is called <em>Bayesian Ridge Regression</em>, and is similar to the
-classical <a class="reference internal" href="generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge" title="sklearn.linear_model.Ridge"><code class="xref py py-class docutils literal"><span class="pre">Ridge</span></code></a>.  The parameters <img class="math" src="../_images/math/ecd1ee2a1cd226b40c37e079aca62398d4b774f5.png" alt="w"/>, <img class="math" src="../_images/math/877d234f4cec6974ce218fc2e975a486a7972dfd.png" alt="\alpha"/> and
-<img class="math" src="../_images/math/76f1d8ace30435987c01a00ca53a71cba1f40e6c.png" alt="\lambda"/> are estimated jointly during the fit of the model.  The
+classical <a class="reference internal" href="generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge" title="sklearn.linear_model.Ridge"><code class="xref py py-class docutils literal"><span class="pre">Ridge</span></code></a>.  The parameters <span class="math">\(w\)</span>, <span class="math">\(\alpha\)</span> and
+<span class="math">\(\lambda\)</span> are estimated jointly during the fit of the model.  The
 remaining hyperparameters are the parameters of the gamma priors over
-<img class="math" src="../_images/math/877d234f4cec6974ce218fc2e975a486a7972dfd.png" alt="\alpha"/> and <img class="math" src="../_images/math/76f1d8ace30435987c01a00ca53a71cba1f40e6c.png" alt="\lambda"/>.  These are usually chosen to be
+<span class="math">\(\alpha\)</span> and <span class="math">\(\lambda\)</span>.  These are usually chosen to be
 <em>non-informative</em>.  The parameters are estimated by maximizing the <em>marginal
 log likelihood</em>.</p>
-<p>By default <img class="math" src="../_images/math/07bd19240e37d2d45aba10b55733593108b8c939.png" alt="\alpha_1 = \alpha_2 =  \lambda_1 = \lambda_2 = 10^{-6}"/>.</p>
+<p>By default <span class="math">\(\alpha_1 = \alpha_2 =  \lambda_1 = \lambda_2 = 10^{-6}\)</span>.</p>
 <div class="figure align-center">
 <a class="reference external image-reference" href="../auto_examples/linear_model/plot_bayesian_ridge.html"><img alt="../_images/sphx_glr_plot_bayesian_ridge_0011.png" src="../_images/sphx_glr_plot_bayesian_ridge_0011.png" style="width: 300.0px; height: 250.0px;" /></a>
 </div>
@@ -749,7 +750,7 @@ log likelihood</em>.</p>
 <span class="go">array([0.50000013])</span>
 </pre></div>
 </div>
-<p>The weights <img class="math" src="../_images/math/ecd1ee2a1cd226b40c37e079aca62398d4b774f5.png" alt="w"/> of the model can be access:</p>
+<p>The weights <span class="math">\(w\)</span> of the model can be access:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reg</span><span class="o">.</span><span class="n">coef_</span>
 <span class="go">array([0.49999993, 0.49999993])</span>
 </pre></div>
@@ -774,20 +775,20 @@ by MacKay, David J. C.</li>
 <div class="section" id="automatic-relevance-determination-ard">
 <h3>1.1.10.2. Automatic Relevance Determination - ARD<a class="headerlink" href="#automatic-relevance-determination-ard" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference internal" href="generated/sklearn.linear_model.ARDRegression.html#sklearn.linear_model.ARDRegression" title="sklearn.linear_model.ARDRegression"><code class="xref py py-class docutils literal"><span class="pre">ARDRegression</span></code></a> is very similar to <a class="reference internal" href="#id10">Bayesian Ridge Regression</a>,
-but can lead to sparser weights <img class="math" src="../_images/math/ecd1ee2a1cd226b40c37e079aca62398d4b774f5.png" alt="w"/> <a class="footnote-reference" href="#id15" id="id11">[1]</a> <a class="footnote-reference" href="#id16" id="id12">[2]</a>.
-<a class="reference internal" href="generated/sklearn.linear_model.ARDRegression.html#sklearn.linear_model.ARDRegression" title="sklearn.linear_model.ARDRegression"><code class="xref py py-class docutils literal"><span class="pre">ARDRegression</span></code></a> poses a different prior over <img class="math" src="../_images/math/ecd1ee2a1cd226b40c37e079aca62398d4b774f5.png" alt="w"/>, by dropping the
+but can lead to sparser weights <span class="math">\(w\)</span> <a class="footnote-reference" href="#id15" id="id11">[1]</a> <a class="footnote-reference" href="#id16" id="id12">[2]</a>.
+<a class="reference internal" href="generated/sklearn.linear_model.ARDRegression.html#sklearn.linear_model.ARDRegression" title="sklearn.linear_model.ARDRegression"><code class="xref py py-class docutils literal"><span class="pre">ARDRegression</span></code></a> poses a different prior over <span class="math">\(w\)</span>, by dropping the
 assumption of the Gaussian being spherical.</p>
-<p>Instead, the distribution over <img class="math" src="../_images/math/ecd1ee2a1cd226b40c37e079aca62398d4b774f5.png" alt="w"/> is assumed to be an axis-parallel,
+<p>Instead, the distribution over <span class="math">\(w\)</span> is assumed to be an axis-parallel,
 elliptical Gaussian distribution.</p>
-<p>This means each weight <img class="math" src="../_images/math/8cef10bb133d7cb70cdf6433fc0cbef817b7b5aa.png" alt="w_{i}"/> is drawn from a Gaussian distribution,
-centered on zero and with a precision <img class="math" src="../_images/math/03fb95641efd224604d31e10ad0d43f2a1981cfe.png" alt="\lambda_{i}"/>:</p>
+<p>This means each weight <span class="math">\(w_{i}\)</span> is drawn from a Gaussian distribution,
+centered on zero and with a precision <span class="math">\(\lambda_{i}\)</span>:</p>
 <div class="math">
-<p><img src="../_images/math/e0dbb05b8bf9656ef6b32514010a9bfe514c9945.png" alt="p(w|\lambda) = \mathcal{N}(w|0,A^{-1})"/></p>
-</div><p>with <img class="math" src="../_images/math/149c8337ae0f9ffc3e3c6021f779738b650ae69f.png" alt="diag \; (A) = \lambda = \{\lambda_{1},...,\lambda_{p}\}"/>.</p>
-<p>In contrast to <a class="reference internal" href="#id10">Bayesian Ridge Regression</a>, each coordinate of <img class="math" src="../_images/math/8cef10bb133d7cb70cdf6433fc0cbef817b7b5aa.png" alt="w_{i}"/>
-has its own standard deviation <img class="math" src="../_images/math/159e1bfcbbeedf7e28983ee80db2b2d37c3b3ebc.png" alt="\lambda_i"/>. The prior over all
-<img class="math" src="../_images/math/159e1bfcbbeedf7e28983ee80db2b2d37c3b3ebc.png" alt="\lambda_i"/> is chosen to be the same gamma distribution given by
-hyperparameters <img class="math" src="../_images/math/a2c5c1af213db8e97bdaaf60c8fceab2faef8271.png" alt="\lambda_1"/> and <img class="math" src="../_images/math/6bf459c11ce1eb9a1bfa05d02185f322e796f5f4.png" alt="\lambda_2"/>.</p>
+\[p(w|\lambda) = \mathcal{N}(w|0,A^{-1})\]</div>
+<p>with <span class="math">\(diag \; (A) = \lambda = \{\lambda_{1},...,\lambda_{p}\}\)</span>.</p>
+<p>In contrast to <a class="reference internal" href="#id10">Bayesian Ridge Regression</a>, each coordinate of <span class="math">\(w_{i}\)</span>
+has its own standard deviation <span class="math">\(\lambda_i\)</span>. The prior over all
+<span class="math">\(\lambda_i\)</span> is chosen to be the same gamma distribution given by
+hyperparameters <span class="math">\(\lambda_1\)</span> and <span class="math">\(\lambda_2\)</span>.</p>
 <div class="figure align-center">
 <a class="reference external image-reference" href="../auto_examples/linear_model/plot_ard.html"><img alt="../_images/sphx_glr_plot_ard_0011.png" src="../_images/sphx_glr_plot_ard_0011.png" style="width: 300.0px; height: 250.0px;" /></a>
 </div>
@@ -841,13 +842,13 @@ regularization.</p>
 <p>As an optimization problem, binary class L2 penalized logistic regression
 minimizes the following cost function:</p>
 <div class="math">
-<p><img src="../_images/math/760c999ccbc78b72d2a91186ba55ce37f0d2cf37.png" alt="\underset{w, c}{min\,} \frac{1}{2}w^T w + C \sum_{i=1}^n \log(\exp(- y_i (X_i^T w + c)) + 1) ."/></p>
-</div><p>Similarly, L1 regularized logistic regression solves the following
+\[\underset{w, c}{min\,} \frac{1}{2}w^T w + C \sum_{i=1}^n \log(\exp(- y_i (X_i^T w + c)) + 1) .\]</div>
+<p>Similarly, L1 regularized logistic regression solves the following
 optimization problem</p>
 <div class="math">
-<p><img src="../_images/math/a6539b34162763670be34aa0c6f4c3fd3e8839e7.png" alt="\underset{w, c}{min\,} \|w\|_1 + C \sum_{i=1}^n \log(\exp(- y_i (X_i^T w + c)) + 1)."/></p>
-</div><p>Note that, in this notation, it’s assumed that the observation <img class="math" src="../_images/math/07f6018e00c747406442bb3912e0209766fc9090.png" alt="y_i"/> takes values in the set
-<img class="math" src="../_images/math/2b96320ce4d8d4e4fef4093d11679e9c4e3e9cda.png" alt="{-1, 1}"/> at trial <img class="math" src="../_images/math/df0deb143e5ac127f00bd248ee8001ecae572adc.png" alt="i"/>.</p>
+\[\underset{w, c}{min\,} \|w\|_1 + C \sum_{i=1}^n \log(\exp(- y_i (X_i^T w + c)) + 1).\]</div>
+<p>Note that, in this notation, it’s assumed that the observation <span class="math">\(y_i\)</span> takes values in the set
+<span class="math">\({-1, 1}\)</span> at trial <span class="math">\(i\)</span>.</p>
 <p>The solvers implemented in the class <a class="reference internal" href="generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="sklearn.linear_model.LogisticRegression"><code class="xref py py-class docutils literal"><span class="pre">LogisticRegression</span></code></a>
 are “liblinear”, “newton-cg”, “lbfgs”, “sag” and “saga”:</p>
 <p>The solver “liblinear” uses a coordinate descent (CD) algorithm, and relies
@@ -1196,8 +1197,8 @@ spatial median which is a generalization of the median to multiple
 dimensions <a class="footnote-reference" href="#f2" id="id28">[9]</a>.</p>
 <p>In terms of time and space complexity, Theil-Sen scales according to</p>
 <div class="math">
-<p><img src="../_images/math/cbf87473164b3658d7ba9e55d88133d12c409a35.png" alt="\binom{n_{samples}}{n_{subsamples}}"/></p>
-</div><p>which makes it infeasible to be applied exhaustively to problems with a
+\[\binom{n_{samples}}{n_{subsamples}}\]</div>
+<p>which makes it infeasible to be applied exhaustively to problems with a
 large number of samples and features. Therefore, the magnitude of a
 subpopulation can be chosen to limit the time and space complexity by
 considering only a random subset of all possible combinations.</p>
@@ -1240,14 +1241,14 @@ but gives a lesser weight to them.</p>
 </div>
 <p>The loss function that <a class="reference internal" href="generated/sklearn.linear_model.HuberRegressor.html#sklearn.linear_model.HuberRegressor" title="sklearn.linear_model.HuberRegressor"><code class="xref py py-class docutils literal"><span class="pre">HuberRegressor</span></code></a> minimizes is given by</p>
 <div class="math">
-<p><img src="../_images/math/0d258a58c106569aa29ce544fda8f206ada92c18.png" alt="\underset{w, \sigma}{min\,} {\sum_{i=1}^n\left(\sigma + H_m\left(\frac{X_{i}w - y_{i}}{\sigma}\right)\sigma\right) + \alpha {||w||_2}^2}"/></p>
-</div><p>where</p>
+\[\underset{w, \sigma}{min\,} {\sum_{i=1}^n\left(\sigma + H_m\left(\frac{X_{i}w - y_{i}}{\sigma}\right)\sigma\right) + \alpha {||w||_2}^2}\]</div>
+<p>where</p>
 <div class="math">
-<p><img src="../_images/math/eac100ea9c5c41a717a9414ce87e34b43de19c35.png" alt="H_m(z) = \begin{cases}
+\[\begin{split}H_m(z) = \begin{cases}
        z^2, &amp; \text {if } |z| &lt; \epsilon, \\
        2\epsilon|z| - \epsilon^2, &amp; \text{otherwise}
-\end{cases}"/></p>
-</div><p>It is advised to set the parameter <code class="docutils literal"><span class="pre">epsilon</span></code> to 1.35 to achieve 95% statistical efficiency.</p>
+\end{cases}\end{split}\]</div>
+<p>It is advised to set the parameter <code class="docutils literal"><span class="pre">epsilon</span></code> to 1.35 to achieve 95% statistical efficiency.</p>
 </div>
 <div class="section" id="notes">
 <h3>1.1.15.5. Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h3>
@@ -1291,20 +1292,20 @@ range of data.</p>
 regression case, you might have a model that looks like this for
 two-dimensional data:</p>
 <div class="math">
-<p><img src="../_images/math/3666ec3bc883af433b318bff9143b5166bcaef15.png" alt="\hat{y}(w, x) = w_0 + w_1 x_1 + w_2 x_2"/></p>
-</div><p>If we want to fit a paraboloid to the data instead of a plane, we can combine
+\[\hat{y}(w, x) = w_0 + w_1 x_1 + w_2 x_2\]</div>
+<p>If we want to fit a paraboloid to the data instead of a plane, we can combine
 the features in second-order polynomials, so that the model looks like this:</p>
 <div class="math">
-<p><img src="../_images/math/1e1f74179df321954b823943c08d555a524e69f9.png" alt="\hat{y}(w, x) = w_0 + w_1 x_1 + w_2 x_2 + w_3 x_1 x_2 + w_4 x_1^2 + w_5 x_2^2"/></p>
-</div><p>The (sometimes surprising) observation is that this is <em>still a linear model</em>:
+\[\hat{y}(w, x) = w_0 + w_1 x_1 + w_2 x_2 + w_3 x_1 x_2 + w_4 x_1^2 + w_5 x_2^2\]</div>
+<p>The (sometimes surprising) observation is that this is <em>still a linear model</em>:
 to see this, imagine creating a new variable</p>
 <div class="math">
-<p><img src="../_images/math/2c0a9947255ef61995c3f5e6319fc7fdfa3503c6.png" alt="z = [x_1, x_2, x_1 x_2, x_1^2, x_2^2]"/></p>
-</div><p>With this re-labeling of the data, our problem can be written</p>
+\[z = [x_1, x_2, x_1 x_2, x_1^2, x_2^2]\]</div>
+<p>With this re-labeling of the data, our problem can be written</p>
 <div class="math">
-<p><img src="../_images/math/618623438e33ecf053d364a0b938f056cd758b34.png" alt="\hat{y}(w, x) = w_0 + w_1 z_1 + w_2 z_2 + w_3 z_3 + w_4 z_4 + w_5 z_5"/></p>
-</div><p>We see that the resulting <em>polynomial regression</em> is in the same class of
-linear models we’d considered above (i.e. the model is linear in <img class="math" src="../_images/math/ecd1ee2a1cd226b40c37e079aca62398d4b774f5.png" alt="w"/>)
+\[\hat{y}(w, x) = w_0 + w_1 z_1 + w_2 z_2 + w_3 z_3 + w_4 z_4 + w_5 z_5\]</div>
+<p>We see that the resulting <em>polynomial regression</em> is in the same class of
+linear models we’d considered above (i.e. the model is linear in <span class="math">\(w\)</span>)
 and can be solved by the same techniques.  By considering linear fits within
 a higher-dimensional space built with these basis functions, the model has the
 flexibility to fit a much broader range of data.</p>
@@ -1330,8 +1331,8 @@ of a given degree.  It can be used as follows:</p>
 <span class="go">       [ 1.,  4.,  5., 16., 20., 25.]])</span>
 </pre></div>
 </div>
-<p>The features of <code class="docutils literal"><span class="pre">X</span></code> have been transformed from <img class="math" src="../_images/math/f75be564a03e84d56ceb3b55386f45b58d2f9b3a.png" alt="[x_1, x_2]"/> to
-<img class="math" src="../_images/math/812a701e111e7fc5dc083e98f619aacc1e8ec56e.png" alt="[1, x_1, x_2, x_1^2, x_1 x_2, x_2^2]"/>, and can now be used within
+<p>The features of <code class="docutils literal"><span class="pre">X</span></code> have been transformed from <span class="math">\([x_1, x_2]\)</span> to
+<span class="math">\([1, x_1, x_2, x_1^2, x_1 x_2, x_2^2]\)</span>, and can now be used within
 any linear model.</p>
 <p>This sort of preprocessing can be streamlined with the
 <a class="reference internal" href="compose.html#pipeline"><span class="std std-ref">Pipeline</span></a> tools. A single object representing a simple
@@ -1354,12 +1355,12 @@ polynomial regression can be created and used as follows:</p>
 the input polynomial coefficients.</p>
 <p>In some cases it’s not necessary to include higher powers of any single feature,
 but only the so-called <em>interaction features</em>
-that multiply together at most <img class="math" src="../_images/math/b9d10b54744d07746b97f53c55eb98046fd76c8c.png" alt="d"/> distinct features.
+that multiply together at most <span class="math">\(d\)</span> distinct features.
 These can be gotten from <a class="reference internal" href="generated/sklearn.preprocessing.PolynomialFeatures.html#sklearn.preprocessing.PolynomialFeatures" title="sklearn.preprocessing.PolynomialFeatures"><code class="xref py py-class docutils literal"><span class="pre">PolynomialFeatures</span></code></a> with the setting
 <code class="docutils literal"><span class="pre">interaction_only=True</span></code>.</p>
 <p>For example, when dealing with boolean features,
-<img class="math" src="../_images/math/f6482a828417735ebd0aeb8117358b78a1090b6b.png" alt="x_i^n = x_i"/> for all <img class="math" src="../_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/> and is therefore useless;
-but <img class="math" src="../_images/math/65d728c141eeafa8aa4c3499e9d2e8f6b755c903.png" alt="x_i x_j"/> represents the conjunction of two booleans.
+<span class="math">\(x_i^n = x_i\)</span> for all <span class="math">\(n\)</span> and is therefore useless;
+but <span class="math">\(x_i x_j\)</span> represents the conjunction of two booleans.
 This way, we can solve the XOR problem with a linear classifier:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">Perceptron</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">PolynomialFeatures</span>

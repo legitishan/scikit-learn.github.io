@@ -34,6 +34,7 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="../_static/js/copybutton.js"></script>
     <script type="text/javascript" src="../_static/js/extra.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_SVG"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -297,31 +298,31 @@ subgraphs.</p>
 <p>An approximate solution to the optimal normalized cut may be found via
 the generalized eigenvalue decomposition of the Laplacian of the
 graph. Usually this would mean working directly with the Laplacian
-matrix. If the original data matrix <img class="math" src="../_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> has shape <img class="math" src="../_images/math/a4aa98eb66dde627d2ff991463b1548b747fc221.png" alt="m
-\times n"/>, the Laplacian matrix for the corresponding bipartite graph
-has shape <img class="math" src="../_images/math/db0c11cdac309143cbe7ed42ce3601c670a38ab4.png" alt="(m + n) \times (m + n)"/>. However, in this case it is
-possible to work directly with <img class="math" src="../_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/>, which is smaller and more
+matrix. If the original data matrix <span class="math">\(A\)</span> has shape <span class="math">\(m
+\times n\)</span>, the Laplacian matrix for the corresponding bipartite graph
+has shape <span class="math">\((m + n) \times (m + n)\)</span>. However, in this case it is
+possible to work directly with <span class="math">\(A\)</span>, which is smaller and more
 efficient.</p>
-<p>The input matrix <img class="math" src="../_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is preprocessed as follows:</p>
+<p>The input matrix <span class="math">\(A\)</span> is preprocessed as follows:</p>
 <div class="math">
-<p><img src="../_images/math/a7c8a7222f104393fe9778e796d8c429b0c22c32.png" alt="A_n = R^{-1/2} A C^{-1/2}"/></p>
-</div><p>Where <img class="math" src="../_images/math/a00254b18ffa992f0ef19f6e6e095b83c8f85e94.png" alt="R"/> is the diagonal matrix with entry <img class="math" src="../_images/math/df0deb143e5ac127f00bd248ee8001ecae572adc.png" alt="i"/> equal to
-<img class="math" src="../_images/math/0cff13082b1c310f63732c327e38e0a5bab69dc6.png" alt="\sum_{j} A_{ij}"/> and <img class="math" src="../_images/math/afce44aa7c55836ca9345404c22fc7b599d2ed84.png" alt="C"/> is the diagonal matrix with
-entry <img class="math" src="../_images/math/6b21e0b0899a0d2879d3b8019087fa630bab4ea2.png" alt="j"/> equal to <img class="math" src="../_images/math/2a9f6f13d20d5cbad5cd1562d900ff3dad9617b5.png" alt="\sum_{i} A_{ij}"/>.</p>
-<p>The singular value decomposition, <img class="math" src="../_images/math/9307ab783e3fbb06db6a9c92d9d8c72e273cdaf8.png" alt="A_n = U \Sigma V^\top"/>,
-provides the partitions of the rows and columns of <img class="math" src="../_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/>. A subset
+\[A_n = R^{-1/2} A C^{-1/2}\]</div>
+<p>Where <span class="math">\(R\)</span> is the diagonal matrix with entry <span class="math">\(i\)</span> equal to
+<span class="math">\(\sum_{j} A_{ij}\)</span> and <span class="math">\(C\)</span> is the diagonal matrix with
+entry <span class="math">\(j\)</span> equal to <span class="math">\(\sum_{i} A_{ij}\)</span>.</p>
+<p>The singular value decomposition, <span class="math">\(A_n = U \Sigma V^\top\)</span>,
+provides the partitions of the rows and columns of <span class="math">\(A\)</span>. A subset
 of the left singular vectors gives the row partitions, and a subset
 of the right singular vectors gives the column partitions.</p>
-<p>The <img class="math" src="../_images/math/84deb2b5c91775b5b9760f47a4284d4b40093461.png" alt="\ell = \lceil \log_2 k \rceil"/> singular vectors, starting
+<p>The <span class="math">\(\ell = \lceil \log_2 k \rceil\)</span> singular vectors, starting
 from the second, provide the desired partitioning information. They
-are used to form the matrix <img class="math" src="../_images/math/bcb2457ac9d8995a4f34d57cadac7ecbbe58f3bd.png" alt="Z"/>:</p>
+are used to form the matrix <span class="math">\(Z\)</span>:</p>
 <div class="math">
-<p><img src="../_images/math/136c762c8efedf19486f6e7e8acf2e4572bc3398.png" alt="Z = \begin{bmatrix} R^{-1/2} U \\\\
+\[\begin{split}Z = \begin{bmatrix} R^{-1/2} U \\\\
                     C^{-1/2} V
-      \end{bmatrix}"/></p>
-</div><p>where the columns of <img class="math" src="../_images/math/169c982b5e649cd1bd6445df5583affe427ea269.png" alt="U"/> are <img class="math" src="../_images/math/406c5eea588bda09a3d9dd45af5183772c72d876.png" alt="u_2, \dots, u_{\ell +
-1}"/>, and similarly for <img class="math" src="../_images/math/fae0e7a73748991e5540d874416000583f64f58e.png" alt="V"/>.</p>
-<p>Then the rows of <img class="math" src="../_images/math/bcb2457ac9d8995a4f34d57cadac7ecbbe58f3bd.png" alt="Z"/> are clustered using <a class="reference internal" href="clustering.html#k-means"><span class="std std-ref">k-means</span></a>. The first <code class="docutils literal"><span class="pre">n_rows</span></code> labels provide the row partitioning,
+      \end{bmatrix}\end{split}\]</div>
+<p>where the columns of <span class="math">\(U\)</span> are <span class="math">\(u_2, \dots, u_{\ell +
+1}\)</span>, and similarly for <span class="math">\(V\)</span>.</p>
+<p>Then the rows of <span class="math">\(Z\)</span> are clustered using <a class="reference internal" href="clustering.html#k-means"><span class="std std-ref">k-means</span></a>. The first <code class="docutils literal"><span class="pre">n_rows</span></code> labels provide the row partitioning,
 and the remaining <code class="docutils literal"><span class="pre">n_columns</span></code> labels provide the column partitioning.</p>
 <div class="topic">
 <p class="topic-title first">Examples:</p>
@@ -356,7 +357,7 @@ corresponding blockwise-constant checkerboard matrix provides a good
 approximation to the original matrix.</p>
 <div class="section" id="id3">
 <h3>2.4.2.1. Mathematical formulation<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
-<p>The input matrix <img class="math" src="../_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is first normalized to make the
+<p>The input matrix <span class="math">\(A\)</span> is first normalized to make the
 checkerboard pattern more obvious. There are three possible methods:</p>
 <ol class="arabic simple">
 <li><em>Independent row and column normalization</em>, as in Spectral
@@ -365,22 +366,22 @@ columns sum to a different constant.</li>
 <li><strong>Bistochastization</strong>: repeated row and column normalization until
 convergence. This method makes both rows and columns sum to the
 same constant.</li>
-<li><strong>Log normalization</strong>: the log of the data matrix is computed: <img class="math" src="../_images/math/f2c2a8ea3b216bb8693ecb2007fdf40bbec05eb0.png" alt="L =
-\log A"/>. Then the column mean <img class="math" src="../_images/math/13ad8d09b9addbf06f32031a30e00d5446149ed6.png" alt="\overline{L_{i \cdot}}"/>, row mean
-<img class="math" src="../_images/math/d22f8be276504dd5ab9f54042b3bf37fa66971e7.png" alt="\overline{L_{\cdot j}}"/>, and overall mean <img class="math" src="../_images/math/25937f902e4dba82f6d70067474c5e69bbeb3711.png" alt="\overline{L_{\cdot
-\cdot}}"/> of <img class="math" src="../_images/math/ae2b750f71e1fc0daaa3de9a85d42794d7cd1326.png" alt="L"/> are computed. The final matrix is computed
+<li><strong>Log normalization</strong>: the log of the data matrix is computed: <span class="math">\(L =
+\log A\)</span>. Then the column mean <span class="math">\(\overline{L_{i \cdot}}\)</span>, row mean
+<span class="math">\(\overline{L_{\cdot j}}\)</span>, and overall mean <span class="math">\(\overline{L_{\cdot
+\cdot}}\)</span> of <span class="math">\(L\)</span> are computed. The final matrix is computed
 according to the formula</li>
 </ol>
 <div class="math">
-<p><img src="../_images/math/1a59f73d14f3c7dbf1f1de48de775800f90d88e5.png" alt="K_{ij} = L_{ij} - \overline{L_{i \cdot}} - \overline{L_{\cdot
-j}} + \overline{L_{\cdot \cdot}}"/></p>
-</div><p>After normalizing, the first few singular vectors are computed, just
+\[K_{ij} = L_{ij} - \overline{L_{i \cdot}} - \overline{L_{\cdot
+j}} + \overline{L_{\cdot \cdot}}\]</div>
+<p>After normalizing, the first few singular vectors are computed, just
 as in the Spectral Co-Clustering algorithm.</p>
 <p>If log normalization was used, all the singular vectors are
 meaningful. However, if independent normalization or bistochastization
-were used, the first singular vectors, <img class="math" src="../_images/math/cf40a917043ed52a5b1c5bc60daf0128a1b47f64.png" alt="u_1"/> and <img class="math" src="../_images/math/8fecd40ca8eb7e61734850b21956deba20be3066.png" alt="v_1"/>.
+were used, the first singular vectors, <span class="math">\(u_1\)</span> and <span class="math">\(v_1\)</span>.
 are discarded. From now on, the “first” singular vectors refers to
-<img class="math" src="../_images/math/abc59fbd07c450fde332de0de33e768b132143d3.png" alt="u_2 \dots u_{p+1}"/> and <img class="math" src="../_images/math/fb6d1f67e52083c030936b2f244850d5193d9b26.png" alt="v_2 \dots v_{p+1}"/> except in the
+<span class="math">\(u_2 \dots u_{p+1}\)</span> and <span class="math">\(v_2 \dots v_{p+1}\)</span> except in the
 case of log normalization.</p>
 <p>Given these singular vectors, they are ranked according to which can
 be best approximated by a piecewise-constant vector. The
@@ -388,15 +389,15 @@ approximations for each vector are found using one-dimensional k-means
 and scored using the Euclidean distance. Some subset of the best left
 and right singular vector are selected. Next, the data is projected to
 this best subset of singular vectors and clustered.</p>
-<p>For instance, if <img class="math" src="../_images/math/27d463da4622be5b3ef1d4176ced7d7a323c6425.png" alt="p"/> singular vectors were calculated, the
-<img class="math" src="../_images/math/620a3ce6403ec82f1347af9985bc03f7a9382f4a.png" alt="q"/> best are found as described, where <img class="math" src="../_images/math/1bc98d57cbfe3d7dc1419afe1527ea0771ce74bd.png" alt="q&lt;p"/>. Let
-<img class="math" src="../_images/math/169c982b5e649cd1bd6445df5583affe427ea269.png" alt="U"/> be the matrix with columns the <img class="math" src="../_images/math/620a3ce6403ec82f1347af9985bc03f7a9382f4a.png" alt="q"/> best left singular
-vectors, and similarly <img class="math" src="../_images/math/fae0e7a73748991e5540d874416000583f64f58e.png" alt="V"/> for the right. To partition the rows,
-the rows of <img class="math" src="../_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> are projected to a <img class="math" src="../_images/math/620a3ce6403ec82f1347af9985bc03f7a9382f4a.png" alt="q"/> dimensional space:
-<img class="math" src="../_images/math/b6f0db892a2f7ed877b3a83674ee1932a16340cb.png" alt="A * V"/>. Treating the <img class="math" src="../_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/> rows of this <img class="math" src="../_images/math/72ed3a9ec9bd6e7c124620e1aac526277847d074.png" alt="m \times q"/>
+<p>For instance, if <span class="math">\(p\)</span> singular vectors were calculated, the
+<span class="math">\(q\)</span> best are found as described, where <span class="math">\(q&lt;p\)</span>. Let
+<span class="math">\(U\)</span> be the matrix with columns the <span class="math">\(q\)</span> best left singular
+vectors, and similarly <span class="math">\(V\)</span> for the right. To partition the rows,
+the rows of <span class="math">\(A\)</span> are projected to a <span class="math">\(q\)</span> dimensional space:
+<span class="math">\(A * V\)</span>. Treating the <span class="math">\(m\)</span> rows of this <span class="math">\(m \times q\)</span>
 matrix as samples and clustering using k-means yields the row labels.
-Similarly, projecting the columns to <img class="math" src="../_images/math/a3091a5335fd5b9fc73ede24de6b277d853161c5.png" alt="A^{\top} * U"/> and
-clustering this <img class="math" src="../_images/math/5e9d7e95b083ffb7b8cb72b0a16199c4ef63cef3.png" alt="n \times q"/> matrix yields the column labels.</p>
+Similarly, projecting the columns to <span class="math">\(A^{\top} * U\)</span> and
+clustering this <span class="math">\(n \times q\)</span> matrix yields the column labels.</p>
 <div class="topic">
 <p class="topic-title first">Examples:</p>
 <ul class="simple">
@@ -430,8 +431,8 @@ similarities into an overall score.</p>
 <p>To compare individual biclusters, several measures have been used. For
 now, only the Jaccard index is implemented:</p>
 <div class="math">
-<p><img src="../_images/math/380ca2d20a08e36aecb173790e00d05b274603ce.png" alt="J(A, B) = \frac{|A \cap B|}{|A| + |B| - |A \cap B|}"/></p>
-</div><p>where <img class="math" src="../_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> and <img class="math" src="../_images/math/9805f44feec6f81d376d09e88b8236635edbb3c8.png" alt="B"/> are biclusters, <img class="math" src="../_images/math/2224fea2d639f17ad5a333cea91e3e2e61f6d852.png" alt="|A \cap B|"/> is
+\[J(A, B) = \frac{|A \cap B|}{|A| + |B| - |A \cap B|}\]</div>
+<p>where <span class="math">\(A\)</span> and <span class="math">\(B\)</span> are biclusters, <span class="math">\(|A \cap B|\)</span> is
 the number of elements in their intersection. The Jaccard index
 achieves its minimum of 0 when the biclusters to not overlap at all
 and its maximum of 1 when they are identical.</p>

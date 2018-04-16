@@ -34,6 +34,7 @@
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../_static/js/copybutton.js"></script>
     <script type="text/javascript" src="../../_static/js/extra.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_SVG"></script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -307,20 +308,20 @@ estimator on <strong>new data</strong>. This is why datasets are often split int
 <div class="section" id="the-curse-of-dimensionality">
 <span id="curse-of-dimensionality"></span><h3>The curse of dimensionality<a class="headerlink" href="#the-curse-of-dimensionality" title="Permalink to this headline">¶</a></h3>
 <p>For an estimator to be effective, you need the distance between neighboring
-points to be less than some value <img class="math" src="../../_images/math/b9d10b54744d07746b97f53c55eb98046fd76c8c.png" alt="d"/>, which depends on the problem.
-In one dimension, this requires on average <img class="math" src="../../_images/math/9d5003ef060ec7f0fd1382b2121669e8052f84c1.png" alt="n \sim 1/d"/> points.
-In the context of the above <img class="math" src="../../_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f30438.png" alt="k"/>-NN example, if the data is described by
-just one feature with values ranging from 0 to 1 and with <img class="math" src="../../_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/> training
-observations, then new data will be no further away than <img class="math" src="../../_images/math/5fb412b4e8f9665622ddc2263d9925cd9a97207e.png" alt="1/n"/>.
+points to be less than some value <span class="math">\(d\)</span>, which depends on the problem.
+In one dimension, this requires on average <span class="math">\(n \sim 1/d\)</span> points.
+In the context of the above <span class="math">\(k\)</span>-NN example, if the data is described by
+just one feature with values ranging from 0 to 1 and with <span class="math">\(n\)</span> training
+observations, then new data will be no further away than <span class="math">\(1/n\)</span>.
 Therefore, the nearest neighbor decision rule will be efficient as soon as
-<img class="math" src="../../_images/math/5fb412b4e8f9665622ddc2263d9925cd9a97207e.png" alt="1/n"/> is small compared to the scale of between-class feature variations.</p>
-<p>If the number of features is <img class="math" src="../../_images/math/27d463da4622be5b3ef1d4176ced7d7a323c6425.png" alt="p"/>, you now require <img class="math" src="../../_images/math/c305e3ef0f9b8d80cc47f24deed83e2cc97b1550.png" alt="n \sim 1/d^p"/>
-points.  Let’s say that we require 10 points in one dimension: now <img class="math" src="../../_images/math/f4fe93c0005dc95b73c0d99b732aabe26f362c46.png" alt="10^p"/>
-points are required in <img class="math" src="../../_images/math/27d463da4622be5b3ef1d4176ced7d7a323c6425.png" alt="p"/> dimensions to pave the <img class="math" src="../../_images/math/02b99e25ae92d555c285768eb92a199abd3cf9e2.png" alt="[0, 1]"/> space.
-As <img class="math" src="../../_images/math/27d463da4622be5b3ef1d4176ced7d7a323c6425.png" alt="p"/> becomes large, the number of training points required for a good
+<span class="math">\(1/n\)</span> is small compared to the scale of between-class feature variations.</p>
+<p>If the number of features is <span class="math">\(p\)</span>, you now require <span class="math">\(n \sim 1/d^p\)</span>
+points.  Let’s say that we require 10 points in one dimension: now <span class="math">\(10^p\)</span>
+points are required in <span class="math">\(p\)</span> dimensions to pave the <span class="math">\([0, 1]\)</span> space.
+As <span class="math">\(p\)</span> becomes large, the number of training points required for a good
 estimator grows exponentially.</p>
 <p>For example, if each point is just a single number (8 bytes), then an
-effective <img class="math" src="../../_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f30438.png" alt="k"/>-NN estimator in a paltry <img class="math" src="../../_images/math/7c387c629c97daf0b6db08d0120b632026a97073.png" alt="p \sim 20"/> dimensions would
+effective <span class="math">\(k\)</span>-NN estimator in a paltry <span class="math">\(p \sim 20\)</span> dimensions would
 require more training data than the current estimated size of the entire
 internet (±1000 Exabytes or so).</p>
 <p>This is called the
@@ -352,13 +353,13 @@ in its simplest form, fits a linear model to the data set by adjusting
 a set of parameters in order to make the sum of the squared residuals
 of the model as small as possible.</p>
 <a class="reference external image-reference" href="../../auto_examples/linear_model/plot_ols.html"><img alt="../../_images/sphx_glr_plot_ols_001.png" class="align-right" src="../../_images/sphx_glr_plot_ols_001.png" style="width: 256.0px; height: 192.0px;" /></a>
-<p>Linear models: <img class="math" src="../../_images/math/5cab27b3e19f59eb8f8f2f6073e427431775965a.png" alt="y = X\beta + \epsilon"/></p>
+<p>Linear models: <span class="math">\(y = X\beta + \epsilon\)</span></p>
 <blockquote>
 <div><ul class="simple">
-<li><img class="math" src="../../_images/math/7a7bb470119808e2db2879fc2b2526f467b7a40b.png" alt="X"/>: data</li>
-<li><img class="math" src="../../_images/math/276f7e256cbddeb81eee42e1efc348f3cb4ab5f8.png" alt="y"/>: target variable</li>
-<li><img class="math" src="../../_images/math/410a9d0df9c135dd73b269cba7ef04dcfd932b1f.png" alt="\beta"/>: Coefficients</li>
-<li><img class="math" src="../../_images/math/65d19c66c148d5016c6a89d26486bf6d1966ded1.png" alt="\epsilon"/>: Observation noise</li>
+<li><span class="math">\(X\)</span>: data</li>
+<li><span class="math">\(y\)</span>: target variable</li>
+<li><span class="math">\(\beta\)</span>: Coefficients</li>
+<li><span class="math">\(\epsilon\)</span>: Observation noise</li>
 </ul>
 </div></blockquote>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">linear_model</span>
@@ -498,9 +499,9 @@ regression is not the right approach as it will give too much weight to
 data far from the decision frontier. A linear approach is to fit a sigmoid
 function or <strong>logistic</strong> function:</p>
 <div class="math">
-<p><img src="../../_images/math/88af9a4697baeab6b5a1e14b0b4cfe7fa643990a.png" alt="y = \textrm{sigmoid}(X\beta - \textrm{offset}) + \epsilon =
-\frac{1}{1 + \textrm{exp}(- X\beta + \textrm{offset})} + \epsilon"/></p>
-</div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">logistic</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">LogisticRegression</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mf">1e5</span><span class="p">)</span>
+\[y = \textrm{sigmoid}(X\beta - \textrm{offset}) + \epsilon =
+\frac{1}{1 + \textrm{exp}(- X\beta + \textrm{offset})} + \epsilon\]</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">logistic</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">LogisticRegression</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mf">1e5</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">logistic</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">iris_X_train</span><span class="p">,</span> <span class="n">iris_y_train</span><span class="p">)</span>
 <span class="go">LogisticRegression(C=100000.0, class_weight=None, dual=False,</span>
 <span class="go">          fit_intercept=True, intercept_scaling=1, max_iter=100,</span>

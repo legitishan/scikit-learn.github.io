@@ -34,6 +34,7 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="../_static/js/copybutton.js"></script>
     <script type="text/javascript" src="../_static/js/extra.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_SVG"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -269,13 +270,13 @@ follows:</p>
 </pre></div>
 </div>
 <p>Here we have used <code class="docutils literal"><span class="pre">kernel='gaussian'</span></code>, as seen above.
-Mathematically, a kernel is a positive function <img class="math" src="../_images/math/88f86c9420421950f3a197f506d070a739926642.png" alt="K(x;h)"/>
-which is controlled by the bandwidth parameter <img class="math" src="../_images/math/293fb39e1b93282c804a86186e721b32f829f1b2.png" alt="h"/>.
-Given this kernel form, the density estimate at a point <img class="math" src="../_images/math/276f7e256cbddeb81eee42e1efc348f3cb4ab5f8.png" alt="y"/> within
-a group of points <img class="math" src="../_images/math/bf1873c9355f4409a0f498ba584399616319829b.png" alt="x_i; i=1\cdots N"/> is given by:</p>
+Mathematically, a kernel is a positive function <span class="math">\(K(x;h)\)</span>
+which is controlled by the bandwidth parameter <span class="math">\(h\)</span>.
+Given this kernel form, the density estimate at a point <span class="math">\(y\)</span> within
+a group of points <span class="math">\(x_i; i=1\cdots N\)</span> is given by:</p>
 <div class="math">
-<p><img src="../_images/math/d1d4fad62d41386f5af602f68f5dd53f03bf92fa.png" alt="\rho_K(y) = \sum_{i=1}^{N} K((y - x_i) / h)"/></p>
-</div><p>The bandwidth here acts as a smoothing parameter, controlling the tradeoff
+\[\rho_K(y) = \sum_{i=1}^{N} K((y - x_i) / h)\]</div>
+<p>The bandwidth here acts as a smoothing parameter, controlling the tradeoff
 between bias and variance in the result.  A large bandwidth leads to a very
 smooth (i.e. high-bias) density distribution.  A small bandwidth leads
 to an unsmooth (i.e. high-variance) density distribution.</p>
@@ -285,22 +286,22 @@ forms, which are shown in the following figure:</p>
 <strong><a class="reference external" href="../auto_examples/neighbors/plot_kde_1d.html"><img alt="kde_kernels" src="../_images/sphx_glr_plot_kde_1d_0021.png" style="width: 512.0px; height: 384.0px;" /></a></strong></p><p>The form of these kernels is as follows:</p>
 <ul>
 <li><p class="first">Gaussian kernel (<code class="docutils literal"><span class="pre">kernel</span> <span class="pre">=</span> <span class="pre">'gaussian'</span></code>)</p>
-<p><img class="math" src="../_images/math/d45a22c5dc8427e67f5a8dca0497cea40c8697cb.png" alt="K(x; h) \propto \exp(- \frac{x^2}{2h^2} )"/></p>
+<p><span class="math">\(K(x; h) \propto \exp(- \frac{x^2}{2h^2} )\)</span></p>
 </li>
 <li><p class="first">Tophat kernel (<code class="docutils literal"><span class="pre">kernel</span> <span class="pre">=</span> <span class="pre">'tophat'</span></code>)</p>
-<p><img class="math" src="../_images/math/437c6b42e24e4b12c4496e13d2a8b1c0729b7200.png" alt="K(x; h) \propto 1"/> if <img class="math" src="../_images/math/b88c5390caf5c99c8e17425b19992fdce1198245.png" alt="x &lt; h"/></p>
+<p><span class="math">\(K(x; h) \propto 1\)</span> if <span class="math">\(x &lt; h\)</span></p>
 </li>
 <li><p class="first">Epanechnikov kernel (<code class="docutils literal"><span class="pre">kernel</span> <span class="pre">=</span> <span class="pre">'epanechnikov'</span></code>)</p>
-<p><img class="math" src="../_images/math/2c199098c419390c0f6a3c7db8ba2e6b6fb42f73.png" alt="K(x; h) \propto 1 - \frac{x^2}{h^2}"/></p>
+<p><span class="math">\(K(x; h) \propto 1 - \frac{x^2}{h^2}\)</span></p>
 </li>
 <li><p class="first">Exponential kernel (<code class="docutils literal"><span class="pre">kernel</span> <span class="pre">=</span> <span class="pre">'exponential'</span></code>)</p>
-<p><img class="math" src="../_images/math/fe779ad27d62c80a58b5978c79fe875da4ad1cc2.png" alt="K(x; h) \propto \exp(-x/h)"/></p>
+<p><span class="math">\(K(x; h) \propto \exp(-x/h)\)</span></p>
 </li>
 <li><p class="first">Linear kernel (<code class="docutils literal"><span class="pre">kernel</span> <span class="pre">=</span> <span class="pre">'linear'</span></code>)</p>
-<p><img class="math" src="../_images/math/0bcc52b28358eb00cbf5055745472d37864687fb.png" alt="K(x; h) \propto 1 - x/h"/> if <img class="math" src="../_images/math/b88c5390caf5c99c8e17425b19992fdce1198245.png" alt="x &lt; h"/></p>
+<p><span class="math">\(K(x; h) \propto 1 - x/h\)</span> if <span class="math">\(x &lt; h\)</span></p>
 </li>
 <li><p class="first">Cosine kernel (<code class="docutils literal"><span class="pre">kernel</span> <span class="pre">=</span> <span class="pre">'cosine'</span></code>)</p>
-<p><img class="math" src="../_images/math/e94d029cc9ea0177d30872920460c3f03a571a48.png" alt="K(x; h) \propto \cos(\frac{\pi x}{2h})"/> if <img class="math" src="../_images/math/b88c5390caf5c99c8e17425b19992fdce1198245.png" alt="x &lt; h"/></p>
+<p><span class="math">\(K(x; h) \propto \cos(\frac{\pi x}{2h})\)</span> if <span class="math">\(x &lt; h\)</span></p>
 </li>
 </ul>
 <p>The kernel density estimator can be used with any of the valid distance

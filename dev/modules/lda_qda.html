@@ -34,6 +34,7 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="../_static/js/copybutton.js"></script>
     <script type="text/javascript" src="../_static/js/extra.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_SVG"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -253,35 +254,33 @@ for dimensionality reduction of the Iris dataset</p>
 <div class="section" id="mathematical-formulation-of-the-lda-and-qda-classifiers">
 <h2>1.2.2. Mathematical formulation of the LDA and QDA classifiers<a class="headerlink" href="#mathematical-formulation-of-the-lda-and-qda-classifiers" title="Permalink to this headline">¶</a></h2>
 <p>Both LDA and QDA can be derived from simple probabilistic models which model
-the class conditional distribution of the data <img class="math" src="../_images/math/9645b6a35da0e999282a01e7eb9c0b987b968155.png" alt="P(X|y=k)"/> for each class
-<img class="math" src="../_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f30438.png" alt="k"/>. Predictions can then be obtained by using Bayes’ rule:</p>
+the class conditional distribution of the data <span class="math">\(P(X|y=k)\)</span> for each class
+<span class="math">\(k\)</span>. Predictions can then be obtained by using Bayes’ rule:</p>
 <div class="math">
-<p><img src="../_images/math/478e4d9a1681e569927f5731a20e736e1eb9094b.png" alt="P(y=k | X) = \frac{P(X | y=k) P(y=k)}{P(X)} = \frac{P(X | y=k) P(y = k)}{ \sum_{l} P(X | y=l) \cdot P(y=l)}"/></p>
-</div><p>and we select the class <img class="math" src="../_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f30438.png" alt="k"/> which maximizes this conditional probability.</p>
+\[P(y=k | X) = \frac{P(X | y=k) P(y=k)}{P(X)} = \frac{P(X | y=k) P(y = k)}{ \sum_{l} P(X | y=l) \cdot P(y=l)}\]</div>
+<p>and we select the class <span class="math">\(k\)</span> which maximizes this conditional probability.</p>
 <p>More specifically, for linear and quadratic discriminant analysis,
-<img class="math" src="../_images/math/0caa57fa1ad5e123266bda48e45b51c80b7e559f.png" alt="P(X|y)"/> is modelled as a multivariate Gaussian distribution with
+<span class="math">\(P(X|y)\)</span> is modelled as a multivariate Gaussian distribution with
 density:</p>
 <div class="math">
-<p><img src="../_images/math/95cae354a2d2675ee7c7b7a89f4d54e097253c54.png" alt="P(X | y=k) = \frac{1}{(2\pi)^{d/2} |\Sigma_k|^{1/2}}\exp\left(-\frac{1}{2} (X-\mu_k)^t \Sigma_k^{-1} (X-\mu_k)\right)"/></p>
-</div><p>where <img class="math" src="../_images/math/b9d10b54744d07746b97f53c55eb98046fd76c8c.png" alt="d"/> is the number of features.</p>
+\[P(X | y=k) = \frac{1}{(2\pi)^{d/2} |\Sigma_k|^{1/2}}\exp\left(-\frac{1}{2} (X-\mu_k)^t \Sigma_k^{-1} (X-\mu_k)\right)\]</div>
+<p>where <span class="math">\(d\)</span> is the number of features.</p>
 <p>To use this model as a classifier, we just need to estimate from the training
-data the class priors <img class="math" src="../_images/math/799322e39f8da8e10882b790cad5c8edddb4d464.png" alt="P(y=k)"/> (by the proportion of instances of class
-<img class="math" src="../_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f30438.png" alt="k"/>), the class means <img class="math" src="../_images/math/4c5e9e20a0019ba3e027121ffda9c4ef86e87042.png" alt="\mu_k"/> (by the empirical sample class means)
+data the class priors <span class="math">\(P(y=k)\)</span> (by the proportion of instances of class
+<span class="math">\(k\)</span>), the class means <span class="math">\(\mu_k\)</span> (by the empirical sample class means)
 and the covariance matrices (either by the empirical sample class covariance
 matrices, or by a regularized estimator: see the section on shrinkage below).</p>
 <p>In the case of LDA, the Gaussians for each class are assumed to share the same
-covariance matrix: <img class="math" src="../_images/math/69eb9440328a5f3e652acb6d66640a2f4d0351de.png" alt="\Sigma_k = \Sigma"/> for all <img class="math" src="../_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f30438.png" alt="k"/>. This leads to
+covariance matrix: <span class="math">\(\Sigma_k = \Sigma\)</span> for all <span class="math">\(k\)</span>. This leads to
 linear decision surfaces between, as can be seen by comparing the
-log-probability ratios <img class="math" src="../_images/math/d143022379c1410e998d48d6d437df2bd4ed0726.png" alt="\log[P(y=k | X) / P(y=l | X)]"/>:</p>
+log-probability ratios <span class="math">\(\log[P(y=k | X) / P(y=l | X)]\)</span>:</p>
 <div class="math">
-<p><img src="../_images/math/cbacb7a064087e77af3113017c6d6dd4f8c468e7.png" alt="\log\left(\frac{P(y=k|X)}{P(y=l|X)}\right)=
-\log\left(\frac{P(X|y=k)P(y=k)}{P(X|y=l)P(y=l)}\right)=0 \Leftrightarrow
-
-(\mu_k-\mu_l)^t\Sigma^{-1} X =
+\[ \begin{align}\begin{aligned}\log\left(\frac{P(y=k|X)}{P(y=l|X)}\right)=
+\log\left(\frac{P(X|y=k)P(y=k)}{P(X|y=l)P(y=l)}\right)=0 \Leftrightarrow\\(\mu_k-\mu_l)^t\Sigma^{-1} X =
 \frac{1}{2} (\mu_k^t \Sigma^{-1} \mu_k - \mu_l^t \Sigma^{-1} \mu_l)
-- \log\frac{P(y=k)}{P(y=l)}"/></p>
-</div><p>In the case of QDA, there are no assumptions on the covariance matrices
-<img class="math" src="../_images/math/9315088e89f6fb2f1229e64228d9462e76a2028b.png" alt="\Sigma_k"/> of the Gaussians, leading to quadratic decision surfaces. See
+- \log\frac{P(y=k)}{P(y=l)}\end{aligned}\end{align} \]</div>
+<p>In the case of QDA, there are no assumptions on the covariance matrices
+<span class="math">\(\Sigma_k\)</span> of the Gaussians, leading to quadratic decision surfaces. See
 <a class="footnote-reference" href="#id4" id="id1">[3]</a> for more details.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -296,22 +295,22 @@ classifier <a class="reference internal" href="generated/sklearn.naive_bayes.Gau
 <h2>1.2.3. Mathematical formulation of LDA dimensionality reduction<a class="headerlink" href="#mathematical-formulation-of-lda-dimensionality-reduction" title="Permalink to this headline">¶</a></h2>
 <p>To understand the use of LDA in dimensionality reduction, it is useful to start
 with a geometric reformulation of the LDA classification rule explained above.
-We write <img class="math" src="../_images/math/684381a21cd73ebbf43b63a087d3f7410ee99ce8.png" alt="K"/> for the total number of target classes. Since in LDA we
-assume that all classes have the same estimated covariance <img class="math" src="../_images/math/7b887ca4d449002abecf59a472644a272dfcb605.png" alt="\Sigma"/>, we
+We write <span class="math">\(K\)</span> for the total number of target classes. Since in LDA we
+assume that all classes have the same estimated covariance <span class="math">\(\Sigma\)</span>, we
 can rescale the data so that this covariance is the identity:</p>
 <div class="math">
-<p><img src="../_images/math/dde3ad7ccadedbd18f8a2b372c5ab577f0e8bde7.png" alt="X^* = D^{-1/2}U^t X\text{ with }\Sigma = UDU^t"/></p>
-</div><p>Then one can show that to classify a data point after scaling is equivalent to
-finding the estimated class mean <img class="math" src="../_images/math/7e3b8a648d99cac62d0a9d7b9cefd453f4d08e3c.png" alt="\mu^*_k"/> which is closest to the data
+\[X^* = D^{-1/2}U^t X\text{ with }\Sigma = UDU^t\]</div>
+<p>Then one can show that to classify a data point after scaling is equivalent to
+finding the estimated class mean <span class="math">\(\mu^*_k\)</span> which is closest to the data
 point in the Euclidean distance. But this can be done just as well after
-projecting on the <img class="math" src="../_images/math/d1fb41a058b1d3126362bd00674f573b11212607.png" alt="K-1"/> affine subspace <img class="math" src="../_images/math/6adac8763a5c7475cb646dcebafc7c21479b43ca.png" alt="H_K"/> generated by all the
-<img class="math" src="../_images/math/7e3b8a648d99cac62d0a9d7b9cefd453f4d08e3c.png" alt="\mu^*_k"/> for all classes. This shows that, implicit in the LDA
+projecting on the <span class="math">\(K-1\)</span> affine subspace <span class="math">\(H_K\)</span> generated by all the
+<span class="math">\(\mu^*_k\)</span> for all classes. This shows that, implicit in the LDA
 classifier, there is a dimensionality reduction by linear projection onto a
-<img class="math" src="../_images/math/d1fb41a058b1d3126362bd00674f573b11212607.png" alt="K-1"/> dimensional space.</p>
-<p>We can reduce the dimension even more, to a chosen <img class="math" src="../_images/math/ae2b750f71e1fc0daaa3de9a85d42794d7cd1326.png" alt="L"/>, by projecting
-onto the linear subspace <img class="math" src="../_images/math/744d535c7a0c99b544613ffe8f5cf6d4bef39068.png" alt="H_L"/> which maximize the variance of the
-<img class="math" src="../_images/math/7e3b8a648d99cac62d0a9d7b9cefd453f4d08e3c.png" alt="\mu^*_k"/> after projection (in effect, we are doing a form of PCA for the
-transformed class means <img class="math" src="../_images/math/7e3b8a648d99cac62d0a9d7b9cefd453f4d08e3c.png" alt="\mu^*_k"/>). This <img class="math" src="../_images/math/ae2b750f71e1fc0daaa3de9a85d42794d7cd1326.png" alt="L"/> corresponds to the
+<span class="math">\(K-1\)</span> dimensional space.</p>
+<p>We can reduce the dimension even more, to a chosen <span class="math">\(L\)</span>, by projecting
+onto the linear subspace <span class="math">\(H_L\)</span> which maximize the variance of the
+<span class="math">\(\mu^*_k\)</span> after projection (in effect, we are doing a form of PCA for the
+transformed class means <span class="math">\(\mu^*_k\)</span>). This <span class="math">\(L\)</span> corresponds to the
 <code class="docutils literal"><span class="pre">n_components</span></code> parameter used in the
 <a class="reference internal" href="generated/sklearn.discriminant_analysis.LinearDiscriminantAnalysis.html#sklearn.discriminant_analysis.LinearDiscriminantAnalysis.transform" title="sklearn.discriminant_analysis.LinearDiscriminantAnalysis.transform"><code class="xref py py-func docutils literal"><span class="pre">discriminant_analysis.LinearDiscriminantAnalysis.transform</span></code></a> method. See
 <a class="footnote-reference" href="#id4" id="id2">[3]</a> for more details.</p>
