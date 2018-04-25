@@ -217,34 +217,33 @@
             
   <div class="section" id="covariance-estimation">
 <span id="covariance"></span><h1>2.6. Covariance estimation<a class="headerlink" href="#covariance-estimation" title="Permalink to this headline">¶</a></h1>
-<p>Many statistical problems require at some point the estimation of a
+<p>Many statistical problems require the estimation of a
 population’s covariance matrix, which can be seen as an estimation of
 data set scatter plot shape. Most of the time, such an estimation has
 to be done on a sample whose properties (size, structure, homogeneity)
-has a large influence on the estimation’s quality. The
-<cite>sklearn.covariance</cite> package aims at providing tools affording
-an accurate estimation of a population’s covariance matrix under
-various settings.</p>
+have a large influence on the estimation’s quality. The
+<cite>sklearn.covariance</cite> package provides tools for accurately estimating
+a population’s covariance matrix under various settings.</p>
 <p>We assume that the observations are independent and identically
 distributed (i.i.d.).</p>
 <div class="section" id="empirical-covariance">
 <h2>2.6.1. Empirical covariance<a class="headerlink" href="#empirical-covariance" title="Permalink to this headline">¶</a></h2>
 <p>The covariance matrix of a data set is known to be well approximated
-with the classical <em>maximum likelihood estimator</em> (or “empirical
+by the classical <em>maximum likelihood estimator</em> (or “empirical
 covariance”), provided the number of observations is large enough
 compared to the number of features (the variables describing the
 observations). More precisely, the Maximum Likelihood Estimator of a
-sample is an unbiased estimator of the corresponding population
+sample is an unbiased estimator of the corresponding population’s
 covariance matrix.</p>
 <p>The empirical covariance matrix of a sample can be computed using the
 <a class="reference internal" href="generated/sklearn.covariance.empirical_covariance.html#sklearn.covariance.empirical_covariance" title="sklearn.covariance.empirical_covariance"><code class="xref py py-func docutils literal"><span class="pre">empirical_covariance</span></code></a> function of the package, or by fitting an
 <a class="reference internal" href="generated/sklearn.covariance.EmpiricalCovariance.html#sklearn.covariance.EmpiricalCovariance" title="sklearn.covariance.EmpiricalCovariance"><code class="xref py py-class docutils literal"><span class="pre">EmpiricalCovariance</span></code></a> object to the data sample with the
-<a class="reference internal" href="generated/sklearn.covariance.EmpiricalCovariance.html#sklearn.covariance.EmpiricalCovariance.fit" title="sklearn.covariance.EmpiricalCovariance.fit"><code class="xref py py-meth docutils literal"><span class="pre">EmpiricalCovariance.fit</span></code></a> method.  Be careful that depending
-whether the data are centered or not, the result will be different, so
-one may want to use the <code class="docutils literal"><span class="pre">assume_centered</span></code> parameter accurately. More precisely
-if one uses <code class="docutils literal"><span class="pre">assume_centered=False</span></code>, then the test set is supposed to have the
-same mean vector as the training set. If not so, both should be centered by the
-user, and <code class="docutils literal"><span class="pre">assume_centered=True</span></code> should be used.</p>
+<a class="reference internal" href="generated/sklearn.covariance.EmpiricalCovariance.html#sklearn.covariance.EmpiricalCovariance.fit" title="sklearn.covariance.EmpiricalCovariance.fit"><code class="xref py py-meth docutils literal"><span class="pre">EmpiricalCovariance.fit</span></code></a> method. Be careful that results depend
+on whether the data are centered, so one may want to use the
+<code class="docutils literal"><span class="pre">assume_centered</span></code> parameter accurately. More precisely, if
+<code class="docutils literal"><span class="pre">assume_centered=False</span></code>, then the test set is supposed to have the
+same mean vector as the training set. If not, both should be centered
+by the user, and <code class="docutils literal"><span class="pre">assume_centered=True</span></code> should be used.</p>
 <div class="topic">
 <p class="topic-title first">Examples:</p>
 <ul class="simple">
@@ -265,15 +264,15 @@ from its inversion is not accurate. Sometimes, it even occurs that the
 empirical covariance matrix cannot be inverted for numerical
 reasons. To avoid such an inversion problem, a transformation of the
 empirical covariance matrix has been introduced: the <code class="docutils literal"><span class="pre">shrinkage</span></code>.</p>
-<p>In the scikit-learn, this transformation (with a user-defined shrinkage
+<p>In scikit-learn, this transformation (with a user-defined shrinkage
 coefficient) can be directly applied to a pre-computed covariance with
 the <a class="reference internal" href="generated/sklearn.covariance.shrunk_covariance.html#sklearn.covariance.shrunk_covariance" title="sklearn.covariance.shrunk_covariance"><code class="xref py py-func docutils literal"><span class="pre">shrunk_covariance</span></code></a> method. Also, a shrunk estimator of the
 covariance can be fitted to data with a <a class="reference internal" href="generated/sklearn.covariance.ShrunkCovariance.html#sklearn.covariance.ShrunkCovariance" title="sklearn.covariance.ShrunkCovariance"><code class="xref py py-class docutils literal"><span class="pre">ShrunkCovariance</span></code></a> object
-and its <a class="reference internal" href="generated/sklearn.covariance.ShrunkCovariance.html#sklearn.covariance.ShrunkCovariance.fit" title="sklearn.covariance.ShrunkCovariance.fit"><code class="xref py py-meth docutils literal"><span class="pre">ShrunkCovariance.fit</span></code></a> method.  Again, depending whether
-the data are centered or not, the result will be different, so one may
-want to use the <code class="docutils literal"><span class="pre">assume_centered</span></code> parameter accurately.</p>
+and its <a class="reference internal" href="generated/sklearn.covariance.ShrunkCovariance.html#sklearn.covariance.ShrunkCovariance.fit" title="sklearn.covariance.ShrunkCovariance.fit"><code class="xref py py-meth docutils literal"><span class="pre">ShrunkCovariance.fit</span></code></a> method. Again, results depend on
+whether the data are centered, so one may want to use the
+<code class="docutils literal"><span class="pre">assume_centered</span></code> parameter accurately.</p>
 <p>Mathematically, this shrinkage consists in reducing the ratio between the
-smallest and the largest eigenvalue of the empirical covariance matrix.
+smallest and the largest eigenvalues of the empirical covariance matrix.
 It can be done by simply shifting every eigenvalue according to a given
 offset, which is equivalent of finding the l2-penalized Maximum
 Likelihood Estimator of the covariance matrix. In practice, shrinkage
@@ -293,7 +292,7 @@ to data.</li>
 </div>
 <div class="section" id="ledoit-wolf-shrinkage">
 <h3>2.6.2.2. Ledoit-Wolf shrinkage<a class="headerlink" href="#ledoit-wolf-shrinkage" title="Permalink to this headline">¶</a></h3>
-<p>In their 2004 paper <a class="footnote-reference" href="#id3" id="id2">[1]</a>, O. Ledoit and M. Wolf propose a formula so as
+<p>In their 2004 paper <a class="footnote-reference" href="#id3" id="id2">[1]</a>, O. Ledoit and M. Wolf propose a formula
 to compute the optimal shrinkage coefficient <span class="math">\(\alpha\)</span> that
 minimizes the Mean Squared Error between the estimated and the real
 covariance matrix.</p>
@@ -387,10 +386,10 @@ an <a class="reference internal" href="generated/sklearn.covariance.OAS.html#skl
 matrix, is proportional to the partial correlation matrix. It gives the
 partial independence relationship. In other words, if two features are
 independent conditionally on the others, the corresponding coefficient in
-the precision matrix will be zero. This is why it makes sense to estimate
-a sparse precision matrix: by learning independence relations from the
-data, the estimation of the covariance matrix is better conditioned. This
-is known as <em>covariance selection</em>.</p>
+the precision matrix will be zero. This is why it makes sense to
+estimate a sparse precision matrix: the estimation of the covariance
+matrix is better conditioned by learning independence relations from
+the data. This is known as <em>covariance selection</em>.</p>
 <p>In the small-samples situation, in which <code class="docutils literal"><span class="pre">n_samples</span></code> is on the order
 of <code class="docutils literal"><span class="pre">n_features</span></code> or smaller, sparse inverse covariance estimators tend to work
 better than shrunk covariance estimators. However, in the opposite
@@ -459,13 +458,13 @@ Biostatistics 9, pp 432, 2008</li>
 </div>
 <div class="section" id="robust-covariance-estimation">
 <span id="robust-covariance"></span><h2>2.6.4. Robust Covariance Estimation<a class="headerlink" href="#robust-covariance-estimation" title="Permalink to this headline">¶</a></h2>
-<p>Real data set are often subjects to measurement or recording
+<p>Real data sets are often subject to measurement or recording
 errors. Regular but uncommon observations may also appear for a variety
-of reason. Every observation which is very uncommon is called an
-outlier.
+of reasons. Observations which are very uncommon are called
+outliers.
 The empirical covariance estimator and the shrunk covariance
 estimators presented above are very sensitive to the presence of
-outlying observations in the data. Therefore, one should use robust
+outliers in the data. Therefore, one should use robust
 covariance estimators to estimate the covariance of its real data
 sets. Alternatively, robust covariance estimators can be used to
 perform outlier detection and discard/downweight some observations
