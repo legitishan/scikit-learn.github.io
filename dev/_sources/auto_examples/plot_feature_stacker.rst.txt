@@ -26,6 +26,7 @@ dataset and is only used to illustrate the usage of FeatureUnion.
 
  Out::
 
+    Combined space has 3 features
     Fitting 3 folds for each of 18 candidates, totalling 54 fits
     [CV] features__pca__n_components=1, features__univ_select__k=1, svm__C=0.1 
     [CV]  features__pca__n_components=1, features__univ_select__k=1, svm__C=0.1, score=0.9607843137254902, total=   0.0s
@@ -138,7 +139,7 @@ dataset and is only used to illustrate the usage of FeatureUnion.
     Pipeline(memory=None,
          steps=[('features', FeatureUnion(n_jobs=1,
            transformer_list=[('pca', PCA(copy=True, iterated_power='auto', n_components=2, random_state=None,
-      svd_solver='auto', tol=0.0, whiten=False)), ('univ_select', SelectKBest(k=2, score_func=<function f_classif at 0x7f9e095c9510>))],
+      svd_solver='auto', tol=0.0, whiten=False)), ('univ_select', SelectKBest(k=2, score_func=<function f_classif at 0x7f511b460510>))],
            transformer...r', max_iter=-1, probability=False, random_state=None,
       shrinking=True, tol=0.001, verbose=False))])
 
@@ -155,6 +156,7 @@ dataset and is only used to illustrate the usage of FeatureUnion.
     #
     # License: BSD 3 clause
 
+    from __future__ import print_function
     from sklearn.pipeline import Pipeline, FeatureUnion
     from sklearn.model_selection import GridSearchCV
     from sklearn.svm import SVC
@@ -178,6 +180,7 @@ dataset and is only used to illustrate the usage of FeatureUnion.
 
     # Use combined features to transform dataset:
     X_features = combined_features.fit(X, y).transform(X)
+    print("Combined space has", X_features.shape[1], "features")
 
     svm = SVC(kernel="linear")
 
@@ -193,7 +196,7 @@ dataset and is only used to illustrate the usage of FeatureUnion.
     grid_search.fit(X, y)
     print(grid_search.best_estimator_)
 
-**Total running time of the script:** ( 0 minutes  0.424 seconds)
+**Total running time of the script:** ( 0 minutes  0.458 seconds)
 
 
 
