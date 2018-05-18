@@ -205,7 +205,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.cluster" title="sklearn.cluster"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.cluster</span></code></a>.dbscan<a class="headerlink" href="#sklearn-cluster-dbscan" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.cluster.dbscan">
-<code class="descclassname">sklearn.cluster.</code><code class="descname">dbscan</code><span class="sig-paren">(</span><em>X</em>, <em>eps=0.5</em>, <em>min_samples=5</em>, <em>metric=’minkowski’</em>, <em>metric_params=None</em>, <em>algorithm=’auto’</em>, <em>leaf_size=30</em>, <em>p=2</em>, <em>sample_weight=None</em>, <em>n_jobs=1</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/680c36b/sklearn/cluster/dbscan_.py#L22"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.dbscan" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sklearn.cluster.</code><code class="descname">dbscan</code><span class="sig-paren">(</span><em>X</em>, <em>eps=0.5</em>, <em>min_samples=5</em>, <em>metric=’minkowski’</em>, <em>metric_params=None</em>, <em>algorithm=’auto’</em>, <em>leaf_size=30</em>, <em>p=2</em>, <em>sample_weight=None</em>, <em>n_jobs=1</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/25623ca/sklearn/cluster/dbscan_.py#L22"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.dbscan" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform DBSCAN clustering from vector array or distance matrix.</p>
 <p>Read more in the <a class="reference internal" href="../clustering.html#dbscan"><span class="std std-ref">User Guide</span></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -284,10 +284,15 @@ If <code class="docutils literal"><span class="pre">-1</span></code>, then the n
 <p>For an example, see <a class="reference internal" href="../../auto_examples/cluster/plot_dbscan.html#sphx-glr-auto-examples-cluster-plot-dbscan-py"><span class="std std-ref">examples/cluster/plot_dbscan.py</span></a>.</p>
 <p>This implementation bulk-computes all neighborhood queries, which increases
 the memory complexity to O(n.d) where d is the average number of neighbors,
-while original DBSCAN had memory complexity O(n).</p>
-<p>Sparse neighborhoods can be precomputed using
-<a class="reference internal" href="sklearn.neighbors.NearestNeighbors.html#sklearn.neighbors.NearestNeighbors.radius_neighbors_graph" title="sklearn.neighbors.NearestNeighbors.radius_neighbors_graph"><code class="xref py py-func docutils literal"><span class="pre">NearestNeighbors.radius_neighbors_graph</span></code></a>
-with <code class="docutils literal"><span class="pre">mode='distance'</span></code>.</p>
+while original DBSCAN had memory complexity O(n). It may attract a higher
+memory complexity when querying these nearest neighborhoods, depending
+on the <code class="docutils literal"><span class="pre">algorithm</span></code>.</p>
+<p>One way to avoid the query complexity is to pre-compute sparse
+neighborhoods in chunks using
+<a class="reference internal" href="sklearn.neighbors.NearestNeighbors.html#sklearn.neighbors.NearestNeighbors.radius_neighbors_graph" title="sklearn.neighbors.NearestNeighbors.radius_neighbors_graph"><code class="xref py py-func docutils literal"><span class="pre">NearestNeighbors.radius_neighbors_graph</span></code></a> with
+<code class="docutils literal"><span class="pre">mode='distance'</span></code>, then using <code class="docutils literal"><span class="pre">metric='precomputed'</span></code> here.</p>
+<p>Another way to reduce memory and computation time is to remove
+(near-)duplicate points and use <code class="docutils literal"><span class="pre">sample_weight</span></code> instead.</p>
 <p class="rubric">References</p>
 <p>Ester, M., H. P. Kriegel, J. Sander, and X. Xu, “A Density-Based
 Algorithm for Discovering Clusters in Large Spatial Databases with Noise”.

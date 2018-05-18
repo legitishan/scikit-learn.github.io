@@ -208,7 +208,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.cluster" title="sklearn.cluster"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.cluster</span></code></a>.DBSCAN<a class="headerlink" href="#sklearn-cluster-dbscan" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="sklearn.cluster.DBSCAN">
-<em class="property">class </em><code class="descclassname">sklearn.cluster.</code><code class="descname">DBSCAN</code><span class="sig-paren">(</span><em>eps=0.5</em>, <em>min_samples=5</em>, <em>metric=’euclidean’</em>, <em>metric_params=None</em>, <em>algorithm=’auto’</em>, <em>leaf_size=30</em>, <em>p=None</em>, <em>n_jobs=1</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/680c36b/sklearn/cluster/dbscan_.py#L163"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.DBSCAN" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">sklearn.cluster.</code><code class="descname">DBSCAN</code><span class="sig-paren">(</span><em>eps=0.5</em>, <em>min_samples=5</em>, <em>metric=’euclidean’</em>, <em>metric_params=None</em>, <em>algorithm=’auto’</em>, <em>leaf_size=30</em>, <em>p=None</em>, <em>n_jobs=1</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/25623ca/sklearn/cluster/dbscan_.py#L169"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.DBSCAN" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform DBSCAN clustering from vector array or distance matrix.</p>
 <p>DBSCAN - Density-Based Spatial Clustering of Applications with Noise.
 Finds core samples of high density and expands clusters from them.
@@ -287,10 +287,15 @@ Noisy samples are given the label -1.</p>
 <p>For an example, see <a class="reference internal" href="../../auto_examples/cluster/plot_dbscan.html#sphx-glr-auto-examples-cluster-plot-dbscan-py"><span class="std std-ref">examples/cluster/plot_dbscan.py</span></a>.</p>
 <p>This implementation bulk-computes all neighborhood queries, which increases
 the memory complexity to O(n.d) where d is the average number of neighbors,
-while original DBSCAN had memory complexity O(n).</p>
-<p>Sparse neighborhoods can be precomputed using
-<a class="reference internal" href="sklearn.neighbors.NearestNeighbors.html#sklearn.neighbors.NearestNeighbors.radius_neighbors_graph" title="sklearn.neighbors.NearestNeighbors.radius_neighbors_graph"><code class="xref py py-func docutils literal"><span class="pre">NearestNeighbors.radius_neighbors_graph</span></code></a>
-with <code class="docutils literal"><span class="pre">mode='distance'</span></code>.</p>
+while original DBSCAN had memory complexity O(n). It may attract a higher
+memory complexity when querying these nearest neighborhoods, depending
+on the <code class="docutils literal"><span class="pre">algorithm</span></code>.</p>
+<p>One way to avoid the query complexity is to pre-compute sparse
+neighborhoods in chunks using
+<a class="reference internal" href="sklearn.neighbors.NearestNeighbors.html#sklearn.neighbors.NearestNeighbors.radius_neighbors_graph" title="sklearn.neighbors.NearestNeighbors.radius_neighbors_graph"><code class="xref py py-func docutils literal"><span class="pre">NearestNeighbors.radius_neighbors_graph</span></code></a> with
+<code class="docutils literal"><span class="pre">mode='distance'</span></code>, then using <code class="docutils literal"><span class="pre">metric='precomputed'</span></code> here.</p>
+<p>Another way to reduce memory and computation time is to remove
+(near-)duplicate points and use <code class="docutils literal"><span class="pre">sample_weight</span></code> instead.</p>
 <p class="rubric">References</p>
 <p>Ester, M., H. P. Kriegel, J. Sander, and X. Xu, “A Density-Based
 Algorithm for Discovering Clusters in Large Spatial Databases with Noise”.
@@ -319,12 +324,12 @@ and Data Mining, Portland, OR, AAAI Press, pp. 226-231. 1996</p>
 </table>
 <dl class="method">
 <dt id="sklearn.cluster.DBSCAN.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>eps=0.5</em>, <em>min_samples=5</em>, <em>metric=’euclidean’</em>, <em>metric_params=None</em>, <em>algorithm=’auto’</em>, <em>leaf_size=30</em>, <em>p=None</em>, <em>n_jobs=1</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/680c36b/sklearn/cluster/dbscan_.py#L252"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.DBSCAN.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>eps=0.5</em>, <em>min_samples=5</em>, <em>metric=’euclidean’</em>, <em>metric_params=None</em>, <em>algorithm=’auto’</em>, <em>leaf_size=30</em>, <em>p=None</em>, <em>n_jobs=1</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/25623ca/sklearn/cluster/dbscan_.py#L264"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.DBSCAN.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="sklearn.cluster.DBSCAN.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/680c36b/sklearn/cluster/dbscan_.py#L264"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.DBSCAN.fit" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/25623ca/sklearn/cluster/dbscan_.py#L276"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.DBSCAN.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform DBSCAN clustering from features or distance matrix.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -352,7 +357,7 @@ Note that weights are absolute, and default to 1.</p>
 
 <dl class="method">
 <dt id="sklearn.cluster.DBSCAN.fit_predict">
-<code class="descname">fit_predict</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/680c36b/sklearn/cluster/dbscan_.py#L294"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.DBSCAN.fit_predict" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit_predict</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/25623ca/sklearn/cluster/dbscan_.py#L306"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.DBSCAN.fit_predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs clustering on X and returns cluster labels.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -387,7 +392,7 @@ Note that weights are absolute, and default to 1.</p>
 
 <dl class="method">
 <dt id="sklearn.cluster.DBSCAN.get_params">
-<code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/680c36b/sklearn/base.py#L213"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.DBSCAN.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/25623ca/sklearn/base.py#L213"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.DBSCAN.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -414,7 +419,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.cluster.DBSCAN.set_params">
-<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/680c36b/sklearn/base.py#L236"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.DBSCAN.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/25623ca/sklearn/base.py#L236"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.DBSCAN.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
