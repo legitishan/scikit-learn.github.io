@@ -238,9 +238,14 @@
 <li><a class="reference internal" href="#id24">2.3.9.6.2. Drawbacks</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#contingency-matrix">2.3.9.7. Contingency Matrix</a><ul>
+<li><a class="reference internal" href="#davies-bouldin-index">2.3.9.7. Davies-Bouldin Index</a><ul>
 <li><a class="reference internal" href="#id26">2.3.9.7.1. Advantages</a></li>
 <li><a class="reference internal" href="#id27">2.3.9.7.2. Drawbacks</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#contingency-matrix">2.3.9.8. Contingency Matrix</a><ul>
+<li><a class="reference internal" href="#id29">2.3.9.8.1. Advantages</a></li>
+<li><a class="reference internal" href="#id30">2.3.9.8.2. Drawbacks</a></li>
 </ul>
 </li>
 </ul>
@@ -286,7 +291,7 @@ in the <a class="reference internal" href="classes.html#module-sklearn.metrics.p
 </div>
 <div class="section" id="overview-of-clustering-methods">
 <h2>2.3.1. Overview of clustering methods<a class="headerlink" href="#overview-of-clustering-methods" title="Permalink to this headline">¶</a></h2>
-<div class="figure align-center" id="id28">
+<div class="figure align-center" id="id31">
 <a class="reference external image-reference" href="../auto_examples/cluster/plot_cluster_comparison.html"><img alt="../_images/sphx_glr_plot_cluster_comparison_0011.png" src="../_images/sphx_glr_plot_cluster_comparison_0011.png" style="width: 1050.0px; height: 625.0px;" /></a>
 <p class="caption"><span class="caption-text">A comparison of the clustering algorithms in scikit-learn</span></p>
 </div>
@@ -1666,8 +1671,77 @@ analysis”. Communications in Statistics-theory and Methods 3: 1-27.
 </div>
 </div>
 </div>
+<div class="section" id="davies-bouldin-index">
+<span id="id25"></span><h3>2.3.9.7. Davies-Bouldin Index<a class="headerlink" href="#davies-bouldin-index" title="Permalink to this headline">¶</a></h3>
+<p>If the ground truth labels are not known, the Davies-Bouldin index
+(<a class="reference internal" href="generated/sklearn.metrics.davies_bouldin_score.html#sklearn.metrics.davies_bouldin_score" title="sklearn.metrics.davies_bouldin_score"><code class="xref py py-func docutils literal"><span class="pre">sklearn.metrics.davies_bouldin_score</span></code></a>) can be used to evaluate the
+model, where a lower Davies-Bouldin index relates to a model with better
+separation between the clusters.</p>
+<p>The index is defined as the average similarity between each cluster <span class="math">\(C_i\)</span>
+for <span class="math">\(i=1, ..., k\)</span> and its most similar one <span class="math">\(C_j\)</span>. In the context of
+this index, similarity is defined as a measure <span class="math">\(R_{ij}\)</span> that trades off:</p>
+<ul class="simple">
+<li><span class="math">\(s_i\)</span>, the average distance between each point of cluster <span class="math">\(i\)</span> and
+the centroid of that cluster – also know as cluster diameter.</li>
+<li><span class="math">\(d_{ij}\)</span>, the distance between cluster centroids <span class="math">\(i\)</span> and <span class="math">\(j\)</span>.</li>
+</ul>
+<p>A simple choice to construct <span class="math">\(R_ij\)</span> so that it is nonnegative and
+symmetric is:</p>
+<div class="math">
+\[R_{ij} = \frac{s_i + s_j}{d_{ij}}\]</div>
+<p>Then the Davies-Bouldin index is defined as:</p>
+<div class="math">
+\[DB = \frac{1}{k} \sum{i=1}^k \max_{i \neq j} R_{ij}\]</div>
+<p>Zero is the lowest possible score. Values closer to zero indicate a better
+partition.</p>
+<p>In normal usage, the Davies-Bouldin index is applied to the results of a
+cluster analysis as follows:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">datasets</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">iris</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="k">import</span> <span class="n">KMeans</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">davies_bouldin_score</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kmeans</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">labels</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">labels_</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">davies_bouldin_score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>  
+<span class="go">0.6623...</span>
+</pre></div>
+</div>
+<div class="section" id="id26">
+<h4>2.3.9.7.1. Advantages<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>The computation of Davies-Bouldin is simpler than that of Silhouette scores.</li>
+<li>The index is computed only quantities and features inherent to the dataset.</li>
+</ul>
+</div>
+<div class="section" id="id27">
+<h4>2.3.9.7.2. Drawbacks<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>The Davies-Boulding index is generally higher for convex clusters than other
+concepts of clusters, such as density based clusters like those obtained from
+DBSCAN.</li>
+<li>The usage of centroid distance limits the distance metric to Euclidean space.</li>
+<li>A good value reported by this method does not imply the best information retrieval.</li>
+</ul>
+<div class="topic">
+<p class="topic-title first">References</p>
+<ul class="simple">
+<li>Davies, David L.; Bouldin, Donald W. (1979).
+“A Cluster Separation Measure”
+IEEE Transactions on Pattern Analysis and Machine Intelligence.
+PAMI-1 (2): 224-227.
+<a class="reference external" href="http://dx.doi.org/10.1109/TPAMI.1979.4766909">doi:10.1109/TPAMI.1979.4766909</a>.</li>
+<li>Halkidi, Maria; Batistakis, Yannis; Vazirgiannis, Michalis (2001).
+“On Clustering Validation Techniques”
+Journal of Intelligent Information Systems, 17(2-3), 107-145.
+<a class="reference external" href="http://dx.doi.org/10.1023/A:1012801612483">doi:10.1023/A:1012801612483</a>.</li>
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/Davies–Bouldin_index">Wikipedia entry for Davies-Bouldin index</a>.</li>
+</ul>
+</div>
+</div>
+</div>
 <div class="section" id="contingency-matrix">
-<span id="id25"></span><h3>2.3.9.7. Contingency Matrix<a class="headerlink" href="#contingency-matrix" title="Permalink to this headline">¶</a></h3>
+<span id="id28"></span><h3>2.3.9.8. Contingency Matrix<a class="headerlink" href="#contingency-matrix" title="Permalink to this headline">¶</a></h3>
 <p>Contingency matrix (<a class="reference internal" href="generated/sklearn.metrics.cluster.contingency_matrix.html#sklearn.metrics.cluster.contingency_matrix" title="sklearn.metrics.cluster.contingency_matrix"><code class="xref py py-func docutils literal"><span class="pre">sklearn.metrics.cluster.contingency_matrix</span></code></a>)
 reports the intersection cardinality for every true/predicted cluster pair.
 The contingency matrix provides sufficient statistics for all clustering
@@ -1690,8 +1764,8 @@ whose true cluster is “b”. Of them, none is in predicted cluster 0, one is i
 <p>A <a class="reference internal" href="model_evaluation.html#confusion-matrix"><span class="std std-ref">confusion matrix</span></a> for classification is a square
 contingency matrix where the order of rows and columns correspond to a list
 of classes.</p>
-<div class="section" id="id26">
-<h4>2.3.9.7.1. Advantages<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id29">
+<h4>2.3.9.8.1. Advantages<a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
 <li>Allows to examine the spread of each true cluster across predicted
 clusters and vice versa.</li>
@@ -1700,8 +1774,8 @@ of a similarity statistic (like the others listed in this document) between
 the two clusterings.</li>
 </ul>
 </div>
-<div class="section" id="id27">
-<h4>2.3.9.7.2. Drawbacks<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id30">
+<h4>2.3.9.8.2. Drawbacks<a class="headerlink" href="#id30" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
 <li>Contingency matrix is easy to interpret for a small number of clusters, but
 becomes very hard to interpret for a large number of clusters.</li>
