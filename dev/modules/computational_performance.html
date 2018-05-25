@@ -195,9 +195,10 @@
 <li><a class="reference internal" href="#prediction-throughput">7.2. Prediction Throughput</a></li>
 <li><a class="reference internal" href="#tips-and-tricks">7.3. Tips and Tricks</a><ul>
 <li><a class="reference internal" href="#linear-algebra-libraries">7.3.1. Linear algebra libraries</a></li>
-<li><a class="reference internal" href="#model-compression">7.3.2. Model Compression</a></li>
-<li><a class="reference internal" href="#model-reshaping">7.3.3. Model Reshaping</a></li>
-<li><a class="reference internal" href="#links">7.3.4. Links</a></li>
+<li><a class="reference internal" href="#limiting-working-memory">7.3.2. Limiting Working Memory</a></li>
+<li><a class="reference internal" href="#model-compression">7.3.3. Model Compression</a></li>
+<li><a class="reference internal" href="#model-reshaping">7.3.4. Model Reshaping</a></li>
+<li><a class="reference internal" href="#links">7.3.5. Links</a></li>
 </ul>
 </li>
 </ul>
@@ -464,8 +465,26 @@ or upgrade to Python 3.4 which has a new version of <code class="docutils litera
 that should be immune to this problem.</p>
 </div>
 </div>
+<div class="section" id="limiting-working-memory">
+<span id="working-memory"></span><h3>7.3.2. Limiting Working Memory<a class="headerlink" href="#limiting-working-memory" title="Permalink to this headline">¶</a></h3>
+<p>Some calculations when implemented using standard numpy vectorized operations
+involve using a large amount of temporary memory.  This may potentially exhaust
+system memory.  Where computations can be performed in fixed-memory chunks, we
+attempt to do so, and allow the user to hint at the maximum size of this
+working memory (defaulting to 1GB) using <a class="reference internal" href="generated/sklearn.set_config.html#sklearn.set_config" title="sklearn.set_config"><code class="xref py py-func docutils literal"><span class="pre">sklearn.set_config</span></code></a> or
+<code class="xref py py-func docutils literal"><span class="pre">config_context</span></code>.  The following suggests to limit temporary working
+memory to 128 MiB:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sklearn</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">config_context</span><span class="p">(</span><span class="n">working_memory</span><span class="o">=</span><span class="mi">128</span><span class="p">):</span>
+<span class="gp">... </span>   <span class="k">pass</span>  <span class="c1"># do chunked work here</span>
+</pre></div>
+</div>
+<p>An example of a chunked operation adhering to this setting is
+<code class="xref py py-func docutils literal"><span class="pre">metric.pairwise_distances_chunked</span></code>, which facilitates computing
+row-wise reductions of a pairwise distance matrix.</p>
+</div>
 <div class="section" id="model-compression">
-<h3>7.3.2. Model Compression<a class="headerlink" href="#model-compression" title="Permalink to this headline">¶</a></h3>
+<h3>7.3.3. Model Compression<a class="headerlink" href="#model-compression" title="Permalink to this headline">¶</a></h3>
 <p>Model compression in scikit-learn only concerns linear models for the moment.
 In this context it means that we want to control the model sparsity (i.e. the
 number of non-zero coordinates in the model vectors). It is generally a good
@@ -489,7 +508,7 @@ Furthermore, sparsifying can be very useful to reduce the memory usage of
 predictive models deployed on production servers.</p>
 </div>
 <div class="section" id="model-reshaping">
-<h3>7.3.3. Model Reshaping<a class="headerlink" href="#model-reshaping" title="Permalink to this headline">¶</a></h3>
+<h3>7.3.4. Model Reshaping<a class="headerlink" href="#model-reshaping" title="Permalink to this headline">¶</a></h3>
 <p>Model reshaping consists in selecting only a portion of the available features
 to fit a model. In other words, if a model discards features during the
 learning phase we can then strip those from the input. This has several
@@ -507,7 +526,7 @@ In the case of sparse input (particularly in <code class="docutils literal"><spa
 sufficient to not generate the relevant features, leaving their columns empty.</p>
 </div>
 <div class="section" id="links">
-<h3>7.3.4. Links<a class="headerlink" href="#links" title="Permalink to this headline">¶</a></h3>
+<h3>7.3.5. Links<a class="headerlink" href="#links" title="Permalink to this headline">¶</a></h3>
 <blockquote>
 <div><ul class="simple">
 <li><a class="reference external" href="../developers/performance.html">scikit-learn developer performance documentation</a></li>

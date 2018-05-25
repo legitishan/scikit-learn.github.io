@@ -319,6 +319,8 @@ via <code class="docutils literal"><span class="pre">n_iter_no_change</span></co
 by <a class="reference external" href="https://github.com/raghavrv">Raghav RV</a></li>
 <li><a class="reference internal" href="modules/generated/sklearn.dummy.DummyRegressor.html#sklearn.dummy.DummyRegressor" title="sklearn.dummy.DummyRegressor"><code class="xref py py-class docutils literal"><span class="pre">dummy.DummyRegressor</span></code></a> now has a <code class="docutils literal"><span class="pre">return_std</span></code> option in its
 <code class="docutils literal"><span class="pre">predict</span></code> method. The returned standard deviations will be zeros.</li>
+<li>Added <a class="reference internal" href="modules/generated/sklearn.multioutput.RegressorChain.html#sklearn.multioutput.RegressorChain" title="sklearn.multioutput.RegressorChain"><code class="xref py py-class docutils literal"><span class="pre">multioutput.RegressorChain</span></code></a> for multi-target
+regression. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/9257">#9257</a> by <a class="reference external" href="https://github.com/thechargedneutron">Kumar Ashutosh</a>.</li>
 <li>Added <a class="reference internal" href="modules/generated/sklearn.naive_bayes.ComplementNB.html#sklearn.naive_bayes.ComplementNB" title="sklearn.naive_bayes.ComplementNB"><code class="xref py py-class docutils literal"><span class="pre">naive_bayes.ComplementNB</span></code></a>, which implements the Complement
 Naive Bayes classifier described in Rennie et al. (2003).
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/8190">#8190</a> by <a class="reference external" href="https://github.com/airalcorn2">Michael A. Alcorn</a>.</li>
@@ -376,6 +378,13 @@ sample weights via new parameter <code class="docutils literal"><span class="pre
 <li>Partial AUC is available via <code class="docutils literal"><span class="pre">max_fpr</span></code> parameter in
 <a class="reference internal" href="modules/generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score" title="sklearn.metrics.roc_auc_score"><code class="xref py py-func docutils literal"><span class="pre">metrics.roc_auc_score</span></code></a>. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/3273">#3273</a> by
 <a class="reference external" href="https://github.com/Alexander-N">Alexander Niederbühl</a>.</li>
+</ul>
+<p>Misc</p>
+<ul class="simple">
+<li>A new configuration parameter, <code class="docutils literal"><span class="pre">working_memory</span></code> was added to control memory
+consumption limits in chunked operations, such as the new
+<a class="reference internal" href="modules/generated/sklearn.metrics.pairwise_distances_chunked.html#sklearn.metrics.pairwise_distances_chunked" title="sklearn.metrics.pairwise_distances_chunked"><code class="xref py py-func docutils literal"><span class="pre">metrics.pairwise_distances_chunked</span></code></a>.  See <a class="reference internal" href="modules/computational_performance.html#working-memory"><span class="std std-ref">Limiting Working Memory</span></a>.
+<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/10280">#10280</a> by <a class="reference external" href="http://joelnothman.com">Joel Nothman</a> and <a class="reference external" href="https://github.com/dalmia">Aman Dalmia</a>.</li>
 </ul>
 </div>
 <div class="section" id="enhancements">
@@ -734,6 +743,11 @@ pairwise distances or squared distances. <a class="reference external" href="htt
 for <a class="reference internal" href="modules/generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score" title="sklearn.metrics.roc_auc_score"><code class="xref py py-func docutils literal"><span class="pre">metrics.roc_auc_score</span></code></a>. Moreover using <code class="docutils literal"><span class="pre">reorder=True</span></code> can hide bugs
 due to floating point error in the input.
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/9851">#9851</a> by <a class="reference external" href="https://github.com/qinhanmin2014">Hanmin Qin</a>.</li>
+<li>The <code class="docutils literal"><span class="pre">batch_size</span></code> parameter to <a class="reference internal" href="modules/generated/sklearn.metrics.pairwise_distances_argmin_min.html#sklearn.metrics.pairwise_distances_argmin_min" title="sklearn.metrics.pairwise_distances_argmin_min"><code class="xref py py-func docutils literal"><span class="pre">metrics.pairwise_distances_argmin_min</span></code></a>
+and <a class="reference internal" href="modules/generated/sklearn.metrics.pairwise_distances_argmin.html#sklearn.metrics.pairwise_distances_argmin" title="sklearn.metrics.pairwise_distances_argmin"><code class="xref py py-func docutils literal"><span class="pre">metrics.pairwise_distances_argmin</span></code></a> is deprecated to be removed in
+v0.22.  It no longer has any effect, as batch size is determined by global
+<code class="docutils literal"><span class="pre">working_memory</span></code> config. See <a class="reference internal" href="modules/computational_performance.html#working-memory"><span class="std std-ref">Limiting Working Memory</span></a>. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/10280">#10280</a> by <a class="reference external" href="http://joelnothman.com">Joel
+Nothman</a> and <a class="reference external" href="https://github.com/dalmia">Aman Dalmia</a>.</li>
 </ul>
 <p>Cluster</p>
 <ul class="simple">
