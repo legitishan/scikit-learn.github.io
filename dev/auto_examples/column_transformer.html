@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
   
-    <title>Feature Union with Heterogeneous Data Sources &#8212; scikit-learn 0.20.dev0 documentation</title>
+    <title>Column Transformer with Heterogeneous Data Sources &#8212; scikit-learn 0.20.dev0 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../_static/css/bootstrap.min.css" media="screen" />
@@ -38,8 +38,8 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Explicit feature map approximation for RBF kernels" href="plot_kernel_approximation.html" />
-    <link rel="prev" title="Comparison of kernel ridge regression and SVR" href="plot_kernel_ridge_regression.html" />
+    <link rel="next" title="The Johnson-Lindenstrauss bound for embedding with random projections" href="plot_johnson_lindenstrauss_bound.html" />
+    <link rel="prev" title="Comparing anomaly detection algorithms for outlier detection on toy datasets" href="plot_anomaly_comparison.html" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -49,7 +49,7 @@
          return groups ? groups[1] : null;
      })(location.href.match(/^https?:\/\/scikit-learn.org\/([^\/]+)/));
   </script>
-  <link rel="canonical" href="http://scikit-learn.org/stable/auto_examples/hetero_feature_union.html" />
+  <link rel="canonical" href="http://scikit-learn.org/stable/auto_examples/column_transformer.html" />
 
   <script type="text/javascript">
     $("div.buttonNext, div.buttonPrevious").hover(
@@ -133,14 +133,14 @@
         <div class="rel">
     
         <div class="rellink">
-        <a href="plot_kernel_ridge_regression.html"
+        <a href="plot_anomaly_comparison.html"
         accesskey="P">Previous
         <br/>
         <span class="smallrellink">
-        Comparison of...
+        Comparing ano...
         </span>
             <span class="hiddenrellink">
-            Comparison of kernel ridge regression and SVR
+            Comparing anomaly detection algorithms for outlier detection on toy datasets
             </span>
         </a>
         </div>
@@ -148,14 +148,14 @@
             &nbsp;
             </div>
         <div class="rellink">
-        <a href="plot_kernel_approximation.html"
+        <a href="plot_johnson_lindenstrauss_bound.html"
         accesskey="N">Next
         <br/>
         <span class="smallrellink">
-        Explicit feat...
+        The Johnson-L...
         </span>
             <span class="hiddenrellink">
-            Explicit feature map approximation for RBF kernels
+            The Johnson-Lindenstrauss bound for embedding with random projections
             </span>
         </a>
         </div>
@@ -183,7 +183,7 @@
       <a href="http://scikit-learn.org/stable/support.html#documentation-resources">Other versions</a></p>
     <p class="citing">Please <b><a href="../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
-<li><a class="reference internal" href="#">Feature Union with Heterogeneous Data Sources</a></li>
+<li><a class="reference internal" href="#">Column Transformer with Heterogeneous Data Sources</a></li>
 </ul>
 
     </div>
@@ -201,8 +201,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="feature-union-with-heterogeneous-data-sources">
-<span id="sphx-glr-auto-examples-hetero-feature-union-py"></span><h1>Feature Union with Heterogeneous Data Sources<a class="headerlink" href="#feature-union-with-heterogeneous-data-sources" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="column-transformer-with-heterogeneous-data-sources">
+<span id="sphx-glr-auto-examples-column-transformer-py"></span><h1>Column Transformer with Heterogeneous Data Sources<a class="headerlink" href="#column-transformer-with-heterogeneous-data-sources" title="Permalink to this headline">¶</a></h1>
 <p>Datasets can often contain components of that require different feature
 extraction and processing pipelines.  This scenario might occur when:</p>
 <ol class="arabic simple">
@@ -212,12 +212,12 @@ text captions)</li>
 require different processing pipelines.</li>
 </ol>
 <p>This example demonstrates how to use
-<code class="xref py py-class docutils literal"><span class="pre">sklearn.feature_extraction.FeatureUnion</span></code> on a dataset containing
+<a class="reference internal" href="../modules/generated/sklearn.compose.ColumnTransformer.html#sklearn.compose.ColumnTransformer" title="sklearn.compose.ColumnTransformer"><code class="xref py py-class docutils literal"><span class="pre">sklearn.compose.ColumnTransformer</span></code></a> on a dataset containing
 different types of features.  We use the 20-newsgroups dataset and compute
 standard bag-of-words features for the subject line and body in separate
 pipelines as well as ad hoc features on the body. We combine them (with
-weights) using a FeatureUnion and finally train a classifier on the combined
-set of features.</p>
+weights) using a ColumnTransformer and finally train a classifier on the
+combined set of features.</p>
 <p>The choice of features is not particularly helpful, but serves to illustrate
 the technique.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Author: Matt Terry &lt;matt.terry@gmail.com&gt;</span>
@@ -235,48 +235,9 @@ the technique.</p>
 <span class="kn">from</span> <span class="nn">sklearn.feature_extraction</span> <span class="kn">import</span> <a href="../modules/generated/sklearn.feature_extraction.DictVectorizer.html#sklearn.feature_extraction.DictVectorizer" title="View documentation for sklearn.feature_extraction.DictVectorizer"><span class="n">DictVectorizer</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <a href="../modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html#sklearn.feature_extraction.text.TfidfVectorizer" title="View documentation for sklearn.feature_extraction.text.TfidfVectorizer"><span class="n">TfidfVectorizer</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <a href="../modules/generated/sklearn.metrics.classification_report.html#sklearn.metrics.classification_report" title="View documentation for sklearn.metrics.classification_report"><span class="n">classification_report</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <a href="../modules/generated/sklearn.pipeline.FeatureUnion.html#sklearn.pipeline.FeatureUnion" title="View documentation for sklearn.pipeline.FeatureUnion"><span class="n">FeatureUnion</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <a href="../modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="View documentation for sklearn.pipeline.Pipeline"><span class="n">Pipeline</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.compose</span> <span class="kn">import</span> <a href="../modules/generated/sklearn.compose.ColumnTransformer.html#sklearn.compose.ColumnTransformer" title="View documentation for sklearn.compose.ColumnTransformer"><span class="n">ColumnTransformer</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <a href="../modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC" title="View documentation for sklearn.svm.SVC"><span class="n">SVC</span></a>
-
-
-<span class="k">class</span> <span class="nc">ItemSelector</span><span class="p">(</span><a href="../modules/generated/sklearn.base.BaseEstimator.html#sklearn.base.BaseEstimator" title="View documentation for sklearn.base.BaseEstimator"><span class="n">BaseEstimator</span></a><span class="p">,</span> <a href="../modules/generated/sklearn.base.TransformerMixin.html#sklearn.base.TransformerMixin" title="View documentation for sklearn.base.TransformerMixin"><span class="n">TransformerMixin</span></a><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;For data grouped by feature, select subset of data at a provided key.</span>
-
-<span class="sd">    The data is expected to be stored in a 2D data structure, where the first</span>
-<span class="sd">    index is over features and the second is over samples.  i.e.</span>
-
-<span class="sd">    &gt;&gt; len(data[key]) == n_samples</span>
-
-<span class="sd">    Please note that this is the opposite convention to scikit-learn feature</span>
-<span class="sd">    matrixes (where the first index corresponds to sample).</span>
-
-<span class="sd">    ItemSelector only requires that the collection implement getitem</span>
-<span class="sd">    (data[key]).  Examples include: a dict of lists, 2D numpy array, Pandas</span>
-<span class="sd">    DataFrame, numpy record array, etc.</span>
-
-<span class="sd">    &gt;&gt; data = {&#39;a&#39;: [1, 5, 2, 5, 2, 8],</span>
-<span class="sd">               &#39;b&#39;: [9, 4, 1, 4, 1, 3]}</span>
-<span class="sd">    &gt;&gt; ds = ItemSelector(key=&#39;a&#39;)</span>
-<span class="sd">    &gt;&gt; data[&#39;a&#39;] == ds.transform(data)</span>
-
-<span class="sd">    ItemSelector is not designed to handle data grouped by sample.  (e.g. a</span>
-<span class="sd">    list of dicts).  If your data is structured this way, consider a</span>
-<span class="sd">    transformer along the lines of `sklearn.feature_extraction.DictVectorizer`.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    key : hashable, required</span>
-<span class="sd">        The key corresponding to the desired value in a mappable.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
-
-    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span>
-
-    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">data_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">]</span>
 
 
 <span class="k">class</span> <span class="nc">TextStats</span><span class="p">(</span><a href="../modules/generated/sklearn.base.BaseEstimator.html#sklearn.base.BaseEstimator" title="View documentation for sklearn.base.BaseEstimator"><span class="n">BaseEstimator</span></a><span class="p">,</span> <a href="../modules/generated/sklearn.base.TransformerMixin.html#sklearn.base.TransformerMixin" title="View documentation for sklearn.base.TransformerMixin"><span class="n">TransformerMixin</span></a><span class="p">):</span>
@@ -301,13 +262,14 @@ the technique.</p>
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">posts</span><span class="p">):</span>
-        <span class="n">features</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.recarray.html#numpy.recarray" title="View documentation for numpy.recarray"><span class="n">np</span><span class="o">.</span><span class="n">recarray</span></a><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">posts</span><span class="p">),),</span>
-                               <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;subject&#39;</span><span class="p">,</span> <span class="nb">object</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">,</span> <span class="nb">object</span><span class="p">)])</span>
+        <span class="c1"># construct object dtype array with two columns</span>
+        <span class="c1"># first column = &#39;subject&#39; and second column = &#39;body&#39;</span>
+        <span class="n">features</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.empty.html#numpy.empty" title="View documentation for numpy.empty"><span class="n">np</span><span class="o">.</span><span class="n">empty</span></a><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">posts</span><span class="p">),</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">text</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">posts</span><span class="p">):</span>
             <span class="n">headers</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">bod</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="n">bod</span> <span class="o">=</span> <span class="n">strip_newsgroup_footer</span><span class="p">(</span><span class="n">bod</span><span class="p">)</span>
             <span class="n">bod</span> <span class="o">=</span> <span class="n">strip_newsgroup_quoting</span><span class="p">(</span><span class="n">bod</span><span class="p">)</span>
-            <span class="n">features</span><span class="p">[</span><span class="s1">&#39;body&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">bod</span>
+            <span class="n">features</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">bod</span>
 
             <span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;Subject:&#39;</span>
             <span class="n">sub</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
@@ -315,7 +277,7 @@ the technique.</p>
                 <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
                     <span class="n">sub</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">):]</span>
                     <span class="k">break</span>
-            <span class="n">features</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub</span>
+            <span class="n">features</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub</span>
 
         <span class="k">return</span> <span class="n">features</span>
 
@@ -324,38 +286,31 @@ the technique.</p>
     <span class="c1"># Extract the subject &amp; body</span>
     <span class="p">(</span><span class="s1">&#39;subjectbody&#39;</span><span class="p">,</span> <span class="n">SubjectBodyExtractor</span><span class="p">()),</span>
 
-    <span class="c1"># Use FeatureUnion to combine the features from subject and body</span>
-    <span class="p">(</span><span class="s1">&#39;union&#39;</span><span class="p">,</span> <a href="../modules/generated/sklearn.pipeline.FeatureUnion.html#sklearn.pipeline.FeatureUnion" title="View documentation for sklearn.pipeline.FeatureUnion"><span class="n">FeatureUnion</span></a><span class="p">(</span>
-        <span class="n">transformer_list</span><span class="o">=</span><span class="p">[</span>
+    <span class="c1"># Use C toolumnTransformer to combine the features from subject and body</span>
+    <span class="p">(</span><span class="s1">&#39;union&#39;</span><span class="p">,</span> <a href="../modules/generated/sklearn.compose.ColumnTransformer.html#sklearn.compose.ColumnTransformer" title="View documentation for sklearn.compose.ColumnTransformer"><span class="n">ColumnTransformer</span></a><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="c1"># Pulling features from the post&#39;s subject line (first column)</span>
+            <span class="p">(</span><span class="s1">&#39;subject&#39;</span><span class="p">,</span> <a href="../modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html#sklearn.feature_extraction.text.TfidfVectorizer" title="View documentation for sklearn.feature_extraction.text.TfidfVectorizer"><span class="n">TfidfVectorizer</span></a><span class="p">(</span><span class="n">min_df</span><span class="o">=</span><span class="mi">50</span><span class="p">),</span> <span class="mi">0</span><span class="p">),</span>
 
-            <span class="c1"># Pipeline for pulling features from the post&#39;s subject line</span>
-            <span class="p">(</span><span class="s1">&#39;subject&#39;</span><span class="p">,</span> <a href="../modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="View documentation for sklearn.pipeline.Pipeline"><span class="n">Pipeline</span></a><span class="p">([</span>
-                <span class="p">(</span><span class="s1">&#39;selector&#39;</span><span class="p">,</span> <span class="n">ItemSelector</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;subject&#39;</span><span class="p">)),</span>
-                <span class="p">(</span><span class="s1">&#39;tfidf&#39;</span><span class="p">,</span> <a href="../modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html#sklearn.feature_extraction.text.TfidfVectorizer" title="View documentation for sklearn.feature_extraction.text.TfidfVectorizer"><span class="n">TfidfVectorizer</span></a><span class="p">(</span><span class="n">min_df</span><span class="o">=</span><span class="mi">50</span><span class="p">)),</span>
-            <span class="p">])),</span>
-
-            <span class="c1"># Pipeline for standard bag-of-words model for body</span>
+            <span class="c1"># Pipeline for standard bag-of-words model for body (second column)</span>
             <span class="p">(</span><span class="s1">&#39;body_bow&#39;</span><span class="p">,</span> <a href="../modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="View documentation for sklearn.pipeline.Pipeline"><span class="n">Pipeline</span></a><span class="p">([</span>
-                <span class="p">(</span><span class="s1">&#39;selector&#39;</span><span class="p">,</span> <span class="n">ItemSelector</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;body&#39;</span><span class="p">)),</span>
                 <span class="p">(</span><span class="s1">&#39;tfidf&#39;</span><span class="p">,</span> <a href="../modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html#sklearn.feature_extraction.text.TfidfVectorizer" title="View documentation for sklearn.feature_extraction.text.TfidfVectorizer"><span class="n">TfidfVectorizer</span></a><span class="p">()),</span>
                 <span class="p">(</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <a href="../modules/generated/sklearn.decomposition.TruncatedSVD.html#sklearn.decomposition.TruncatedSVD" title="View documentation for sklearn.decomposition.TruncatedSVD"><span class="n">TruncatedSVD</span></a><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">50</span><span class="p">)),</span>
-            <span class="p">])),</span>
+            <span class="p">]),</span> <span class="mi">1</span><span class="p">),</span>
 
             <span class="c1"># Pipeline for pulling ad hoc features from post&#39;s body</span>
             <span class="p">(</span><span class="s1">&#39;body_stats&#39;</span><span class="p">,</span> <a href="../modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="View documentation for sklearn.pipeline.Pipeline"><span class="n">Pipeline</span></a><span class="p">([</span>
-                <span class="p">(</span><span class="s1">&#39;selector&#39;</span><span class="p">,</span> <span class="n">ItemSelector</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;body&#39;</span><span class="p">)),</span>
                 <span class="p">(</span><span class="s1">&#39;stats&#39;</span><span class="p">,</span> <span class="n">TextStats</span><span class="p">()),</span>  <span class="c1"># returns a list of dicts</span>
                 <span class="p">(</span><span class="s1">&#39;vect&#39;</span><span class="p">,</span> <a href="../modules/generated/sklearn.feature_extraction.DictVectorizer.html#sklearn.feature_extraction.DictVectorizer" title="View documentation for sklearn.feature_extraction.DictVectorizer"><span class="n">DictVectorizer</span></a><span class="p">()),</span>  <span class="c1"># list of dicts -&gt; feature matrix</span>
-            <span class="p">])),</span>
-
+            <span class="p">]),</span> <span class="mi">1</span><span class="p">),</span>
         <span class="p">],</span>
 
-        <span class="c1"># weight components in FeatureUnion</span>
+        <span class="c1"># weight components in ColumnTransformer</span>
         <span class="n">transformer_weights</span><span class="o">=</span><span class="p">{</span>
             <span class="s1">&#39;subject&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>
             <span class="s1">&#39;body_bow&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
             <span class="s1">&#39;body_stats&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
-        <span class="p">},</span>
+        <span class="p">}</span>
     <span class="p">)),</span>
 
     <span class="c1"># Use a SVC classifier on the combined features</span>
@@ -381,9 +336,9 @@ the technique.</p>
 <p><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/hetero_feature_union.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">hetero_feature_union.py</span></code></a></div>
+<a class="reference download internal" href="../_downloads/column_transformer.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">column_transformer.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/hetero_feature_union.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">hetero_feature_union.ipynb</span></code></a></div>
+<a class="reference download internal" href="../_downloads/column_transformer.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">column_transformer.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
@@ -398,16 +353,16 @@ the technique.</p>
 
     <div class="footer">
         &copy; 2007 - 2018, scikit-learn developers (BSD License).
-      <a href="../_sources/auto_examples/hetero_feature_union.rst.txt" rel="nofollow">Show this page source</a>
+      <a href="../_sources/auto_examples/column_transformer.rst.txt" rel="nofollow">Show this page source</a>
     </div>
      <div class="rel">
     
     <div class="buttonPrevious">
-      <a href="plot_kernel_ridge_regression.html">Previous
+      <a href="plot_anomaly_comparison.html">Previous
       </a>
     </div>
     <div class="buttonNext">
-      <a href="plot_kernel_approximation.html">Next
+      <a href="plot_johnson_lindenstrauss_bound.html">Next
       </a>
     </div>
     

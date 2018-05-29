@@ -195,6 +195,7 @@
 <li><a class="reference internal" href="#id1">4.1.3.1. Usage</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#columntransformer-for-heterogeneous-data">4.1.4. ColumnTransformer for heterogeneous data</a></li>
 </ul>
 </li>
 </ul>
@@ -500,9 +501,12 @@ options will raise an error.</p>
 <p><a class="reference internal" href="generated/sklearn.pipeline.FeatureUnion.html#sklearn.pipeline.FeatureUnion" title="sklearn.pipeline.FeatureUnion"><code class="xref py py-class docutils literal"><span class="pre">FeatureUnion</span></code></a> combines several transformer objects into a new
 transformer that combines their output. A <a class="reference internal" href="generated/sklearn.pipeline.FeatureUnion.html#sklearn.pipeline.FeatureUnion" title="sklearn.pipeline.FeatureUnion"><code class="xref py py-class docutils literal"><span class="pre">FeatureUnion</span></code></a> takes
 a list of transformer objects. During fitting, each of these
-is fit to the data independently. For transforming data, the
-transformers are applied in parallel, and the sample vectors they output
-are concatenated end-to-end into larger vectors.</p>
+is fit to the data independently. The transformers are applied in parallel,
+and the feature matrices they output are concatenated side-by-side into a
+larger matrix.</p>
+<p>When you want to apply different transformations to each field of the data,
+see the related class <a class="reference internal" href="generated/sklearn.compose.ColumnTransformer.html#sklearn.compose.ColumnTransformer" title="sklearn.compose.ColumnTransformer"><code class="xref py py-class docutils literal"><span class="pre">sklearn.compose.ColumnTransformer</span></code></a>
+(see <a class="reference internal" href="#column-transformer"><span class="std std-ref">user guide</span></a>).</p>
 <p><a class="reference internal" href="generated/sklearn.pipeline.FeatureUnion.html#sklearn.pipeline.FeatureUnion" title="sklearn.pipeline.FeatureUnion"><code class="xref py py-class docutils literal"><span class="pre">FeatureUnion</span></code></a> serves the same purposes as <a class="reference internal" href="generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal"><span class="pre">Pipeline</span></code></a> -
 convenience and joint parameter estimation and validation.</p>
 <p><a class="reference internal" href="generated/sklearn.pipeline.FeatureUnion.html#sklearn.pipeline.FeatureUnion" title="sklearn.pipeline.FeatureUnion"><code class="xref py py-class docutils literal"><span class="pre">FeatureUnion</span></code></a> and <a class="reference internal" href="generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal"><span class="pre">Pipeline</span></code></a> can be combined to
@@ -545,9 +549,102 @@ and ignored by setting to <code class="docutils literal"><span class="pre">None<
 <p class="topic-title first">Examples:</p>
 <ul class="simple">
 <li><a class="reference internal" href="../auto_examples/plot_feature_stacker.html#sphx-glr-auto-examples-plot-feature-stacker-py"><span class="std std-ref">Concatenating multiple feature extraction methods</span></a></li>
-<li><a class="reference internal" href="../auto_examples/hetero_feature_union.html#sphx-glr-auto-examples-hetero-feature-union-py"><span class="std std-ref">Feature Union with Heterogeneous Data Sources</span></a></li>
 </ul>
 </div>
+</div>
+</div>
+<div class="section" id="columntransformer-for-heterogeneous-data">
+<span id="column-transformer"></span><h2>4.1.4. ColumnTransformer for heterogeneous data<a class="headerlink" href="#columntransformer-for-heterogeneous-data" title="Permalink to this headline">¶</a></h2>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The <a class="reference internal" href="generated/sklearn.compose.ColumnTransformer.html#sklearn.compose.ColumnTransformer" title="sklearn.compose.ColumnTransformer"><code class="xref py py-class docutils literal"><span class="pre">compose.ColumnTransformer</span></code></a>
+class is experimental and the API is subject to change.</p>
+</div>
+<p>Many datasets contain features of different types, say text, floats, and dates,
+where each type of feature requires separate preprocessing or feature
+extraction steps.  Often it is easiest to preprocess data before applying
+scikit-learn methods, for example using <a class="reference external" href="http://pandas.pydata.org/">pandas</a>.
+Processing your data before passing it to scikit-learn might be problematic for
+one of the following reasons:</p>
+<ol class="arabic simple">
+<li>Incorporating statistics from test data into the preprocessors makes
+cross-validation scores unreliable (known as <em>data leakage</em>),
+for example in the case of scalers or imputing missing values.</li>
+<li>You may want to include the parameters of the preprocessors in a
+<a class="reference internal" href="grid_search.html#grid-search"><span class="std std-ref">parameter search</span></a>.</li>
+</ol>
+<p>The <a class="reference internal" href="generated/sklearn.compose.ColumnTransformer.html#sklearn.compose.ColumnTransformer" title="sklearn.compose.ColumnTransformer"><code class="xref py py-class docutils literal"><span class="pre">ColumnTransformer</span></code></a> helps performing different
+transformations for different columns of the data, within a
+<a class="reference internal" href="generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal"><span class="pre">Pipeline</span></code></a> that is safe from data leakage and that can
+be parametrized. <a class="reference internal" href="generated/sklearn.compose.ColumnTransformer.html#sklearn.compose.ColumnTransformer" title="sklearn.compose.ColumnTransformer"><code class="xref py py-class docutils literal"><span class="pre">ColumnTransformer</span></code></a> works on
+arrays, sparse matrices, and
+<a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/">pandas DataFrames</a>.</p>
+<p>To each column, a different transformation can be applied, such as
+preprocessing or a specific feature extraction method:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">{</span><span class="s1">&#39;city&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;London&#39;</span><span class="p">,</span> <span class="s1">&#39;London&#39;</span><span class="p">,</span> <span class="s1">&#39;Paris&#39;</span><span class="p">,</span> <span class="s1">&#39;Sallisaw&#39;</span><span class="p">],</span>
+<span class="gp">... </span>     <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;His Last Bow&quot;</span><span class="p">,</span> <span class="s2">&quot;How Watson Learned the Trick&quot;</span><span class="p">,</span>
+<span class="gp">... </span>               <span class="s2">&quot;A Moveable Feast&quot;</span><span class="p">,</span> <span class="s2">&quot;The Grapes of Wrath&quot;</span><span class="p">]})</span>
+</pre></div>
+</div>
+<p>For this data, we might want to encode the <code class="docutils literal"><span class="pre">'city'</span></code> column as a categorical
+variable, but apply a <a class="reference internal" href="generated/sklearn.feature_extraction.text.CountVectorizer.html#sklearn.feature_extraction.text.CountVectorizer" title="sklearn.feature_extraction.text.CountVectorizer"><code class="xref py py-class docutils literal"><span class="pre">feature_extraction.text.CountVectorizer</span></code></a> to the <code class="docutils literal"><span class="pre">'title'</span></code> column.
+As we might use multiple feature extraction methods on the same column, we give
+each transformer a unique name, say <code class="docutils literal"><span class="pre">'city_category'</span></code> and <code class="docutils literal"><span class="pre">'title_bow'</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.compose</span> <span class="k">import</span> <span class="n">ColumnTransformer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="k">import</span> <span class="n">CountVectorizer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">column_trans</span> <span class="o">=</span> <span class="n">ColumnTransformer</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">[(</span><span class="s1">&#39;city_category&#39;</span><span class="p">,</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">analyzer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">]),</span> <span class="s1">&#39;city&#39;</span><span class="p">),</span>
+<span class="gp">... </span>     <span class="p">(</span><span class="s1">&#39;title_bow&#39;</span><span class="p">,</span> <span class="n">CountVectorizer</span><span class="p">(),</span> <span class="s1">&#39;title&#39;</span><span class="p">)])</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">column_trans</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> 
+<span class="go">ColumnTransformer(n_jobs=1, remainder=&#39;passthrough&#39;, transformer_weights=None,</span>
+<span class="go">    transformers=...)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">column_trans</span><span class="o">.</span><span class="n">get_feature_names</span><span class="p">()</span>
+<span class="gp">... </span>
+<span class="go">[&#39;city_category__London&#39;, &#39;city_category__Paris&#39;, &#39;city_category__Sallisaw&#39;,</span>
+<span class="go">&#39;title_bow__bow&#39;, &#39;title_bow__feast&#39;, &#39;title_bow__grapes&#39;, &#39;title_bow__his&#39;,</span>
+<span class="go">&#39;title_bow__how&#39;, &#39;title_bow__last&#39;, &#39;title_bow__learned&#39;, &#39;title_bow__moveable&#39;,</span>
+<span class="go">&#39;title_bow__of&#39;, &#39;title_bow__the&#39;, &#39;title_bow__trick&#39;, &#39;title_bow__watson&#39;,</span>
+<span class="go">&#39;title_bow__wrath&#39;]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">column_trans</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+<span class="gp">... </span>
+<span class="go">array([[1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0],</span>
+<span class="go">       [1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0],</span>
+<span class="go">       [0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],</span>
+<span class="go">       [0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1]]...)</span>
+</pre></div>
+</div>
+<p>In the above example, the
+<a class="reference internal" href="generated/sklearn.feature_extraction.text.CountVectorizer.html#sklearn.feature_extraction.text.CountVectorizer" title="sklearn.feature_extraction.text.CountVectorizer"><code class="xref py py-class docutils literal"><span class="pre">CountVectorizer</span></code></a> expects a 1D array as
+input and therefore the columns were specified as a string (<code class="docutils literal"><span class="pre">'city'</span></code>).
+However, other transformers generally expect 2D data, and in that case you need
+to specify the column as a list of strings (<code class="docutils literal"><span class="pre">['city']</span></code>).</p>
+<p>Apart from a scalar or a single item list, the column selection can be specified
+as a list of multiple items, an integer array, a slice, or a boolean mask.
+Strings can reference columns if the input is a DataFrame, integers are always
+interpreted as the positional columns.</p>
+<p>The <code class="xref py py-func docutils literal"><span class="pre">make_columntransformer</span></code> function is available
+to more easily create a <a class="reference internal" href="generated/sklearn.compose.ColumnTransformer.html#sklearn.compose.ColumnTransformer" title="sklearn.compose.ColumnTransformer"><code class="xref py py-class docutils literal"><span class="pre">ColumnTransformer</span></code></a> object.
+Specifically, the names will be given automatically. The equivalent for the
+above example would be:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.compose</span> <span class="k">import</span> <span class="n">make_column_transformer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">column_trans</span> <span class="o">=</span> <span class="n">make_column_transformer</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="s1">&#39;city&#39;</span><span class="p">,</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">analyzer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">])),</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="n">CountVectorizer</span><span class="p">()))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">column_trans</span> 
+<span class="go">ColumnTransformer(n_jobs=1, remainder=&#39;passthrough&#39;, transformer_weights=None,</span>
+<span class="go">         transformers=[(&#39;countvectorizer-1&#39;, ...)</span>
+</pre></div>
+</div>
+<div class="topic">
+<p class="topic-title first">Examples:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../auto_examples/column_transformer.html#sphx-glr-auto-examples-column-transformer-py"><span class="std std-ref">Column Transformer with Heterogeneous Data Sources</span></a></li>
+</ul>
 </div>
 </div>
 </div>
