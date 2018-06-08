@@ -6,7 +6,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
   
     <title>sklearn.feature_selection.RFE &#8212; scikit-learn 0.20.dev0 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
@@ -14,11 +13,9 @@
   <link rel="stylesheet" href="../../_static/css/bootstrap.min.css" media="screen" />
   <link rel="stylesheet" href="../../_static/css/bootstrap-responsive.css"/>
 
-    
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
@@ -208,7 +205,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.feature_selection" title="sklearn.feature_selection"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.feature_selection</span></code></a>.RFE<a class="headerlink" href="#sklearn-feature-selection-rfe" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="sklearn.feature_selection.RFE">
-<em class="property">class </em><code class="descclassname">sklearn.feature_selection.</code><code class="descname">RFE</code><span class="sig-paren">(</span><em>estimator</em>, <em>n_features_to_select=None</em>, <em>step=1</em>, <em>verbose=0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/feature_selection/rfe.py#L35"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.RFE" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">sklearn.feature_selection.</code><code class="descname">RFE</code><span class="sig-paren">(</span><em>estimator</em>, <em>n_features_to_select=None</em>, <em>step=1</em>, <em>verbose=0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/feature_selection/rfe.py#L35"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.RFE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Feature ranking with recursive feature elimination.</p>
 <p>Given an external estimator that assigns weights to features (e.g., the
 coefficients of a linear model), the goal of recursive feature elimination
@@ -224,45 +221,50 @@ number of features to select is eventually reached.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>estimator</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd><p class="first last">A supervised learning estimator with a <code class="docutils literal"><span class="pre">fit</span></code> method that provides
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>estimator</strong> : object</p>
+<blockquote>
+<div><p>A supervised learning estimator with a <code class="docutils literal"><span class="pre">fit</span></code> method that provides
 information about feature importance either through a <code class="docutils literal"><span class="pre">coef_</span></code>
 attribute or through a <code class="docutils literal"><span class="pre">feature_importances_</span></code> attribute.</p>
-</dd>
-<dt><strong>n_features_to_select</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int or None (default=None)</span></dt>
-<dd><p class="first last">The number of features to select. If <cite>None</cite>, half of the features
+</div></blockquote>
+<p><strong>n_features_to_select</strong> : int or None (default=None)</p>
+<blockquote>
+<div><p>The number of features to select. If <cite>None</cite>, half of the features
 are selected.</p>
-</dd>
-<dt><strong>step</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int or float, optional (default=1)</span></dt>
-<dd><p class="first last">If greater than or equal to 1, then <cite>step</cite> corresponds to the (integer)
+</div></blockquote>
+<p><strong>step</strong> : int or float, optional (default=1)</p>
+<blockquote>
+<div><p>If greater than or equal to 1, then <cite>step</cite> corresponds to the (integer)
 number of features to remove at each iteration.
 If within (0.0, 1.0), then <cite>step</cite> corresponds to the percentage
 (rounded down) of features to remove at each iteration.</p>
-</dd>
-<dt><strong>verbose</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, default=0</span></dt>
-<dd><p class="first last">Controls verbosity of output.</p>
-</dd>
-</dl>
+</div></blockquote>
+<p><strong>verbose</strong> : int, default=0</p>
+<blockquote class="last">
+<div><p>Controls verbosity of output.</p>
+</div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>n_features_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">The number of selected features.</p>
-</dd>
-<dt><strong>support_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of shape [n_features]</span></dt>
-<dd><p class="first last">The mask of selected features.</p>
-</dd>
-<dt><strong>ranking_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of shape [n_features]</span></dt>
-<dd><p class="first last">The feature ranking, such that <code class="docutils literal"><span class="pre">ranking_[i]</span></code> corresponds to the
-ranking position of the i-th feature. Selected (i.e., estimated
-best) features are assigned rank 1.</p>
-</dd>
-<dt><strong>estimator_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd><p class="first last">The external estimator fit on the reduced dataset.</p>
-</dd>
-</dl>
-</td>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="7%" />
+<col width="93%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>n_features_</strong></td>
+<td>(int) The number of selected features.</td>
+</tr>
+<tr class="row-even"><td><strong>support_</strong></td>
+<td>(array of shape [n_features]) The mask of selected features.</td>
+</tr>
+<tr class="row-odd"><td><strong>ranking_</strong></td>
+<td>(array of shape [n_features]) The feature ranking, such that <code class="docutils literal"><span class="pre">ranking_[i]</span></code> corresponds to the ranking position of the i-th feature. Selected (i.e., estimated best) features are assigned rank 1.</td>
+</tr>
+<tr class="row-even"><td><strong>estimator_</strong></td>
+<td>(object) The external estimator fit on the reduced dataset.</td>
 </tr>
 </tbody>
 </table>
@@ -274,10 +276,10 @@ best) features are assigned rank 1.</p>
 </dl>
 </div>
 <p class="rubric">References</p>
-<table class="docutils citation" frame="void" id="re310f679c81e-1" rules="none">
+<table class="docutils citation" frame="void" id="r9393" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Guyon, I., Weston, J., Barnhill, S., &amp; Vapnik, V., “Gene selection
+<tr><td class="label"><a class="fn-backref" href="#id1">[R9393]</a></td><td>Guyon, I., Weston, J., Barnhill, S., &amp; Vapnik, V., “Gene selection
 for cancer classification using support vector machines”,
 Mach. Learn., 46(1-3), 389–422, 2002.</td></tr>
 </tbody>
@@ -346,12 +348,12 @@ features in the Friedman #1 dataset.</p>
 </table>
 <dl class="method">
 <dt id="sklearn.feature_selection.RFE.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>estimator</em>, <em>n_features_to_select=None</em>, <em>step=1</em>, <em>verbose=0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/feature_selection/rfe.py#L116"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.RFE.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>estimator</em>, <em>n_features_to_select=None</em>, <em>step=1</em>, <em>verbose=0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/feature_selection/rfe.py#L116"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.RFE.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="sklearn.feature_selection.RFE.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/feature_selection/rfe.py#L127"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.RFE.fit" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/feature_selection/rfe.py#L127"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.RFE.fit" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Fit the RFE model and then the underlying estimator on the selected</dt>
 <dd>features.</dd>
@@ -360,14 +362,14 @@ features in the Friedman #1 dataset.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">{array-like, sparse matrix}, shape = [n_samples, n_features]</span></dt>
-<dd><p class="first last">The training input samples.</p>
-</dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape = [n_samples]</span></dt>
-<dd><p class="first last">The target values.</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : {array-like, sparse matrix}, shape = [n_samples, n_features]</p>
+<blockquote>
+<div><p>The training input samples.</p>
+</div></blockquote>
+<p><strong>y</strong> : array-like, shape = [n_samples]</p>
+<blockquote class="last">
+<div><p>The target values.</p>
+</div></blockquote>
 </td>
 </tr>
 </tbody>
@@ -376,7 +378,7 @@ features in the Friedman #1 dataset.</p>
 
 <dl class="method">
 <dt id="sklearn.feature_selection.RFE.fit_transform">
-<code class="descname">fit_transform</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/base.py#L482"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.RFE.fit_transform" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit_transform</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/base.py#L482"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.RFE.fit_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit to data, then transform it.</p>
 <p>Fits transformer to X and y with optional parameters fit_params
 and returns a transformed version of X.</p>
@@ -384,21 +386,20 @@ and returns a transformed version of X.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">numpy array of shape [n_samples, n_features]</span></dt>
-<dd><p class="first last">Training set.</p>
-</dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">numpy array of shape [n_samples]</span></dt>
-<dd><p class="first last">Target values.</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : numpy array of shape [n_samples, n_features]</p>
+<blockquote>
+<div><p>Training set.</p>
+</div></blockquote>
+<p><strong>y</strong> : numpy array of shape [n_samples]</p>
+<blockquote>
+<div><p>Target values.</p>
+</div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>X_new</strong> <span class="classifier-delimiter">:</span> <span class="classifier">numpy array of shape [n_samples, n_features_new]</span></dt>
-<dd><p class="first last">Transformed array.</p>
-</dd>
-</dl>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>X_new</strong> : numpy array of shape [n_samples, n_features_new]</p>
+<blockquote class="last">
+<div><p>Transformed array.</p>
+</div></blockquote>
 </td>
 </tr>
 </tbody>
@@ -407,25 +408,23 @@ and returns a transformed version of X.</p>
 
 <dl class="method">
 <dt id="sklearn.feature_selection.RFE.get_params">
-<code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/base.py#L213"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.RFE.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/base.py#L213"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.RFE.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>deep</strong> <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
-<dd><p class="first last">If True, will return the parameters for this estimator and
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>deep</strong> : boolean, optional</p>
+<blockquote>
+<div><p>If True, will return the parameters for this estimator and
 contained subobjects that are estimators.</p>
-</dd>
-</dl>
+</div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>params</strong> <span class="classifier-delimiter">:</span> <span class="classifier">mapping of string to any</span></dt>
-<dd><p class="first last">Parameter names mapped to their values.</p>
-</dd>
-</dl>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>params</strong> : mapping of string to any</p>
+<blockquote class="last">
+<div><p>Parameter names mapped to their values.</p>
+</div></blockquote>
 </td>
 </tr>
 </tbody>
@@ -434,30 +433,28 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.feature_selection.RFE.get_support">
-<code class="descname">get_support</code><span class="sig-paren">(</span><em>indices=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/feature_selection/base.py#L27"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.RFE.get_support" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_support</code><span class="sig-paren">(</span><em>indices=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/feature_selection/base.py#L27"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.RFE.get_support" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a mask, or integer index, of the features selected</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>indices</strong> <span class="classifier-delimiter">:</span> <span class="classifier">boolean (default False)</span></dt>
-<dd><p class="first last">If True, the return value will be an array of integers, rather
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>indices</strong> : boolean (default False)</p>
+<blockquote>
+<div><p>If True, the return value will be an array of integers, rather
 than a boolean mask.</p>
-</dd>
-</dl>
+</div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>support</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array</span></dt>
-<dd><p class="first last">An index that selects the retained features from a feature vector.
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>support</strong> : array</p>
+<blockquote class="last">
+<div><p>An index that selects the retained features from a feature vector.
 If <cite>indices</cite> is False, this is a boolean array of shape
 [# input features], in which an element is True iff its
 corresponding feature is selected for retention. If <cite>indices</cite> is
 True, this is an integer array of shape [# output features] whose
 values are indices into the input feature vector.</p>
-</dd>
-</dl>
+</div></blockquote>
 </td>
 </tr>
 </tbody>
@@ -466,25 +463,23 @@ values are indices into the input feature vector.</p>
 
 <dl class="method">
 <dt id="sklearn.feature_selection.RFE.inverse_transform">
-<code class="descname">inverse_transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/feature_selection/base.py#L86"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.RFE.inverse_transform" title="Permalink to this definition">¶</a></dt>
+<code class="descname">inverse_transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/feature_selection/base.py#L86"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.RFE.inverse_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reverse the transformation operation</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of shape [n_samples, n_selected_features]</span></dt>
-<dd><p class="first last">The input samples.</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array of shape [n_samples, n_selected_features]</p>
+<blockquote>
+<div><p>The input samples.</p>
+</div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>X_r</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of shape [n_samples, n_original_features]</span></dt>
-<dd><p class="first last"><cite>X</cite> with columns of zeros inserted where features would have
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>X_r</strong> : array of shape [n_samples, n_original_features]</p>
+<blockquote class="last">
+<div><p><cite>X</cite> with columns of zeros inserted where features would have
 been removed by <cite>transform</cite>.</p>
-</dd>
-</dl>
+</div></blockquote>
 </td>
 </tr>
 </tbody>
@@ -493,7 +488,7 @@ been removed by <cite>transform</cite>.</p>
 
 <dl class="method">
 <dt id="sklearn.feature_selection.RFE.predict">
-<code class="descname">predict</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/utils/metaestimators.py#L224"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.RFE.predict" title="Permalink to this definition">¶</a></dt>
+<code class="descname">predict</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/utils/metaestimators.py#L224"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.RFE.predict" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Reduce X to the selected features and then predict using the</dt>
 <dd>underlying estimator.</dd>
@@ -502,18 +497,16 @@ been removed by <cite>transform</cite>.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of shape [n_samples, n_features]</span></dt>
-<dd><p class="first last">The input samples.</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array of shape [n_samples, n_features]</p>
+<blockquote>
+<div><p>The input samples.</p>
+</div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of shape [n_samples]</span></dt>
-<dd><p class="first last">The predicted target values.</p>
-</dd>
-</dl>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>y</strong> : array of shape [n_samples]</p>
+<blockquote class="last">
+<div><p>The predicted target values.</p>
+</div></blockquote>
 </td>
 </tr>
 </tbody>
@@ -522,7 +515,7 @@ been removed by <cite>transform</cite>.</p>
 
 <dl class="method">
 <dt id="sklearn.feature_selection.RFE.score">
-<code class="descname">score</code><span class="sig-paren">(</span><em>X</em>, <em>y</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/utils/metaestimators.py#L242"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.RFE.score" title="Permalink to this definition">¶</a></dt>
+<code class="descname">score</code><span class="sig-paren">(</span><em>X</em>, <em>y</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/utils/metaestimators.py#L242"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.RFE.score" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Reduce X to the selected features and then return the score of the</dt>
 <dd>underlying estimator.</dd>
@@ -531,14 +524,14 @@ been removed by <cite>transform</cite>.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of shape [n_samples, n_features]</span></dt>
-<dd><p class="first last">The input samples.</p>
-</dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of shape [n_samples]</span></dt>
-<dd><p class="first last">The target values.</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array of shape [n_samples, n_features]</p>
+<blockquote>
+<div><p>The input samples.</p>
+</div></blockquote>
+<p><strong>y</strong> : array of shape [n_samples]</p>
+<blockquote class="last">
+<div><p>The target values.</p>
+</div></blockquote>
 </td>
 </tr>
 </tbody>
@@ -547,7 +540,7 @@ been removed by <cite>transform</cite>.</p>
 
 <dl class="method">
 <dt id="sklearn.feature_selection.RFE.set_params">
-<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/base.py#L236"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.RFE.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/base.py#L236"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.RFE.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
@@ -557,11 +550,7 @@ component of a nested object.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>self</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
 </tr>
 </tbody>
 </table>
@@ -569,24 +558,22 @@ component of a nested object.</p>
 
 <dl class="method">
 <dt id="sklearn.feature_selection.RFE.transform">
-<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/feature_selection/base.py#L62"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.RFE.transform" title="Permalink to this definition">¶</a></dt>
+<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/feature_selection/base.py#L62"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.RFE.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reduce X to the selected features.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of shape [n_samples, n_features]</span></dt>
-<dd><p class="first last">The input samples.</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array of shape [n_samples, n_features]</p>
+<blockquote>
+<div><p>The input samples.</p>
+</div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>X_r</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of shape [n_samples, n_selected_features]</span></dt>
-<dd><p class="first last">The input samples with only the selected features.</p>
-</dd>
-</dl>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>X_r</strong> : array of shape [n_samples, n_selected_features]</p>
+<blockquote class="last">
+<div><p>The input samples with only the selected features.</p>
+</div></blockquote>
 </td>
 </tr>
 </tbody>

@@ -6,7 +6,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
   
     <title>sklearn.feature_selection.SelectFromModel &#8212; scikit-learn 0.20.dev0 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
@@ -14,11 +13,9 @@
   <link rel="stylesheet" href="../../_static/css/bootstrap.min.css" media="screen" />
   <link rel="stylesheet" href="../../_static/css/bootstrap-responsive.css"/>
 
-    
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
@@ -208,7 +205,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.feature_selection" title="sklearn.feature_selection"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.feature_selection</span></code></a>.SelectFromModel<a class="headerlink" href="#sklearn-feature-selection-selectfrommodel" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="sklearn.feature_selection.SelectFromModel">
-<em class="property">class </em><code class="descclassname">sklearn.feature_selection.</code><code class="descname">SelectFromModel</code><span class="sig-paren">(</span><em>estimator</em>, <em>threshold=None</em>, <em>prefit=False</em>, <em>norm_order=1</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/feature_selection/from_model.py#L80"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.SelectFromModel" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">sklearn.feature_selection.</code><code class="descname">SelectFromModel</code><span class="sig-paren">(</span><em>estimator</em>, <em>threshold=None</em>, <em>prefit=False</em>, <em>norm_order=1</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/feature_selection/from_model.py#L80"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.SelectFromModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Meta-transformer for selecting features based on importance weights.</p>
 <div class="versionadded">
 <p><span class="versionmodified">New in version 0.17.</span></p>
@@ -217,15 +214,16 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>estimator</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd><p class="first last">The base estimator from which the transformer is built.
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>estimator</strong> : object</p>
+<blockquote>
+<div><p>The base estimator from which the transformer is built.
 This can be both a fitted (if <code class="docutils literal"><span class="pre">prefit</span></code> is set to True)
 or a non-fitted estimator. The estimator must have either a
 <code class="docutils literal"><span class="pre">feature_importances_</span></code> or <code class="docutils literal"><span class="pre">coef_</span></code> attribute after fitting.</p>
-</dd>
-<dt><strong>threshold</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string, float, optional default None</span></dt>
-<dd><p class="first last">The threshold value to use for feature selection. Features whose
+</div></blockquote>
+<p><strong>threshold</strong> : string, float, optional default None</p>
+<blockquote>
+<div><p>The threshold value to use for feature selection. Features whose
 importance is greater or equal are kept while the others are
 discarded. If “median” (resp. “mean”), then the <code class="docutils literal"><span class="pre">threshold</span></code> value is
 the median (resp. the mean) of the feature importances. A scaling
@@ -233,34 +231,38 @@ factor (e.g., “1.25*mean”) may also be used. If None and if the
 estimator has a parameter penalty set to l1, either explicitly
 or implicitly (e.g, Lasso), the threshold used is 1e-5.
 Otherwise, “mean” is used by default.</p>
-</dd>
-<dt><strong>prefit</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, default False</span></dt>
-<dd><p class="first last">Whether a prefit model is expected to be passed into the constructor
+</div></blockquote>
+<p><strong>prefit</strong> : bool, default False</p>
+<blockquote>
+<div><p>Whether a prefit model is expected to be passed into the constructor
 directly or not. If True, <code class="docutils literal"><span class="pre">transform</span></code> must be called directly
 and SelectFromModel cannot be used with <code class="docutils literal"><span class="pre">cross_val_score</span></code>,
 <code class="docutils literal"><span class="pre">GridSearchCV</span></code> and similar utilities that clone the estimator.
 Otherwise train the model using <code class="docutils literal"><span class="pre">fit</span></code> and then <code class="docutils literal"><span class="pre">transform</span></code> to do
 feature selection.</p>
-</dd>
-<dt><strong>norm_order</strong> <span class="classifier-delimiter">:</span> <span class="classifier">non-zero int, inf, -inf, default 1</span></dt>
-<dd><p class="first last">Order of the norm used to filter the vectors of coefficients below
+</div></blockquote>
+<p><strong>norm_order</strong> : non-zero int, inf, -inf, default 1</p>
+<blockquote class="last">
+<div><p>Order of the norm used to filter the vectors of coefficients below
 <code class="docutils literal"><span class="pre">threshold</span></code> in the case where the <code class="docutils literal"><span class="pre">coef_</span></code> attribute of the
 estimator is of dimension 2.</p>
-</dd>
-</dl>
+</div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>estimator_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">an estimator</span></dt>
-<dd><p class="first last">The base estimator from which the transformer is built.
-This is stored only when a non-fitted estimator is passed to the
-<code class="docutils literal"><span class="pre">SelectFromModel</span></code>, i.e when prefit is False.</p>
-</dd>
-<dt><strong>threshold_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd><p class="first last">The threshold value used for feature selection.</p>
-</dd>
-</dl>
-</td>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="7%" />
+<col width="93%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>estimator_</strong></td>
+<td>(an estimator) The base estimator from which the transformer is built. This is stored only when a non-fitted estimator is passed to the <code class="docutils literal"><span class="pre">SelectFromModel</span></code>, i.e when prefit is False.</td>
+</tr>
+<tr class="row-even"><td><strong>threshold_</strong></td>
+<td>(float) The threshold value used for feature selection.</td>
 </tr>
 </tbody>
 </table>
@@ -299,34 +301,30 @@ This is stored only when a non-fitted estimator is passed to the
 </table>
 <dl class="method">
 <dt id="sklearn.feature_selection.SelectFromModel.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>estimator</em>, <em>threshold=None</em>, <em>prefit=False</em>, <em>norm_order=1</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/feature_selection/from_model.py#L126"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.SelectFromModel.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>estimator</em>, <em>threshold=None</em>, <em>prefit=False</em>, <em>norm_order=1</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/feature_selection/from_model.py#L126"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.SelectFromModel.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="sklearn.feature_selection.SelectFromModel.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/feature_selection/from_model.py#L146"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.SelectFromModel.fit" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/feature_selection/from_model.py#L146"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.SelectFromModel.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the SelectFromModel meta-transformer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like of shape (n_samples, n_features)</span></dt>
-<dd><p class="first last">The training input samples.</p>
-</dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_samples,)</span></dt>
-<dd><p class="first last">The target values (integers that correspond to classes in
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like of shape (n_samples, n_features)</p>
+<blockquote>
+<div><p>The training input samples.</p>
+</div></blockquote>
+<p><strong>y</strong> : array-like, shape (n_samples,)</p>
+<blockquote>
+<div><p>The target values (integers that correspond to classes in
 classification, real numbers in regression).</p>
-</dd>
-<dt><strong>**fit_params</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Other estimator specific parameters</span></dt>
-<dd></dd>
-</dl>
+</div></blockquote>
+<p><strong>**fit_params</strong> : Other estimator specific parameters</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>self</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd></dd>
-</dl>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>self</strong> : object</p>
 </td>
 </tr>
 </tbody>
@@ -335,7 +333,7 @@ classification, real numbers in regression).</p>
 
 <dl class="method">
 <dt id="sklearn.feature_selection.SelectFromModel.fit_transform">
-<code class="descname">fit_transform</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/base.py#L482"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.SelectFromModel.fit_transform" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit_transform</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/base.py#L482"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.SelectFromModel.fit_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit to data, then transform it.</p>
 <p>Fits transformer to X and y with optional parameters fit_params
 and returns a transformed version of X.</p>
@@ -343,21 +341,20 @@ and returns a transformed version of X.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">numpy array of shape [n_samples, n_features]</span></dt>
-<dd><p class="first last">Training set.</p>
-</dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">numpy array of shape [n_samples]</span></dt>
-<dd><p class="first last">Target values.</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : numpy array of shape [n_samples, n_features]</p>
+<blockquote>
+<div><p>Training set.</p>
+</div></blockquote>
+<p><strong>y</strong> : numpy array of shape [n_samples]</p>
+<blockquote>
+<div><p>Target values.</p>
+</div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>X_new</strong> <span class="classifier-delimiter">:</span> <span class="classifier">numpy array of shape [n_samples, n_features_new]</span></dt>
-<dd><p class="first last">Transformed array.</p>
-</dd>
-</dl>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>X_new</strong> : numpy array of shape [n_samples, n_features_new]</p>
+<blockquote class="last">
+<div><p>Transformed array.</p>
+</div></blockquote>
 </td>
 </tr>
 </tbody>
@@ -366,25 +363,23 @@ and returns a transformed version of X.</p>
 
 <dl class="method">
 <dt id="sklearn.feature_selection.SelectFromModel.get_params">
-<code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/base.py#L213"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.SelectFromModel.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/base.py#L213"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.SelectFromModel.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>deep</strong> <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
-<dd><p class="first last">If True, will return the parameters for this estimator and
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>deep</strong> : boolean, optional</p>
+<blockquote>
+<div><p>If True, will return the parameters for this estimator and
 contained subobjects that are estimators.</p>
-</dd>
-</dl>
+</div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>params</strong> <span class="classifier-delimiter">:</span> <span class="classifier">mapping of string to any</span></dt>
-<dd><p class="first last">Parameter names mapped to their values.</p>
-</dd>
-</dl>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>params</strong> : mapping of string to any</p>
+<blockquote class="last">
+<div><p>Parameter names mapped to their values.</p>
+</div></blockquote>
 </td>
 </tr>
 </tbody>
@@ -393,30 +388,28 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.feature_selection.SelectFromModel.get_support">
-<code class="descname">get_support</code><span class="sig-paren">(</span><em>indices=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/feature_selection/base.py#L27"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.SelectFromModel.get_support" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_support</code><span class="sig-paren">(</span><em>indices=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/feature_selection/base.py#L27"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.SelectFromModel.get_support" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a mask, or integer index, of the features selected</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>indices</strong> <span class="classifier-delimiter">:</span> <span class="classifier">boolean (default False)</span></dt>
-<dd><p class="first last">If True, the return value will be an array of integers, rather
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>indices</strong> : boolean (default False)</p>
+<blockquote>
+<div><p>If True, the return value will be an array of integers, rather
 than a boolean mask.</p>
-</dd>
-</dl>
+</div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>support</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array</span></dt>
-<dd><p class="first last">An index that selects the retained features from a feature vector.
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>support</strong> : array</p>
+<blockquote class="last">
+<div><p>An index that selects the retained features from a feature vector.
 If <cite>indices</cite> is False, this is a boolean array of shape
 [# input features], in which an element is True iff its
 corresponding feature is selected for retention. If <cite>indices</cite> is
 True, this is an integer array of shape [# output features] whose
 values are indices into the input feature vector.</p>
-</dd>
-</dl>
+</div></blockquote>
 </td>
 </tr>
 </tbody>
@@ -425,25 +418,23 @@ values are indices into the input feature vector.</p>
 
 <dl class="method">
 <dt id="sklearn.feature_selection.SelectFromModel.inverse_transform">
-<code class="descname">inverse_transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/feature_selection/base.py#L86"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.SelectFromModel.inverse_transform" title="Permalink to this definition">¶</a></dt>
+<code class="descname">inverse_transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/feature_selection/base.py#L86"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.SelectFromModel.inverse_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reverse the transformation operation</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of shape [n_samples, n_selected_features]</span></dt>
-<dd><p class="first last">The input samples.</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array of shape [n_samples, n_selected_features]</p>
+<blockquote>
+<div><p>The input samples.</p>
+</div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>X_r</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of shape [n_samples, n_original_features]</span></dt>
-<dd><p class="first last"><cite>X</cite> with columns of zeros inserted where features would have
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>X_r</strong> : array of shape [n_samples, n_original_features]</p>
+<blockquote class="last">
+<div><p><cite>X</cite> with columns of zeros inserted where features would have
 been removed by <cite>transform</cite>.</p>
-</dd>
-</dl>
+</div></blockquote>
 </td>
 </tr>
 </tbody>
@@ -452,29 +443,25 @@ been removed by <cite>transform</cite>.</p>
 
 <dl class="method">
 <dt id="sklearn.feature_selection.SelectFromModel.partial_fit">
-<code class="descname">partial_fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/utils/metaestimators.py#L176"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.SelectFromModel.partial_fit" title="Permalink to this definition">¶</a></dt>
+<code class="descname">partial_fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/utils/metaestimators.py#L176"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.SelectFromModel.partial_fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the SelectFromModel meta-transformer only once.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like of shape (n_samples, n_features)</span></dt>
-<dd><p class="first last">The training input samples.</p>
-</dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_samples,)</span></dt>
-<dd><p class="first last">The target values (integers that correspond to classes in
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like of shape (n_samples, n_features)</p>
+<blockquote>
+<div><p>The training input samples.</p>
+</div></blockquote>
+<p><strong>y</strong> : array-like, shape (n_samples,)</p>
+<blockquote>
+<div><p>The target values (integers that correspond to classes in
 classification, real numbers in regression).</p>
-</dd>
-<dt><strong>**fit_params</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Other estimator specific parameters</span></dt>
-<dd></dd>
-</dl>
+</div></blockquote>
+<p><strong>**fit_params</strong> : Other estimator specific parameters</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>self</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd></dd>
-</dl>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>self</strong> : object</p>
 </td>
 </tr>
 </tbody>
@@ -483,7 +470,7 @@ classification, real numbers in regression).</p>
 
 <dl class="method">
 <dt id="sklearn.feature_selection.SelectFromModel.set_params">
-<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/base.py#L236"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.SelectFromModel.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/base.py#L236"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.SelectFromModel.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
@@ -493,11 +480,7 @@ component of a nested object.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>self</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
 </tr>
 </tbody>
 </table>
@@ -505,24 +488,22 @@ component of a nested object.</p>
 
 <dl class="method">
 <dt id="sklearn.feature_selection.SelectFromModel.transform">
-<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/feature_selection/base.py#L62"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.SelectFromModel.transform" title="Permalink to this definition">¶</a></dt>
+<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/feature_selection/base.py#L62"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_selection.SelectFromModel.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reduce X to the selected features.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of shape [n_samples, n_features]</span></dt>
-<dd><p class="first last">The input samples.</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array of shape [n_samples, n_features]</p>
+<blockquote>
+<div><p>The input samples.</p>
+</div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>X_r</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of shape [n_samples, n_selected_features]</span></dt>
-<dd><p class="first last">The input samples with only the selected features.</p>
-</dd>
-</dl>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>X_r</strong> : array of shape [n_samples, n_selected_features]</p>
+<blockquote class="last">
+<div><p>The input samples with only the selected features.</p>
+</div></blockquote>
 </td>
 </tr>
 </tbody>

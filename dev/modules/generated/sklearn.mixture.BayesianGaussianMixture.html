@@ -6,7 +6,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
   
     <title>sklearn.mixture.BayesianGaussianMixture &#8212; scikit-learn 0.20.dev0 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
@@ -14,11 +13,9 @@
   <link rel="stylesheet" href="../../_static/css/bootstrap.min.css" media="screen" />
   <link rel="stylesheet" href="../../_static/css/bootstrap-responsive.css"/>
 
-    
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
@@ -208,7 +205,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.mixture" title="sklearn.mixture"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.mixture</span></code></a>.BayesianGaussianMixture<a class="headerlink" href="#sklearn-mixture-bayesiangaussianmixture" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="sklearn.mixture.BayesianGaussianMixture">
-<em class="property">class </em><code class="descclassname">sklearn.mixture.</code><code class="descname">BayesianGaussianMixture</code><span class="sig-paren">(</span><em>n_components=1</em>, <em>covariance_type=’full’</em>, <em>tol=0.001</em>, <em>reg_covar=1e-06</em>, <em>max_iter=100</em>, <em>n_init=1</em>, <em>init_params=’kmeans’</em>, <em>weight_concentration_prior_type=’dirichlet_process’</em>, <em>weight_concentration_prior=None</em>, <em>mean_precision_prior=None</em>, <em>mean_prior=None</em>, <em>degrees_of_freedom_prior=None</em>, <em>covariance_prior=None</em>, <em>random_state=None</em>, <em>warm_start=False</em>, <em>verbose=0</em>, <em>verbose_interval=10</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/mixture/bayesian_mixture.py#L65"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.mixture.BayesianGaussianMixture" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">sklearn.mixture.</code><code class="descname">BayesianGaussianMixture</code><span class="sig-paren">(</span><em>n_components=1</em>, <em>covariance_type='full'</em>, <em>tol=0.001</em>, <em>reg_covar=1e-06</em>, <em>max_iter=100</em>, <em>n_init=1</em>, <em>init_params='kmeans'</em>, <em>weight_concentration_prior_type='dirichlet_process'</em>, <em>weight_concentration_prior=None</em>, <em>mean_precision_prior=None</em>, <em>mean_prior=None</em>, <em>degrees_of_freedom_prior=None</em>, <em>covariance_prior=None</em>, <em>random_state=None</em>, <em>warm_start=False</em>, <em>verbose=0</em>, <em>verbose_interval=10</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/mixture/bayesian_mixture.py#L65"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.mixture.BayesianGaussianMixture" title="Permalink to this definition">¶</a></dt>
 <dd><p>Variational Bayesian estimation of a Gaussian mixture.</p>
 <p>This class allows to infer an approximate posterior distribution over the
 parameters of a Gaussian mixture distribution. The effective number of
@@ -227,222 +224,187 @@ The number of components actually used almost always depends on the data.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>n_components</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, defaults to 1.</span></dt>
-<dd><p class="first last">The number of mixture components. Depending on the data and the value
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>n_components</strong> : int, defaults to 1.</p>
+<blockquote>
+<div><p>The number of mixture components. Depending on the data and the value
 of the <cite>weight_concentration_prior</cite> the model can decide to not use
 all the components by setting some component <cite>weights_</cite> to values very
 close to zero. The number of effective components is therefore smaller
 than n_components.</p>
-</dd>
-<dt><strong>covariance_type</strong> <span class="classifier-delimiter">:</span> <span class="classifier">{‘full’, ‘tied’, ‘diag’, ‘spherical’}, defaults to ‘full’</span></dt>
-<dd><p class="first">String describing the type of covariance parameters to use.
+</div></blockquote>
+<p><strong>covariance_type</strong> : {‘full’, ‘tied’, ‘diag’, ‘spherical’}, defaults to ‘full’</p>
+<blockquote>
+<div><p>String describing the type of covariance parameters to use.
 Must be one of:</p>
-<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="s1">&#39;full&#39;</span> <span class="p">(</span><span class="n">each</span> <span class="n">component</span> <span class="n">has</span> <span class="n">its</span> <span class="n">own</span> <span class="n">general</span> <span class="n">covariance</span> <span class="n">matrix</span><span class="p">),</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s1">&#39;full&#39;</span> <span class="p">(</span><span class="n">each</span> <span class="n">component</span> <span class="n">has</span> <span class="n">its</span> <span class="n">own</span> <span class="n">general</span> <span class="n">covariance</span> <span class="n">matrix</span><span class="p">),</span>
 <span class="s1">&#39;tied&#39;</span> <span class="p">(</span><span class="nb">all</span> <span class="n">components</span> <span class="n">share</span> <span class="n">the</span> <span class="n">same</span> <span class="n">general</span> <span class="n">covariance</span> <span class="n">matrix</span><span class="p">),</span>
 <span class="s1">&#39;diag&#39;</span> <span class="p">(</span><span class="n">each</span> <span class="n">component</span> <span class="n">has</span> <span class="n">its</span> <span class="n">own</span> <span class="n">diagonal</span> <span class="n">covariance</span> <span class="n">matrix</span><span class="p">),</span>
 <span class="s1">&#39;spherical&#39;</span> <span class="p">(</span><span class="n">each</span> <span class="n">component</span> <span class="n">has</span> <span class="n">its</span> <span class="n">own</span> <span class="n">single</span> <span class="n">variance</span><span class="p">)</span><span class="o">.</span>
 </pre></div>
 </div>
-</dd>
-<dt><strong>tol</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, defaults to 1e-3.</span></dt>
-<dd><p class="first last">The convergence threshold. EM iterations will stop when the
+</div></blockquote>
+<p><strong>tol</strong> : float, defaults to 1e-3.</p>
+<blockquote>
+<div><p>The convergence threshold. EM iterations will stop when the
 lower bound average gain on the likelihood (of the training data with
 respect to the model) is below this threshold.</p>
-</dd>
-<dt><strong>reg_covar</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, defaults to 1e-6.</span></dt>
-<dd><p class="first last">Non-negative regularization added to the diagonal of covariance.
+</div></blockquote>
+<p><strong>reg_covar</strong> : float, defaults to 1e-6.</p>
+<blockquote>
+<div><p>Non-negative regularization added to the diagonal of covariance.
 Allows to assure that the covariance matrices are all positive.</p>
-</dd>
-<dt><strong>max_iter</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, defaults to 100.</span></dt>
-<dd><p class="first last">The number of EM iterations to perform.</p>
-</dd>
-<dt><strong>n_init</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, defaults to 1.</span></dt>
-<dd><p class="first last">The number of initializations to perform. The result with the highest
+</div></blockquote>
+<p><strong>max_iter</strong> : int, defaults to 100.</p>
+<blockquote>
+<div><p>The number of EM iterations to perform.</p>
+</div></blockquote>
+<p><strong>n_init</strong> : int, defaults to 1.</p>
+<blockquote>
+<div><p>The number of initializations to perform. The result with the highest
 lower bound value on the likelihood is kept.</p>
-</dd>
-<dt><strong>init_params</strong> <span class="classifier-delimiter">:</span> <span class="classifier">{‘kmeans’, ‘random’}, defaults to ‘kmeans’.</span></dt>
-<dd><p class="first">The method used to initialize the weights, the means and the
+</div></blockquote>
+<p><strong>init_params</strong> : {‘kmeans’, ‘random’}, defaults to ‘kmeans’.</p>
+<blockquote>
+<div><p>The method used to initialize the weights, the means and the
 covariances.
 Must be one of:</p>
-<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="s1">&#39;kmeans&#39;</span> <span class="p">:</span> <span class="n">responsibilities</span> <span class="n">are</span> <span class="n">initialized</span> <span class="n">using</span> <span class="n">kmeans</span><span class="o">.</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s1">&#39;kmeans&#39;</span> <span class="p">:</span> <span class="n">responsibilities</span> <span class="n">are</span> <span class="n">initialized</span> <span class="n">using</span> <span class="n">kmeans</span><span class="o">.</span>
 <span class="s1">&#39;random&#39;</span> <span class="p">:</span> <span class="n">responsibilities</span> <span class="n">are</span> <span class="n">initialized</span> <span class="n">randomly</span><span class="o">.</span>
 </pre></div>
 </div>
-</dd>
-<dt><strong>weight_concentration_prior_type</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, defaults to ‘dirichlet_process’.</span></dt>
-<dd><p class="first">String describing the type of the weight concentration prior.
+</div></blockquote>
+<p><strong>weight_concentration_prior_type</strong> : str, defaults to ‘dirichlet_process’.</p>
+<blockquote>
+<div><p>String describing the type of the weight concentration prior.
 Must be one of:</p>
-<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="s1">&#39;dirichlet_process&#39;</span> <span class="p">(</span><span class="n">using</span> <span class="n">the</span> <span class="n">Stick</span><span class="o">-</span><span class="n">breaking</span> <span class="n">representation</span><span class="p">),</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s1">&#39;dirichlet_process&#39;</span> <span class="p">(</span><span class="n">using</span> <span class="n">the</span> <span class="n">Stick</span><span class="o">-</span><span class="n">breaking</span> <span class="n">representation</span><span class="p">),</span>
 <span class="s1">&#39;dirichlet_distribution&#39;</span> <span class="p">(</span><span class="n">can</span> <span class="n">favor</span> <span class="n">more</span> <span class="n">uniform</span> <span class="n">weights</span><span class="p">)</span><span class="o">.</span>
 </pre></div>
 </div>
-</dd>
-<dt><strong>weight_concentration_prior</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float | None, optional.</span></dt>
-<dd><p class="first last">The dirichlet concentration of each component on the weight
+</div></blockquote>
+<p><strong>weight_concentration_prior</strong> : float | None, optional.</p>
+<blockquote>
+<div><p>The dirichlet concentration of each component on the weight
 distribution (Dirichlet). This is commonly called gamma in the
 literature. The higher concentration puts more mass in
 the center and will lead to more components being active, while a lower
 concentration parameter will lead to more mass at the edge of the
 mixture weights simplex. The value of the parameter must be greater
 than 0. If it is None, it’s set to <code class="docutils literal"><span class="pre">1.</span> <span class="pre">/</span> <span class="pre">n_components</span></code>.</p>
-</dd>
-<dt><strong>mean_precision_prior</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float | None, optional.</span></dt>
-<dd><p class="first last">The precision prior on the mean distribution (Gaussian).
+</div></blockquote>
+<p><strong>mean_precision_prior</strong> : float | None, optional.</p>
+<blockquote>
+<div><p>The precision prior on the mean distribution (Gaussian).
 Controls the extend to where means can be placed. Smaller
 values concentrate the means of each clusters around <cite>mean_prior</cite>.
 The value of the parameter must be greater than 0.
 If it is None, it’s set to 1.</p>
-</dd>
-<dt><strong>mean_prior</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_features,), optional</span></dt>
-<dd><p class="first last">The prior on the mean distribution (Gaussian).
+</div></blockquote>
+<p><strong>mean_prior</strong> : array-like, shape (n_features,), optional</p>
+<blockquote>
+<div><p>The prior on the mean distribution (Gaussian).
 If it is None, it’s set to the mean of X.</p>
-</dd>
-<dt><strong>degrees_of_freedom_prior</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float | None, optional.</span></dt>
-<dd><p class="first last">The prior of the number of degrees of freedom on the covariance
+</div></blockquote>
+<p><strong>degrees_of_freedom_prior</strong> : float | None, optional.</p>
+<blockquote>
+<div><p>The prior of the number of degrees of freedom on the covariance
 distributions (Wishart). If it is None, it’s set to <cite>n_features</cite>.</p>
-</dd>
-<dt><strong>covariance_prior</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float or array-like, optional</span></dt>
-<dd><p class="first">The prior on the covariance distribution (Wishart).
+</div></blockquote>
+<p><strong>covariance_prior</strong> : float or array-like, optional</p>
+<blockquote>
+<div><p>The prior on the covariance distribution (Wishart).
 If it is None, the emiprical covariance prior is initialized using the
 covariance of X. The shape depends on <cite>covariance_type</cite>:</p>
-<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">n_features</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;full&#39;</span><span class="p">,</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">n_features</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;full&#39;</span><span class="p">,</span>
 <span class="p">(</span><span class="n">n_features</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;tied&#39;</span><span class="p">,</span>
 <span class="p">(</span><span class="n">n_features</span><span class="p">)</span>             <span class="k">if</span> <span class="s1">&#39;diag&#39;</span><span class="p">,</span>
 <span class="nb">float</span>                    <span class="k">if</span> <span class="s1">&#39;spherical&#39;</span>
 </pre></div>
 </div>
-</dd>
-<dt><strong>random_state</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, RandomState instance or None, optional (default=None)</span></dt>
-<dd><p class="first last">If int, random_state is the seed used by the random number generator;
+</div></blockquote>
+<p><strong>random_state</strong> : int, RandomState instance or None, optional (default=None)</p>
+<blockquote>
+<div><p>If int, random_state is the seed used by the random number generator;
 If RandomState instance, random_state is the random number generator;
 If None, the random number generator is the RandomState instance used
 by <cite>np.random</cite>.</p>
-</dd>
-<dt><strong>warm_start</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, default to False.</span></dt>
-<dd><p class="first last">If ‘warm_start’ is True, the solution of the last fitting is used as
+</div></blockquote>
+<p><strong>warm_start</strong> : bool, default to False.</p>
+<blockquote>
+<div><p>If ‘warm_start’ is True, the solution of the last fitting is used as
 initialization for the next call of fit(). This can speed up
 convergence when fit is called several times on similar problems.
 See <a class="reference internal" href="../../glossary.html#term-warm-start"><span class="xref std std-term">the Glossary</span></a>.</p>
-</dd>
-<dt><strong>verbose</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, default to 0.</span></dt>
-<dd><p class="first last">Enable verbose output. If 1 then it prints the current
+</div></blockquote>
+<p><strong>verbose</strong> : int, default to 0.</p>
+<blockquote>
+<div><p>Enable verbose output. If 1 then it prints the current
 initialization and each iteration step. If greater than 1 then
 it prints also the log probability and the time needed
 for each step.</p>
-</dd>
-<dt><strong>verbose_interval</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, default to 10.</span></dt>
-<dd><p class="first last">Number of iteration done before the next print.</p>
-</dd>
-</dl>
+</div></blockquote>
+<p><strong>verbose_interval</strong> : int, default to 10.</p>
+<blockquote class="last">
+<div><p>Number of iteration done before the next print.</p>
+</div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>weights_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_components,)</span></dt>
-<dd><p class="first last">The weights of each mixture components.</p>
-</dd>
-<dt><strong>means_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_components, n_features)</span></dt>
-<dd><p class="first last">The mean of each mixture component.</p>
-</dd>
-<dt><strong>covariances_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like</span></dt>
-<dd><p class="first">The covariance of each mixture component.
-The shape depends on <cite>covariance_type</cite>:</p>
-<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">n_components</span><span class="p">,)</span>                        <span class="k">if</span> <span class="s1">&#39;spherical&#39;</span><span class="p">,</span>
-<span class="p">(</span><span class="n">n_features</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span>               <span class="k">if</span> <span class="s1">&#39;tied&#39;</span><span class="p">,</span>
-<span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span>             <span class="k">if</span> <span class="s1">&#39;diag&#39;</span><span class="p">,</span>
-<span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">n_features</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;full&#39;</span>
-</pre></div>
-</div>
-</dd>
-<dt><strong>precisions_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like</span></dt>
-<dd><p class="first">The precision matrices for each component in the mixture. A precision
-matrix is the inverse of a covariance matrix. A covariance matrix is
-symmetric positive definite so the mixture of Gaussian can be
-equivalently parameterized by the precision matrices. Storing the
-precision matrices instead of the covariance matrices makes it more
-efficient to compute the log-likelihood of new samples at test time.
-The shape depends on <code class="docutils literal"><span class="pre">covariance_type</span></code>:</p>
-<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">n_components</span><span class="p">,)</span>                        <span class="k">if</span> <span class="s1">&#39;spherical&#39;</span><span class="p">,</span>
-<span class="p">(</span><span class="n">n_features</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span>               <span class="k">if</span> <span class="s1">&#39;tied&#39;</span><span class="p">,</span>
-<span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span>             <span class="k">if</span> <span class="s1">&#39;diag&#39;</span><span class="p">,</span>
-<span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">n_features</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;full&#39;</span>
-</pre></div>
-</div>
-</dd>
-<dt><strong>precisions_cholesky_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like</span></dt>
-<dd><p class="first">The cholesky decomposition of the precision matrices of each mixture
-component. A precision matrix is the inverse of a covariance matrix.
-A covariance matrix is symmetric positive definite so the mixture of
-Gaussian can be equivalently parameterized by the precision matrices.
-Storing the precision matrices instead of the covariance matrices makes
-it more efficient to compute the log-likelihood of new samples at test
-time. The shape depends on <code class="docutils literal"><span class="pre">covariance_type</span></code>:</p>
-<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">n_components</span><span class="p">,)</span>                        <span class="k">if</span> <span class="s1">&#39;spherical&#39;</span><span class="p">,</span>
-<span class="p">(</span><span class="n">n_features</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span>               <span class="k">if</span> <span class="s1">&#39;tied&#39;</span><span class="p">,</span>
-<span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span>             <span class="k">if</span> <span class="s1">&#39;diag&#39;</span><span class="p">,</span>
-<span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">n_features</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;full&#39;</span>
-</pre></div>
-</div>
-</dd>
-<dt><strong>converged_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
-<dd><p class="first last">True when convergence was reached in fit(), False otherwise.</p>
-</dd>
-<dt><strong>n_iter_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Number of step used by the best fit of inference to reach the
-convergence.</p>
-</dd>
-<dt><strong>lower_bound_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd><p class="first last">Lower bound value on the likelihood (of the training data with
-respect to the model) of the best fit of inference.</p>
-</dd>
-<dt><strong>weight_concentration_prior_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple or float</span></dt>
-<dd><p class="first">The dirichlet concentration of each component on the weight
-distribution (Dirichlet). The type depends on
-<code class="docutils literal"><span class="pre">weight_concentration_prior_type</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;dirichlet_process&#39;</span> <span class="p">(</span><span class="n">Beta</span> <span class="n">parameters</span><span class="p">),</span>
-<span class="nb">float</span>          <span class="k">if</span> <span class="s1">&#39;dirichlet_distribution&#39;</span> <span class="p">(</span><span class="n">Dirichlet</span> <span class="n">parameters</span><span class="p">)</span><span class="o">.</span>
-</pre></div>
-</div>
-<p class="last">The higher concentration puts more mass in
-the center and will lead to more components being active, while a lower
-concentration parameter will lead to more mass at the edge of the
-simplex.</p>
-</dd>
-<dt><strong>weight_concentration_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_components,)</span></dt>
-<dd><p class="first last">The dirichlet concentration of each component on the weight
-distribution (Dirichlet).</p>
-</dd>
-<dt><strong>mean_precision_prior</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd><p class="first last">The precision prior on the mean distribution (Gaussian).
-Controls the extend to where means can be placed.
-Smaller values concentrate the means of each clusters around
-<cite>mean_prior</cite>.</p>
-</dd>
-<dt><strong>mean_precision_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_components,)</span></dt>
-<dd><p class="first last">The precision of each components on the mean distribution (Gaussian).</p>
-</dd>
-<dt><strong>means_prior_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_features,)</span></dt>
-<dd><p class="first last">The prior on the mean distribution (Gaussian).</p>
-</dd>
-<dt><strong>degrees_of_freedom_prior_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd><p class="first last">The prior of the number of degrees of freedom on the covariance
-distributions (Wishart).</p>
-</dd>
-<dt><strong>degrees_of_freedom_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_components,)</span></dt>
-<dd><p class="first last">The number of degrees of freedom of each components in the model.</p>
-</dd>
-<dt><strong>covariance_prior_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float or array-like</span></dt>
-<dd><p class="first">The prior on the covariance distribution (Wishart).
-The shape depends on <cite>covariance_type</cite>:</p>
-<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">n_features</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;full&#39;</span><span class="p">,</span>
-<span class="p">(</span><span class="n">n_features</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;tied&#39;</span><span class="p">,</span>
-<span class="p">(</span><span class="n">n_features</span><span class="p">)</span>             <span class="k">if</span> <span class="s1">&#39;diag&#39;</span><span class="p">,</span>
-<span class="nb">float</span>                    <span class="k">if</span> <span class="s1">&#39;spherical&#39;</span>
-</pre></div>
-</div>
-</dd>
-</dl>
-</td>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="4%" />
+<col width="96%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>weights_</strong></td>
+<td>(array-like, shape (n_components,)) The weights of each mixture components.</td>
+</tr>
+<tr class="row-even"><td><strong>means_</strong></td>
+<td>(array-like, shape (n_components, n_features)) The mean of each mixture component.</td>
+</tr>
+<tr class="row-odd"><td><strong>covariances_</strong></td>
+<td>(array-like) The covariance of each mixture component. The shape depends on <cite>covariance_type</cite>::  (n_components,)                        if ‘spherical’, (n_features, n_features)               if ‘tied’, (n_components, n_features)             if ‘diag’, (n_components, n_features, n_features) if ‘full’</td>
+</tr>
+<tr class="row-even"><td><strong>precisions_</strong></td>
+<td>(array-like) The precision matrices for each component in the mixture. A precision matrix is the inverse of a covariance matrix. A covariance matrix is symmetric positive definite so the mixture of Gaussian can be equivalently parameterized by the precision matrices. Storing the precision matrices instead of the covariance matrices makes it more efficient to compute the log-likelihood of new samples at test time. The shape depends on <code class="docutils literal"><span class="pre">covariance_type</span></code>::  (n_components,)                        if ‘spherical’, (n_features, n_features)               if ‘tied’, (n_components, n_features)             if ‘diag’, (n_components, n_features, n_features) if ‘full’</td>
+</tr>
+<tr class="row-odd"><td><strong>precisions_cholesky_</strong></td>
+<td>(array-like) The cholesky decomposition of the precision matrices of each mixture component. A precision matrix is the inverse of a covariance matrix. A covariance matrix is symmetric positive definite so the mixture of Gaussian can be equivalently parameterized by the precision matrices. Storing the precision matrices instead of the covariance matrices makes it more efficient to compute the log-likelihood of new samples at test time. The shape depends on <code class="docutils literal"><span class="pre">covariance_type</span></code>::  (n_components,)                        if ‘spherical’, (n_features, n_features)               if ‘tied’, (n_components, n_features)             if ‘diag’, (n_components, n_features, n_features) if ‘full’</td>
+</tr>
+<tr class="row-even"><td><strong>converged_</strong></td>
+<td>(bool) True when convergence was reached in fit(), False otherwise.</td>
+</tr>
+<tr class="row-odd"><td><strong>n_iter_</strong></td>
+<td>(int) Number of step used by the best fit of inference to reach the convergence.</td>
+</tr>
+<tr class="row-even"><td><strong>lower_bound_</strong></td>
+<td>(float) Lower bound value on the likelihood (of the training data with respect to the model) of the best fit of inference.</td>
+</tr>
+<tr class="row-odd"><td><strong>weight_concentration_prior_</strong></td>
+<td>(tuple or float) The dirichlet concentration of each component on the weight distribution (Dirichlet). The type depends on <code class="docutils literal"><span class="pre">weight_concentration_prior_type</span></code>::  (float, float) if ‘dirichlet_process’ (Beta parameters), float          if ‘dirichlet_distribution’ (Dirichlet parameters).  The higher concentration puts more mass in the center and will lead to more components being active, while a lower concentration parameter will lead to more mass at the edge of the simplex.</td>
+</tr>
+<tr class="row-even"><td><strong>weight_concentration_</strong></td>
+<td>(array-like, shape (n_components,)) The dirichlet concentration of each component on the weight distribution (Dirichlet).</td>
+</tr>
+<tr class="row-odd"><td><strong>mean_precision_prior</strong></td>
+<td>(float) The precision prior on the mean distribution (Gaussian). Controls the extend to where means can be placed. Smaller values concentrate the means of each clusters around <cite>mean_prior</cite>.</td>
+</tr>
+<tr class="row-even"><td><strong>mean_precision_</strong></td>
+<td>(array-like, shape (n_components,)) The precision of each components on the mean distribution (Gaussian).</td>
+</tr>
+<tr class="row-odd"><td><strong>means_prior_</strong></td>
+<td>(array-like, shape (n_features,)) The prior on the mean distribution (Gaussian).</td>
+</tr>
+<tr class="row-even"><td><strong>degrees_of_freedom_prior_</strong></td>
+<td>(float) The prior of the number of degrees of freedom on the covariance distributions (Wishart).</td>
+</tr>
+<tr class="row-odd"><td><strong>degrees_of_freedom_</strong></td>
+<td>(array-like, shape (n_components,)) The number of degrees of freedom of each components in the model.</td>
+</tr>
+<tr class="row-even"><td><strong>covariance_prior_</strong></td>
+<td>(float or array-like) The prior on the covariance distribution (Wishart). The shape depends on <cite>covariance_type</cite>::  (n_features, n_features) if ‘full’, (n_features, n_features) if ‘tied’, (n_features)             if ‘diag’, float                    if ‘spherical’</td>
 </tr>
 </tbody>
 </table>
@@ -454,25 +416,25 @@ The shape depends on <cite>covariance_type</cite>:</p>
 </dl>
 </div>
 <p class="rubric">References</p>
-<table class="docutils citation" frame="void" id="r16529824bff2-1" rules="none">
+<table class="docutils citation" frame="void" id="r183185" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td><a class="reference external" href="http://www.springer.com/kr/book/9780387310732">Bishop, Christopher M. (2006). “Pattern recognition and machine
+<tr><td class="label"><a class="fn-backref" href="#id1">[R183185]</a></td><td><a class="reference external" href="http://www.springer.com/kr/book/9780387310732">Bishop, Christopher M. (2006). “Pattern recognition and machine
 learning”. Vol. 4 No. 4. New York: Springer.</a></td></tr>
 </tbody>
 </table>
-<table class="docutils citation" frame="void" id="r16529824bff2-2" rules="none">
+<table class="docutils citation" frame="void" id="r184185" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td><a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.36.2841&amp;rep=rep1&amp;type=pdf">Hagai Attias. (2000). “A Variational Bayesian Framework for
+<tr><td class="label"><a class="fn-backref" href="#id2">[R184185]</a></td><td><a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.36.2841&amp;rep=rep1&amp;type=pdf">Hagai Attias. (2000). “A Variational Bayesian Framework for
 Graphical Models”. In Advances in Neural Information Processing
 Systems 12.</a></td></tr>
 </tbody>
 </table>
-<table class="docutils citation" frame="void" id="r16529824bff2-3" rules="none">
+<table class="docutils citation" frame="void" id="r185185" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td><a class="reference external" href="http://www.cs.princeton.edu/courses/archive/fall11/cos597C/reading/BleiJordan2005.pdf">Blei, David M. and Michael I. Jordan. (2006). “Variational
+<tr><td class="label"><a class="fn-backref" href="#id3">[R185185]</a></td><td><a class="reference external" href="http://www.cs.princeton.edu/courses/archive/fall11/cos597C/reading/BleiJordan2005.pdf">Blei, David M. and Michael I. Jordan. (2006). “Variational
 inference for Dirichlet process mixtures”. Bayesian analysis 1.1</a></td></tr>
 </tbody>
 </table>
@@ -511,12 +473,12 @@ inference for Dirichlet process mixtures”. Bayesian analysis 1.1</a></td></tr>
 </table>
 <dl class="method">
 <dt id="sklearn.mixture.BayesianGaussianMixture.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>n_components=1</em>, <em>covariance_type=’full’</em>, <em>tol=0.001</em>, <em>reg_covar=1e-06</em>, <em>max_iter=100</em>, <em>n_init=1</em>, <em>init_params=’kmeans’</em>, <em>weight_concentration_prior_type=’dirichlet_process’</em>, <em>weight_concentration_prior=None</em>, <em>mean_precision_prior=None</em>, <em>mean_prior=None</em>, <em>degrees_of_freedom_prior=None</em>, <em>covariance_prior=None</em>, <em>random_state=None</em>, <em>warm_start=False</em>, <em>verbose=0</em>, <em>verbose_interval=10</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/mixture/bayesian_mixture.py#L309"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.mixture.BayesianGaussianMixture.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>n_components=1</em>, <em>covariance_type='full'</em>, <em>tol=0.001</em>, <em>reg_covar=1e-06</em>, <em>max_iter=100</em>, <em>n_init=1</em>, <em>init_params='kmeans'</em>, <em>weight_concentration_prior_type='dirichlet_process'</em>, <em>weight_concentration_prior=None</em>, <em>mean_precision_prior=None</em>, <em>mean_prior=None</em>, <em>degrees_of_freedom_prior=None</em>, <em>covariance_prior=None</em>, <em>random_state=None</em>, <em>warm_start=False</em>, <em>verbose=0</em>, <em>verbose_interval=10</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/mixture/bayesian_mixture.py#L309"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.mixture.BayesianGaussianMixture.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="sklearn.mixture.BayesianGaussianMixture.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/mixture/base.py#L172"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.mixture.BayesianGaussianMixture.fit" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/mixture/base.py#L172"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.mixture.BayesianGaussianMixture.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimate model parameters with the EM algorithm.</p>
 <p>The method fit the model <cite>n_init</cite> times and set the parameters with
 which the model has the largest likelihood or lower bound. Within each
@@ -527,18 +489,14 @@ times until the change of likelihood or lower bound is less than
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_samples, n_features)</span></dt>
-<dd><p class="first last">List of n_features-dimensional data points. Each row
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like, shape (n_samples, n_features)</p>
+<blockquote>
+<div><p>List of n_features-dimensional data points. Each row
 corresponds to a single data point.</p>
-</dd>
-</dl>
+</div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>self</strong></dt>
-<dd></dd>
-</dl>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">self</p>
 </td>
 </tr>
 </tbody>
@@ -547,25 +505,23 @@ corresponds to a single data point.</p>
 
 <dl class="method">
 <dt id="sklearn.mixture.BayesianGaussianMixture.get_params">
-<code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/base.py#L213"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.mixture.BayesianGaussianMixture.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/base.py#L213"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.mixture.BayesianGaussianMixture.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>deep</strong> <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
-<dd><p class="first last">If True, will return the parameters for this estimator and
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>deep</strong> : boolean, optional</p>
+<blockquote>
+<div><p>If True, will return the parameters for this estimator and
 contained subobjects that are estimators.</p>
-</dd>
-</dl>
+</div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>params</strong> <span class="classifier-delimiter">:</span> <span class="classifier">mapping of string to any</span></dt>
-<dd><p class="first last">Parameter names mapped to their values.</p>
-</dd>
-</dl>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>params</strong> : mapping of string to any</p>
+<blockquote class="last">
+<div><p>Parameter names mapped to their values.</p>
+</div></blockquote>
 </td>
 </tr>
 </tbody>
@@ -574,25 +530,23 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.mixture.BayesianGaussianMixture.predict">
-<code class="descname">predict</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/mixture/base.py#L325"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.mixture.BayesianGaussianMixture.predict" title="Permalink to this definition">¶</a></dt>
+<code class="descname">predict</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/mixture/base.py#L325"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.mixture.BayesianGaussianMixture.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Predict the labels for the data samples in X using trained model.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_samples, n_features)</span></dt>
-<dd><p class="first last">List of n_features-dimensional data points. Each row
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like, shape (n_samples, n_features)</p>
+<blockquote>
+<div><p>List of n_features-dimensional data points. Each row
 corresponds to a single data point.</p>
-</dd>
-</dl>
+</div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>labels</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array, shape (n_samples,)</span></dt>
-<dd><p class="first last">Component labels.</p>
-</dd>
-</dl>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>labels</strong> : array, shape (n_samples,)</p>
+<blockquote class="last">
+<div><p>Component labels.</p>
+</div></blockquote>
 </td>
 </tr>
 </tbody>
@@ -601,26 +555,24 @@ corresponds to a single data point.</p>
 
 <dl class="method">
 <dt id="sklearn.mixture.BayesianGaussianMixture.predict_proba">
-<code class="descname">predict_proba</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/mixture/base.py#L343"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.mixture.BayesianGaussianMixture.predict_proba" title="Permalink to this definition">¶</a></dt>
+<code class="descname">predict_proba</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/mixture/base.py#L343"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.mixture.BayesianGaussianMixture.predict_proba" title="Permalink to this definition">¶</a></dt>
 <dd><p>Predict posterior probability of each component given the data.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_samples, n_features)</span></dt>
-<dd><p class="first last">List of n_features-dimensional data points. Each row
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like, shape (n_samples, n_features)</p>
+<blockquote>
+<div><p>List of n_features-dimensional data points. Each row
 corresponds to a single data point.</p>
-</dd>
-</dl>
+</div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>resp</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array, shape (n_samples, n_components)</span></dt>
-<dd><p class="first last">Returns the probability each Gaussian (state) in
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>resp</strong> : array, shape (n_samples, n_components)</p>
+<blockquote class="last">
+<div><p>Returns the probability each Gaussian (state) in
 the model given each sample.</p>
-</dd>
-</dl>
+</div></blockquote>
 </td>
 </tr>
 </tbody>
@@ -629,27 +581,26 @@ the model given each sample.</p>
 
 <dl class="method">
 <dt id="sklearn.mixture.BayesianGaussianMixture.sample">
-<code class="descname">sample</code><span class="sig-paren">(</span><em>n_samples=1</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/mixture/base.py#L363"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.mixture.BayesianGaussianMixture.sample" title="Permalink to this definition">¶</a></dt>
+<code class="descname">sample</code><span class="sig-paren">(</span><em>n_samples=1</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/mixture/base.py#L363"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.mixture.BayesianGaussianMixture.sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate random samples from the fitted Gaussian distribution.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>n_samples</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
-<dd><p class="first last">Number of samples to generate. Defaults to 1.</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>n_samples</strong> : int, optional</p>
+<blockquote>
+<div><p>Number of samples to generate. Defaults to 1.</p>
+</div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array, shape (n_samples, n_features)</span></dt>
-<dd><p class="first last">Randomly generated sample</p>
-</dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array, shape (nsamples,)</span></dt>
-<dd><p class="first last">Component labels</p>
-</dd>
-</dl>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>X</strong> : array, shape (n_samples, n_features)</p>
+<blockquote>
+<div><p>Randomly generated sample</p>
+</div></blockquote>
+<p><strong>y</strong> : array, shape (nsamples,)</p>
+<blockquote class="last">
+<div><p>Component labels</p>
+</div></blockquote>
 </td>
 </tr>
 </tbody>
@@ -658,25 +609,23 @@ the model given each sample.</p>
 
 <dl class="method">
 <dt id="sklearn.mixture.BayesianGaussianMixture.score">
-<code class="descname">score</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/mixture/base.py#L309"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.mixture.BayesianGaussianMixture.score" title="Permalink to this definition">¶</a></dt>
+<code class="descname">score</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/mixture/base.py#L309"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.mixture.BayesianGaussianMixture.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the per-sample average log-likelihood of the given data X.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_samples, n_dimensions)</span></dt>
-<dd><p class="first last">List of n_features-dimensional data points. Each row
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like, shape (n_samples, n_dimensions)</p>
+<blockquote>
+<div><p>List of n_features-dimensional data points. Each row
 corresponds to a single data point.</p>
-</dd>
-</dl>
+</div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>log_likelihood</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd><p class="first last">Log likelihood of the Gaussian mixture given X.</p>
-</dd>
-</dl>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>log_likelihood</strong> : float</p>
+<blockquote class="last">
+<div><p>Log likelihood of the Gaussian mixture given X.</p>
+</div></blockquote>
 </td>
 </tr>
 </tbody>
@@ -685,25 +634,23 @@ corresponds to a single data point.</p>
 
 <dl class="method">
 <dt id="sklearn.mixture.BayesianGaussianMixture.score_samples">
-<code class="descname">score_samples</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/mixture/base.py#L290"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.mixture.BayesianGaussianMixture.score_samples" title="Permalink to this definition">¶</a></dt>
+<code class="descname">score_samples</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/mixture/base.py#L290"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.mixture.BayesianGaussianMixture.score_samples" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the weighted log probabilities for each sample.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_samples, n_features)</span></dt>
-<dd><p class="first last">List of n_features-dimensional data points. Each row
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like, shape (n_samples, n_features)</p>
+<blockquote>
+<div><p>List of n_features-dimensional data points. Each row
 corresponds to a single data point.</p>
-</dd>
-</dl>
+</div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>log_prob</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array, shape (n_samples,)</span></dt>
-<dd><p class="first last">Log probabilities of each data point in X.</p>
-</dd>
-</dl>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>log_prob</strong> : array, shape (n_samples,)</p>
+<blockquote class="last">
+<div><p>Log probabilities of each data point in X.</p>
+</div></blockquote>
 </td>
 </tr>
 </tbody>
@@ -712,7 +659,7 @@ corresponds to a single data point.</p>
 
 <dl class="method">
 <dt id="sklearn.mixture.BayesianGaussianMixture.set_params">
-<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/base.py#L236"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.mixture.BayesianGaussianMixture.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/base.py#L236"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.mixture.BayesianGaussianMixture.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
@@ -722,11 +669,7 @@ component of a nested object.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>self</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
 </tr>
 </tbody>
 </table>

@@ -6,7 +6,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
   
     <title>sklearn.compose.TransformedTargetRegressor &#8212; scikit-learn 0.20.dev0 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
@@ -14,11 +13,9 @@
   <link rel="stylesheet" href="../../_static/css/bootstrap.min.css" media="screen" />
   <link rel="stylesheet" href="../../_static/css/bootstrap-responsive.css"/>
 
-    
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
@@ -208,7 +205,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.compose" title="sklearn.compose"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.compose</span></code></a>.TransformedTargetRegressor<a class="headerlink" href="#sklearn-compose-transformedtargetregressor" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="sklearn.compose.TransformedTargetRegressor">
-<em class="property">class </em><code class="descclassname">sklearn.compose.</code><code class="descname">TransformedTargetRegressor</code><span class="sig-paren">(</span><em>regressor=None</em>, <em>transformer=None</em>, <em>func=None</em>, <em>inverse_func=None</em>, <em>check_inverse=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/compose/_target.py#L17"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.compose.TransformedTargetRegressor" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">sklearn.compose.</code><code class="descname">TransformedTargetRegressor</code><span class="sig-paren">(</span><em>regressor=None</em>, <em>transformer=None</em>, <em>func=None</em>, <em>inverse_func=None</em>, <em>check_inverse=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/compose/_target.py#L17"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.compose.TransformedTargetRegressor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Meta-estimator to regress on a transformed target.</p>
 <p>Useful for applying a non-linear transformation in regression
 problems. This transformation can be given as a Transformer such as the
@@ -235,47 +232,55 @@ QuantileTransformer or as a function and its inverse such as <code class="docuti
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>regressor</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object, default=LinearRegression()</span></dt>
-<dd><p class="first last">Regressor object such as derived from <code class="docutils literal"><span class="pre">RegressorMixin</span></code>. This
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>regressor</strong> : object, default=LinearRegression()</p>
+<blockquote>
+<div><p>Regressor object such as derived from <code class="docutils literal"><span class="pre">RegressorMixin</span></code>. This
 regressor will automatically be cloned each time prior to fitting.</p>
-</dd>
-<dt><strong>transformer</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object, default=None</span></dt>
-<dd><p class="first last">Estimator object such as derived from <code class="docutils literal"><span class="pre">TransformerMixin</span></code>. Cannot be
+</div></blockquote>
+<p><strong>transformer</strong> : object, default=None</p>
+<blockquote>
+<div><p>Estimator object such as derived from <code class="docutils literal"><span class="pre">TransformerMixin</span></code>. Cannot be
 set at the same time as <code class="docutils literal"><span class="pre">func</span></code> and <code class="docutils literal"><span class="pre">inverse_func</span></code>. If
 <code class="docutils literal"><span class="pre">transformer</span></code> is <code class="docutils literal"><span class="pre">None</span></code> as well as <code class="docutils literal"><span class="pre">func</span></code> and <code class="docutils literal"><span class="pre">inverse_func</span></code>,
 the transformer will be an identity transformer. Note that the
 transformer will be cloned during fitting. Also, the transformer is
 restricting <code class="docutils literal"><span class="pre">y</span></code> to be a numpy array.</p>
-</dd>
-<dt><strong>func</strong> <span class="classifier-delimiter">:</span> <span class="classifier">function, optional</span></dt>
-<dd><p class="first last">Function to apply to <code class="docutils literal"><span class="pre">y</span></code> before passing to <code class="docutils literal"><span class="pre">fit</span></code>. Cannot be set at
+</div></blockquote>
+<p><strong>func</strong> : function, optional</p>
+<blockquote>
+<div><p>Function to apply to <code class="docutils literal"><span class="pre">y</span></code> before passing to <code class="docutils literal"><span class="pre">fit</span></code>. Cannot be set at
 the same time as <code class="docutils literal"><span class="pre">transformer</span></code>. The function needs to return a
 2-dimensional array. If <code class="docutils literal"><span class="pre">func</span></code> is <code class="docutils literal"><span class="pre">None</span></code>, the function used will be
 the identity function.</p>
-</dd>
-<dt><strong>inverse_func</strong> <span class="classifier-delimiter">:</span> <span class="classifier">function, optional</span></dt>
-<dd><p class="first last">Function to apply to the prediction of the regressor. Cannot be set at
+</div></blockquote>
+<p><strong>inverse_func</strong> : function, optional</p>
+<blockquote>
+<div><p>Function to apply to the prediction of the regressor. Cannot be set at
 the same time as <code class="docutils literal"><span class="pre">transformer</span></code> as well. The function needs to return
 a 2-dimensional array. The inverse function is used to return
 predictions to the same space of the original training labels.</p>
-</dd>
-<dt><strong>check_inverse</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, default=True</span></dt>
-<dd><p class="first last">Whether to check that <code class="docutils literal"><span class="pre">transform</span></code> followed by <code class="docutils literal"><span class="pre">inverse_transform</span></code>
+</div></blockquote>
+<p><strong>check_inverse</strong> : bool, default=True</p>
+<blockquote class="last">
+<div><p>Whether to check that <code class="docutils literal"><span class="pre">transform</span></code> followed by <code class="docutils literal"><span class="pre">inverse_transform</span></code>
 or <code class="docutils literal"><span class="pre">func</span></code> followed by <code class="docutils literal"><span class="pre">inverse_func</span></code> leads to the original targets.</p>
-</dd>
-</dl>
+</div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>regressor_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd><p class="first last">Fitted regressor.</p>
-</dd>
-<dt><strong>transformer_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd><p class="first last">Transformer used in <code class="docutils literal"><span class="pre">fit</span></code> and <code class="docutils literal"><span class="pre">predict</span></code>.</p>
-</dd>
-</dl>
-</td>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="77%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>regressor_</strong></td>
+<td>(object) Fitted regressor.</td>
+</tr>
+<tr class="row-even"><td><strong>transformer_</strong></td>
+<td>(object) Transformer used in <code class="docutils literal"><span class="pre">fit</span></code> and <code class="docutils literal"><span class="pre">predict</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -326,36 +331,34 @@ output will be reshaped to a have the same number of dimensions as <code class="
 </table>
 <dl class="method">
 <dt id="sklearn.compose.TransformedTargetRegressor.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>regressor=None</em>, <em>transformer=None</em>, <em>func=None</em>, <em>inverse_func=None</em>, <em>check_inverse=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/compose/_target.py#L104"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.compose.TransformedTargetRegressor.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>regressor=None</em>, <em>transformer=None</em>, <em>func=None</em>, <em>inverse_func=None</em>, <em>check_inverse=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/compose/_target.py#L104"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.compose.TransformedTargetRegressor.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="sklearn.compose.TransformedTargetRegressor.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y</em>, <em>sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/compose/_target.py#L142"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.compose.TransformedTargetRegressor.fit" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y</em>, <em>sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/compose/_target.py#L142"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.compose.TransformedTargetRegressor.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the model according to the given training data.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">{array-like, sparse matrix}, shape (n_samples, n_features)</span></dt>
-<dd><p class="first last">Training vector, where n_samples is the number of samples and
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : {array-like, sparse matrix}, shape (n_samples, n_features)</p>
+<blockquote>
+<div><p>Training vector, where n_samples is the number of samples and
 n_features is the number of features.</p>
-</dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_samples,)</span></dt>
-<dd><p class="first last">Target values.</p>
-</dd>
-<dt><strong>sample_weight</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_samples,) optional</span></dt>
-<dd><p class="first last">Array of weights that are assigned to individual samples.
+</div></blockquote>
+<p><strong>y</strong> : array-like, shape (n_samples,)</p>
+<blockquote>
+<div><p>Target values.</p>
+</div></blockquote>
+<p><strong>sample_weight</strong> : array-like, shape (n_samples,) optional</p>
+<blockquote>
+<div><p>Array of weights that are assigned to individual samples.
 If not provided, then each sample is given unit weight.</p>
-</dd>
-</dl>
+</div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>self</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd></dd>
-</dl>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>self</strong> : object</p>
 </td>
 </tr>
 </tbody>
@@ -364,25 +367,23 @@ If not provided, then each sample is given unit weight.</p>
 
 <dl class="method">
 <dt id="sklearn.compose.TransformedTargetRegressor.get_params">
-<code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/base.py#L213"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.compose.TransformedTargetRegressor.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/base.py#L213"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.compose.TransformedTargetRegressor.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>deep</strong> <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
-<dd><p class="first last">If True, will return the parameters for this estimator and
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>deep</strong> : boolean, optional</p>
+<blockquote>
+<div><p>If True, will return the parameters for this estimator and
 contained subobjects that are estimators.</p>
-</dd>
-</dl>
+</div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>params</strong> <span class="classifier-delimiter">:</span> <span class="classifier">mapping of string to any</span></dt>
-<dd><p class="first last">Parameter names mapped to their values.</p>
-</dd>
-</dl>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>params</strong> : mapping of string to any</p>
+<blockquote class="last">
+<div><p>Parameter names mapped to their values.</p>
+</div></blockquote>
 </td>
 </tr>
 </tbody>
@@ -391,7 +392,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.compose.TransformedTargetRegressor.predict">
-<code class="descname">predict</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/compose/_target.py#L197"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.compose.TransformedTargetRegressor.predict" title="Permalink to this definition">¶</a></dt>
+<code class="descname">predict</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/compose/_target.py#L197"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.compose.TransformedTargetRegressor.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Predict using the base regressor, applying inverse.</p>
 <p>The regressor is used to predict and the <code class="docutils literal"><span class="pre">inverse_func</span></code> or
 <code class="docutils literal"><span class="pre">inverse_transform</span></code> is applied before returning the prediction.</p>
@@ -399,18 +400,16 @@ contained subobjects that are estimators.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">{array-like, sparse matrix}, shape = (n_samples, n_features)</span></dt>
-<dd><p class="first last">Samples.</p>
-</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : {array-like, sparse matrix}, shape = (n_samples, n_features)</p>
+<blockquote>
+<div><p>Samples.</p>
+</div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>y_hat</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array, shape = (n_samples,)</span></dt>
-<dd><p class="first last">Predicted values.</p>
-</dd>
-</dl>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>y_hat</strong> : array, shape = (n_samples,)</p>
+<blockquote class="last">
+<div><p>Predicted values.</p>
+</div></blockquote>
 </td>
 </tr>
 </tbody>
@@ -419,7 +418,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.compose.TransformedTargetRegressor.score">
-<code class="descname">score</code><span class="sig-paren">(</span><em>X</em>, <em>y</em>, <em>sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/base.py#L343"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.compose.TransformedTargetRegressor.score" title="Permalink to this definition">¶</a></dt>
+<code class="descname">score</code><span class="sig-paren">(</span><em>X</em>, <em>y</em>, <em>sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/base.py#L343"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.compose.TransformedTargetRegressor.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the coefficient of determination R^2 of the prediction.</p>
 <p>The coefficient R^2 is defined as (1 - u/v), where u is the residual
 sum of squares ((y_true - y_pred) ** 2).sum() and v is the total
@@ -432,27 +431,27 @@ would get a R^2 score of 0.0.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape = (n_samples, n_features)</span></dt>
-<dd><p class="first last">Test samples. For some estimators this may be a
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like, shape = (n_samples, n_features)</p>
+<blockquote>
+<div><p>Test samples. For some estimators this may be a
 precomputed kernel matrix instead, shape = (n_samples,
 n_samples_fitted], where n_samples_fitted is the number of
 samples used in the fitting for the estimator.</p>
-</dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape = (n_samples) or (n_samples, n_outputs)</span></dt>
-<dd><p class="first last">True values for X.</p>
-</dd>
-<dt><strong>sample_weight</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape = [n_samples], optional</span></dt>
-<dd><p class="first last">Sample weights.</p>
-</dd>
-</dl>
+</div></blockquote>
+<p><strong>y</strong> : array-like, shape = (n_samples) or (n_samples, n_outputs)</p>
+<blockquote>
+<div><p>True values for X.</p>
+</div></blockquote>
+<p><strong>sample_weight</strong> : array-like, shape = [n_samples], optional</p>
+<blockquote>
+<div><p>Sample weights.</p>
+</div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>score</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd><p class="first last">R^2 of self.predict(X) wrt. y.</p>
-</dd>
-</dl>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>score</strong> : float</p>
+<blockquote class="last">
+<div><p>R^2 of self.predict(X) wrt. y.</p>
+</div></blockquote>
 </td>
 </tr>
 </tbody>
@@ -461,7 +460,7 @@ samples used in the fitting for the estimator.</p>
 
 <dl class="method">
 <dt id="sklearn.compose.TransformedTargetRegressor.set_params">
-<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/base.py#L236"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.compose.TransformedTargetRegressor.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d7cd0c/sklearn/base.py#L236"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.compose.TransformedTargetRegressor.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
@@ -471,11 +470,7 @@ component of a nested object.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>self</strong></dt>
-<dd></dd>
-</dl>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">self</td>
 </tr>
 </tbody>
 </table>

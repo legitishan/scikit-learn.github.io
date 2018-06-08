@@ -6,7 +6,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
   
     <title>sklearn.decomposition.dict_learning &#8212; scikit-learn 0.20.dev0 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
@@ -14,11 +13,9 @@
   <link rel="stylesheet" href="../../_static/css/bootstrap.min.css" media="screen" />
   <link rel="stylesheet" href="../../_static/css/bootstrap-responsive.css"/>
 
-    
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
@@ -205,7 +202,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.decomposition" title="sklearn.decomposition"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.decomposition</span></code></a>.dict_learning<a class="headerlink" href="#sklearn-decomposition-dict-learning" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.decomposition.dict_learning">
-<code class="descclassname">sklearn.decomposition.</code><code class="descname">dict_learning</code><span class="sig-paren">(</span><em>X</em>, <em>n_components</em>, <em>alpha</em>, <em>max_iter=100</em>, <em>tol=1e-08</em>, <em>method=’lars’</em>, <em>n_jobs=1</em>, <em>dict_init=None</em>, <em>code_init=None</em>, <em>callback=None</em>, <em>verbose=False</em>, <em>random_state=None</em>, <em>return_n_iter=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2140166/sklearn/decomposition/dict_learning.py#L387"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.dict_learning" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sklearn.decomposition.</code><code class="descname">dict_learning</code><span class="sig-paren">(</span><em>X</em>, <em>n_components</em>, <em>alpha</em>, <em>max_iter=100</em>, <em>tol=1e-08</em>, <em>method='lars'</em>, <em>n_jobs=1</em>, <em>dict_init=None</em>, <em>code_init=None</em>, <em>callback=None</em>, <em>verbose=False</em>, <em>random_state=None</em>, <em>return_n_iter=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/474b5e0/sklearn/decomposition/dict_learning.py#L387"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.dict_learning" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves a dictionary learning matrix factorization problem.</p>
 <p>Finds the best dictionary and the corresponding sparse code for
 approximating the data matrix X by solving:</p>
@@ -220,71 +217,84 @@ approximating the data matrix X by solving:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of shape (n_samples, n_features)</span></dt>
-<dd><p class="first last">Data matrix.</p>
-</dd>
-<dt><strong>n_components</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int,</span></dt>
-<dd><p class="first last">Number of dictionary atoms to extract.</p>
-</dd>
-<dt><strong>alpha</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int,</span></dt>
-<dd><p class="first last">Sparsity controlling parameter.</p>
-</dd>
-<dt><strong>max_iter</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int,</span></dt>
-<dd><p class="first last">Maximum number of iterations to perform.</p>
-</dd>
-<dt><strong>tol</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float,</span></dt>
-<dd><p class="first last">Tolerance for the stopping condition.</p>
-</dd>
-<dt><strong>method</strong> <span class="classifier-delimiter">:</span> <span class="classifier">{‘lars’, ‘cd’}</span></dt>
-<dd><p class="first last">lars: uses the least angle regression method to solve the lasso problem
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array of shape (n_samples, n_features)</p>
+<blockquote>
+<div><p>Data matrix.</p>
+</div></blockquote>
+<p><strong>n_components</strong> : int,</p>
+<blockquote>
+<div><p>Number of dictionary atoms to extract.</p>
+</div></blockquote>
+<p><strong>alpha</strong> : int,</p>
+<blockquote>
+<div><p>Sparsity controlling parameter.</p>
+</div></blockquote>
+<p><strong>max_iter</strong> : int,</p>
+<blockquote>
+<div><p>Maximum number of iterations to perform.</p>
+</div></blockquote>
+<p><strong>tol</strong> : float,</p>
+<blockquote>
+<div><p>Tolerance for the stopping condition.</p>
+</div></blockquote>
+<p><strong>method</strong> : {‘lars’, ‘cd’}</p>
+<blockquote>
+<div><p>lars: uses the least angle regression method to solve the lasso problem
 (linear_model.lars_path)
 cd: uses the coordinate descent method to compute the
 Lasso solution (linear_model.Lasso). Lars will be faster if
 the estimated components are sparse.</p>
-</dd>
-<dt><strong>n_jobs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int,</span></dt>
-<dd><p class="first last">Number of parallel jobs to run, or -1 to autodetect.</p>
-</dd>
-<dt><strong>dict_init</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of shape (n_components, n_features),</span></dt>
-<dd><p class="first last">Initial value for the dictionary for warm restart scenarios.</p>
-</dd>
-<dt><strong>code_init</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of shape (n_samples, n_components),</span></dt>
-<dd><p class="first last">Initial value for the sparse code for warm restart scenarios.</p>
-</dd>
-<dt><strong>callback</strong> <span class="classifier-delimiter">:</span> <span class="classifier">callable or None, optional (default: None)</span></dt>
-<dd><p class="first last">Callable that gets invoked every five iterations</p>
-</dd>
-<dt><strong>verbose</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional (default: False)</span></dt>
-<dd><p class="first last">To control the verbosity of the procedure.</p>
-</dd>
-<dt><strong>random_state</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, RandomState instance or None, optional (default=None)</span></dt>
-<dd><p class="first last">If int, random_state is the seed used by the random number generator;
+</div></blockquote>
+<p><strong>n_jobs</strong> : int,</p>
+<blockquote>
+<div><p>Number of parallel jobs to run, or -1 to autodetect.</p>
+</div></blockquote>
+<p><strong>dict_init</strong> : array of shape (n_components, n_features),</p>
+<blockquote>
+<div><p>Initial value for the dictionary for warm restart scenarios.</p>
+</div></blockquote>
+<p><strong>code_init</strong> : array of shape (n_samples, n_components),</p>
+<blockquote>
+<div><p>Initial value for the sparse code for warm restart scenarios.</p>
+</div></blockquote>
+<p><strong>callback</strong> : callable or None, optional (default: None)</p>
+<blockquote>
+<div><p>Callable that gets invoked every five iterations</p>
+</div></blockquote>
+<p><strong>verbose</strong> : bool, optional (default: False)</p>
+<blockquote>
+<div><p>To control the verbosity of the procedure.</p>
+</div></blockquote>
+<p><strong>random_state</strong> : int, RandomState instance or None, optional (default=None)</p>
+<blockquote>
+<div><p>If int, random_state is the seed used by the random number generator;
 If RandomState instance, random_state is the random number generator;
 If None, the random number generator is the RandomState instance used
 by <cite>np.random</cite>.</p>
-</dd>
-<dt><strong>return_n_iter</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
-<dd><p class="first last">Whether or not to return the number of iterations.</p>
-</dd>
-</dl>
+</div></blockquote>
+<p><strong>return_n_iter</strong> : bool</p>
+<blockquote>
+<div><p>Whether or not to return the number of iterations.</p>
+</div></blockquote>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>code</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of shape (n_samples, n_components)</span></dt>
-<dd><p class="first last">The sparse code factor in the matrix factorization.</p>
-</dd>
-<dt><strong>dictionary</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of shape (n_components, n_features),</span></dt>
-<dd><p class="first last">The dictionary factor in the matrix factorization.</p>
-</dd>
-<dt><strong>errors</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array</span></dt>
-<dd><p class="first last">Vector of errors at each iteration.</p>
-</dd>
-<dt><strong>n_iter</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Number of iterations run. Returned only if <cite>return_n_iter</cite> is
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>code</strong> : array of shape (n_samples, n_components)</p>
+<blockquote>
+<div><p>The sparse code factor in the matrix factorization.</p>
+</div></blockquote>
+<p><strong>dictionary</strong> : array of shape (n_components, n_features),</p>
+<blockquote>
+<div><p>The dictionary factor in the matrix factorization.</p>
+</div></blockquote>
+<p><strong>errors</strong> : array</p>
+<blockquote>
+<div><p>Vector of errors at each iteration.</p>
+</div></blockquote>
+<p><strong>n_iter</strong> : int</p>
+<blockquote class="last">
+<div><p>Number of iterations run. Returned only if <cite>return_n_iter</cite> is
 set to True.</p>
-</dd>
-</dl>
+</div></blockquote>
 </td>
 </tr>
 </tbody>
