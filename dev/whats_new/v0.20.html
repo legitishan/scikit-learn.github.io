@@ -591,6 +591,13 @@ errors when <code class="docutils literal"><span class="pre">transform</span></c
 <li>Fix bug in <a class="reference internal" href="../modules/generated/sklearn.preprocessing.OneHotEncoder.html#sklearn.preprocessing.OneHotEncoder" title="sklearn.preprocessing.OneHotEncoder"><code class="xref py py-class docutils literal"><span class="pre">preprocessing.OneHotEncoder</span></code></a> which discarded the <code class="docutils literal"><span class="pre">dtype</span></code>
 when returning a sparse matrix output. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/11042">#11042</a> by <a class="reference external" href="https://github.com/DanielMorales9">Daniel
 Morales</a>.</li>
+<li>Fix <code class="docutils literal"><span class="pre">fit</span></code> and <code class="docutils literal"><span class="pre">partial_fit</span></code> in <a class="reference internal" href="../modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler" title="sklearn.preprocessing.StandardScaler"><code class="xref py py-class docutils literal"><span class="pre">preprocessing.StandardScaler</span></code></a> in
+the rare case when <cite>with_mean=False</cite> and <cite>with_std=False</cite> which was crashing
+by calling <code class="docutils literal"><span class="pre">fit</span></code> more than once and giving inconsistent results for
+<code class="docutils literal"><span class="pre">mean_</span></code> whether the input was a sparse or a dense matrix. <code class="docutils literal"><span class="pre">mean_</span></code> will be
+set to <code class="docutils literal"><span class="pre">None</span></code> with both sparse and dense inputs. <code class="docutils literal"><span class="pre">n_samples_seen_</span></code> will
+be also reported for both input types.
+<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/11235">#11235</a> by <a class="reference external" href="https://github.com/glemaitre">Guillaume Lemaitre</a>.</li>
 </ul>
 <p>Feature selection</p>
 <ul class="simple">
