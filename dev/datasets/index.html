@@ -648,7 +648,7 @@ attribute is the integer index of the category:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">newsgroups_train</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">shape</span>
 <span class="go">(11314,)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">newsgroups_train</span><span class="o">.</span><span class="n">target</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
-<span class="go">array([12,  6,  9,  8,  6,  7,  9,  2, 13, 19])</span>
+<span class="go">array([ 7,  4,  4,  1, 14, 16, 13,  3,  2,  4])</span>
 </pre></div>
 </div>
 <p>It is possible to load only a sub-selection of the categories by passing the
@@ -664,7 +664,7 @@ list of the categories to load to the
 <span class="gp">&gt;&gt;&gt; </span><span class="n">newsgroups_train</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">shape</span>
 <span class="go">(1073,)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">newsgroups_train</span><span class="o">.</span><span class="n">target</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
-<span class="go">array([1, 1, 1, 0, 1, 0, 0, 1, 1, 1])</span>
+<span class="go">array([0, 1, 1, 1, 0, 1, 1, 0, 0, 0])</span>
 </pre></div>
 </div>
 </div>
@@ -691,7 +691,7 @@ from a subset of 20news:</p>
 components by sample in a more than 30000-dimensional space
 (less than .5% non-zero features):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vectors</span><span class="o">.</span><span class="n">nnz</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">vectors</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="go">159.01327433628319</span>
+<span class="go">159.01327...</span>
 </pre></div>
 </div>
 <p><a class="reference internal" href="../modules/generated/sklearn.datasets.fetch_20newsgroups_vectorized.html#sklearn.datasets.fetch_20newsgroups_vectorized" title="sklearn.datasets.fetch_20newsgroups_vectorized"><code class="xref py py-func docutils literal"><span class="pre">sklearn.datasets.fetch_20newsgroups_vectorized</span></code></a> is a function which returns
@@ -712,9 +712,11 @@ which is fast to train and achieves a decent F-score:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">vectors_test</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">newsgroups_test</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">MultinomialNB</span><span class="p">(</span><span class="n">alpha</span><span class="o">=.</span><span class="mi">01</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">newsgroups_train</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+<span class="go">MultinomialNB(alpha=0.01, class_prior=None, fit_prior=True)</span>
+
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">vectors_test</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span><span class="n">newsgroups_test</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s1">&#39;macro&#39;</span><span class="p">)</span>
-<span class="go">0.88213592402729568</span>
+<span class="go">0.88213...</span>
 </pre></div>
 </div>
 <p>(The example <a class="reference internal" href="../auto_examples/text/plot_document_classification_20newsgroups.html#sphx-glr-auto-examples-text-plot-document-classification-20newsgroups-py"><span class="std std-ref">Classification of text documents using sparse features</span></a> shuffles
@@ -730,10 +732,10 @@ yet of what’s going on inside this classifier?)</p>
 <span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">feature_names</span><span class="p">[</span><span class="n">top10</span><span class="p">])))</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">show_top10</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">vectorizer</span><span class="p">,</span> <span class="n">newsgroups_train</span><span class="o">.</span><span class="n">target_names</span><span class="p">)</span>
-<span class="go">alt.atheism: sgi livesey atheists writes people caltech com god keith edu</span>
-<span class="go">comp.graphics: organization thanks files subject com image lines university edu graphics</span>
-<span class="go">sci.space: toronto moon gov com alaska access henry nasa edu space</span>
-<span class="go">talk.religion.misc: article writes kent people christian jesus sandvik edu com god</span>
+<span class="go">alt.atheism: edu it and in you that is of to the</span>
+<span class="go">comp.graphics: edu in graphics it is for and of to the</span>
+<span class="go">sci.space: edu it that is in and space to of the</span>
+<span class="go">talk.religion.misc: not it you in is that and to of the</span>
 </pre></div>
 </div>
 <p>You can now see many things that these features have overfit to:</p>
@@ -762,7 +764,7 @@ blocks, and quotation blocks respectively.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">vectors_test</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">newsgroups_test</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">vectors_test</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">newsgroups_test</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s1">&#39;macro&#39;</span><span class="p">)</span>
-<span class="go">0.77310350681274775</span>
+<span class="go">0.77310...</span>
 </pre></div>
 </div>
 <p>This classifier lost over a lot of its F-score, just because we removed
@@ -774,10 +776,13 @@ It loses even more if we also strip this metadata from the training data:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">vectors</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">newsgroups_train</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">MultinomialNB</span><span class="p">(</span><span class="n">alpha</span><span class="o">=.</span><span class="mi">01</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">newsgroups_train</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">vectors_test</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">newsgroups_test</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="go">MultinomialNB(alpha=0.01, class_prior=None, fit_prior=True)</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vectors_test</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">newsgroups_test</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">vectors_test</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span><span class="n">newsgroups_test</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s1">&#39;macro&#39;</span><span class="p">)</span>
-<span class="go">0.76995175184521725</span>
+<span class="go">0.76995...</span>
 </pre></div>
 </div>
 <p>Some other classifiers cope better with this harder version of the task. Try
