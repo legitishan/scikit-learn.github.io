@@ -49,7 +49,7 @@
          return groups ? groups[1] : null;
      })(location.href.match(/^https?:\/\/scikit-learn.org\/([^\/]+)/));
   </script>
-  <link rel="canonical" href="http://scikit-learn.org/stable/auto_examples/compose/column_transformer_mixed_types.html" />
+  <link rel="canonical" href="http://scikit-learn.org/stable/auto_examples/compose/plot_column_transformer_mixed_types.html" />
 
   <script type="text/javascript">
     $("div.buttonNext, div.buttonPrevious").hover(
@@ -206,10 +206,10 @@
             
   <div class="sphx-glr-download-link-note admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-compose-column-transformer-mixed-types-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-compose-plot-column-transformer-mixed-types-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="column-transformer-with-mixed-types">
-<span id="sphx-glr-auto-examples-compose-column-transformer-mixed-types-py"></span><h1>Column Transformer with Mixed Types<a class="headerlink" href="#column-transformer-with-mixed-types" title="Permalink to this headline">¶</a></h1>
+<span id="sphx-glr-auto-examples-compose-plot-column-transformer-mixed-types-py"></span><h1>Column Transformer with Mixed Types<a class="headerlink" href="#column-transformer-with-mixed-types" title="Permalink to this headline">¶</a></h1>
 <p>This example illustrates how to apply different preprocessing and
 feature extraction pipelines to different subsets of features,
 using <a class="reference internal" href="../../modules/generated/sklearn.compose.ColumnTransformer.html#sklearn.compose.ColumnTransformer" title="sklearn.compose.ColumnTransformer"><code class="xref py py-class docutils literal"><span class="pre">sklearn.compose.ColumnTransformer</span></code></a>.
@@ -230,14 +230,16 @@ together with a simple classification model.</p>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">sklearn.compose</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.compose.make_column_transformer.html#sklearn.compose.make_column_transformer" title="View documentation for sklearn.compose.make_column_transformer"><span class="n">make_column_transformer</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.pipeline.make_pipeline.html#sklearn.pipeline.make_pipeline" title="View documentation for sklearn.pipeline.make_pipeline"><span class="n">make_pipeline</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.compose</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.compose.ColumnTransformer.html#sklearn.compose.ColumnTransformer" title="View documentation for sklearn.compose.ColumnTransformer"><span class="n">ColumnTransformer</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="View documentation for sklearn.pipeline.Pipeline"><span class="n">Pipeline</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.impute</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.impute.SimpleImputer.html#sklearn.impute.SimpleImputer" title="View documentation for sklearn.impute.SimpleImputer"><span class="n">SimpleImputer</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler" title="View documentation for sklearn.preprocessing.StandardScaler"><span class="n">StandardScaler</span></a><span class="p">,</span> <a href="../../modules/generated/sklearn.preprocessing.CategoricalEncoder.html#sklearn.preprocessing.CategoricalEncoder" title="View documentation for sklearn.preprocessing.CategoricalEncoder"><span class="n">CategoricalEncoder</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="View documentation for sklearn.linear_model.LogisticRegression"><span class="n">LogisticRegression</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="View documentation for sklearn.model_selection.train_test_split"><span class="n">train_test_split</span></a><span class="p">,</span> <a href="../../modules/generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV" title="View documentation for sklearn.model_selection.GridSearchCV"><span class="n">GridSearchCV</span></a>
 
+<a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.seed.html#numpy.random.seed" title="View documentation for numpy.random.seed"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span></a><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="c1"># Read data from Titanic dataset.</span>
 <span class="n">titanic_url</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/amueller/&#39;</span>
@@ -252,36 +254,41 @@ together with a simple classification model.</p>
 <span class="c1"># - embarked: categories encoded as strings {&#39;C&#39;, &#39;S&#39;, &#39;Q&#39;}.</span>
 <span class="c1"># - sex: categories encoded as strings {&#39;female&#39;, &#39;male&#39;}.</span>
 <span class="c1"># - pclass: ordinal integers {1, 2, 3}.</span>
-<span class="n">numeric_features</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;fare&#39;</span><span class="p">]</span>
-<span class="n">categorical_features</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;embarked&#39;</span><span class="p">,</span> <span class="s1">&#39;sex&#39;</span><span class="p">,</span> <span class="s1">&#39;pclass&#39;</span><span class="p">]</span>
-
-<span class="c1"># Provisionally, use pd.fillna() to impute missing values for categorical</span>
-<span class="c1"># features; SimpleImputer will eventually support strategy=&quot;constant&quot;.</span>
-<span class="n">data</span><span class="p">[</span><span class="n">categorical_features</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">categorical_features</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s1">&#39;missing&#39;</span><span class="p">)</span>
 
 <span class="c1"># We create the preprocessing pipelines for both numeric and categorical data.</span>
-<span class="n">numeric_transformer</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.pipeline.make_pipeline.html#sklearn.pipeline.make_pipeline" title="View documentation for sklearn.pipeline.make_pipeline"><span class="n">make_pipeline</span></a><span class="p">(</span><a href="../../modules/generated/sklearn.impute.SimpleImputer.html#sklearn.impute.SimpleImputer" title="View documentation for sklearn.impute.SimpleImputer"><span class="n">SimpleImputer</span></a><span class="p">(),</span> <a href="../../modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler" title="View documentation for sklearn.preprocessing.StandardScaler"><span class="n">StandardScaler</span></a><span class="p">())</span>
-<span class="n">categorical_transformer</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.preprocessing.CategoricalEncoder.html#sklearn.preprocessing.CategoricalEncoder" title="View documentation for sklearn.preprocessing.CategoricalEncoder"><span class="n">CategoricalEncoder</span></a><span class="p">(</span><span class="s1">&#39;onehot-dense&#39;</span><span class="p">,</span>
-                                             <span class="n">handle_unknown</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="n">numeric_features</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;fare&#39;</span><span class="p">]</span>
+<span class="n">numeric_transformer</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="View documentation for sklearn.pipeline.Pipeline"><span class="n">Pipeline</span></a><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;imputer&#39;</span><span class="p">,</span> <a href="../../modules/generated/sklearn.impute.SimpleImputer.html#sklearn.impute.SimpleImputer" title="View documentation for sklearn.impute.SimpleImputer"><span class="n">SimpleImputer</span></a><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;median&#39;</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s1">&#39;scaler&#39;</span><span class="p">,</span> <a href="../../modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler" title="View documentation for sklearn.preprocessing.StandardScaler"><span class="n">StandardScaler</span></a><span class="p">())])</span>
 
-<span class="n">preprocessing_pl</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.compose.make_column_transformer.html#sklearn.compose.make_column_transformer" title="View documentation for sklearn.compose.make_column_transformer"><span class="n">make_column_transformer</span></a><span class="p">(</span>
-    <span class="p">(</span><span class="n">numeric_features</span><span class="p">,</span> <span class="n">numeric_transformer</span><span class="p">),</span>
-    <span class="p">(</span><span class="n">categorical_features</span><span class="p">,</span> <span class="n">categorical_transformer</span><span class="p">),</span>
-    <span class="n">remainder</span><span class="o">=</span><span class="s1">&#39;drop&#39;</span>
-<span class="p">)</span>
+<span class="n">categorical_features</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;embarked&#39;</span><span class="p">,</span> <span class="s1">&#39;sex&#39;</span><span class="p">,</span> <span class="s1">&#39;pclass&#39;</span><span class="p">]</span>
+<span class="n">categorical_transformer</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="View documentation for sklearn.pipeline.Pipeline"><span class="n">Pipeline</span></a><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;imputer&#39;</span><span class="p">,</span> <a href="../../modules/generated/sklearn.impute.SimpleImputer.html#sklearn.impute.SimpleImputer" title="View documentation for sklearn.impute.SimpleImputer"><span class="n">SimpleImputer</span></a><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;constant&#39;</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="s1">&#39;missing&#39;</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s1">&#39;onehot&#39;</span><span class="p">,</span> <a href="../../modules/generated/sklearn.preprocessing.CategoricalEncoder.html#sklearn.preprocessing.CategoricalEncoder" title="View documentation for sklearn.preprocessing.CategoricalEncoder"><span class="n">CategoricalEncoder</span></a><span class="p">(</span><span class="s1">&#39;onehot-dense&#39;</span><span class="p">,</span> <span class="n">handle_unknown</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">))])</span>
+
+<span class="n">preprocessor</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.compose.ColumnTransformer.html#sklearn.compose.ColumnTransformer" title="View documentation for sklearn.compose.ColumnTransformer"><span class="n">ColumnTransformer</span></a><span class="p">(</span>
+    <span class="n">transformers</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">(</span><span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="n">numeric_transformer</span><span class="p">,</span> <span class="n">numeric_features</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="n">categorical_transformer</span><span class="p">,</span> <span class="n">categorical_features</span><span class="p">)],</span>
+    <span class="n">remainder</span><span class="o">=</span><span class="s1">&#39;drop&#39;</span><span class="p">)</span>
 
 <span class="c1"># Append classifier to preprocessing pipeline.</span>
 <span class="c1"># Now we have a full prediction pipeline.</span>
-<span class="n">clf</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.pipeline.make_pipeline.html#sklearn.pipeline.make_pipeline" title="View documentation for sklearn.pipeline.make_pipeline"><span class="n">make_pipeline</span></a><span class="p">(</span><span class="n">preprocessing_pl</span><span class="p">,</span> <a href="../../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="View documentation for sklearn.linear_model.LogisticRegression"><span class="n">LogisticRegression</span></a><span class="p">())</span>
+<span class="n">clf</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="View documentation for sklearn.pipeline.Pipeline"><span class="n">Pipeline</span></a><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;preprocessor&#39;</span><span class="p">,</span> <span class="n">preprocessor</span><span class="p">),</span>
+                      <span class="p">(</span><span class="s1">&#39;classifier&#39;</span><span class="p">,</span> <a href="../../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="View documentation for sklearn.linear_model.LogisticRegression"><span class="n">LogisticRegression</span></a><span class="p">())])</span>
 
 <span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;survived&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">survived</span><span class="o">.</span><span class="n">values</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;survived&#39;</span><span class="p">]</span>
 
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="View documentation for sklearn.model_selection.train_test_split"><span class="n">train_test_split</span></a><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
                                                     <span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
 <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;model score: </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;model score: </span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>model score: 0.790
 </pre></div>
 </div>
 <div class="section" id="using-the-prediction-pipeline-in-a-grid-search">
@@ -294,23 +301,27 @@ We will search for both the imputer strategy of the numeric preprocessing
 and the regularization parameter of the logistic regression using
 <a class="reference internal" href="../../modules/generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV" title="sklearn.model_selection.GridSearchCV"><code class="xref py py-class docutils literal"><span class="pre">sklearn.model_selection.GridSearchCV</span></code></a>.</div></blockquote>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">param_grid</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;columntransformer__pipeline__simpleimputer__strategy&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="s1">&#39;median&#39;</span><span class="p">],</span>
-    <span class="s1">&#39;logisticregression__C&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+    <span class="s1">&#39;preprocessor__num__imputer__strategy&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="s1">&#39;median&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;classifier__C&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span>
 <span class="p">}</span>
 
 <span class="n">grid_search</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV" title="View documentation for sklearn.model_selection.GridSearchCV"><span class="n">GridSearchCV</span></a><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">param_grid</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">iid</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 <span class="n">grid_search</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 
-<span class="k">print</span><span class="p">((</span><span class="s2">&quot;best logistic regression from grid search: </span><span class="si">%f</span><span class="s2">&quot;</span>
+<span class="k">print</span><span class="p">((</span><span class="s2">&quot;best logistic regression from grid search: </span><span class="si">%.3f</span><span class="s2">&quot;</span>
        <span class="o">%</span> <span class="n">grid_search</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-compose-column-transformer-mixed-types-py">
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>best logistic regression from grid search: 0.798
+</pre></div>
+</div>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  2.327 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-compose-plot-column-transformer-mixed-types-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../../_downloads/column_transformer_mixed_types.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">column_transformer_mixed_types.py</span></code></a></div>
+<a class="reference download internal" href="../../_downloads/plot_column_transformer_mixed_types.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_column_transformer_mixed_types.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../../_downloads/column_transformer_mixed_types.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">column_transformer_mixed_types.ipynb</span></code></a></div>
+<a class="reference download internal" href="../../_downloads/plot_column_transformer_mixed_types.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_column_transformer_mixed_types.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
@@ -326,7 +337,7 @@ and the regularization parameter of the logistic regression using
 
     <div class="footer">
         &copy; 2007 - 2018, scikit-learn developers (BSD License).
-      <a href="../../_sources/auto_examples/compose/column_transformer_mixed_types.rst.txt" rel="nofollow">Show this page source</a>
+      <a href="../../_sources/auto_examples/compose/plot_column_transformer_mixed_types.rst.txt" rel="nofollow">Show this page source</a>
     </div>
      <div class="rel">
     
