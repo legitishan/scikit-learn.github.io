@@ -133,6 +133,7 @@
     <p class="citing">Please <b><a href="../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
 <li><a class="reference internal" href="#">Version 0.20 (under development)</a><ul>
+<li><a class="reference internal" href="#highlights">Highlights</a></li>
 <li><a class="reference internal" href="#changed-models">Changed models</a></li>
 <li><a class="reference internal" href="#changelog">Changelog</a><ul>
 <li><a class="reference internal" href="#new-features">New features</a></li>
@@ -163,10 +164,28 @@
             
   <div class="section" id="version-0-20-under-development">
 <span id="changes-0-20"></span><h1>Version 0.20 (under development)<a class="headerlink" href="#version-0-20-under-development" title="Permalink to this headline">¶</a></h1>
-<p>As well as a plethora of new features and enhancements, this release is the
-first to be accompanied by a <a class="reference internal" href="../glossary.html#glossary"><span class="std std-ref">Glossary of Common Terms and API Elements</span></a> developed by <a class="reference external" href="http://joelnothman.com">Joel Nothman</a>. The
-glossary is a reference resource to help users and contributors become familiar
-with the terminology and conventions used in Scikit-learn.</p>
+<p>This release packs in a mountain of bug fixes, features and enhancements for
+the Scikit-learn library, and improvements to the documentation and examples.
+Thanks to our many contributors!</p>
+<div class="section" id="highlights">
+<h2>Highlights<a class="headerlink" href="#highlights" title="Permalink to this headline">¶</a></h2>
+<p>We have tried to improve our support for common data-science use-cases
+including missing values, categorical variables, heterogeneous data, and
+features/targets with unusual distributions.</p>
+<p>Missing values in features, represented by NaNs, are now accepted in
+column-wise preprocessing such as scalers.  Each feature is fitted disregarding
+NaNs, and data containing NaNs can be transformed. The new <code class="xref py py-mod docutils literal"><span class="pre">impute</span></code>
+module provides estimators for learning despite missing data.</p>
+<p><a class="reference internal" href="../modules/generated/sklearn.compose.ColumnTransformer.html#sklearn.compose.ColumnTransformer" title="sklearn.compose.ColumnTransformer"><code class="xref py py-class docutils literal"><span class="pre">ColumnTransformer</span></code></a> handles the case where different features
+or columns of a pandas.DataFrame need different preprocessing.
+String or pandas Categorical columns can now be encoded with
+<a class="reference internal" href="../modules/generated/sklearn.preprocessing.OneHotEncoder.html#sklearn.preprocessing.OneHotEncoder" title="sklearn.preprocessing.OneHotEncoder"><code class="xref py py-class docutils literal"><span class="pre">OneHotEncoder</span></code></a> or
+<a class="reference internal" href="../modules/generated/sklearn.preprocessing.OrdinalEncoder.html#sklearn.preprocessing.OrdinalEncoder" title="sklearn.preprocessing.OrdinalEncoder"><code class="xref py py-class docutils literal"><span class="pre">OrdinalEncoder</span></code></a>.</p>
+<p>This release is also the first to be accompanied by a <a class="reference internal" href="../glossary.html#glossary"><span class="std std-ref">Glossary of Common Terms and API Elements</span></a> developed
+by <a class="reference external" href="http://joelnothman.com">Joel Nothman</a>. The glossary is a reference resource to help users and
+contributors become familiar with the terminology and conventions used in
+Scikit-learn.</p>
+</div>
 <div class="section" id="changed-models">
 <h2>Changed models<a class="headerlink" href="#changed-models" title="Permalink to this headline">¶</a></h2>
 <p>The following estimators and functions, when fit with the same data and
@@ -374,7 +393,8 @@ arguments on to the pipeline’s last estimator, enabling the use of parameters
 such as <code class="docutils literal"><span class="pre">return_std</span></code> in a pipeline with caution.
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/9304">#9304</a> by <a class="reference external" href="https://github.com/brenolf">Breno Freitas</a>.</li>
 <li>Add <cite>return_estimator</cite> parameter in <a class="reference internal" href="../modules/generated/sklearn.model_selection.cross_validate.html#sklearn.model_selection.cross_validate" title="sklearn.model_selection.cross_validate"><code class="xref py py-func docutils literal"><span class="pre">model_selection.cross_validate</span></code></a> to
-return estimators fitted on each split. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/9686">#9686</a> by <a class="reference external" href="https://github.com/bellet">Aurélien Bellet</a>.</li>
+return estimators fitted on each split.
+<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/9686">#9686</a> by <a class="reference external" href="https://github.com/bellet">Aurélien Bellet</a>.</li>
 <li>New <code class="docutils literal"><span class="pre">refit_time_</span></code> attribute will be stored in
 <a class="reference internal" href="../modules/generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV" title="sklearn.model_selection.GridSearchCV"><code class="xref py py-class docutils literal"><span class="pre">model_selection.GridSearchCV</span></code></a> and
 <a class="reference internal" href="../modules/generated/sklearn.model_selection.RandomizedSearchCV.html#sklearn.model_selection.RandomizedSearchCV" title="sklearn.model_selection.RandomizedSearchCV"><code class="xref py py-class docutils literal"><span class="pre">model_selection.RandomizedSearchCV</span></code></a> if <code class="docutils literal"><span class="pre">refit</span></code> is set to <code class="docutils literal"><span class="pre">True</span></code>.
@@ -391,11 +411,13 @@ dataset. <a class="reference external" href="https://github.com/scikit-learn/sci
 <p>Metrics</p>
 <ul class="simple">
 <li><a class="reference internal" href="../modules/generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score" title="sklearn.metrics.roc_auc_score"><code class="xref py py-func docutils literal"><span class="pre">metrics.roc_auc_score</span></code></a> now supports binary <code class="docutils literal"><span class="pre">y_true</span></code> other than
-<code class="docutils literal"><span class="pre">{0,</span> <span class="pre">1}</span></code> or <code class="docutils literal"><span class="pre">{-1,</span> <span class="pre">1}</span></code>. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/9828">#9828</a> by <a class="reference external" href="https://github.com/qinhanmin2014">Hanmin Qin</a>.</li>
-<li><a class="reference internal" href="../modules/generated/sklearn.metrics.label_ranking_average_precision_score.html#sklearn.metrics.label_ranking_average_precision_score" title="sklearn.metrics.label_ranking_average_precision_score"><code class="xref py py-func docutils literal"><span class="pre">metrics.label_ranking_average_precision_score</span></code></a> now supports vector <code class="docutils literal"><span class="pre">sample_weight</span></code>.
+<code class="docutils literal"><span class="pre">{0,</span> <span class="pre">1}</span></code> or <code class="docutils literal"><span class="pre">{-1,</span> <span class="pre">1}</span></code>.
+<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/9828">#9828</a> by <a class="reference external" href="https://github.com/qinhanmin2014">Hanmin Qin</a>.</li>
+<li><a class="reference internal" href="../modules/generated/sklearn.metrics.label_ranking_average_precision_score.html#sklearn.metrics.label_ranking_average_precision_score" title="sklearn.metrics.label_ranking_average_precision_score"><code class="xref py py-func docutils literal"><span class="pre">metrics.label_ranking_average_precision_score</span></code></a> now supports vector
+<code class="docutils literal"><span class="pre">sample_weight</span></code>.
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/10845">#10845</a> by <a class="reference external" href="https://github.com/jopepato">Jose Perez-Parras Toledano</a>.</li>
-<li>Add <code class="docutils literal"><span class="pre">dense_output</span></code> parameter to <a class="reference internal" href="../modules/generated/sklearn.metrics.pairwise.linear_kernel.html#sklearn.metrics.pairwise.linear_kernel" title="sklearn.metrics.pairwise.linear_kernel"><code class="xref py py-func docutils literal"><span class="pre">metrics.pairwise.linear_kernel</span></code></a>. When
-False and both inputs are sparse, will return a sparse matrix.
+<li>Add <code class="docutils literal"><span class="pre">dense_output</span></code> parameter to <a class="reference internal" href="../modules/generated/sklearn.metrics.pairwise.linear_kernel.html#sklearn.metrics.pairwise.linear_kernel" title="sklearn.metrics.pairwise.linear_kernel"><code class="xref py py-func docutils literal"><span class="pre">metrics.pairwise.linear_kernel</span></code></a>.
+When False and both inputs are sparse, will return a sparse matrix.
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/10999">#10999</a> by <a class="reference external" href="https://github.com/tgsmith61591">Taylor G Smith</a>.</li>
 <li><code class="xref py py-func docutils literal"><span class="pre">metrics.cluster.silhouette_score</span></code> and
 <code class="xref py py-func docutils literal"><span class="pre">metrics.cluster.silhouette_samples</span></code> are more memory efficient and run
