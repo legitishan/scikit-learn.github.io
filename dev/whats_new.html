@@ -319,6 +319,7 @@ random sampling procedures.</p>
 <li><a class="reference internal" href="modules/generated/sklearn.neural_network.MLPRegressor.html#sklearn.neural_network.MLPRegressor" title="sklearn.neural_network.MLPRegressor"><code class="xref py py-class docutils literal"><span class="pre">neural_network.MLPRegressor</span></code></a> (bug fix)</li>
 <li><a class="reference internal" href="modules/generated/sklearn.neural_network.MLPClassifier.html#sklearn.neural_network.MLPClassifier" title="sklearn.neural_network.MLPClassifier"><code class="xref py py-class docutils literal"><span class="pre">neural_network.MLPClassifier</span></code></a> (bug fix)</li>
 <li><code class="xref py py-class docutils literal"><span class="pre">neural_network.BaseMultilayerPerceptron</span></code> (bug fix)</li>
+<li><code class="xref py py-class docutils literal"><span class="pre">ensemble.gradient_boosting.GradientBoostingClassifier</span></code> (bug fix affecting feature importances)</li>
 <li>The v0.19.0 release notes failed to mention a backwards incompatibility with
 <a class="reference internal" href="modules/generated/sklearn.model_selection.StratifiedKFold.html#sklearn.model_selection.StratifiedKFold" title="sklearn.model_selection.StratifiedKFold"><code class="xref py py-class docutils literal"><span class="pre">model_selection.StratifiedKFold</span></code></a> when <code class="docutils literal"><span class="pre">shuffle=True</span></code> due to
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/7823">#7823</a>.</li>
@@ -492,6 +493,9 @@ classes found which are ignored.
 <li><a class="reference internal" href="modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler" title="sklearn.preprocessing.StandardScaler"><code class="xref py py-class docutils literal"><span class="pre">preprocessing.StandardScaler</span></code></a> and <a class="reference internal" href="modules/generated/sklearn.preprocessing.scale.html#sklearn.preprocessing.scale" title="sklearn.preprocessing.scale"><code class="xref py py-func docutils literal"><span class="pre">preprocessing.scale</span></code></a>
 ignore and pass-through NaN values.
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/11206">#11206</a> by <a class="reference external" href="https://github.com/glemaitre">Guillaume Lemaitre</a>.</li>
+<li><a class="reference internal" href="modules/generated/sklearn.preprocessing.PowerTransformer.html#sklearn.preprocessing.PowerTransformer" title="sklearn.preprocessing.PowerTransformer"><code class="xref py py-class docutils literal"><span class="pre">preprocessing.PowerTransformer</span></code></a> and
+<a class="reference internal" href="modules/generated/sklearn.preprocessing.power_transform.html#sklearn.preprocessing.power_transform" title="sklearn.preprocessing.power_transform"><code class="xref py py-func docutils literal"><span class="pre">preprocessing.power_transform</span></code></a> ignore and pass-through NaN values.
+<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/11306">#11306</a> by <a class="reference external" href="https://github.com/glemaitre">Guillaume Lemaitre</a>.</li>
 </ul>
 <p>Model evaluation and meta-estimators</p>
 <ul class="simple">
@@ -637,6 +641,12 @@ raised an error. <a class="reference external" href="https://github.com/scikit-l
 <li>Fixed condition triggering gap computation in <a class="reference internal" href="modules/generated/sklearn.linear_model.Lasso.html#sklearn.linear_model.Lasso" title="sklearn.linear_model.Lasso"><code class="xref py py-class docutils literal"><span class="pre">linear_model.Lasso</span></code></a>
 and <a class="reference internal" href="modules/generated/sklearn.linear_model.ElasticNet.html#sklearn.linear_model.ElasticNet" title="sklearn.linear_model.ElasticNet"><code class="xref py py-class docutils literal"><span class="pre">linear_model.ElasticNet</span></code></a> when working with sparse matrices.
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/10992">#10992</a> by <a class="reference external" href="http://alexandre.gramfort.net">Alexandre Gramfort</a>.</li>
+<li>Fixed a bug in <code class="xref py py-class docutils literal"><span class="pre">ensemble.gradient_boosting.GradientBoostingRegressor</span></code>
+and <code class="xref py py-class docutils literal"><span class="pre">ensemble.gradient_boosting.GradientBoostingClassifier</span></code> to have
+feature importances summed and then normalized, rather than normalizing on a
+per-tree basis. The previous behavior over-weighted the Gini importance of
+features that appear in later stages. This issue only affected feature
+importances. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/11176">#11176</a> by <a class="reference external" href="https://github.com/gforsyth">Gil Forsyth</a>.</li>
 </ul>
 <p>Decomposition, manifold learning and clustering</p>
 <ul class="simple">
