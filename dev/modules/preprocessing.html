@@ -661,14 +661,12 @@ Such features can be efficiently coded as integers, for instance
 <code class="docutils literal"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">3]</span></code> while <code class="docutils literal"><span class="pre">[&quot;female&quot;,</span> <span class="pre">&quot;from</span> <span class="pre">Asia&quot;,</span> <span class="pre">&quot;uses</span> <span class="pre">Chrome&quot;]</span></code> would be
 <code class="docutils literal"><span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">1]</span></code>.</p>
 <p>To convert categorical features to such integer codes, we can use the
-<a class="reference internal" href="generated/sklearn.preprocessing.CategoricalEncoder.html#sklearn.preprocessing.CategoricalEncoder" title="sklearn.preprocessing.CategoricalEncoder"><code class="xref py py-class docutils literal"><span class="pre">CategoricalEncoder</span></code></a>. When specifying that we want to perform an
-ordinal encoding, the estimator transforms each categorical feature to one
+<a class="reference internal" href="generated/sklearn.preprocessing.OrdinalEncoder.html#sklearn.preprocessing.OrdinalEncoder" title="sklearn.preprocessing.OrdinalEncoder"><code class="xref py py-class docutils literal"><span class="pre">OrdinalEncoder</span></code></a>. This estimator transforms each categorical feature to one
 new feature of integers (0 to n_categories - 1):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">CategoricalEncoder</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;ordinal&#39;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">OrdinalEncoder</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;male&#39;</span><span class="p">,</span> <span class="s1">&#39;from US&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Safari&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="s1">&#39;from Europe&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Firefox&#39;</span><span class="p">]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>  
-<span class="go">CategoricalEncoder(categories=&#39;auto&#39;, dtype=&lt;... &#39;numpy.float64&#39;&gt;,</span>
-<span class="go">          encoding=&#39;ordinal&#39;, handle_unknown=&#39;error&#39;)</span>
+<span class="go">OrdinalEncoder(categories=&#39;auto&#39;, dtype=&lt;... &#39;numpy.float64&#39;&gt;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">transform</span><span class="p">([[</span><span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="s1">&#39;from US&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Safari&#39;</span><span class="p">]])</span>
 <span class="go">array([[0., 1., 1.]])</span>
 </pre></div>
@@ -680,16 +678,17 @@ browsers was ordered arbitrarily).</p>
 <p>Another possibility to convert categorical features to features that can be used
 with scikit-learn estimators is to use a one-of-K, also known as one-hot or
 dummy encoding.
-This type of encoding is the default behaviour of the <a class="reference internal" href="generated/sklearn.preprocessing.CategoricalEncoder.html#sklearn.preprocessing.CategoricalEncoder" title="sklearn.preprocessing.CategoricalEncoder"><code class="xref py py-class docutils literal"><span class="pre">CategoricalEncoder</span></code></a>.
-The <a class="reference internal" href="generated/sklearn.preprocessing.CategoricalEncoder.html#sklearn.preprocessing.CategoricalEncoder" title="sklearn.preprocessing.CategoricalEncoder"><code class="xref py py-class docutils literal"><span class="pre">CategoricalEncoder</span></code></a> then transforms each categorical feature with
+This type of encoding can be obtained with the <a class="reference internal" href="generated/sklearn.preprocessing.OneHotEncoder.html#sklearn.preprocessing.OneHotEncoder" title="sklearn.preprocessing.OneHotEncoder"><code class="xref py py-class docutils literal"><span class="pre">OneHotEncoder</span></code></a>,
+which transforms each categorical feature with
 <code class="docutils literal"><span class="pre">n_categories</span></code> possible values into <code class="docutils literal"><span class="pre">n_categories</span></code> binary features, with
 one of them 1, and all others 0.</p>
 <p>Continuing the example above:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">CategoricalEncoder</span><span class="p">()</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">OneHotEncoder</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;male&#39;</span><span class="p">,</span> <span class="s1">&#39;from US&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Safari&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="s1">&#39;from Europe&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Firefox&#39;</span><span class="p">]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>  
-<span class="go">CategoricalEncoder(categories=&#39;auto&#39;, dtype=&lt;... &#39;numpy.float64&#39;&gt;,</span>
-<span class="go">          encoding=&#39;onehot&#39;, handle_unknown=&#39;error&#39;)</span>
+<span class="go">OneHotEncoder(categorical_features=None, categories=None,</span>
+<span class="go">       dtype=&lt;... &#39;numpy.float64&#39;&gt;, handle_unknown=&#39;error&#39;,</span>
+<span class="go">       n_values=None, sparse=True)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">transform</span><span class="p">([[</span><span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="s1">&#39;from US&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Safari&#39;</span><span class="p">],</span>
 <span class="gp">... </span>               <span class="p">[</span><span class="s1">&#39;male&#39;</span><span class="p">,</span> <span class="s1">&#39;from Europe&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Safari&#39;</span><span class="p">]])</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
 <span class="go">array([[1., 0., 0., 1., 0., 1.],</span>
@@ -708,14 +707,15 @@ dataset:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">genders</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="s1">&#39;male&#39;</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">locations</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;from Africa&#39;</span><span class="p">,</span> <span class="s1">&#39;from Asia&#39;</span><span class="p">,</span> <span class="s1">&#39;from Europe&#39;</span><span class="p">,</span> <span class="s1">&#39;from US&#39;</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">browsers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;uses Chrome&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Firefox&#39;</span><span class="p">,</span> <span class="s1">&#39;uses IE&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Safari&#39;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">CategoricalEncoder</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="p">[</span><span class="n">genders</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">browsers</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="p">[</span><span class="n">genders</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">browsers</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Note that for there are missing categorical values for the 2nd and 3rd</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># feature</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;male&#39;</span><span class="p">,</span> <span class="s1">&#39;from US&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Safari&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="s1">&#39;from Europe&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Firefox&#39;</span><span class="p">]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> 
-<span class="go">CategoricalEncoder(categories=[...],</span>
-<span class="go">          dtype=&lt;... &#39;numpy.float64&#39;&gt;, encoding=&#39;onehot&#39;,</span>
-<span class="go">          handle_unknown=&#39;error&#39;)</span>
+<span class="go">OneHotEncoder(categorical_features=None,</span>
+<span class="go">       categories=[...],</span>
+<span class="go">       dtype=&lt;... &#39;numpy.float64&#39;&gt;, handle_unknown=&#39;error&#39;,</span>
+<span class="go">       n_values=None, sparse=True)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">transform</span><span class="p">([[</span><span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="s1">&#39;from Asia&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Chrome&#39;</span><span class="p">]])</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
 <span class="go">array([[1., 0., 0., 1., 0., 0., 1., 0., 0., 0.]])</span>
 </pre></div>
@@ -727,11 +727,12 @@ of setting the <code class="docutils literal"><span class="pre">categories</span
 during transform, no error will be raised but the resulting one-hot encoded
 columns for this feature will be all zeros
 (<code class="docutils literal"><span class="pre">handle_unknown='ignore'</span></code> is only supported for one-hot encoding):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">CategoricalEncoder</span><span class="p">(</span><span class="n">handle_unknown</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">handle_unknown</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;male&#39;</span><span class="p">,</span> <span class="s1">&#39;from US&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Safari&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="s1">&#39;from Europe&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Firefox&#39;</span><span class="p">]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> 
-<span class="go">CategoricalEncoder(categories=&#39;auto&#39;, dtype=&lt;... &#39;numpy.float64&#39;&gt;,</span>
-<span class="go">          encoding=&#39;onehot&#39;, handle_unknown=&#39;ignore&#39;)</span>
+<span class="go">OneHotEncoder(categorical_features=None, categories=None,</span>
+<span class="go">       dtype=&lt;... &#39;numpy.float64&#39;&gt;, handle_unknown=&#39;ignore&#39;,</span>
+<span class="go">       n_values=None, sparse=True)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">transform</span><span class="p">([[</span><span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="s1">&#39;from Asia&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Chrome&#39;</span><span class="p">]])</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
 <span class="go">array([[1., 0., 0., 0., 0., 0.]])</span>
 </pre></div>

@@ -333,13 +333,14 @@ wrapping pipelines that perform their own imputation.
 </ul>
 <p>Preprocessing</p>
 <ul class="simple">
-<li>Added <a class="reference internal" href="modules/generated/sklearn.preprocessing.CategoricalEncoder.html#sklearn.preprocessing.CategoricalEncoder" title="sklearn.preprocessing.CategoricalEncoder"><code class="xref py py-class docutils literal"><span class="pre">preprocessing.CategoricalEncoder</span></code></a>, which allows to encode
-categorical features as a numeric array, either using a one-hot (or dummy)
-encoding scheme or by converting to ordinal integers.  Compared to the
-existing <a class="reference internal" href="modules/generated/sklearn.preprocessing.OneHotEncoder.html#sklearn.preprocessing.OneHotEncoder" title="sklearn.preprocessing.OneHotEncoder"><code class="xref py py-class docutils literal"><span class="pre">OneHotEncoder</span></code></a>, this new class handles
+<li>Expanded <a class="reference internal" href="modules/generated/sklearn.preprocessing.OneHotEncoder.html#sklearn.preprocessing.OneHotEncoder" title="sklearn.preprocessing.OneHotEncoder"><code class="xref py py-class docutils literal"><span class="pre">preprocessing.OneHotEncoder</span></code></a> to allow to encode
+categorical string features as a numeric array using a one-hot (or dummy)
+encoding scheme, and added <a class="reference internal" href="modules/generated/sklearn.preprocessing.OrdinalEncoder.html#sklearn.preprocessing.OrdinalEncoder" title="sklearn.preprocessing.OrdinalEncoder"><code class="xref py py-class docutils literal"><span class="pre">preprocessing.OrdinalEncoder</span></code></a> to
+convert to ordinal integers.  Those two classes now handle
 encoding of all feature types (also handles string-valued features) and
 derives the categories based on the unique values in the features instead of
-the maximum value in the features. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/9151">#9151</a> by <a class="reference external" href="https://github.com/vighneshbirodkar">Vighnesh Birodkar</a> and <a class="reference external" href="https://github.com/jorisvandenbossche">Joris Van den Bossche</a>.</li>
+the maximum value in the features. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/9151">#9151</a> and <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/10521">#10521</a> by
+<a class="reference external" href="https://github.com/vighneshbirodkar">Vighnesh Birodkar</a> and <a class="reference external" href="https://github.com/jorisvandenbossche">Joris Van den Bossche</a>.</li>
 <li>Added <a class="reference internal" href="modules/generated/sklearn.compose.ColumnTransformer.html#sklearn.compose.ColumnTransformer" title="sklearn.compose.ColumnTransformer"><code class="xref py py-class docutils literal"><span class="pre">compose.ColumnTransformer</span></code></a>, which allows to apply
 different transformers to different columns of arrays or pandas
 DataFrames. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/9012">#9012</a> by <a class="reference external" href="http://peekaboo-vision.blogspot.com">Andreas Müller</a> and <a class="reference external" href="https://github.com/jorisvandenbossche">Joris Van den Bossche</a>.</li>
@@ -772,6 +773,17 @@ version 0.22 to account better for unscaled features. <a class="reference extern
 <li>Added convergence warning to <a class="reference internal" href="modules/generated/sklearn.svm.LinearSVC.html#sklearn.svm.LinearSVC" title="sklearn.svm.LinearSVC"><code class="xref py py-class docutils literal"><span class="pre">svm.LinearSVC</span></code></a> and
 <a class="reference internal" href="modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="sklearn.linear_model.LogisticRegression"><code class="xref py py-class docutils literal"><span class="pre">linear_model.LogisticRegression</span></code></a> when <code class="docutils literal"><span class="pre">verbose</span></code> is set to 0.
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/10881">#10881</a> by <a class="reference external" href="https://github.com/AlexandreSev">Alexandre Sevin</a>.</li>
+</ul>
+<p>Preprocessing</p>
+<ul class="simple">
+<li>Deprecate <code class="docutils literal"><span class="pre">n_values</span></code> and <code class="docutils literal"><span class="pre">categorical_features</span></code> parameters and
+<code class="docutils literal"><span class="pre">active_features_</span></code>, <code class="docutils literal"><span class="pre">feature_indices_</span></code> and <code class="docutils literal"><span class="pre">n_values_</span></code> attributes
+of <a class="reference internal" href="modules/generated/sklearn.preprocessing.OneHotEncoder.html#sklearn.preprocessing.OneHotEncoder" title="sklearn.preprocessing.OneHotEncoder"><code class="xref py py-class docutils literal"><span class="pre">preprocessing.OneHotEncoder</span></code></a>. The <code class="docutils literal"><span class="pre">n_values</span></code> parameter can be
+replaced with the new <code class="docutils literal"><span class="pre">categories</span></code> parameter, and the attributes with the
+new <code class="docutils literal"><span class="pre">categories_</span></code> attribute. Selecting the categorical features with
+the <code class="docutils literal"><span class="pre">categorical_features</span></code> parameter is now better supported using the
+<a class="reference internal" href="modules/generated/sklearn.compose.ColumnTransformer.html#sklearn.compose.ColumnTransformer" title="sklearn.compose.ColumnTransformer"><code class="xref py py-class docutils literal"><span class="pre">compose.ColumnTransformer</span></code></a>.
+<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/10521">#10521</a> by <a class="reference external" href="https://github.com/jorisvandenbossche">Joris Van den Bossche</a>.</li>
 </ul>
 <p>Decomposition, manifold learning and clustering</p>
 <ul class="simple">

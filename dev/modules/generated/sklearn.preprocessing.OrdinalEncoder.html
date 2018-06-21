@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
   
-    <title>sklearn.preprocessing.CategoricalEncoder &#8212; scikit-learn 0.20.dev0 documentation</title>
+    <title>sklearn.preprocessing.OrdinalEncoder &#8212; scikit-learn 0.20.dev0 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../../_static/css/bootstrap.min.css" media="screen" />
@@ -49,7 +49,7 @@
          return groups ? groups[1] : null;
      })(location.href.match(/^https?:\/\/scikit-learn.org\/([^\/]+)/));
   </script>
-  <link rel="canonical" href="http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.CategoricalEncoder.html" />
+  <link rel="canonical" href="http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OrdinalEncoder.html" />
 
   <script type="text/javascript">
     $("div.buttonNext, div.buttonPrevious").hover(
@@ -183,10 +183,7 @@
       <a href="http://scikit-learn.org/stable/support.html#documentation-resources">Other versions</a></p>
     <p class="citing">Please <b><a href="../../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
-<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">sklearn.preprocessing</span></code>.CategoricalEncoder</a><ul>
-<li><a class="reference internal" href="#examples-using-sklearn-preprocessing-categoricalencoder">Examples using <code class="docutils literal"><span class="pre">sklearn.preprocessing.CategoricalEncoder</span></code></a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">sklearn.preprocessing</span></code>.OrdinalEncoder</a></li>
 </ul>
 
     </div>
@@ -204,37 +201,22 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="sklearn-preprocessing-categoricalencoder">
-<h1><a class="reference internal" href="../classes.html#module-sklearn.preprocessing" title="sklearn.preprocessing"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.preprocessing</span></code></a>.CategoricalEncoder<a class="headerlink" href="#sklearn-preprocessing-categoricalencoder" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="sklearn-preprocessing-ordinalencoder">
+<h1><a class="reference internal" href="../classes.html#module-sklearn.preprocessing" title="sklearn.preprocessing"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.preprocessing</span></code></a>.OrdinalEncoder<a class="headerlink" href="#sklearn-preprocessing-ordinalencoder" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="sklearn.preprocessing.CategoricalEncoder">
-<em class="property">class </em><code class="descclassname">sklearn.preprocessing.</code><code class="descname">CategoricalEncoder</code><span class="sig-paren">(</span><em>encoding=’onehot’</em>, <em>categories=’auto’</em>, <em>dtype=&lt;class ‘numpy.float64’&gt;</em>, <em>handle_unknown=’error’</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/bb5110b/sklearn/preprocessing/data.py#L2904"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.CategoricalEncoder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Encode categorical features as a numeric array.</p>
+<dt id="sklearn.preprocessing.OrdinalEncoder">
+<em class="property">class </em><code class="descclassname">sklearn.preprocessing.</code><code class="descname">OrdinalEncoder</code><span class="sig-paren">(</span><em>categories=’auto’</em>, <em>dtype=&lt;class ‘numpy.float64’&gt;</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/73b7d07/sklearn/preprocessing/_encoders.py#L699"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.OrdinalEncoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encode categorical features as an integer array.</p>
 <p>The input to this transformer should be an array-like of integers or
 strings, denoting the values taken on by categorical (discrete) features.
-The features can be encoded using a one-hot (aka one-of-K or dummy)
-encoding scheme (<code class="docutils literal"><span class="pre">encoding='onehot'</span></code>, the default) or converted
-to ordinal integers (<code class="docutils literal"><span class="pre">encoding='ordinal'</span></code>).</p>
-<p>This encoding is needed for feeding categorical data to many scikit-learn
-estimators, notably linear models and SVMs with the standard kernels.</p>
+The features are converted to ordinal integers. This results in
+a single column of integers (0 to n_categories - 1) per feature.</p>
 <p>Read more in the <a class="reference internal" href="../preprocessing.html#preprocessing-categorical-features"><span class="std std-ref">User Guide</span></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>encoding</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, ‘onehot’, ‘onehot-dense’ or ‘ordinal’</span></dt>
-<dd><p class="first">The type of encoding to use (default is ‘onehot’):</p>
-<ul class="last simple">
-<li>‘onehot’: encode the features using a one-hot aka one-of-K scheme
-(or also called ‘dummy’ encoding). This creates a binary column for
-each category and returns a sparse matrix.</li>
-<li>‘onehot-dense’: the same as ‘onehot’ but returns a dense array
-instead of a sparse matrix.</li>
-<li>‘ordinal’: encode the features as ordinal integers. This results in
-a single column of integers (0 to n_categories - 1) per feature.</li>
-</ul>
-</dd>
 <dt><strong>categories</strong> <span class="classifier-delimiter">:</span> <span class="classifier">‘auto’ or a list of lists/arrays of values.</span></dt>
 <dd><p class="first">Categories (unique values) per feature:</p>
 <ul class="simple">
@@ -248,23 +230,14 @@ strings and numeric values.</li>
 <dt><strong>dtype</strong> <span class="classifier-delimiter">:</span> <span class="classifier">number type, default np.float64</span></dt>
 <dd><p class="first last">Desired dtype of output.</p>
 </dd>
-<dt><strong>handle_unknown</strong> <span class="classifier-delimiter">:</span> <span class="classifier">‘error’ (default) or ‘ignore’</span></dt>
-<dd><p class="first last">Whether to raise an error or ignore if a unknown categorical feature is
-present during transform (default is to raise). When this parameter
-is set to ‘ignore’ and an unknown category is encountered during
-transform, the resulting one-hot encoded columns for this feature
-will be all zeros. In the inverse transform, an unknown category
-will be denoted as None.
-Ignoring unknown categories is not supported for
-<code class="docutils literal"><span class="pre">encoding='ordinal'</span></code>.</p>
-</dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><strong>categories_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of arrays</span></dt>
 <dd><p class="first last">The categories of each feature determined during fitting
-(in order corresponding with output of <code class="docutils literal"><span class="pre">transform</span></code>).</p>
+(in order of the features in X and corresponding with the output
+of <code class="docutils literal"><span class="pre">transform</span></code>).</p>
 </dd>
 </dl>
 </td>
@@ -275,31 +248,30 @@ Ignoring unknown categories is not supported for
 <p class="first admonition-title">See also</p>
 <dl class="last docutils">
 <dt><a class="reference internal" href="sklearn.preprocessing.OneHotEncoder.html#sklearn.preprocessing.OneHotEncoder" title="sklearn.preprocessing.OneHotEncoder"><code class="xref py py-obj docutils literal"><span class="pre">sklearn.preprocessing.OneHotEncoder</span></code></a></dt>
-<dd>performs a one-hot encoding of integer ordinal features. The <code class="docutils literal"><span class="pre">OneHotEncoder</span> <span class="pre">assumes</span></code> that input features take on values in the range <code class="docutils literal"><span class="pre">[0,</span> <span class="pre">max(feature)]</span></code> instead of using the unique values.</dd>
-<dt><a class="reference internal" href="sklearn.feature_extraction.DictVectorizer.html#sklearn.feature_extraction.DictVectorizer" title="sklearn.feature_extraction.DictVectorizer"><code class="xref py py-obj docutils literal"><span class="pre">sklearn.feature_extraction.DictVectorizer</span></code></a></dt>
-<dd>performs a one-hot encoding of dictionary items (also handles string-valued features).</dd>
-<dt><a class="reference internal" href="sklearn.feature_extraction.FeatureHasher.html#sklearn.feature_extraction.FeatureHasher" title="sklearn.feature_extraction.FeatureHasher"><code class="xref py py-obj docutils literal"><span class="pre">sklearn.feature_extraction.FeatureHasher</span></code></a></dt>
-<dd>performs an approximate one-hot encoding of dictionary items or strings.</dd>
+<dd>performs a one-hot encoding of categorical features.</dd>
+<dt><a class="reference internal" href="sklearn.preprocessing.LabelEncoder.html#sklearn.preprocessing.LabelEncoder" title="sklearn.preprocessing.LabelEncoder"><code class="xref py py-obj docutils literal"><span class="pre">sklearn.preprocessing.LabelEncoder</span></code></a></dt>
+<dd>encodes target labels with values between 0 and n_classes-1.</dd>
 </dl>
 </div>
 <p class="rubric">Examples</p>
 <p>Given a dataset with two features, we let the encoder find the unique
-values per feature and transform the data to a binary one-hot encoding.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">CategoricalEncoder</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span> <span class="o">=</span> <span class="n">CategoricalEncoder</span><span class="p">(</span><span class="n">handle_unknown</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+values per feature and transform the data to an ordinal encoding.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">OrdinalEncoder</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span> <span class="o">=</span> <span class="n">OrdinalEncoder</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <span class="gp">... </span>
-<span class="go">CategoricalEncoder(categories=&#39;auto&#39;, dtype=&lt;... &#39;numpy.float64&#39;&gt;,</span>
-<span class="go">          encoding=&#39;onehot&#39;, handle_unknown=&#39;ignore&#39;)</span>
+<span class="go">OrdinalEncoder(categories=&#39;auto&#39;, dtype=&lt;... &#39;numpy.float64&#39;&gt;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">categories_</span>
 <span class="go">[array([&#39;Female&#39;, &#39;Male&#39;], dtype=object), array([1, 2, 3], dtype=object)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">transform</span><span class="p">([[</span><span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
-<span class="go">array([[1., 0., 1., 0., 0.],</span>
-<span class="go">       [0., 1., 0., 0., 0.]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">transform</span><span class="p">([[</span><span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="go">array([[0., 2.],</span>
+<span class="go">       [1., 0.]])</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
 <span class="go">array([[&#39;Male&#39;, 1],</span>
-<span class="go">       [None, 2]], dtype=object)</span>
+<span class="go">       [&#39;Female&#39;, 2]], dtype=object)</span>
 </pre></div>
 </div>
 <p class="rubric">Methods</p>
@@ -309,35 +281,35 @@ values per feature and transform the data to a binary one-hot encoding.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#sklearn.preprocessing.CategoricalEncoder.fit" title="sklearn.preprocessing.CategoricalEncoder.fit"><code class="xref py py-obj docutils literal"><span class="pre">fit</span></code></a>(X[,&nbsp;y])</td>
-<td>Fit the CategoricalEncoder to X.</td>
+<tr class="row-odd"><td><a class="reference internal" href="#sklearn.preprocessing.OrdinalEncoder.fit" title="sklearn.preprocessing.OrdinalEncoder.fit"><code class="xref py py-obj docutils literal"><span class="pre">fit</span></code></a>(X[,&nbsp;y])</td>
+<td>Fit the OrdinalEncoder to X.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#sklearn.preprocessing.CategoricalEncoder.fit_transform" title="sklearn.preprocessing.CategoricalEncoder.fit_transform"><code class="xref py py-obj docutils literal"><span class="pre">fit_transform</span></code></a>(X[,&nbsp;y])</td>
+<tr class="row-even"><td><a class="reference internal" href="#sklearn.preprocessing.OrdinalEncoder.fit_transform" title="sklearn.preprocessing.OrdinalEncoder.fit_transform"><code class="xref py py-obj docutils literal"><span class="pre">fit_transform</span></code></a>(X[,&nbsp;y])</td>
 <td>Fit to data, then transform it.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#sklearn.preprocessing.CategoricalEncoder.get_params" title="sklearn.preprocessing.CategoricalEncoder.get_params"><code class="xref py py-obj docutils literal"><span class="pre">get_params</span></code></a>([deep])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#sklearn.preprocessing.OrdinalEncoder.get_params" title="sklearn.preprocessing.OrdinalEncoder.get_params"><code class="xref py py-obj docutils literal"><span class="pre">get_params</span></code></a>([deep])</td>
 <td>Get parameters for this estimator.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#sklearn.preprocessing.CategoricalEncoder.inverse_transform" title="sklearn.preprocessing.CategoricalEncoder.inverse_transform"><code class="xref py py-obj docutils literal"><span class="pre">inverse_transform</span></code></a>(X)</td>
-<td>Convert back the data to the original representation.</td>
+<tr class="row-even"><td><a class="reference internal" href="#sklearn.preprocessing.OrdinalEncoder.inverse_transform" title="sklearn.preprocessing.OrdinalEncoder.inverse_transform"><code class="xref py py-obj docutils literal"><span class="pre">inverse_transform</span></code></a>(X)</td>
+<td>Convert the data back to the original representation.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#sklearn.preprocessing.CategoricalEncoder.set_params" title="sklearn.preprocessing.CategoricalEncoder.set_params"><code class="xref py py-obj docutils literal"><span class="pre">set_params</span></code></a>(**params)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#sklearn.preprocessing.OrdinalEncoder.set_params" title="sklearn.preprocessing.OrdinalEncoder.set_params"><code class="xref py py-obj docutils literal"><span class="pre">set_params</span></code></a>(**params)</td>
 <td>Set the parameters of this estimator.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#sklearn.preprocessing.CategoricalEncoder.transform" title="sklearn.preprocessing.CategoricalEncoder.transform"><code class="xref py py-obj docutils literal"><span class="pre">transform</span></code></a>(X)</td>
-<td>Transform X using specified encoding scheme.</td>
+<tr class="row-even"><td><a class="reference internal" href="#sklearn.preprocessing.OrdinalEncoder.transform" title="sklearn.preprocessing.OrdinalEncoder.transform"><code class="xref py py-obj docutils literal"><span class="pre">transform</span></code></a>(X)</td>
+<td>Transform X to ordinal codes.</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
-<dt id="sklearn.preprocessing.CategoricalEncoder.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>encoding=’onehot’</em>, <em>categories=’auto’</em>, <em>dtype=&lt;class ‘numpy.float64’&gt;</em>, <em>handle_unknown=’error’</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/bb5110b/sklearn/preprocessing/data.py#L2993"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.CategoricalEncoder.__init__" title="Permalink to this definition">¶</a></dt>
+<dt id="sklearn.preprocessing.OrdinalEncoder.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>categories=’auto’</em>, <em>dtype=&lt;class ‘numpy.float64’&gt;</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/73b7d07/sklearn/preprocessing/_encoders.py#L760"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.OrdinalEncoder.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="sklearn.preprocessing.CategoricalEncoder.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/bb5110b/sklearn/preprocessing/data.py#L3000"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.CategoricalEncoder.fit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fit the CategoricalEncoder to X.</p>
+<dt id="sklearn.preprocessing.OrdinalEncoder.fit">
+<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/73b7d07/sklearn/preprocessing/_encoders.py#L764"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.OrdinalEncoder.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the OrdinalEncoder to X.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -360,8 +332,8 @@ values per feature and transform the data to a binary one-hot encoding.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="sklearn.preprocessing.CategoricalEncoder.fit_transform">
-<code class="descname">fit_transform</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/bb5110b/sklearn/base.py#L482"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.CategoricalEncoder.fit_transform" title="Permalink to this definition">¶</a></dt>
+<dt id="sklearn.preprocessing.OrdinalEncoder.fit_transform">
+<code class="descname">fit_transform</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/73b7d07/sklearn/base.py#L482"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.OrdinalEncoder.fit_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit to data, then transform it.</p>
 <p>Fits transformer to X and y with optional parameters fit_params
 and returns a transformed version of X.</p>
@@ -391,8 +363,8 @@ and returns a transformed version of X.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="sklearn.preprocessing.CategoricalEncoder.get_params">
-<code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/bb5110b/sklearn/base.py#L213"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.CategoricalEncoder.get_params" title="Permalink to this definition">¶</a></dt>
+<dt id="sklearn.preprocessing.OrdinalEncoder.get_params">
+<code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/73b7d07/sklearn/base.py#L213"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.OrdinalEncoder.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -418,11 +390,9 @@ contained subobjects that are estimators.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="sklearn.preprocessing.CategoricalEncoder.inverse_transform">
-<code class="descname">inverse_transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/bb5110b/sklearn/preprocessing/data.py#L3126"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.CategoricalEncoder.inverse_transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert back the data to the original representation.</p>
-<p>In case unknown categories are encountered (all zero’s in the
-one-hot encoding), <code class="docutils literal"><span class="pre">None</span></code> is used to represent this category.</p>
+<dt id="sklearn.preprocessing.OrdinalEncoder.inverse_transform">
+<code class="descname">inverse_transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/73b7d07/sklearn/preprocessing/_encoders.py#L801"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.OrdinalEncoder.inverse_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the data back to the original representation.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -446,8 +416,8 @@ one-hot encoding), <code class="docutils literal"><span class="pre">None</span><
 </dd></dl>
 
 <dl class="method">
-<dt id="sklearn.preprocessing.CategoricalEncoder.set_params">
-<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/bb5110b/sklearn/base.py#L236"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.CategoricalEncoder.set_params" title="Permalink to this definition">¶</a></dt>
+<dt id="sklearn.preprocessing.OrdinalEncoder.set_params">
+<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/73b7d07/sklearn/base.py#L236"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.OrdinalEncoder.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
@@ -468,9 +438,9 @@ component of a nested object.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="sklearn.preprocessing.CategoricalEncoder.transform">
-<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/bb5110b/sklearn/preprocessing/data.py#L3062"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.CategoricalEncoder.transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Transform X using specified encoding scheme.</p>
+<dt id="sklearn.preprocessing.OrdinalEncoder.transform">
+<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/73b7d07/sklearn/preprocessing/_encoders.py#L784"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.OrdinalEncoder.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform X to ordinal codes.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -495,18 +465,7 @@ component of a nested object.</p>
 
 </dd></dl>
 
-<div class="section" id="examples-using-sklearn-preprocessing-categoricalencoder">
-<h2>Examples using <code class="docutils literal"><span class="pre">sklearn.preprocessing.CategoricalEncoder</span></code><a class="headerlink" href="#examples-using-sklearn-preprocessing-categoricalencoder" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="This example illustrates how to apply different preprocessing and feature extraction pipelines ..."><div class="figure" id="id1">
-<img alt="../../_images/sphx_glr_plot_column_transformer_mixed_types_thumb.png" src="../../_images/sphx_glr_plot_column_transformer_mixed_types_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/compose/plot_column_transformer_mixed_types.html#sphx-glr-auto-examples-compose-plot-column-transformer-mixed-types-py"><span class="std std-ref">Column Transformer with Mixed Types</span></a></span></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Transform your features into a higher dimensional, sparse space. Then train a linear model on t..."><div class="figure" id="id2">
-<img alt="../../_images/sphx_glr_plot_feature_transformation_thumb.png" src="../../_images/sphx_glr_plot_feature_transformation_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/ensemble/plot_feature_transformation.html#sphx-glr-auto-examples-ensemble-plot-feature-transformation-py"><span class="std std-ref">Feature transformations with ensembles of trees</span></a></span></p>
-</div>
-</div><div class="clearer"></div></div>
-</div>
+<div class="clearer"></div></div>
 
 
           </div>
@@ -518,7 +477,7 @@ component of a nested object.</p>
 
     <div class="footer">
         &copy; 2007 - 2018, scikit-learn developers (BSD License).
-      <a href="../../_sources/modules/generated/sklearn.preprocessing.CategoricalEncoder.rst.txt" rel="nofollow">Show this page source</a>
+      <a href="../../_sources/modules/generated/sklearn.preprocessing.OrdinalEncoder.rst.txt" rel="nofollow">Show this page source</a>
     </div>
      <div class="rel">
     

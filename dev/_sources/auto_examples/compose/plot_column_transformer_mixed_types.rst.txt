@@ -44,7 +44,7 @@ together with a simple classification model.
     from sklearn.compose import ColumnTransformer
     from sklearn.pipeline import Pipeline
     from sklearn.impute import SimpleImputer
-    from sklearn.preprocessing import StandardScaler, CategoricalEncoder
+    from sklearn.preprocessing import StandardScaler, OneHotEncoder
     from sklearn.linear_model import LogisticRegression
     from sklearn.model_selection import train_test_split, GridSearchCV
 
@@ -73,7 +73,7 @@ together with a simple classification model.
     categorical_features = ['embarked', 'sex', 'pclass']
     categorical_transformer = Pipeline(steps=[
         ('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
-        ('onehot', CategoricalEncoder('onehot-dense', handle_unknown='ignore'))])
+        ('onehot', OneHotEncoder(sparse=False, handle_unknown='ignore'))])
 
     preprocessor = ColumnTransformer(
         transformers=[
@@ -147,7 +147,7 @@ Using the prediction pipeline in a grid search
     best logistic regression from grid search: 0.798
 
 
-**Total running time of the script:** ( 0 minutes  2.509 seconds)
+**Total running time of the script:** ( 0 minutes  2.664 seconds)
 
 
 .. _sphx_glr_download_auto_examples_compose_plot_column_transformer_mixed_types.py:
