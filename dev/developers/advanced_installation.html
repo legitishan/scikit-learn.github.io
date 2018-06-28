@@ -184,30 +184,19 @@
     <p class="citing">Please <b><a href="../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
 <li><a class="reference internal" href="#">Advanced installation instructions</a><ul>
-<li><a class="reference internal" href="#installing-an-official-release">Installing an official release</a><ul>
-<li><a class="reference internal" href="#mac-osx">Mac OSX</a></li>
-<li><a class="reference internal" href="#linux">Linux</a><ul>
-<li><a class="reference internal" href="#installing-build-dependencies">Installing build dependencies</a></li>
-<li><a class="reference internal" href="#building-scikit-learn-with-pip">Building scikit-learn with pip</a></li>
-<li><a class="reference internal" href="#from-source-package">From source package</a></li>
+<li><a class="reference internal" href="#building-from-source">Building from source</a><ul>
+<li><a class="reference internal" href="#retrieving-the-latest-code">Retrieving the latest code</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#installing-build-dependencies">Installing build dependencies</a><ul>
+<li><a class="reference internal" href="#linux">Linux</a></li>
 <li><a class="reference internal" href="#windows">Windows</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#third-party-distributions-of-scikit-learn">Third party distributions of scikit-learn</a><ul>
-<li><a class="reference internal" href="#macports-for-mac-osx">MacPorts for Mac OSX</a></li>
-<li><a class="reference internal" href="#arch-linux">Arch Linux</a></li>
-<li><a class="reference internal" href="#netbsd">NetBSD</a></li>
-<li><a class="reference internal" href="#fedora">Fedora</a></li>
-<li><a class="reference internal" href="#building-on-windows">Building on windows</a></li>
 <li><a class="reference internal" href="#bit-python">32-bit Python</a></li>
 <li><a class="reference internal" href="#id1">64-bit Python</a></li>
 <li><a class="reference internal" href="#building-binary-packages-and-installers">Building binary packages and installers</a></li>
 <li><a class="reference internal" href="#using-an-alternative-compiler">Using an alternative compiler</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#bleeding-edge">Bleeding Edge</a></li>
 <li><a class="reference internal" href="#testing">Testing</a><ul>
 <li><a class="reference internal" href="#testing-scikit-learn-once-installed">Testing scikit-learn once installed</a></li>
 <li><a class="reference internal" href="#testing-scikit-learn-from-within-the-source-folder">Testing scikit-learn from within the source folder</a></li>
@@ -237,17 +226,17 @@
 <p>There are different ways to get scikit-learn installed:</p>
 <blockquote>
 <div><ul class="simple">
+<li><a class="reference internal" href="../install.html#install-official-release"><span class="std std-ref">Install an official release</span></a>. This
+is the best approach for most users. It will provide a stable version
+and pre-build packages are available for most platforms.</li>
 <li>Install the version of scikit-learn provided by your
-<a class="reference internal" href="#install-by-distribution"><span class="std std-ref">operating system or Python distribution</span></a>.
-This is the quickest option for those who have operating systems that
-distribute scikit-learn.</li>
-<li><a class="reference internal" href="#install-official-release"><span class="std std-ref">Install an official release</span></a>. This
-is the best approach for users who want a stable version number
-and aren’t concerned about running a slightly older version of
-scikit-learn.</li>
-<li><a class="reference internal" href="#install-bleeding-edge"><span class="std std-ref">Install the latest development version</span></a>. This is best for users who want the
+<a class="reference internal" href="../other_distributions.html#install-by-distribution"><span class="std std-ref">operating system or Python distribution</span></a>.
+This is a quick option for those who have operating systems
+that distribute scikit-learn. It might not provide the latest release
+version.</li>
+<li><a class="reference internal" href="#install-bleeding-edge"><span class="std std-ref">Building the package from source</span></a>. This is best for users who want the
 latest-and-greatest features and aren’t afraid of running
-brand-new code.</li>
+brand-new code. This document describes how to build from source.</li>
 </ul>
 </div></blockquote>
 <div class="admonition note">
@@ -255,30 +244,68 @@ brand-new code.</li>
 <p class="last">If you wish to contribute to the project, you need to
 <a class="reference internal" href="#install-bleeding-edge"><span class="std std-ref">install the latest development version</span></a>.</p>
 </div>
-<div class="section" id="installing-an-official-release">
-<span id="install-official-release"></span><h2>Installing an official release<a class="headerlink" href="#installing-an-official-release" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="building-from-source">
+<span id="install-bleeding-edge"></span><h2>Building from source<a class="headerlink" href="#building-from-source" title="Permalink to this headline">¶</a></h2>
 <p>Scikit-learn requires:</p>
 <ul class="simple">
 <li>Python (&gt;= 2.7 or &gt;= 3.4),</li>
 <li>NumPy (&gt;= 1.8.2),</li>
 <li>SciPy (&gt;= 0.13.3).</li>
 </ul>
-<div class="section" id="mac-osx">
-<h3>Mac OSX<a class="headerlink" href="#mac-osx" title="Permalink to this headline">¶</a></h3>
-<p>Scikit-learn and its dependencies are all available as wheel packages for OSX:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">numpy</span> <span class="n">scipy</span> <span class="n">scikit</span><span class="o">-</span><span class="n">learn</span>
+<p>Building Scikit-learn also requires</p>
+<ul class="simple">
+<li>Cython &gt;=0.23</li>
+</ul>
+<p>Running tests requires</p>
+<ul class="simple">
+<li>pytest</li>
+</ul>
+<p>Some tests also require <a class="reference external" href="https://pandas.pydata.org">pandas</a>.</p>
+<div class="section" id="retrieving-the-latest-code">
+<span id="git-repo"></span><h3>Retrieving the latest code<a class="headerlink" href="#retrieving-the-latest-code" title="Permalink to this headline">¶</a></h3>
+<p>We use <a class="reference external" href="https://git-scm.com/">Git</a> for version control and
+<a class="reference external" href="https://github.com/">GitHub</a> for hosting our main repository.</p>
+<p>You can check out the latest sources with the command:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">scikit</span><span class="o">-</span><span class="n">learn</span><span class="o">/</span><span class="n">scikit</span><span class="o">-</span><span class="n">learn</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
 </div>
+<p>If you want to build a stable version, you can <code class="docutils literal"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">&lt;VERSION&gt;</span></code>
+to get the code for that particular version, or download an zip archive of
+the version from github.</p>
+<p>If you have all the build requirements installed (see below for details), you
+can build and install the package in the following way.</p>
+<p>If you run the development version, it is cumbersome to reinstall the
+package each time you update the sources. Therefore it’s recommended that you
+install in editable, which allows you to edit the code in-place. This
+builds the extension in place and creates a link to the development directory
+(see <a class="reference external" href="https://pip.pypa.io/en/stable/reference/pip_install/#editable-installs">the pip docs</a>):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">editable</span> <span class="o">.</span>
+</pre></div>
 </div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is fundamentally similar to using the command <code class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">develop</span></code>
+(see <a class="reference external" href="http://setuptools.readthedocs.io/en/latest/setuptools.html#development-mode">the setuptool docs</a>).
+It is however preferred to use pip.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>If you decide to do an editable install you have to rerun:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">editable</span> <span class="o">.</span>
+</pre></div>
+</div>
+<p class="last">every time the source code of a compiled extension is
+changed (for instance when switching branches or pulling changes from upstream).</p>
+</div>
+<p>On Unix-like systems, you can simply type <code class="docutils literal"><span class="pre">make</span></code> in the top-level folder to
+build in-place and launch all the tests. Have a look at the <code class="docutils literal"><span class="pre">Makefile</span></code> for
+additional utilities.</p>
+</div>
+</div>
+<div class="section" id="installing-build-dependencies">
+<h2>Installing build dependencies<a class="headerlink" href="#installing-build-dependencies" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="linux">
 <h3>Linux<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h3>
-<p>At this time scikit-learn does not provide official binary packages for Linux
-so you have to build from source if you want the latest version.
-If you don’t need the newest version, consider using your package manager to
-install scikit-learn. It is usually the easiest way, but might not provide the
-newest version.</p>
-<div class="section" id="installing-build-dependencies">
-<h4>Installing build dependencies<a class="headerlink" href="#installing-build-dependencies" title="Permalink to this headline">¶</a></h4>
 <p>Installing from source requires you to have installed the scikit-learn runtime
 dependencies, Python development headers and a working C/C++ compiler.
 Under Debian-based operating systems, which include Ubuntu, if you have
@@ -337,117 +364,8 @@ of commands. ATLAS has to be removed, otherwise NumPy may not work:</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="building-scikit-learn-with-pip">
-<h4>Building scikit-learn with pip<a class="headerlink" href="#building-scikit-learn-with-pip" title="Permalink to this headline">¶</a></h4>
-<p>This is usually the fastest way to install or upgrade to the latest stable
-release:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">user</span> <span class="o">--</span><span class="n">install</span><span class="o">-</span><span class="n">option</span><span class="o">=</span><span class="s2">&quot;--prefix=&quot;</span> <span class="o">-</span><span class="n">U</span> <span class="n">scikit</span><span class="o">-</span><span class="n">learn</span>
-</pre></div>
-</div>
-<p>The <code class="docutils literal"><span class="pre">--user</span></code> flag asks pip to install scikit-learn in the <code class="docutils literal"><span class="pre">$HOME/.local</span></code>
-folder therefore not requiring root permission. This flag should make pip
-ignore any old version of scikit-learn previously installed on the system while
-benefiting from system packages for numpy and scipy. Those dependencies can
-be long and complex to build correctly from source.</p>
-<p>The <code class="docutils literal"><span class="pre">--install-option=&quot;--prefix=&quot;</span></code> flag is only required if Python has a
-<code class="docutils literal"><span class="pre">distutils.cfg</span></code> configuration with a predefined <code class="docutils literal"><span class="pre">prefix=</span></code> entry.</p>
-</div>
-<div class="section" id="from-source-package">
-<h4>From source package<a class="headerlink" href="#from-source-package" title="Permalink to this headline">¶</a></h4>
-<p>download the source package from
-<a class="reference external" href="https://pypi.python.org/pypi/scikit-learn">pypi</a>, unpack the sources and
-cd into the source directory.</p>
-<p>This packages uses distutils, which is the default way of installing
-python modules. The install command is:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
-</pre></div>
-</div>
-<p>or alternatively (also from within the scikit-learn source folder):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">.</span>
-</pre></div>
-</div>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Packages installed with the <code class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span></code> command cannot
-be uninstalled nor upgraded by <code class="docutils literal"><span class="pre">pip</span></code> later. To properly uninstall
-scikit-learn in that case it is necessary to delete the <code class="docutils literal"><span class="pre">sklearn</span></code> folder
-from your Python <code class="docutils literal"><span class="pre">site-packages</span></code> directory.</p>
-</div>
-</div>
-</div>
 <div class="section" id="windows">
 <h3>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h3>
-<p>First, you need to install <a class="reference external" href="http://www.numpy.org/">numpy</a> and <a class="reference external" href="http://www.scipy.org/">scipy</a> from their own official installers.</p>
-<p>Wheel packages (.whl files) for scikit-learn from <a class="reference external" href="https://pypi.python.org/pypi/scikit-learn/">pypi</a> can be installed with the <a class="reference external" href="https://pip.readthedocs.io/en/stable/installing/">pip</a> utility.
-Open a console and type the following to install or upgrade scikit-learn to the
-latest stable release:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">scikit</span><span class="o">-</span><span class="n">learn</span>
-</pre></div>
-</div>
-<p>If there are no binary packages matching your python, version you might
-to try to install scikit-learn and its dependencies from <a class="reference external" href="https://www.lfd.uci.edu/~gohlke/pythonlibs/#scikit-learn">christoph gohlke
-unofficial windows installers</a>
-or from a <a class="reference internal" href="#install-by-distribution"><span class="std std-ref">python distribution</span></a> instead.</p>
-</div>
-</div>
-<div class="section" id="third-party-distributions-of-scikit-learn">
-<span id="install-by-distribution"></span><h2>Third party distributions of scikit-learn<a class="headerlink" href="#third-party-distributions-of-scikit-learn" title="Permalink to this headline">¶</a></h2>
-<p>Some third-party distributions are now providing versions of
-scikit-learn integrated with their package-management systems.</p>
-<p>These can make installation and upgrading much easier for users since
-the integration includes the ability to automatically install
-dependencies (numpy, scipy) that scikit-learn requires.</p>
-<p>The following is an incomplete list of python and os distributions
-that provide their own version of scikit-learn.</p>
-<div class="section" id="macports-for-mac-osx">
-<h3>MacPorts for Mac OSX<a class="headerlink" href="#macports-for-mac-osx" title="Permalink to this headline">¶</a></h3>
-<p>The MacPorts package is named <code class="docutils literal"><span class="pre">py&lt;XY&gt;-scikits-learn</span></code>,
-where <code class="docutils literal"><span class="pre">XY</span></code> denotes the Python version.
-It can be installed by typing the following
-command:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">port</span> <span class="n">install</span> <span class="n">py26</span><span class="o">-</span><span class="n">scikit</span><span class="o">-</span><span class="n">learn</span>
-</pre></div>
-</div>
-<p>or:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">port</span> <span class="n">install</span> <span class="n">py27</span><span class="o">-</span><span class="n">scikit</span><span class="o">-</span><span class="n">learn</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="arch-linux">
-<h3>Arch Linux<a class="headerlink" href="#arch-linux" title="Permalink to this headline">¶</a></h3>
-<p>Arch Linux’s package is provided through the <a class="reference external" href="https://www.archlinux.org/packages/?q=scikit-learn">official repositories</a> as
-<code class="docutils literal"><span class="pre">python-scikit-learn</span></code> for Python 3 and <code class="docutils literal"><span class="pre">python2-scikit-learn</span></code> for Python 2.
-It can be installed by typing the following command:</p>
-<div class="highlight-none"><div class="highlight"><pre><span></span># pacman -S python-scikit-learn
-</pre></div>
-</div>
-<p>or:</p>
-<div class="highlight-none"><div class="highlight"><pre><span></span># pacman -S python2-scikit-learn
-</pre></div>
-</div>
-<p>depending on the version of Python you use.</p>
-</div>
-<div class="section" id="netbsd">
-<h3>NetBSD<a class="headerlink" href="#netbsd" title="Permalink to this headline">¶</a></h3>
-<p>scikit-learn is available via <a class="reference external" href="http://pkgsrc-wip.sourceforge.net/">pkgsrc-wip</a>:</p>
-<blockquote>
-<div><a class="reference external" href="http://pkgsrc.se/wip/py-scikit_learn">http://pkgsrc.se/wip/py-scikit_learn</a></div></blockquote>
-</div>
-<div class="section" id="fedora">
-<h3>Fedora<a class="headerlink" href="#fedora" title="Permalink to this headline">¶</a></h3>
-<p>The Fedora package is called <code class="docutils literal"><span class="pre">python-scikit-learn</span></code> for the Python 2 version
-and <code class="docutils literal"><span class="pre">python3-scikit-learn</span></code> for the Python 3 version. Both versions can
-be installed using <code class="docutils literal"><span class="pre">yum</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ sudo yum install python-scikit-learn
-</pre></div>
-</div>
-<p>or:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ sudo yum install python3-scikit-learn
-</pre></div>
-</div>
-</div>
-<div class="section" id="building-on-windows">
-<h3>Building on windows<a class="headerlink" href="#building-on-windows" title="Permalink to this headline">¶</a></h3>
 <p>To build scikit-learn on Windows you need a working C/C++ compiler in
 addition to numpy, scipy and setuptools.</p>
 <p>Picking the right compiler depends on the version of Python (2 or 3)
@@ -534,18 +452,13 @@ build step:</p>
 <p>where <code class="docutils literal"><span class="pre">my_compiler</span></code> should be one of <code class="docutils literal"><span class="pre">mingw32</span></code> or <code class="docutils literal"><span class="pre">msvc</span></code>.</p>
 </div>
 </div>
-<div class="section" id="bleeding-edge">
-<span id="install-bleeding-edge"></span><h2>Bleeding Edge<a class="headerlink" href="#bleeding-edge" title="Permalink to this headline">¶</a></h2>
-<p>See section <a class="reference internal" href="contributing.html#git-repo"><span class="std std-ref">Retrieving the latest code</span></a> on how to get the development version. Then follow
-the previous instructions to build from source depending on your platform.
-You will also require Cython &gt;=0.23 in order to build the development version.</p>
-</div>
 <div class="section" id="testing">
 <span id="id2"></span><h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="testing-scikit-learn-once-installed">
 <h3>Testing scikit-learn once installed<a class="headerlink" href="#testing-scikit-learn-once-installed" title="Permalink to this headline">¶</a></h3>
-<p>Testing requires having the <a class="reference external" href="https://docs.pytest.org">pytest</a> library. After
-installation, the package can be tested by executing <em>from outside</em> the
+<p>Testing requires having the <a class="reference external" href="https://docs.pytest.org">pytest</a> library. Some tests also require having
+<cite>pandas &lt;https://pandas.pydata.org/&gt;</cite> installed.
+After installation, the package can be tested by executing <em>from outside</em> the
 source directory:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>$ pytest sklearn
 </pre></div>
@@ -555,7 +468,7 @@ eventually should finish with a message similar to:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">===========</span> <span class="mi">8304</span> <span class="n">passed</span><span class="p">,</span> <span class="mi">26</span> <span class="n">skipped</span><span class="p">,</span> <span class="mi">4659</span> <span class="n">warnings</span> <span class="ow">in</span> <span class="mf">557.76</span> <span class="n">seconds</span> <span class="o">===========</span>
 </pre></div>
 </div>
-<p>Otherwise, please consider posting an issue into the <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues">bug tracker</a> or to the
+<p>Otherwise, please consider posting an issue into the <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues">GitHub issue tracker</a> or to the
 <a class="reference internal" href="../support.html#mailing-lists"><span class="std std-ref">Mailing List</span></a> including the traceback of the individual failures
 and errors. Please include your operating system, your version of NumPy, SciPy
 and scikit-learn, and how you installed scikit-learn.</p>
