@@ -274,7 +274,7 @@ of squares between the observed responses in the dataset, and the
 responses predicted by the linear approximation. Mathematically it
 solves a problem of the form:</p>
 <div class="math">
-\[\underset{w}{\min\,} {|| X w - y||_2}^2\]</div>
+\[\min_{w} {|| X w - y||_2}^2\]</div>
 <div class="figure align-center">
 <a class="reference external image-reference" href="../auto_examples/linear_model/plot_ols.html"><img alt="../_images/sphx_glr_plot_ols_0011.png" src="../_images/sphx_glr_plot_ols_0011.png" style="width: 320.0px; height: 240.0px;" /></a>
 </div>
@@ -317,7 +317,7 @@ cost of <span class="math">\(O(n p^2)\)</span>, assuming that <span class="math"
 coefficients. The ridge coefficients minimize a penalized residual sum
 of squares,</p>
 <div class="math">
-\[\underset{w}{\min\,} {{|| X w - y||_2}^2 + \alpha {||w||_2}^2}\]</div>
+\[\min_{w} {{|| X w - y||_2}^2 + \alpha {||w||_2}^2}\]</div>
 <p>Here, <span class="math">\(\alpha \geq 0\)</span> is a complexity parameter that controls the amount
 of shrinkage: the larger the value of <span class="math">\(\alpha\)</span>, the greater the amount
 of shrinkage and thus the coefficients become more robust to collinearity.</p>
@@ -387,7 +387,7 @@ weights (see
 <p>Mathematically, it consists of a linear model trained with <span class="math">\(\ell_1\)</span> prior
 as regularizer. The objective function to minimize is:</p>
 <div class="math">
-\[\underset{w}{\min\,} { \frac{1}{2n_{samples}} ||X w - y||_2 ^ 2 + \alpha ||w||_1}\]</div>
+\[\min_{w} { \frac{1}{2n_{samples}} ||X w - y||_2 ^ 2 + \alpha ||w||_1}\]</div>
 <p>The lasso estimate thus solves the minimization of the
 least-squares penalty with <span class="math">\(\alpha ||w||_1\)</span> added, where
 <span class="math">\(\alpha\)</span> is a constant and <span class="math">\(||w||_1\)</span> is the <span class="math">\(\ell_1\)</span>-norm of
@@ -505,7 +505,7 @@ columns.</p>
 <span class="math">\(\ell_1\)</span> <span class="math">\(\ell_2\)</span> prior as regularizer.
 The objective function to minimize is:</p>
 <div class="math">
-\[\underset{w}{\min\,} { \frac{1}{2n_{samples}} ||X W - Y||_{Fro} ^ 2 + \alpha ||W||_{21}}\]</div>
+\[\min_{w} { \frac{1}{2n_{samples}} ||X W - Y||_{Fro} ^ 2 + \alpha ||W||_{21}}\]</div>
 <p>where <span class="math">\(Fro\)</span> indicates the Frobenius norm:</p>
 <div class="math">
 \[||A||_{Fro} = \sqrt{\sum_{ij} a_{ij}^2}\]</div>
@@ -529,7 +529,7 @@ at random, while elastic-net is likely to pick both.</p>
 Elastic-Net to inherit some of Ridge’s stability under rotation.</p>
 <p>The objective function to minimize is in this case</p>
 <div class="math">
-\[\underset{w}{\min\,} { \frac{1}{2n_{samples}} ||X w - y||_2 ^ 2 + \alpha \rho ||w||_1 +
+\[\min_{w} { \frac{1}{2n_{samples}} ||X w - y||_2 ^ 2 + \alpha \rho ||w||_1 +
 \frac{\alpha(1-\rho)}{2} ||w||_2 ^ 2}\]</div>
 <div class="figure align-center">
 <a class="reference external image-reference" href="../auto_examples/linear_model/plot_lasso_coordinate_descent_path.html"><img alt="../_images/sphx_glr_plot_lasso_coordinate_descent_path_0011.png" src="../_images/sphx_glr_plot_lasso_coordinate_descent_path_0011.png" style="width: 320.0px; height: 240.0px;" /></a>
@@ -568,7 +568,7 @@ features are the same for all the regression problems, also called tasks.</p>
 <span class="math">\(\ell_1\)</span> <span class="math">\(\ell_2\)</span> prior and <span class="math">\(\ell_2\)</span> prior as regularizer.
 The objective function to minimize is:</p>
 <div class="math">
-\[\underset{W}{\min\,} { \frac{1}{2n_{samples}} ||X W - Y||_{Fro}^2 + \alpha \rho ||W||_{2 1} +
+\[\min_{W} { \frac{1}{2n_{samples}} ||X W - Y||_{Fro}^2 + \alpha \rho ||W||_{2 1} +
 \frac{\alpha(1-\rho)}{2} ||W||_{Fro}^2}\]</div>
 <p>The implementation in the class <a class="reference internal" href="generated/sklearn.linear_model.MultiTaskElasticNet.html#sklearn.linear_model.MultiTaskElasticNet" title="sklearn.linear_model.MultiTaskElasticNet"><code class="xref py py-class docutils literal"><span class="pre">MultiTaskElasticNet</span></code></a> uses coordinate descent as
 the algorithm to fit the coefficients.</p>
@@ -672,13 +672,11 @@ on the number of non-zero coefficients (ie. the L <sub>0</sub> pseudo-norm).</p>
 orthogonal matching pursuit can approximate the optimum solution vector with a
 fixed number of non-zero elements:</p>
 <div class="math">
-\[\text{arg\,min\,} ||y - X\gamma||_2^2 \text{ subject to } \
-||\gamma||_0 \leq n_{nonzero\_coefs}\]</div>
+\[\underset{\gamma}{\operatorname{arg\,min\,}}  ||y - X\gamma||_2^2 \text{ subject to } ||\gamma||_0 \leq n_{nonzero\_coefs}\]</div>
 <p>Alternatively, orthogonal matching pursuit can target a specific error instead
 of a specific number of non-zero coefficients. This can be expressed as:</p>
 <div class="math">
-\[\text{arg\,min\,} ||\gamma||_0 \text{ subject to } ||y-X\gamma||_2^2 \
-\leq \text{tol}\]</div>
+\[\underset{\gamma}{\operatorname{arg\,min\,}} ||\gamma||_0 \text{ subject to } ||y-X\gamma||_2^2 \leq \text{tol}\]</div>
 <p>OMP is based on a greedy algorithm that includes at each step the atom most
 highly correlated with the current residual. It is similar to the simpler
 matching pursuit (MP) method, but better in that at each iteration, the
@@ -747,7 +745,7 @@ regression problem as described above.
 The prior for the parameter <span class="math">\(w\)</span> is given by a spherical Gaussian:</p>
 <div class="math">
 \[p(w|\lambda) =
-\mathcal{N}(w|0,\lambda^{-1}\bold{I_{p}})\]</div>
+\mathcal{N}(w|0,\lambda^{-1}\mathbf{I}_{p})\]</div>
 <p>The priors over <span class="math">\(\alpha\)</span> and <span class="math">\(\lambda\)</span> are chosen to be <a class="reference external" href="https://en.wikipedia.org/wiki/Gamma_distribution">gamma
 distributions</a>, the
 conjugate prior for the precision of the Gaussian.</p>
@@ -870,11 +868,11 @@ regularization.</p>
 <p>As an optimization problem, binary class L2 penalized logistic regression
 minimizes the following cost function:</p>
 <div class="math">
-\[\underset{w, c}{\min\,} \frac{1}{2}w^T w + C \sum_{i=1}^n \log(\exp(- y_i (X_i^T w + c)) + 1) .\]</div>
+\[\min_{w, c} \frac{1}{2}w^T w + C \sum_{i=1}^n \log(\exp(- y_i (X_i^T w + c)) + 1) .\]</div>
 <p>Similarly, L1 regularized logistic regression solves the following
 optimization problem</p>
 <div class="math">
-\[\underset{w, c}{\min\,} \|w\|_1 + C \sum_{i=1}^n \log(\exp(- y_i (X_i^T w + c)) + 1).\]</div>
+\[\min_{w, c} \|w\|_1 + C \sum_{i=1}^n \log(\exp(- y_i (X_i^T w + c)) + 1).\]</div>
 <p>Note that, in this notation, it’s assumed that the observation <span class="math">\(y_i\)</span> takes values in the set
 <span class="math">\({-1, 1}\)</span> at trial <span class="math">\(i\)</span>.</p>
 <p>The solvers implemented in the class <a class="reference internal" href="generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="sklearn.linear_model.LogisticRegression"><code class="xref py py-class docutils literal"><span class="pre">LogisticRegression</span></code></a>
@@ -1269,7 +1267,7 @@ but gives a lesser weight to them.</p>
 </div>
 <p>The loss function that <a class="reference internal" href="generated/sklearn.linear_model.HuberRegressor.html#sklearn.linear_model.HuberRegressor" title="sklearn.linear_model.HuberRegressor"><code class="xref py py-class docutils literal"><span class="pre">HuberRegressor</span></code></a> minimizes is given by</p>
 <div class="math">
-\[\underset{w, \sigma}{\min\,} {\sum_{i=1}^n\left(\sigma + H_{\epsilon}\left(\frac{X_{i}w - y_{i}}{\sigma}\right)\sigma\right) + \alpha {||w||_2}^2}\]</div>
+\[\min_{w, \sigma} {\sum_{i=1}^n\left(\sigma + H_{\epsilon}\left(\frac{X_{i}w - y_{i}}{\sigma}\right)\sigma\right) + \alpha {||w||_2}^2}\]</div>
 <p>where</p>
 <div class="math">
 \[\begin{split}H_{\epsilon}(z) = \begin{cases}
