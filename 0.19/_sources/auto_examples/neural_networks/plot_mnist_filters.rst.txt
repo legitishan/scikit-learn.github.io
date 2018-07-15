@@ -35,18 +35,17 @@ smoother spatial appearance.
 
  Out::
 
-    Iteration 1, loss = 0.32212731
-    Iteration 2, loss = 0.15738787
-    Iteration 3, loss = 0.11647274
-    Iteration 4, loss = 0.09631113
-    Iteration 5, loss = 0.08074513
-    Iteration 6, loss = 0.07163224
-    Iteration 7, loss = 0.06351392
-    Iteration 8, loss = 0.05694146
-    Iteration 9, loss = 0.05213487
-    Iteration 10, loss = 0.04708320
-    Training set score: 0.985733
-    Test set score: 0.971000
+    ________________________________________________________________________________
+    [Memory] Calling __main__--home-ubuntu-scikit-learn-examples-neural_networks-<string>.fetch_mnist...
+    fetch_mnist()
+    _____________________________________________________fetch_mnist - 41.6s, 0.7min
+    Iteration 1, loss = 88770.19492622
+    Iteration 2, loss = 94144.72785948
+    Iteration 3, loss = 94116.48942606
+    Iteration 4, loss = 94088.25915097
+    Training loss did not improve more than tol=0.000100 for two consecutive epochs. Stopping.
+    Training set score: 0.112367
+    Test set score: 0.113500
 
 
 
@@ -56,15 +55,33 @@ smoother spatial appearance.
 
 .. code-block:: python
 
+    import io
+    from scipy.io.arff import loadarff
+    import matplotlib.pyplot as plt
+    from sklearn.datasets import get_data_home
+    from sklearn.externals.joblib import Memory
+    from sklearn.neural_network import MLPClassifier
+    try:
+        from urllib.request import urlopen
+    except ImportError:
+        # Python 2
+        from urllib2 import urlopen
+
     print(__doc__)
 
-    import matplotlib.pyplot as plt
-    from sklearn.datasets import fetch_mldata
-    from sklearn.neural_network import MLPClassifier
+    memory = Memory(get_data_home())
 
-    mnist = fetch_mldata("MNIST original")
+
+    @memory.cache()
+    def fetch_mnist():
+        content = urlopen(
+            'https://www.openml.org/data/download/52667/mnist_784.arff').read()
+        data, meta = loadarff(io.StringIO(content.decode('utf8')))
+        data = data.view([('pixels', '<f8', 784), ('class', '|S1')])
+        return data['pixels'], data['class']
+
+    X, y = fetch_mnist()
     # rescale the data, use the traditional train/test split
-    X, y = mnist.data / 255., mnist.target
     X_train, X_test = X[:60000], X[60000:]
     y_train, y_test = y[:60000], y[60000:]
 
@@ -89,7 +106,7 @@ smoother spatial appearance.
 
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  13.387 seconds)
+**Total running time of the script:** ( 0 minutes  51.334 seconds)
 
 
 

@@ -31,9 +31,13 @@ multi-layer perceptron model on this dataset.
 
  Out::
 
-    Sparsity with L1 penalty: 82.72%
-    Test score with L1 penalty: 0.8320
-    Example run in 2.741 s
+    ________________________________________________________________________________
+    [Memory] Calling __main__--home-ubuntu-scikit-learn-examples-linear_model-<string>.fetch_mnist...
+    fetch_mnist()
+    _____________________________________________________fetch_mnist - 37.1s, 0.6min
+    Sparsity with L1 penalty: 80.84%
+    Test score with L1 penalty: 0.8381
+    Example run in 41.065 s
 
 
 
@@ -44,14 +48,22 @@ multi-layer perceptron model on this dataset.
 .. code-block:: python
 
     import time
+    import io
     import matplotlib.pyplot as plt
     import numpy as np
+    from scipy.io.arff import loadarff
 
-    from sklearn.datasets import fetch_mldata
+    from sklearn.datasets import get_data_home
+    from sklearn.externals.joblib import Memory
     from sklearn.linear_model import LogisticRegression
     from sklearn.model_selection import train_test_split
     from sklearn.preprocessing import StandardScaler
     from sklearn.utils import check_random_state
+    try:
+        from urllib.request import urlopen
+    except ImportError:
+        # Python 2
+        from urllib2 import urlopen
 
     print(__doc__)
 
@@ -62,9 +74,19 @@ multi-layer perceptron model on this dataset.
     t0 = time.time()
     train_samples = 5000
 
-    mnist = fetch_mldata('MNIST original')
-    X = mnist.data.astype('float64')
-    y = mnist.target
+    memory = Memory(get_data_home())
+
+
+    @memory.cache()
+    def fetch_mnist():
+        content = urlopen(
+            'https://www.openml.org/data/download/52667/mnist_784.arff').read()
+        data, meta = loadarff(io.StringIO(content.decode('utf8')))
+        data = data.view([('pixels', '<f8', 784), ('class', '|S1')])
+        return data['pixels'], data['class']
+
+    X, y = fetch_mnist()
+
     random_state = check_random_state(0)
     permutation = random_state.permutation(X.shape[0])
     X = X[permutation]
@@ -105,7 +127,7 @@ multi-layer perceptron model on this dataset.
     print('Example run in %.3f s' % run_time)
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  2.741 seconds)
+**Total running time of the script:** ( 0 minutes  41.069 seconds)
 
 
 
