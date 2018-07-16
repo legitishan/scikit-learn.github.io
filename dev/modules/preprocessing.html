@@ -197,11 +197,12 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#normalization">4.3.3. Normalization</a></li>
-<li><a class="reference internal" href="#binarization">4.3.4. Binarization</a><ul>
-<li><a class="reference internal" href="#feature-binarization">4.3.4.1. Feature binarization</a></li>
+<li><a class="reference internal" href="#encoding-categorical-features">4.3.4. Encoding categorical features</a></li>
+<li><a class="reference internal" href="#discretization">4.3.5. Discretization</a><ul>
+<li><a class="reference internal" href="#k-bins-discretization">4.3.5.1. K-bins discretization</a></li>
+<li><a class="reference internal" href="#feature-binarization">4.3.5.2. Feature binarization</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#encoding-categorical-features">4.3.5. Encoding categorical features</a></li>
 <li><a class="reference internal" href="#imputation-of-missing-values">4.3.6. Imputation of missing values</a></li>
 <li><a class="reference internal" href="#generating-polynomial-features">4.3.7. Generating polynomial features</a></li>
 <li><a class="reference internal" href="#custom-transformers">4.3.8. Custom transformers</a></li>
@@ -596,61 +597,8 @@ efficient Cython routines. To avoid unnecessary memory copies, it is
 recommended to choose the CSR representation upstream.</p>
 </div>
 </div>
-<div class="section" id="binarization">
-<span id="preprocessing-binarization"></span><h2>4.3.4. Binarization<a class="headerlink" href="#binarization" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="feature-binarization">
-<h3>4.3.4.1. Feature binarization<a class="headerlink" href="#feature-binarization" title="Permalink to this headline">¶</a></h3>
-<p><strong>Feature binarization</strong> is the process of <strong>thresholding numerical
-features to get boolean values</strong>. This can be useful for downstream
-probabilistic estimators that make assumption that the input data
-is distributed according to a multi-variate <a class="reference external" href="https://en.wikipedia.org/wiki/Bernoulli_distribution">Bernoulli distribution</a>. For instance,
-this is the case for the <a class="reference internal" href="generated/sklearn.neural_network.BernoulliRBM.html#sklearn.neural_network.BernoulliRBM" title="sklearn.neural_network.BernoulliRBM"><code class="xref py py-class docutils literal"><span class="pre">sklearn.neural_network.BernoulliRBM</span></code></a>.</p>
-<p>It is also common among the text processing community to use binary
-feature values (probably to simplify the probabilistic reasoning) even
-if normalized counts (a.k.a. term frequencies) or TF-IDF valued features
-often perform slightly better in practice.</p>
-<p>As for the <a class="reference internal" href="generated/sklearn.preprocessing.Normalizer.html#sklearn.preprocessing.Normalizer" title="sklearn.preprocessing.Normalizer"><code class="xref py py-class docutils literal"><span class="pre">Normalizer</span></code></a>, the utility class
-<a class="reference internal" href="generated/sklearn.preprocessing.Binarizer.html#sklearn.preprocessing.Binarizer" title="sklearn.preprocessing.Binarizer"><code class="xref py py-class docutils literal"><span class="pre">Binarizer</span></code></a> is meant to be used in the early stages of
-<a class="reference internal" href="generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal"><span class="pre">sklearn.pipeline.Pipeline</span></code></a>. The <code class="docutils literal"><span class="pre">fit</span></code> method does nothing
-as each sample is treated independently of others:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="p">[[</span> <span class="mf">1.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span>  <span class="mf">2.</span><span class="p">],</span>
-<span class="gp">... </span>     <span class="p">[</span> <span class="mf">2.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">],</span>
-<span class="gp">... </span>     <span class="p">[</span> <span class="mf">0.</span><span class="p">,</span>  <span class="mf">1.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">]]</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="n">binarizer</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">Binarizer</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>  <span class="c1"># fit does nothing</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">binarizer</span>
-<span class="go">Binarizer(copy=True, threshold=0.0)</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="n">binarizer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-<span class="go">array([[1., 0., 1.],</span>
-<span class="go">       [1., 0., 0.],</span>
-<span class="go">       [0., 1., 0.]])</span>
-</pre></div>
-</div>
-<p>It is possible to adjust the threshold of the binarizer:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">binarizer</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">Binarizer</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mf">1.1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">binarizer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-<span class="go">array([[0., 0., 1.],</span>
-<span class="go">       [1., 0., 0.],</span>
-<span class="go">       [0., 0., 0.]])</span>
-</pre></div>
-</div>
-<p>As for the <a class="reference internal" href="generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler" title="sklearn.preprocessing.StandardScaler"><code class="xref py py-class docutils literal"><span class="pre">StandardScaler</span></code></a> and <a class="reference internal" href="generated/sklearn.preprocessing.Normalizer.html#sklearn.preprocessing.Normalizer" title="sklearn.preprocessing.Normalizer"><code class="xref py py-class docutils literal"><span class="pre">Normalizer</span></code></a> classes, the
-preprocessing module provides a companion function <a class="reference internal" href="generated/sklearn.preprocessing.binarize.html#sklearn.preprocessing.binarize" title="sklearn.preprocessing.binarize"><code class="xref py py-func docutils literal"><span class="pre">binarize</span></code></a>
-to be used when the transformer API is not necessary.</p>
-<div class="topic">
-<p class="topic-title first">Sparse input</p>
-<p><a class="reference internal" href="generated/sklearn.preprocessing.binarize.html#sklearn.preprocessing.binarize" title="sklearn.preprocessing.binarize"><code class="xref py py-func docutils literal"><span class="pre">binarize</span></code></a> and <a class="reference internal" href="generated/sklearn.preprocessing.Binarizer.html#sklearn.preprocessing.Binarizer" title="sklearn.preprocessing.Binarizer"><code class="xref py py-class docutils literal"><span class="pre">Binarizer</span></code></a> accept <strong>both dense array-like
-and sparse matrices from scipy.sparse as input</strong>.</p>
-<p>For sparse input the data is <strong>converted to the Compressed Sparse Rows
-representation</strong> (see <code class="docutils literal"><span class="pre">scipy.sparse.csr_matrix</span></code>).
-To avoid unnecessary memory copies, it is recommended to choose the CSR
-representation upstream.</p>
-</div>
-</div>
-</div>
 <div class="section" id="encoding-categorical-features">
-<span id="preprocessing-categorical-features"></span><h2>4.3.5. Encoding categorical features<a class="headerlink" href="#encoding-categorical-features" title="Permalink to this headline">¶</a></h2>
+<span id="preprocessing-categorical-features"></span><h2>4.3.4. Encoding categorical features<a class="headerlink" href="#encoding-categorical-features" title="Permalink to this headline">¶</a></h2>
 <p>Often features are not given as continuous values but categorical.
 For example a person could have features <code class="docutils literal"><span class="pre">[&quot;male&quot;,</span> <span class="pre">&quot;female&quot;]</span></code>,
 <code class="docutils literal"><span class="pre">[&quot;from</span> <span class="pre">Europe&quot;,</span> <span class="pre">&quot;from</span> <span class="pre">US&quot;,</span> <span class="pre">&quot;from</span> <span class="pre">Asia&quot;]</span></code>,
@@ -738,6 +686,114 @@ columns for this feature will be all zeros
 </div>
 <p>See <a class="reference internal" href="feature_extraction.html#dict-feature-extraction"><span class="std std-ref">Loading features from dicts</span></a> for categorical features that are represented
 as a dict, not as scalars.</p>
+</div>
+<div class="section" id="discretization">
+<span id="preprocessing-discretization"></span><h2>4.3.5. Discretization<a class="headerlink" href="#discretization" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Discretization_of_continuous_features">Discretization</a>
+(otherwise known as quantization or binning) provides a way to partition continuous
+features into discrete values. Certain datasets with continuous features
+may benefit from discretization, because discretization can transform the dataset
+of continuous attributes to one with only nominal attributes.</p>
+<div class="section" id="k-bins-discretization">
+<h3>4.3.5.1. K-bins discretization<a class="headerlink" href="#k-bins-discretization" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="generated/sklearn.preprocessing.KBinsDiscretizer.html#sklearn.preprocessing.KBinsDiscretizer" title="sklearn.preprocessing.KBinsDiscretizer"><code class="xref py py-class docutils literal"><span class="pre">KBinsDiscretizer</span></code></a> discretizers features into <code class="docutils literal"><span class="pre">k</span></code> equal width bins:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="o">-</span><span class="mf">3.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mi">15</span> <span class="p">],</span>
+<span class="gp">... </span>              <span class="p">[</span>  <span class="mf">0.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">,</span> <span class="mi">14</span> <span class="p">],</span>
+<span class="gp">... </span>              <span class="p">[</span>  <span class="mf">6.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mi">11</span> <span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">est</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">KBinsDiscretizer</span><span class="p">(</span><span class="n">n_bins</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">encode</span><span class="o">=</span><span class="s1">&#39;ordinal&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>By default the output is one-hot encoded into a sparse matrix
+(See <a class="reference internal" href="#preprocessing-categorical-features"><span class="std std-ref">Encoding categorical features</span></a>)
+and this can be configured with the <code class="docutils literal"><span class="pre">encode</span></code> parameter.
+For each feature, the bin edges are computed during <code class="docutils literal"><span class="pre">fit</span></code> and together with
+the number of bins, they will define the intervals. Therefore, for the current
+example, these intervals are defined as:</p>
+<blockquote>
+<div><ul class="simple">
+<li>feature 1: <span class="math">\({[-\infty, -1), [-1, 2), [2, \infty)}\)</span></li>
+<li>feature 2: <span class="math">\({[-\infty, 5), [5, \infty)}\)</span></li>
+<li>feature 3: <span class="math">\({[-\infty, 14), [14, \infty)}\)</span></li>
+</ul>
+<p>Based on these bin intervals, <code class="docutils literal"><span class="pre">X</span></code> is transformed as follows:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">est</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>                      
+<span class="go">array([[ 0., 1., 1.],</span>
+<span class="go">       [ 1., 1., 1.],</span>
+<span class="go">       [ 2., 0., 0.]])</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The resulting dataset contains ordinal attributes which can be further used
+in a <a class="reference internal" href="generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal"><span class="pre">sklearn.pipeline.Pipeline</span></code></a>.</p>
+<p>Discretization is similar to constructing histograms for continuous data.
+However, histograms focus on counting features which fall into particular
+bins, whereas discretization focuses on assigning feature values to these bins.</p>
+<p><a class="reference internal" href="generated/sklearn.preprocessing.KBinsDiscretizer.html#sklearn.preprocessing.KBinsDiscretizer" title="sklearn.preprocessing.KBinsDiscretizer"><code class="xref py py-class docutils literal"><span class="pre">KBinsDiscretizer</span></code></a> implements different binning strategies, which can be
+selected with the <code class="docutils literal"><span class="pre">strategy</span></code> parameter. The ‘uniform’ strategy uses
+constant-width bins. The ‘quantile’ strategy uses the quantiles values to have
+equally populated bins in each feature. The ‘kmeans’ strategy defines bins based
+on a k-means clustering procedure performed on each feature independently.</p>
+<div class="topic">
+<p class="topic-title first">Examples:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../auto_examples/preprocessing/plot_discretization.html#sphx-glr-auto-examples-preprocessing-plot-discretization-py"><span class="std std-ref">Using KBinsDiscretizer to discretize continuous features</span></a></li>
+<li><a class="reference internal" href="../auto_examples/preprocessing/plot_discretization_classification.html#sphx-glr-auto-examples-preprocessing-plot-discretization-classification-py"><span class="std std-ref">Feature discretization</span></a></li>
+<li><a class="reference internal" href="../auto_examples/preprocessing/plot_discretization_strategies.html#sphx-glr-auto-examples-preprocessing-plot-discretization-strategies-py"><span class="std std-ref">Demonstrating the different strategies of KBinsDiscretizer</span></a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="feature-binarization">
+<span id="preprocessing-binarization"></span><h3>4.3.5.2. Feature binarization<a class="headerlink" href="#feature-binarization" title="Permalink to this headline">¶</a></h3>
+<p><strong>Feature binarization</strong> is the process of <strong>thresholding numerical
+features to get boolean values</strong>. This can be useful for downstream
+probabilistic estimators that make assumption that the input data
+is distributed according to a multi-variate <a class="reference external" href="https://en.wikipedia.org/wiki/Bernoulli_distribution">Bernoulli distribution</a>. For instance,
+this is the case for the <a class="reference internal" href="generated/sklearn.neural_network.BernoulliRBM.html#sklearn.neural_network.BernoulliRBM" title="sklearn.neural_network.BernoulliRBM"><code class="xref py py-class docutils literal"><span class="pre">sklearn.neural_network.BernoulliRBM</span></code></a>.</p>
+<p>It is also common among the text processing community to use binary
+feature values (probably to simplify the probabilistic reasoning) even
+if normalized counts (a.k.a. term frequencies) or TF-IDF valued features
+often perform slightly better in practice.</p>
+<p>As for the <a class="reference internal" href="generated/sklearn.preprocessing.Normalizer.html#sklearn.preprocessing.Normalizer" title="sklearn.preprocessing.Normalizer"><code class="xref py py-class docutils literal"><span class="pre">Normalizer</span></code></a>, the utility class
+<a class="reference internal" href="generated/sklearn.preprocessing.Binarizer.html#sklearn.preprocessing.Binarizer" title="sklearn.preprocessing.Binarizer"><code class="xref py py-class docutils literal"><span class="pre">Binarizer</span></code></a> is meant to be used in the early stages of
+<a class="reference internal" href="generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal"><span class="pre">sklearn.pipeline.Pipeline</span></code></a>. The <code class="docutils literal"><span class="pre">fit</span></code> method does nothing
+as each sample is treated independently of others:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="p">[[</span> <span class="mf">1.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span>  <span class="mf">2.</span><span class="p">],</span>
+<span class="gp">... </span>     <span class="p">[</span> <span class="mf">2.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">],</span>
+<span class="gp">... </span>     <span class="p">[</span> <span class="mf">0.</span><span class="p">,</span>  <span class="mf">1.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">]]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">binarizer</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">Binarizer</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>  <span class="c1"># fit does nothing</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">binarizer</span>
+<span class="go">Binarizer(copy=True, threshold=0.0)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">binarizer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="go">array([[1., 0., 1.],</span>
+<span class="go">       [1., 0., 0.],</span>
+<span class="go">       [0., 1., 0.]])</span>
+</pre></div>
+</div>
+<p>It is possible to adjust the threshold of the binarizer:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">binarizer</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">Binarizer</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mf">1.1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">binarizer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="go">array([[0., 0., 1.],</span>
+<span class="go">       [1., 0., 0.],</span>
+<span class="go">       [0., 0., 0.]])</span>
+</pre></div>
+</div>
+<p>As for the <a class="reference internal" href="generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler" title="sklearn.preprocessing.StandardScaler"><code class="xref py py-class docutils literal"><span class="pre">StandardScaler</span></code></a> and <a class="reference internal" href="generated/sklearn.preprocessing.Normalizer.html#sklearn.preprocessing.Normalizer" title="sklearn.preprocessing.Normalizer"><code class="xref py py-class docutils literal"><span class="pre">Normalizer</span></code></a> classes, the
+preprocessing module provides a companion function <a class="reference internal" href="generated/sklearn.preprocessing.binarize.html#sklearn.preprocessing.binarize" title="sklearn.preprocessing.binarize"><code class="xref py py-func docutils literal"><span class="pre">binarize</span></code></a>
+to be used when the transformer API is not necessary.</p>
+<p>Note that the <a class="reference internal" href="generated/sklearn.preprocessing.Binarizer.html#sklearn.preprocessing.Binarizer" title="sklearn.preprocessing.Binarizer"><code class="xref py py-class docutils literal"><span class="pre">Binarizer</span></code></a> is similar to the <a class="reference internal" href="generated/sklearn.preprocessing.KBinsDiscretizer.html#sklearn.preprocessing.KBinsDiscretizer" title="sklearn.preprocessing.KBinsDiscretizer"><code class="xref py py-class docutils literal"><span class="pre">KBinsDiscretizer</span></code></a>
+when <code class="docutils literal"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">2</span></code>, and when the bin edge is at the value <code class="docutils literal"><span class="pre">threshold</span></code>.</p>
+<div class="topic">
+<p class="topic-title first">Sparse input</p>
+<p><a class="reference internal" href="generated/sklearn.preprocessing.binarize.html#sklearn.preprocessing.binarize" title="sklearn.preprocessing.binarize"><code class="xref py py-func docutils literal"><span class="pre">binarize</span></code></a> and <a class="reference internal" href="generated/sklearn.preprocessing.Binarizer.html#sklearn.preprocessing.Binarizer" title="sklearn.preprocessing.Binarizer"><code class="xref py py-class docutils literal"><span class="pre">Binarizer</span></code></a> accept <strong>both dense array-like
+and sparse matrices from scipy.sparse as input</strong>.</p>
+<p>For sparse input the data is <strong>converted to the Compressed Sparse Rows
+representation</strong> (see <code class="docutils literal"><span class="pre">scipy.sparse.csr_matrix</span></code>).
+To avoid unnecessary memory copies, it is recommended to choose the CSR
+representation upstream.</p>
+</div>
+</div>
 </div>
 <div class="section" id="imputation-of-missing-values">
 <span id="imputation"></span><h2>4.3.6. Imputation of missing values<a class="headerlink" href="#imputation-of-missing-values" title="Permalink to this headline">¶</a></h2>

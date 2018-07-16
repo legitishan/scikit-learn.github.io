@@ -188,12 +188,13 @@
 <li><a class="reference internal" href="#regression">1.5.2. Regression</a></li>
 <li><a class="reference internal" href="#stochastic-gradient-descent-for-sparse-data">1.5.3. Stochastic Gradient Descent for sparse data</a></li>
 <li><a class="reference internal" href="#complexity">1.5.4. Complexity</a></li>
-<li><a class="reference internal" href="#tips-on-practical-use">1.5.5. Tips on Practical Use</a></li>
-<li><a class="reference internal" href="#mathematical-formulation">1.5.6. Mathematical formulation</a><ul>
-<li><a class="reference internal" href="#id1">1.5.6.1. SGD</a></li>
+<li><a class="reference internal" href="#stopping-criterion">1.5.5. Stopping criterion</a></li>
+<li><a class="reference internal" href="#tips-on-practical-use">1.5.6. Tips on Practical Use</a></li>
+<li><a class="reference internal" href="#mathematical-formulation">1.5.7. Mathematical formulation</a><ul>
+<li><a class="reference internal" href="#id1">1.5.7.1. SGD</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#implementation-details">1.5.7. Implementation details</a></li>
+<li><a class="reference internal" href="#implementation-details">1.5.8. Implementation details</a></li>
 </ul>
 </li>
 </ul>
@@ -263,12 +264,13 @@ for the training samples:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">SGDClassifier</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s2">&quot;hinge&quot;</span><span class="p">,</span> <span class="n">penalty</span><span class="o">=</span><span class="s2">&quot;l2&quot;</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="go">SGDClassifier(alpha=0.0001, average=False, class_weight=None, epsilon=0.1,</span>
-<span class="go">       eta0=0.0, fit_intercept=True, l1_ratio=0.15,</span>
-<span class="go">       learning_rate=&#39;optimal&#39;, loss=&#39;hinge&#39;, max_iter=5, n_iter=None,</span>
-<span class="go">       n_jobs=1, penalty=&#39;l2&#39;, power_t=0.5, random_state=None,</span>
-<span class="go">       shuffle=True, tol=None, verbose=0, warm_start=False)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>   
+<span class="go">SGDClassifier(alpha=0.0001, average=False, class_weight=None,</span>
+<span class="go">           early_stopping=False, epsilon=0.1, eta0=0.0, fit_intercept=True,</span>
+<span class="go">           l1_ratio=0.15, learning_rate=&#39;optimal&#39;, loss=&#39;hinge&#39;, max_iter=5,</span>
+<span class="go">           n_iter=None, n_iter_no_change=5, n_jobs=1, penalty=&#39;l2&#39;,</span>
+<span class="go">           power_t=0.5, random_state=None, shuffle=True, tol=None,</span>
+<span class="go">           validation_fraction=0.1, verbose=0, warm_start=False)</span>
 </pre></div>
 </div>
 <p>After being fitted, the model can then be used to predict new values:</p>
@@ -429,8 +431,29 @@ non-zero attributes per sample.</p>
 <p>Recent theoretical results, however, show that the runtime to get some
 desired optimization accuracy does not increase as the training set size increases.</p>
 </div>
+<div class="section" id="stopping-criterion">
+<h2>1.5.5. Stopping criterion<a class="headerlink" href="#stopping-criterion" title="Permalink to this headline">¶</a></h2>
+<p>The classes <a class="reference internal" href="generated/sklearn.linear_model.SGDClassifier.html#sklearn.linear_model.SGDClassifier" title="sklearn.linear_model.SGDClassifier"><code class="xref py py-class docutils literal"><span class="pre">SGDClassifier</span></code></a> and <a class="reference internal" href="generated/sklearn.linear_model.SGDRegressor.html#sklearn.linear_model.SGDRegressor" title="sklearn.linear_model.SGDRegressor"><code class="xref py py-class docutils literal"><span class="pre">SGDRegressor</span></code></a> provide two
+criteria to stop the algorithm when a given level of convergence is reached:</p>
+<blockquote>
+<div><ul class="simple">
+<li>With <code class="docutils literal"><span class="pre">early_stopping=True</span></code>, the input data is split into a training set
+and a validation set. The model is then fitted on the training set, and the
+stopping criterion is based on the prediction score computed on the
+validation set. The size of the validation set can be changed with the
+parameter <code class="docutils literal"><span class="pre">validation_fraction</span></code>.</li>
+<li>With <code class="docutils literal"><span class="pre">early_stopping=False</span></code>, the model is fitted on the entire input data
+and the stopping criterion is based on the objective function computed on
+the input data.</li>
+</ul>
+</div></blockquote>
+<p>In both cases, the criterion is evaluated once by epoch, and the algorithm stops
+when the criterion does not improve <code class="docutils literal"><span class="pre">n_iter_no_change</span></code> times in a row. The
+improvement is evaluated with a tolerance <code class="docutils literal"><span class="pre">tol</span></code>, and the algorithm stops in
+any case after a maximum number of iteration <code class="docutils literal"><span class="pre">max_iter</span></code>.</p>
+</div>
 <div class="section" id="tips-on-practical-use">
-<h2>1.5.5. Tips on Practical Use<a class="headerlink" href="#tips-on-practical-use" title="Permalink to this headline">¶</a></h2>
+<h2>1.5.6. Tips on Practical Use<a class="headerlink" href="#tips-on-practical-use" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><ul>
 <li><p class="first">Stochastic Gradient Descent is sensitive to feature scaling, so it
@@ -455,7 +478,7 @@ range <code class="docutils literal"><span class="pre">10.0**-np.arange(1,7)</sp
 </li>
 <li><p class="first">Empirically, we found that SGD converges after observing
 approx. 10^6 training samples. Thus, a reasonable first guess
-for the number of iterations is <code class="docutils literal"><span class="pre">n_iter</span> <span class="pre">=</span> <span class="pre">np.ceil(10**6</span> <span class="pre">/</span> <span class="pre">n)</span></code>,
+for the number of iterations is <code class="docutils literal"><span class="pre">max_iter</span> <span class="pre">=</span> <span class="pre">np.ceil(10**6</span> <span class="pre">/</span> <span class="pre">n)</span></code>,
 where <code class="docutils literal"><span class="pre">n</span></code> is the size of the training set.</p>
 </li>
 <li><p class="first">If you apply SGD to features extracted using PCA we found that
@@ -477,7 +500,7 @@ of the Trade 1998.</li>
 </div>
 </div>
 <div class="section" id="mathematical-formulation">
-<span id="sgd-mathematical-formulation"></span><h2>1.5.6. Mathematical formulation<a class="headerlink" href="#mathematical-formulation" title="Permalink to this headline">¶</a></h2>
+<span id="sgd-mathematical-formulation"></span><h2>1.5.7. Mathematical formulation<a class="headerlink" href="#mathematical-formulation" title="Permalink to this headline">¶</a></h2>
 <p>Given a set of training examples <span class="math">\((x_1, y_1), \ldots, (x_n, y_n)\)</span> where
 <span class="math">\(x_i \in \mathbf{R}^m\)</span> and <span class="math">\(y_i \in \{-1,1\}\)</span>, our goal is to
 learn a linear scoring function <span class="math">\(f(x) = w^T x + b\)</span> with model parameters
@@ -519,7 +542,7 @@ in the parameter space when <span class="math">\(R(w) = 1\)</span>.</p>
 <a class="reference external image-reference" href="../auto_examples/linear_model/plot_sgd_penalties.html"><img alt="../_images/sphx_glr_plot_sgd_penalties_0011.png" src="../_images/sphx_glr_plot_sgd_penalties_0011.png" style="width: 750.0px; height: 750.0px;" /></a>
 </div>
 <div class="section" id="id1">
-<h3>1.5.6.1. SGD<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<h3>1.5.7.1. SGD<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>Stochastic gradient descent is an optimization method for unconstrained
 optimization problems. In contrast to (batch) gradient descent, SGD
 approximates the true gradient of <span class="math">\(E(w,b)\)</span> by considering a
@@ -551,6 +574,10 @@ approx. 1). The exact definition can be found in <code class="docutils literal">
 user via <code class="docutils literal"><span class="pre">eta0</span></code> and <code class="docutils literal"><span class="pre">power_t</span></code>, resp.</p>
 <p>For a constant learning rate use <code class="docutils literal"><span class="pre">learning_rate='constant'</span></code> and use <code class="docutils literal"><span class="pre">eta0</span></code>
 to specify the learning rate.</p>
+<p>For an adaptively decreasing learning rate, use <code class="docutils literal"><span class="pre">learning_rate='adaptive'</span></code>
+and use <code class="docutils literal"><span class="pre">eta0</span></code> to specify the starting learning rate. When the stopping
+criterion is reached, the learning rate is divided by 5, and the algorithm
+does not stop. The algorithm stops when the learning rate goes below 1e-6.</p>
 <p>The model parameters can be accessed through the members <code class="docutils literal"><span class="pre">coef_</span></code> and
 <code class="docutils literal"><span class="pre">intercept_</span></code>:</p>
 <blockquote>
@@ -576,7 +603,7 @@ Xu, Wei</li>
 </div>
 </div>
 <div class="section" id="implementation-details">
-<h2>1.5.7. Implementation details<a class="headerlink" href="#implementation-details" title="Permalink to this headline">¶</a></h2>
+<h2>1.5.8. Implementation details<a class="headerlink" href="#implementation-details" title="Permalink to this headline">¶</a></h2>
 <p>The implementation of SGD is influenced by the <a class="reference external" href="http://leon.bottou.org/projects/sgd">Stochastic Gradient SVM</a>  of Léon Bottou. Similar to SvmSGD,
 the weight vector is represented as the product of a scalar and a vector
 which allows an efficient weight update in the case of L2 regularization.

@@ -39,7 +39,7 @@
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Examples" href="auto_examples/index.html" />
-    <link rel="prev" title="7. Computational Performance" href="modules/computational_performance.html" />
+    <link rel="prev" title="6. Computing with scikit-learn" href="modules/computing.html" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -133,14 +133,14 @@
         <div class="rel rellarge">
     
         <div class="rellink">
-        <a href="modules/computational_performance.html"
+        <a href="modules/computing.html"
         accesskey="P">Previous
         <br/>
         <span class="smallrellink">
-        7. Computatio...
+        6. Computing ...
         </span>
             <span class="hiddenrellink">
-            7. Computational Performance
+            6. Computing with scikit-learn
             </span>
         </a>
         </div>
@@ -239,8 +239,8 @@ functions, array-like is any type object for which
 <li>a numpy array</li>
 <li>a list of numbers</li>
 <li>a list of length-k lists of numbers for some fixed length k</li>
-<li>a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.1)"><code class="xref py py-class docutils literal"><span class="pre">pandas.DataFrame</span></code></a> with all columns numeric</li>
-<li>a numeric <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.html#pandas.Series" title="(in pandas v0.23.1)"><code class="xref py py-class docutils literal"><span class="pre">pandas.Series</span></code></a></li>
+<li>a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.3)"><code class="xref py py-class docutils literal"><span class="pre">pandas.DataFrame</span></code></a> with all columns numeric</li>
+<li>a numeric <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.html#pandas.Series" title="(in pandas v0.23.3)"><code class="xref py py-class docutils literal"><span class="pre">pandas.Series</span></code></a></li>
 </ul>
 <p>It excludes:</p>
 <ul class="simple">
@@ -370,7 +370,7 @@ tags</span></a>.</p>
 <dd><p class="first">We use deprecation to slowly violate our <a class="reference internal" href="#term-backwards-compatibility"><span class="xref std std-term">backwards
 compatibility</span></a> assurances, usually to to:</p>
 <ul class="simple">
-<li>change the the default value of a parameter; or</li>
+<li>change the default value of a parameter; or</li>
 <li>remove a parameter, attribute, method, class, etc.</li>
 </ul>
 <p>We will ordinarily issue a warning when a deprecated element is used,
@@ -450,6 +450,12 @@ duck typing.</p>
 </li>
 </ul>
 </dd>
+<dt id="term-early-stopping">early stopping</dt>
+<dd>This consists in stopping an iterative optimization method before the
+convergence of the training loss, to avoid over-fitting. This is
+generally done by monitoring the generalization score on a validation
+set. When available, it is activated through the parameter
+<code class="docutils literal"><span class="pre">early_stopping</span></code> or by setting a postive <a class="reference internal" href="#term-n-iter-no-change"><span class="xref std std-term">n_iter_no_change</span></a>.</dd>
 <dt id="term-estimator-instance">estimator instance</dt>
 <dd><p class="first">We sometimes use this terminology to distinguish an <a class="reference internal" href="#term-estimator"><span class="xref std std-term">estimator</span></a>
 class from a constructed instance. For example, in the following,
@@ -597,7 +603,8 @@ and/or <a class="reference internal" href="#term-transform"><span class="xref st
 <dd>A Python library (<a class="reference external" href="http://joblib.readthedocs.io">http://joblib.readthedocs.io</a>) used in Scikit-learn to
 facilite simple parallelism and caching.  Joblib is oriented towards
 efficiently working with numpy arrays, such as through use of
-<a class="reference internal" href="#term-memory-mapping"><span class="xref std std-term">memory mapping</span></a>.</dd>
+<a class="reference internal" href="#term-memory-mapping"><span class="xref std std-term">memory mapping</span></a>. See <a class="reference internal" href="modules/computing.html#parallelism"><span class="std std-ref">Parallel and distributed computing</span></a> for more
+information.</dd>
 <dt id="term-label-indicator-matrix">label indicator matrix<dt id="term-multilabel-indicator-matrix">multilabel indicator matrix<dt id="term-multilabel-indicator-matrices">multilabel indicator matrices</dt>
 <dd>The format used to represent multilabel data, where each row of a 2d
 array or sparse matrix corresponds to a sample, each column
@@ -818,11 +825,11 @@ matrices).</p>
 <dt id="term-supervised">supervised<dt id="term-supervised-learning">supervised learning</dt>
 <dd>Learning where the expected prediction (label or ground truth) is
 available for each sample when <a class="reference internal" href="#term-fitting"><span class="xref std std-term">fitting</span></a> the model, provided as
-<a class="reference internal" href="#term-169"><span class="xref std std-term">y</span></a>.  This is the approach taken in a <a class="reference internal" href="#term-classifier"><span class="xref std std-term">classifier</span></a> or
+<a class="reference internal" href="#term-171"><span class="xref std std-term">y</span></a>.  This is the approach taken in a <a class="reference internal" href="#term-classifier"><span class="xref std std-term">classifier</span></a> or
 <a class="reference internal" href="#term-regressor"><span class="xref std std-term">regressor</span></a> among other estimators.</dd>
 <dt id="term-target">target<dt id="term-targets">targets</dt>
 <dd>The <em>dependent variable</em> in <a class="reference internal" href="#term-supervised"><span class="xref std std-term">supervised</span></a> (and
-<a class="reference internal" href="#term-semisupervised"><span class="xref std std-term">semisupervised</span></a>) learning, passed as <a class="reference internal" href="#term-169"><span class="xref std std-term">y</span></a> to an estimator’s
+<a class="reference internal" href="#term-semisupervised"><span class="xref std std-term">semisupervised</span></a>) learning, passed as <a class="reference internal" href="#term-171"><span class="xref std std-term">y</span></a> to an estimator’s
 <a class="reference internal" href="#term-fit"><span class="xref std std-term">fit</span></a> method.  Also known as <em>dependent variable</em>, <em>outcome
 variable</em>, <em>response variable</em>, <em>ground truth</em> or <em>label</em>. Scikit-learn
 works with targets that have minimal structure: a class from a finite
@@ -842,7 +849,7 @@ model to unseen data.  Examples include <a class="reference internal" href="modu
 <dd>Learning where the expected prediction (label or ground truth) is not
 available for each sample when <a class="reference internal" href="#term-fitting"><span class="xref std std-term">fitting</span></a> the model, as in
 <a class="reference internal" href="#term-clusterers"><span class="xref std std-term">clusterers</span></a> and <a class="reference internal" href="#term-outlier-detectors"><span class="xref std std-term">outlier detectors</span></a>.  Unsupervised
-estimators ignore any <a class="reference internal" href="#term-169"><span class="xref std std-term">y</span></a> passed to <a class="reference internal" href="#term-fit"><span class="xref std std-term">fit</span></a>.</dd>
+estimators ignore any <a class="reference internal" href="#term-171"><span class="xref std std-term">y</span></a> passed to <a class="reference internal" href="#term-fit"><span class="xref std std-term">fit</span></a>.</dd>
 </dl>
 </div>
 <div class="section" id="class-apis-and-estimator-types">
@@ -1333,7 +1340,7 @@ The method is overridden in <a class="reference internal" href="modules/generate
 estimators.</dd>
 <dt id="term-split"><code class="docutils literal"><span class="pre">split</span></code></dt>
 <dd>On a <a class="reference internal" href="#term-cv-splitter"><span class="xref std std-term">CV splitter</span></a> (not an estimator), this method accepts
-parameters (<a class="reference internal" href="#term-x"><span class="xref std std-term">X</span></a>, <a class="reference internal" href="#term-169"><span class="xref std std-term">y</span></a>, <a class="reference internal" href="#term-groups"><span class="xref std std-term">groups</span></a>), where all may be
+parameters (<a class="reference internal" href="#term-x"><span class="xref std std-term">X</span></a>, <a class="reference internal" href="#term-171"><span class="xref std std-term">y</span></a>, <a class="reference internal" href="#term-groups"><span class="xref std std-term">groups</span></a>), where all may be
 optional, and returns an iterator over <code class="docutils literal"><span class="pre">(train_idx,</span> <span class="pre">test_idx)</span></code>
 pairs.  Each of {train,test}_idx is a 1d integer array, with values
 from 0 from <code class="docutils literal"><span class="pre">X.shape[0]</span> <span class="pre">-</span> <span class="pre">1</span></code> of any length, such that no values
@@ -1439,6 +1446,11 @@ using this sense as a parameter name.</p>
 <dd>The number of features which a <a class="reference internal" href="#term-transformer"><span class="xref std std-term">transformer</span></a> should transform the
 input into. See <a class="reference internal" href="#term-components"><span class="xref std std-term">components_</span></a> for the special case of affine
 projection.</dd>
+<dt id="term-n-iter-no-change"><code class="docutils literal"><span class="pre">n_iter_no_change</span></code></dt>
+<dd>Number of iterations with no improvement to wait before stopping the
+iterative procedure. This is also known as a <em>patience</em> parameter. It
+is typically used with <a class="reference internal" href="#term-early-stopping"><span class="xref std std-term">early stopping</span></a> to avoid stopping too
+early.</dd>
 <dt id="term-n-jobs"><code class="docutils literal"><span class="pre">n_jobs</span></code></dt>
 <dd><p class="first">This is used to specify how many concurrent processes/threads should be
 used for parallelized routines.  Scikit-learn uses one processor for
@@ -1641,7 +1653,7 @@ training sample. <code class="docutils literal"><span class="pre">X</span></code
 one before learning a model.</dd>
 <dt id="term-xt"><code class="docutils literal"><span class="pre">Xt</span></code></dt>
 <dd>Shorthand for “transformed <a class="reference internal" href="#term-x"><span class="xref std std-term">X</span></a>”.</dd>
-<dt id="term-y"><code class="docutils literal"><span class="pre">y</span></code><dt id="term-169"><code class="docutils literal"><span class="pre">Y</span></code></dt>
+<dt id="term-y"><code class="docutils literal"><span class="pre">y</span></code><dt id="term-171"><code class="docutils literal"><span class="pre">Y</span></code></dt>
 <dd>Denotes data that may be observed at training time as the dependent
 variable in learning, but which is unavailable at prediction time, and
 is usually the <a class="reference internal" href="#term-target"><span class="xref std std-term">target</span></a> of prediction.  The notation may be
@@ -1667,7 +1679,7 @@ and sometimes do so even when multiple outputs are assumed.</dd>
      <div class="rel rellarge">
     
     <div class="buttonPrevious">
-      <a href="modules/computational_performance.html">Previous
+      <a href="modules/computing.html">Previous
       </a>
     </div>
     <div class="buttonNext">

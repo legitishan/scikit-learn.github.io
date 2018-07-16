@@ -208,7 +208,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.kernel_approximation" title="sklearn.kernel_approximation"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.kernel_approximation</span></code></a>.RBFSampler<a class="headerlink" href="#sklearn-kernel-approximation-rbfsampler" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="sklearn.kernel_approximation.RBFSampler">
-<em class="property">class </em><code class="descclassname">sklearn.kernel_approximation.</code><code class="descname">RBFSampler</code><span class="sig-paren">(</span><em>gamma=1.0</em>, <em>n_components=100</em>, <em>random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/526aede/sklearn/kernel_approximation.py#L24"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.RBFSampler" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">sklearn.kernel_approximation.</code><code class="descname">RBFSampler</code><span class="sig-paren">(</span><em>gamma=1.0</em>, <em>n_components=100</em>, <em>random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46913ad/sklearn/kernel_approximation.py#L24"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.RBFSampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Approximates feature map of an RBF kernel by Monte Carlo approximation
 of its Fourier transform.</p>
 <p>It implements a variant of Random Kitchen Sinks.[1]</p>
@@ -243,6 +243,26 @@ Benjamin Recht.</p>
 minimization with randomization in learning” by A. Rahimi and
 Benjamin Recht.
 (<a class="reference external" href="http://people.eecs.berkeley.edu/~brecht/papers/08.rah.rec.nips.pdf">http://people.eecs.berkeley.edu/~brecht/papers/08.rah.rec.nips.pdf</a>)</p>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.kernel_approximation</span> <span class="k">import</span> <span class="n">RBFSampler</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">SGDClassifier</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rbf_feature</span> <span class="o">=</span> <span class="n">RBFSampler</span><span class="p">(</span><span class="n">gamma</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_features</span> <span class="o">=</span> <span class="n">rbf_feature</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">SGDClassifier</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_features</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="gp">... </span>
+<span class="go">SGDClassifier(alpha=0.0001, average=False, class_weight=None,</span>
+<span class="go">       early_stopping=False, epsilon=0.1, eta0=0.0, fit_intercept=True,</span>
+<span class="go">       l1_ratio=0.15, learning_rate=&#39;optimal&#39;, loss=&#39;hinge&#39;, max_iter=5,</span>
+<span class="go">       n_iter=None, n_iter_no_change=5, n_jobs=1, penalty=&#39;l2&#39;,</span>
+<span class="go">       power_t=0.5, random_state=None, shuffle=True, tol=None,</span>
+<span class="go">       validation_fraction=0.1, verbose=0, warm_start=False)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_features</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="go">1.0</span>
+</pre></div>
+</div>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -269,12 +289,12 @@ Benjamin Recht.
 </table>
 <dl class="method">
 <dt id="sklearn.kernel_approximation.RBFSampler.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>gamma=1.0</em>, <em>n_components=100</em>, <em>random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/526aede/sklearn/kernel_approximation.py#L58"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.RBFSampler.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>gamma=1.0</em>, <em>n_components=100</em>, <em>random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46913ad/sklearn/kernel_approximation.py#L78"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.RBFSampler.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="sklearn.kernel_approximation.RBFSampler.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/526aede/sklearn/kernel_approximation.py#L63"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.RBFSampler.fit" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46913ad/sklearn/kernel_approximation.py#L83"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.RBFSampler.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the model with X.</p>
 <p>Samples random projection according to n_features.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -302,7 +322,7 @@ and n_features is the number of features.</p>
 
 <dl class="method">
 <dt id="sklearn.kernel_approximation.RBFSampler.fit_transform">
-<code class="descname">fit_transform</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/526aede/sklearn/base.py#L435"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.RBFSampler.fit_transform" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit_transform</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46913ad/sklearn/base.py#L435"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.RBFSampler.fit_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit to data, then transform it.</p>
 <p>Fits transformer to X and y with optional parameters fit_params
 and returns a transformed version of X.</p>
@@ -333,7 +353,7 @@ and returns a transformed version of X.</p>
 
 <dl class="method">
 <dt id="sklearn.kernel_approximation.RBFSampler.get_params">
-<code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/526aede/sklearn/base.py#L166"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.RBFSampler.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46913ad/sklearn/base.py#L166"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.RBFSampler.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -360,7 +380,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.kernel_approximation.RBFSampler.set_params">
-<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/526aede/sklearn/base.py#L189"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.RBFSampler.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46913ad/sklearn/base.py#L189"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.RBFSampler.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
@@ -382,7 +402,7 @@ component of a nested object.</p>
 
 <dl class="method">
 <dt id="sklearn.kernel_approximation.RBFSampler.transform">
-<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/526aede/sklearn/kernel_approximation.py#L91"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.RBFSampler.transform" title="Permalink to this definition">¶</a></dt>
+<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46913ad/sklearn/kernel_approximation.py#L111"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.RBFSampler.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply the approximate feature map to X.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

@@ -183,7 +183,8 @@
       <a href="http://scikit-learn.org/stable/support.html#documentation-resources">Other versions</a></p>
     <p class="citing">Please <b><a href="../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
-<li><a class="reference internal" href="#">Contributing</a><ul>
+<li><a class="reference internal" href="#">Contributing</a></li>
+<li><a class="reference internal" href="#ways-to-contribute">Ways to contribute</a><ul>
 <li><a class="reference internal" href="#submitting-a-bug-report-or-a-feature-request">Submitting a bug report or a feature request</a><ul>
 <li><a class="reference internal" href="#how-to-make-a-good-bug-report">How to make a good bug report</a></li>
 </ul>
@@ -207,6 +208,7 @@
 <li><a class="reference internal" href="#input-validation">Input validation</a></li>
 <li><a class="reference internal" href="#random-numbers">Random Numbers</a></li>
 <li><a class="reference internal" href="#deprecation">Deprecation</a></li>
+<li><a class="reference internal" href="#change-the-default-value-of-a-parameter">Change the default value of a parameter</a></li>
 <li><a class="reference internal" href="#python-versions-supported">Python versions supported</a></li>
 </ul>
 </li>
@@ -281,6 +283,9 @@ others of the Python Software Foundation:
 ticket to the
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues">GitHub issue tracker</a>. You are
 also welcome to post feature requests or pull requests.</p>
+</div>
+<div class="section" id="ways-to-contribute">
+<h1>Ways to contribute<a class="headerlink" href="#ways-to-contribute" title="Permalink to this headline">¶</a></h1>
 <p>There are many ways to contribute to scikit-learn, with the most common ones
 being contribution of code or documentation to the project. Improving the
 documentation is no less important than improving the library itself.  If you
@@ -884,7 +889,7 @@ See <a class="reference internal" href="../modules/generated/sklearn.utils.check
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    X : array-like, shape = (n_samples, n_features)</span>
+<span class="sd">    X : array-like, shape (n_samples, n_features)</span>
 <span class="sd">        array representing the data</span>
 <span class="sd">    random_state : RandomState or an int seed (0 by default)</span>
 <span class="sd">        A random number generator instance to define the state of the</span>
@@ -892,7 +897,7 @@ See <a class="reference internal" href="../modules/generated/sklearn.utils.check
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    x : numpy array, shape = (n_features,)</span>
+<span class="sd">    x : numpy array, shape (n_features,)</span>
 <span class="sd">        A random point selected from X</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
@@ -972,18 +977,36 @@ E.g., renaming an attribute <code class="docutils literal"><span class="pre">lab
 In the following example, k is deprecated and renamed to n_clusters:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
 
-<span class="k">def</span> <span class="nf">example_function</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">k</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">example_function</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="s1">&#39;not_used&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="s1">&#39;not_used&#39;</span><span class="p">:</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;k&#39; was renamed to n_clusters in version 0.13 and &quot;</span>
                       <span class="s2">&quot;will be removed in 0.15.&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
         <span class="n">n_clusters</span> <span class="o">=</span> <span class="n">k</span>
+</pre></div>
+</div>
+<p>When the change is in a class, we validate and raise warning in <code class="docutils literal"><span class="pre">fit</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="k">class</span> <span class="nc">ExampleEstimator</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="s1">&#39;not_used&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_clusters</span> <span class="o">=</span> <span class="n">n_clusters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="s1">&#39;not_used&#39;</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;k&#39; was renamed to n_clusters in version 0.13 and &quot;</span>
+                          <span class="s2">&quot;will be removed in 0.15.&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_n_clusters</span> <span class="o">=</span> <span class="n">k</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_n_clusters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_clusters</span>
 </pre></div>
 </div>
 <p>As in these examples, the warning message should always give both the
 version in which the deprecation happened and the version in which the
 old behavior will be removed. If the deprecation happened in version
 0.x-dev, the message should say deprecation occurred in version 0.x and
-the removal will be in 0.(x+2). For example, if the deprecation happened
+the removal will be in 0.(x+2), so that users will have enough time to
+adapt their code to the new behaviour. For example, if the deprecation happened
 in version 0.18-dev, the message should say it happened in version 0.18
 and the old behavior will be removed in version 0.20.</p>
 <p>In addition, a deprecation note should be added in the docstring, recalling the
@@ -994,6 +1017,48 @@ same information as the deprecation warning as explained above. Use the
    in 0.15.
 </pre></div>
 </div>
+<p>What’s more, a deprecation requires a test which ensures that the warning is
+raised in relevant cases but not in other cases. The warning should be caught
+in all other tests (using e.g., <code class="docutils literal"><span class="pre">&#64;pytest.mark.filterwarnings</span></code>),
+and there should be no warning in the examples.</p>
+</div>
+<div class="section" id="change-the-default-value-of-a-parameter">
+<h3>Change the default value of a parameter<a class="headerlink" href="#change-the-default-value-of-a-parameter" title="Permalink to this headline">¶</a></h3>
+<p>If the default value of a parameter needs to be changed, please replace the
+default value with a specific value (e.g., <code class="docutils literal"><span class="pre">warn</span></code>) and raise
+<code class="docutils literal"><span class="pre">FutureWarning</span></code> when users are using the default value. In the following
+example, we change the default value of <code class="docutils literal"><span class="pre">n_clusters</span></code> from 5 to 10
+(current version is 0.20):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="k">def</span> <span class="nf">example_function</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="s1">&#39;warn&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n_clusters</span> <span class="o">==</span> <span class="s1">&#39;warn&#39;</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;The default value of n_clusters will change from &quot;</span>
+                      <span class="s2">&quot;5 to 10 in 0.22.&quot;</span><span class="p">,</span> <span class="ne">FutureWarning</span><span class="p">)</span>
+        <span class="n">n_clusters</span> <span class="o">=</span> <span class="mi">5</span>
+</pre></div>
+</div>
+<p>When the change is in a class, we validate and raise warning in <code class="docutils literal"><span class="pre">fit</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="k">class</span> <span class="nc">ExampleEstimator</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="s1">&#39;warn&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_clusters</span> <span class="o">=</span> <span class="n">n_clusters</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_clusters</span> <span class="o">==</span> <span class="s1">&#39;warn&#39;</span><span class="p">:</span>
+          <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;The default value of n_clusters will change from &quot;</span>
+                        <span class="s2">&quot;5 to 10 in 0.22.&quot;</span><span class="p">,</span> <span class="ne">FutureWarning</span><span class="p">)</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">_n_clusters</span> <span class="o">=</span> <span class="mi">5</span>
+</pre></div>
+</div>
+<p>Similar to deprecations, the warning message should always give both the
+version in which the change happened and the version in which the old behavior
+will be removed. The docstring needs to be updated accordingly. We need a test
+which ensures that the warning is raised in relevant cases but not in other
+cases. The warning should be caught in all other tests
+(using e.g., <code class="docutils literal"><span class="pre">pytest.mark.filter_warnings</span></code>), and there should be no warning
+in the examples.</p>
 </div>
 <div class="section" id="python-versions-supported">
 <h3>Python versions supported<a class="headerlink" href="#python-versions-supported" title="Permalink to this headline">¶</a></h3>
@@ -1073,41 +1138,41 @@ multiple interfaces):</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Estimator:</th><td class="field-body"><p class="first">The base object, implements a <code class="docutils literal"><span class="pre">fit</span></code> method to learn from data, either:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">estimator</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">estimator</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>or:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">estimator</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">estimator</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Predictor:</th><td class="field-body"><p class="first">For supervised learning, or some unsupervised problems, implements:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">prediction</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">prediction</span> <span class="o">=</span> <span class="n">predictor</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Classification algorithms usually also offer a way to quantify certainty
 of a prediction, either using <code class="docutils literal"><span class="pre">decision_function</span></code> or <code class="docutils literal"><span class="pre">predict_proba</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">probability</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">probability</span> <span class="o">=</span> <span class="n">predictor</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Transformer:</th><td class="field-body"><p class="first">For filtering or modifying the data, in a supervised or unsupervised
 way, implements:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">new_data</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">new_data</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>When fitting and transforming can be performed much more efficiently
 together than separately, implements:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">new_data</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">new_data</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Model:</th><td class="field-body"><p class="first">A model that can give a <a class="reference external" href="https://en.wikipedia.org/wiki/Goodness_of_fit">goodness of fit</a>
 measure or a likelihood of unseen data, implements (higher is better):</p>
-<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="n">score</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="n">score</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 </td>
@@ -1198,12 +1263,10 @@ the predict method.</p>
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td>X</td>
-<td>array-like, with shape = [N, D], where N is the number
-of samples and D is the number of features.</td>
+<td>array-like, shape (n_samples, n_features)</td>
 </tr>
 <tr class="row-odd"><td>y</td>
-<td>array, with shape = [N], where N is the number of
-samples.</td>
+<td>array, shape (n_samples,)</td>
 </tr>
 <tr class="row-even"><td>kwargs</td>
 <td>optional data-dependent parameters.</td>

@@ -208,7 +208,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.kernel_approximation" title="sklearn.kernel_approximation"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.kernel_approximation</span></code></a>.Nystroem<a class="headerlink" href="#sklearn-kernel-approximation-nystroem" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="sklearn.kernel_approximation.Nystroem">
-<em class="property">class </em><code class="descclassname">sklearn.kernel_approximation.</code><code class="descname">Nystroem</code><span class="sig-paren">(</span><em>kernel=’rbf’</em>, <em>gamma=None</em>, <em>coef0=None</em>, <em>degree=None</em>, <em>kernel_params=None</em>, <em>n_components=100</em>, <em>random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/526aede/sklearn/kernel_approximation.py#L367"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.Nystroem" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">sklearn.kernel_approximation.</code><code class="descname">Nystroem</code><span class="sig-paren">(</span><em>kernel=’rbf’</em>, <em>gamma=None</em>, <em>coef0=None</em>, <em>degree=None</em>, <em>kernel_params=None</em>, <em>n_components=100</em>, <em>random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46913ad/sklearn/kernel_approximation.py#L408"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.Nystroem" title="Permalink to this definition">¶</a></dt>
 <dd><p>Approximate a kernel map using a subset of the training data.</p>
 <p>Constructs an approximate feature map for an arbitrary kernel
 using a subset of the data as basis.</p>
@@ -288,6 +288,26 @@ Advances in neural information processing systems 2001</li>
 Comparison”,
 Advances in Neural Information Processing Systems 2012</li>
 </ul>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">svm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.kernel_approximation</span> <span class="k">import</span> <span class="n">Nystroem</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">digits</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_digits</span><span class="p">(</span><span class="n">n_class</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">digits</span><span class="o">.</span><span class="n">data</span> <span class="o">/</span> <span class="mf">16.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">LinearSVC</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">feature_map_nystroem</span> <span class="o">=</span> <span class="n">Nystroem</span><span class="p">(</span><span class="n">gamma</span><span class="o">=.</span><span class="mi">2</span><span class="p">,</span>
+<span class="gp">... </span>                                <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>                                <span class="n">n_components</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data_transformed</span> <span class="o">=</span> <span class="n">feature_map_nystroem</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data_transformed</span><span class="p">,</span> <span class="n">digits</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+<span class="gp">... </span>
+<span class="go">LinearSVC(C=1.0, class_weight=None, dual=True, fit_intercept=True,</span>
+<span class="go">     intercept_scaling=1, loss=&#39;squared_hinge&#39;, max_iter=1000,</span>
+<span class="go">     multi_class=&#39;ovr&#39;, penalty=&#39;l2&#39;, random_state=None, tol=0.0001,</span>
+<span class="go">     verbose=0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">data_transformed</span><span class="p">,</span> <span class="n">digits</span><span class="o">.</span><span class="n">target</span><span class="p">)</span> 
+<span class="go">0.9987...</span>
+</pre></div>
+</div>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -314,12 +334,12 @@ Advances in Neural Information Processing Systems 2012</li>
 </table>
 <dl class="method">
 <dt id="sklearn.kernel_approximation.Nystroem.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>kernel=’rbf’</em>, <em>gamma=None</em>, <em>coef0=None</em>, <em>degree=None</em>, <em>kernel_params=None</em>, <em>n_components=100</em>, <em>random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/526aede/sklearn/kernel_approximation.py#L441"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.Nystroem.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>kernel=’rbf’</em>, <em>gamma=None</em>, <em>coef0=None</em>, <em>degree=None</em>, <em>kernel_params=None</em>, <em>n_components=100</em>, <em>random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46913ad/sklearn/kernel_approximation.py#L501"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.Nystroem.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="sklearn.kernel_approximation.Nystroem.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/526aede/sklearn/kernel_approximation.py#L451"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.Nystroem.fit" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46913ad/sklearn/kernel_approximation.py#L511"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.Nystroem.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit estimator to data.</p>
 <p>Samples a subset of training points, computes kernel
 on these and computes normalization matrix.</p>
@@ -340,7 +360,7 @@ on these and computes normalization matrix.</p>
 
 <dl class="method">
 <dt id="sklearn.kernel_approximation.Nystroem.fit_transform">
-<code class="descname">fit_transform</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/526aede/sklearn/base.py#L435"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.Nystroem.fit_transform" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit_transform</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46913ad/sklearn/base.py#L435"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.Nystroem.fit_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit to data, then transform it.</p>
 <p>Fits transformer to X and y with optional parameters fit_params
 and returns a transformed version of X.</p>
@@ -371,7 +391,7 @@ and returns a transformed version of X.</p>
 
 <dl class="method">
 <dt id="sklearn.kernel_approximation.Nystroem.get_params">
-<code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/526aede/sklearn/base.py#L166"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.Nystroem.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46913ad/sklearn/base.py#L166"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.Nystroem.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -398,7 +418,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.kernel_approximation.Nystroem.set_params">
-<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/526aede/sklearn/base.py#L189"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.Nystroem.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46913ad/sklearn/base.py#L189"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.Nystroem.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
@@ -420,7 +440,7 @@ component of a nested object.</p>
 
 <dl class="method">
 <dt id="sklearn.kernel_approximation.Nystroem.transform">
-<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/526aede/sklearn/kernel_approximation.py#L493"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.Nystroem.transform" title="Permalink to this definition">¶</a></dt>
+<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46913ad/sklearn/kernel_approximation.py#L553"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.kernel_approximation.Nystroem.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply feature map to X.</p>
 <p>Computes an approximate feature map using the kernel
 between some training points and X.</p>
