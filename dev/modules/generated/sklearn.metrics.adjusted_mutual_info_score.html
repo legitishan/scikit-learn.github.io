@@ -208,14 +208,14 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.metrics" title="sklearn.metrics"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.metrics</span></code></a>.adjusted_mutual_info_score<a class="headerlink" href="#sklearn-metrics-adjusted-mutual-info-score" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.metrics.adjusted_mutual_info_score">
-<code class="descclassname">sklearn.metrics.</code><code class="descname">adjusted_mutual_info_score</code><span class="sig-paren">(</span><em>labels_true</em>, <em>labels_pred</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/52b6a66/sklearn/metrics/cluster/supervised.py#L620"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.metrics.adjusted_mutual_info_score" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sklearn.metrics.</code><code class="descname">adjusted_mutual_info_score</code><span class="sig-paren">(</span><em>labels_true</em>, <em>labels_pred</em>, <em>average_method=’warn’</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8e2c2aa/sklearn/metrics/cluster/supervised.py#L642"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.metrics.adjusted_mutual_info_score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adjusted Mutual Information between two clusterings.</p>
 <p>Adjusted Mutual Information (AMI) is an adjustment of the Mutual
 Information (MI) score to account for chance. It accounts for the fact that
 the MI is generally higher for two clusterings with a larger number of
 clusters, regardless of whether there is actually more information shared.
 For two clusterings <span class="math">\(U\)</span> and <span class="math">\(V\)</span>, the AMI is given as:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">AMI</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span> <span class="o">=</span> <span class="p">[</span><span class="n">MI</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span> <span class="o">-</span> <span class="n">E</span><span class="p">(</span><span class="n">MI</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">))]</span> <span class="o">/</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">H</span><span class="p">(</span><span class="n">U</span><span class="p">),</span> <span class="n">H</span><span class="p">(</span><span class="n">V</span><span class="p">))</span> <span class="o">-</span> <span class="n">E</span><span class="p">(</span><span class="n">MI</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">))]</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">AMI</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span> <span class="o">=</span> <span class="p">[</span><span class="n">MI</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span> <span class="o">-</span> <span class="n">E</span><span class="p">(</span><span class="n">MI</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">))]</span> <span class="o">/</span> <span class="p">[</span><span class="n">avg</span><span class="p">(</span><span class="n">H</span><span class="p">(</span><span class="n">U</span><span class="p">),</span> <span class="n">H</span><span class="p">(</span><span class="n">V</span><span class="p">))</span> <span class="o">-</span> <span class="n">E</span><span class="p">(</span><span class="n">MI</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">))]</span>
 </pre></div>
 </div>
 <p>This metric is independent of the absolute values of the labels:
@@ -239,11 +239,20 @@ metrics, such as the Adjusted Rand Index.</p>
 <dt><strong>labels_pred</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array, shape = [n_samples]</span></dt>
 <dd><p class="first last">A clustering of the data into disjoint subsets.</p>
 </dd>
+<dt><strong>average_method</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string, optional (default: ‘warn’)</span></dt>
+<dd><p class="first">How to compute the normalizer in the denominator. Possible options
+are ‘min’, ‘geometric’, ‘arithmetic’, and ‘max’.
+If ‘warn’, ‘max’ will be used. The default will change to
+‘arithmetic’ in version 0.22.</p>
+<div class="last versionadded">
+<p><span class="versionmodified">New in version 0.20.</span></p>
+</div>
+</dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>ami: float(upperlimited by 1.0)</strong></dt>
+<dt><strong>ami: float (upperlimited by 1.0)</strong></dt>
 <dd><p class="first last">The AMI returns a value of 1 when the two partitions are identical
 (ie perfectly matched). Random partitions (independent labellings) have
 an expected AMI around 0 on average hence can be negative.</p>

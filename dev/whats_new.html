@@ -202,26 +202,26 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#version-0-19-1">Version 0.19.1</a><ul>
-<li><a class="reference internal" href="#id1">Changelog</a><ul>
+<li><a class="reference internal" href="#id3">Changelog</a><ul>
 <li><a class="reference internal" href="#api-changes">API changes</a></li>
-<li><a class="reference internal" href="#id2">Bug fixes</a></li>
-<li><a class="reference internal" href="#id3">Enhancements</a></li>
+<li><a class="reference internal" href="#id4">Bug fixes</a></li>
+<li><a class="reference internal" href="#id5">Enhancements</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#code-and-documentation-contributors">Code and Documentation Contributors</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#version-0-19">Version 0.19</a><ul>
-<li><a class="reference internal" href="#id4">Highlights</a></li>
-<li><a class="reference internal" href="#id5">Changed models</a></li>
-<li><a class="reference internal" href="#id6">Changelog</a><ul>
-<li><a class="reference internal" href="#id7">New features</a></li>
-<li><a class="reference internal" href="#id8">Enhancements</a></li>
-<li><a class="reference internal" href="#id9">Bug fixes</a></li>
+<li><a class="reference internal" href="#id6">Highlights</a></li>
+<li><a class="reference internal" href="#id7">Changed models</a></li>
+<li><a class="reference internal" href="#id8">Changelog</a><ul>
+<li><a class="reference internal" href="#id9">New features</a></li>
+<li><a class="reference internal" href="#id10">Enhancements</a></li>
+<li><a class="reference internal" href="#id11">Bug fixes</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id15">API changes summary</a></li>
-<li><a class="reference internal" href="#id16">Code and Documentation Contributors</a></li>
+<li><a class="reference internal" href="#id17">API changes summary</a></li>
+<li><a class="reference internal" href="#id18">Code and Documentation Contributors</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#previous-releases">Previous Releases</a></li>
@@ -351,11 +351,6 @@ random sampling procedures.</p>
 <p>Details are listed in the changelog below.</p>
 <p>(While we are trying to better inform users by providing this information, we
 cannot assure that this list is complete.)</p>
-<p><strong>Other backward incompatible change</strong> The vendored version of the joblib
-module is now found at <cite>sklearn.externals._joblib</cite> (<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/11166">#11166</a>). The
-main API of joblib is still exposed in <cite>sklearn.externals.joblib</cite>, but
-code doing imports of subpackages of <cite>sklearn.externals.joblib</cite> will
-break.</p>
 </div>
 <div class="section" id="changelog">
 <h2>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h2>
@@ -455,6 +450,12 @@ This applies to the dictionary and sparse code.
 <li>Partial AUC is available via <code class="docutils literal"><span class="pre">max_fpr</span></code> parameter in
 <a class="reference internal" href="modules/generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score" title="sklearn.metrics.roc_auc_score"><code class="xref py py-func docutils literal"><span class="pre">metrics.roc_auc_score</span></code></a>. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/3273">#3273</a> by
 <a class="reference external" href="https://github.com/Alexander-N">Alexander Niederbühl</a>.</li>
+<li>Added control over the normalization in
+<code class="xref py py-func docutils literal"><span class="pre">metrics.normalized_mutual_information_score</span></code> and
+<code class="xref py py-func docutils literal"><span class="pre">metrics.adjusted_mutual_information_score</span></code> via the <code class="docutils literal"><span class="pre">average_method</span></code>
+parameter. In version 0.22, the default normalizer for each will become
+the <em>arithmetic</em> mean of the entropies of each clustering. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/11124">#11124</a> by
+<a class="reference external" href="https://github.com/aryamccarthy">Arya McCarthy</a>.</li>
 <li>Added <code class="docutils literal"><span class="pre">output_dict</span></code> parameter in <a class="reference internal" href="modules/generated/sklearn.metrics.classification_report.html#sklearn.metrics.classification_report" title="sklearn.metrics.classification_report"><code class="xref py py-func docutils literal"><span class="pre">metrics.classification_report</span></code></a>
 to return classification statistics as dictionary.
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/11160">#11160</a> by <a class="reference external" href="https://github.com/danielbarkhorn">Dan Barkhorn</a>.</li>
@@ -466,8 +467,9 @@ consumption limits in chunked operations, such as the new
 <a class="reference internal" href="modules/generated/sklearn.metrics.pairwise_distances_chunked.html#sklearn.metrics.pairwise_distances_chunked" title="sklearn.metrics.pairwise_distances_chunked"><code class="xref py py-func docutils literal"><span class="pre">metrics.pairwise_distances_chunked</span></code></a>.  See <a class="reference internal" href="modules/computing.html#working-memory"><span class="std std-ref">Limiting Working Memory</span></a>.
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/10280">#10280</a> by <a class="reference external" href="http://joelnothman.com">Joel Nothman</a> and <a class="reference external" href="https://github.com/dalmia">Aman Dalmia</a>.</li>
 <li>An environment variable to use the site joblib instead of the vendored
-one was added (<a class="reference internal" href="modules/computing.html#environment-variable"><span class="std std-ref">Environment variables</span></a>).
-<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/11166">#11166</a> by <a class="reference external" href="http://gael-varoquaux.info">Gael Varoquaux</a></li>
+one was added (<a class="reference internal" href="modules/computing.html#environment-variable"><span class="std std-ref">Environment variables</span></a>). The main API of joblib is now
+exposed in <a class="reference internal" href="modules/classes.html#module-sklearn.utils" title="sklearn.utils"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.utils</span></code></a>.
+<a href="#id1"><span class="problematic" id="id2">:issue:`11166`by `Gael Varoquaux`_</span></a></li>
 </ul>
 </div>
 <div class="section" id="enhancements">
@@ -960,6 +962,16 @@ pairwise distances or squared distances. <a class="reference external" href="htt
 for <a class="reference internal" href="modules/generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score" title="sklearn.metrics.roc_auc_score"><code class="xref py py-func docutils literal"><span class="pre">metrics.roc_auc_score</span></code></a>. Moreover using <code class="docutils literal"><span class="pre">reorder=True</span></code> can hide bugs
 due to floating point error in the input.
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/9851">#9851</a> by <a class="reference external" href="https://github.com/qinhanmin2014">Hanmin Qin</a>.</li>
+<li>In <code class="xref py py-func docutils literal"><span class="pre">metrics.normalized_mutual_information_score</span></code> and
+<code class="xref py py-func docutils literal"><span class="pre">metrics.adjusted_mutual_information_score</span></code>,
+warn that <code class="docutils literal"><span class="pre">average_method</span></code>
+will have a new default value. In version 0.22, the default normalizer for each
+will become the <em>arithmetic</em> mean of the entropies of each clustering. Currently,
+<code class="xref py py-func docutils literal"><span class="pre">metrics.normalized_mutual_information_score</span></code> uses the default of
+<code class="docutils literal"><span class="pre">average_method='geometric'</span></code>, and <code class="xref py py-func docutils literal"><span class="pre">metrics.adjusted_mutual_information_score</span></code>
+uses the default of <code class="docutils literal"><span class="pre">average_method='max'</span></code> to match their behaviors in
+version 0.19.
+<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/11124">#11124</a> by <a class="reference external" href="https://github.com/aryamccarthy">Arya McCarthy</a>.</li>
 <li>The <code class="docutils literal"><span class="pre">batch_size</span></code> parameter to <a class="reference internal" href="modules/generated/sklearn.metrics.pairwise_distances_argmin_min.html#sklearn.metrics.pairwise_distances_argmin_min" title="sklearn.metrics.pairwise_distances_argmin_min"><code class="xref py py-func docutils literal"><span class="pre">metrics.pairwise_distances_argmin_min</span></code></a>
 and <a class="reference internal" href="modules/generated/sklearn.metrics.pairwise_distances_argmin.html#sklearn.metrics.pairwise_distances_argmin" title="sklearn.metrics.pairwise_distances_argmin"><code class="xref py py-func docutils literal"><span class="pre">metrics.pairwise_distances_argmin</span></code></a> is deprecated to be removed in
 v0.22.  It no longer has any effect, as batch size is determined by global
@@ -1100,8 +1112,8 @@ enhancements to features released in 0.19.0.</p>
 <p>Note there may be minor differences in TSNE output in this release (due to
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/9623">#9623</a>), in the case where multiple samples have equal distance to some
 sample.</p>
-<div class="section" id="id1">
-<h2>Changelog<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h2>Changelog<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="api-changes">
 <h3>API changes<a class="headerlink" href="#api-changes" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
@@ -1124,8 +1136,8 @@ processes implementation have been belatedly deprecated. <a class="reference ext
 <a class="reference external" href="https://github.com/thechargedneutron">Kumar Ashutosh</a>.</li>
 </ul>
 </div>
-<div class="section" id="id2">
-<h3>Bug fixes<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id4">
+<h3>Bug fixes<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>Avoid integer overflows in <a class="reference internal" href="modules/generated/sklearn.metrics.matthews_corrcoef.html#sklearn.metrics.matthews_corrcoef" title="sklearn.metrics.matthews_corrcoef"><code class="xref py py-func docutils literal"><span class="pre">metrics.matthews_corrcoef</span></code></a>.
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/9693">#9693</a> by <a class="reference external" href="https://github.com/sam-s">Sam Steingold</a>.</li>
@@ -1168,8 +1180,8 @@ metrics other than ‘euclidean’ and ‘precomputed’. <a class="reference ex
 Blum</a>.</li>
 </ul>
 </div>
-<div class="section" id="id3">
-<h3>Enhancements<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id5">
+<h3>Enhancements<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>Our test suite and <code class="xref py py-func docutils literal"><span class="pre">utils.estimator_checks.check_estimators</span></code> can now be
 run without Nose installed. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/9697">#9697</a> by <a class="reference external" href="https://github.com/massich">Joan Massich</a>.</li>
@@ -1199,8 +1211,8 @@ Van den Bossche, nielsenmarkus11</p>
 <div class="section" id="version-0-19">
 <h1>Version 0.19<a class="headerlink" href="#version-0-19" title="Permalink to this headline">¶</a></h1>
 <p><strong>August 12, 2017</strong></p>
-<div class="section" id="id4">
-<h2>Highlights<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id6">
+<h2>Highlights<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
 <p>We are excited to release a number of great new features including
 <a class="reference internal" href="modules/generated/sklearn.neighbors.LocalOutlierFactor.html#sklearn.neighbors.LocalOutlierFactor" title="sklearn.neighbors.LocalOutlierFactor"><code class="xref py py-class docutils literal"><span class="pre">neighbors.LocalOutlierFactor</span></code></a> for anomaly detection,
 <a class="reference internal" href="modules/generated/sklearn.preprocessing.QuantileTransformer.html#sklearn.preprocessing.QuantileTransformer" title="sklearn.preprocessing.QuantileTransformer"><code class="xref py py-class docutils literal"><span class="pre">preprocessing.QuantileTransformer</span></code></a> for robust feature transformation,
@@ -1228,8 +1240,8 @@ default Barnes-Hut approximation.  <a class="reference internal" href="modules/g
 LabelPropagation was previously broken. LabelSpreading should now correctly
 respect its alpha parameter.</p>
 </div>
-<div class="section" id="id5">
-<h2>Changed models<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id7">
+<h2>Changed models<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
 <p>The following estimators and functions, when fit with the same data and
 parameters, may produce different models from the previous version. This often
 occurs due to changes in the modelling logic (bug fixes or enhancements), or in
@@ -1259,10 +1271,10 @@ the time)</li>
 <p>(While we are trying to better inform users by providing this information, we
 cannot assure that this list is complete.)</p>
 </div>
-<div class="section" id="id6">
-<h2>Changelog<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id7">
-<h3>New features<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id8">
+<h2>Changelog<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id9">
+<h3>New features<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
 <p>Classifiers and regressors</p>
 <ul class="simple">
 <li>Added <a class="reference internal" href="modules/generated/sklearn.multioutput.ClassifierChain.html#sklearn.multioutput.ClassifierChain" title="sklearn.multioutput.ClassifierChain"><code class="xref py py-class docutils literal"><span class="pre">multioutput.ClassifierChain</span></code></a> for multi-label
@@ -1327,8 +1339,8 @@ function/class signature. <a class="reference external" href="https://github.com
 <a class="reference external" href="https://github.com/raghavrv">Raghav RV</a>.</li>
 </ul>
 </div>
-<div class="section" id="id8">
-<h3>Enhancements<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id10">
+<h3>Enhancements<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
 <p>Trees and ensembles</p>
 <ul class="simple">
 <li>The <code class="docutils literal"><span class="pre">min_weight_fraction_leaf</span></code> constraint in tree construction is now
@@ -1498,8 +1510,8 @@ passing a range of bytes to <a class="reference internal" href="modules/generate
 now accept non-finite features. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/8931">#8931</a> by <a class="reference external" href="https://github.com/Attractadore">&#64;Attractadore</a>.</li>
 </ul>
 </div>
-<div class="section" id="id9">
-<h3>Bug fixes<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id11">
+<h3>Bug fixes<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
 <p>Trees and ensembles</p>
 <ul class="simple">
 <li>Fixed a memory leak in trees when using trees with <code class="docutils literal"><span class="pre">criterion='mae'</span></code>.
@@ -1748,8 +1760,8 @@ among others.</li>
 </ul>
 </div>
 </div>
-<div class="section" id="id15">
-<h2>API changes summary<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id17">
+<h2>API changes summary<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h2>
 <p>Trees and ensembles</p>
 <ul class="simple">
 <li>Gradient boosting base models are no longer estimators. By <a class="reference external" href="http://peekaboo-vision.blogspot.com">Andreas Müller</a>.</li>
@@ -1917,8 +1929,8 @@ now only have <code class="docutils literal"><span class="pre">self.estimators_<
 </li>
 </ul>
 </div>
-<div class="section" id="id16">
-<h2>Code and Documentation Contributors<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id18">
+<h2>Code and Documentation Contributors<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h2>
 <p>Thanks to everyone who has contributed to the maintenance and improvement of the
 project since version 0.18, including:</p>
 <p>Joel Nothman, Loic Esteve, Andreas Mueller, Guillaume Lemaitre, Olivier Grisel,

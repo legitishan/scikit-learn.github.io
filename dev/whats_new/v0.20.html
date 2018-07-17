@@ -230,11 +230,6 @@ random sampling procedures.</p>
 <p>Details are listed in the changelog below.</p>
 <p>(While we are trying to better inform users by providing this information, we
 cannot assure that this list is complete.)</p>
-<p><strong>Other backward incompatible change</strong> The vendored version of the joblib
-module is now found at <cite>sklearn.externals._joblib</cite> (<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/11166">#11166</a>). The
-main API of joblib is still exposed in <cite>sklearn.externals.joblib</cite>, but
-code doing imports of subpackages of <cite>sklearn.externals.joblib</cite> will
-break.</p>
 </div>
 <div class="section" id="changelog">
 <h2>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h2>
@@ -334,6 +329,12 @@ This applies to the dictionary and sparse code.
 <li>Partial AUC is available via <code class="docutils literal"><span class="pre">max_fpr</span></code> parameter in
 <a class="reference internal" href="../modules/generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score" title="sklearn.metrics.roc_auc_score"><code class="xref py py-func docutils literal"><span class="pre">metrics.roc_auc_score</span></code></a>. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/3273">#3273</a> by
 <a class="reference external" href="https://github.com/Alexander-N">Alexander Niederbühl</a>.</li>
+<li>Added control over the normalization in
+<code class="xref py py-func docutils literal"><span class="pre">metrics.normalized_mutual_information_score</span></code> and
+<code class="xref py py-func docutils literal"><span class="pre">metrics.adjusted_mutual_information_score</span></code> via the <code class="docutils literal"><span class="pre">average_method</span></code>
+parameter. In version 0.22, the default normalizer for each will become
+the <em>arithmetic</em> mean of the entropies of each clustering. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/11124">#11124</a> by
+<a class="reference external" href="https://github.com/aryamccarthy">Arya McCarthy</a>.</li>
 <li>Added <code class="docutils literal"><span class="pre">output_dict</span></code> parameter in <a class="reference internal" href="../modules/generated/sklearn.metrics.classification_report.html#sklearn.metrics.classification_report" title="sklearn.metrics.classification_report"><code class="xref py py-func docutils literal"><span class="pre">metrics.classification_report</span></code></a>
 to return classification statistics as dictionary.
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/11160">#11160</a> by <a class="reference external" href="https://github.com/danielbarkhorn">Dan Barkhorn</a>.</li>
@@ -345,8 +346,9 @@ consumption limits in chunked operations, such as the new
 <a class="reference internal" href="../modules/generated/sklearn.metrics.pairwise_distances_chunked.html#sklearn.metrics.pairwise_distances_chunked" title="sklearn.metrics.pairwise_distances_chunked"><code class="xref py py-func docutils literal"><span class="pre">metrics.pairwise_distances_chunked</span></code></a>.  See <a class="reference internal" href="../modules/computing.html#working-memory"><span class="std std-ref">Limiting Working Memory</span></a>.
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/10280">#10280</a> by <a class="reference external" href="http://joelnothman.com">Joel Nothman</a> and <a class="reference external" href="https://github.com/dalmia">Aman Dalmia</a>.</li>
 <li>An environment variable to use the site joblib instead of the vendored
-one was added (<a class="reference internal" href="../modules/computing.html#environment-variable"><span class="std std-ref">Environment variables</span></a>).
-<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/11166">#11166</a> by <a class="reference external" href="http://gael-varoquaux.info">Gael Varoquaux</a></li>
+one was added (<a class="reference internal" href="../modules/computing.html#environment-variable"><span class="std std-ref">Environment variables</span></a>). The main API of joblib is now
+exposed in <a class="reference internal" href="../modules/classes.html#module-sklearn.utils" title="sklearn.utils"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.utils</span></code></a>.
+<a href="#id1"><span class="problematic" id="id2">:issue:`11166`by `Gael Varoquaux`_</span></a></li>
 </ul>
 </div>
 <div class="section" id="enhancements">
@@ -839,6 +841,16 @@ pairwise distances or squared distances. <a class="reference external" href="htt
 for <a class="reference internal" href="../modules/generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score" title="sklearn.metrics.roc_auc_score"><code class="xref py py-func docutils literal"><span class="pre">metrics.roc_auc_score</span></code></a>. Moreover using <code class="docutils literal"><span class="pre">reorder=True</span></code> can hide bugs
 due to floating point error in the input.
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/9851">#9851</a> by <a class="reference external" href="https://github.com/qinhanmin2014">Hanmin Qin</a>.</li>
+<li>In <code class="xref py py-func docutils literal"><span class="pre">metrics.normalized_mutual_information_score</span></code> and
+<code class="xref py py-func docutils literal"><span class="pre">metrics.adjusted_mutual_information_score</span></code>,
+warn that <code class="docutils literal"><span class="pre">average_method</span></code>
+will have a new default value. In version 0.22, the default normalizer for each
+will become the <em>arithmetic</em> mean of the entropies of each clustering. Currently,
+<code class="xref py py-func docutils literal"><span class="pre">metrics.normalized_mutual_information_score</span></code> uses the default of
+<code class="docutils literal"><span class="pre">average_method='geometric'</span></code>, and <code class="xref py py-func docutils literal"><span class="pre">metrics.adjusted_mutual_information_score</span></code>
+uses the default of <code class="docutils literal"><span class="pre">average_method='max'</span></code> to match their behaviors in
+version 0.19.
+<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/11124">#11124</a> by <a class="reference external" href="https://github.com/aryamccarthy">Arya McCarthy</a>.</li>
 <li>The <code class="docutils literal"><span class="pre">batch_size</span></code> parameter to <a class="reference internal" href="../modules/generated/sklearn.metrics.pairwise_distances_argmin_min.html#sklearn.metrics.pairwise_distances_argmin_min" title="sklearn.metrics.pairwise_distances_argmin_min"><code class="xref py py-func docutils literal"><span class="pre">metrics.pairwise_distances_argmin_min</span></code></a>
 and <a class="reference internal" href="../modules/generated/sklearn.metrics.pairwise_distances_argmin.html#sklearn.metrics.pairwise_distances_argmin" title="sklearn.metrics.pairwise_distances_argmin"><code class="xref py py-func docutils literal"><span class="pre">metrics.pairwise_distances_argmin</span></code></a> is deprecated to be removed in
 v0.22.  It no longer has any effect, as batch size is determined by global

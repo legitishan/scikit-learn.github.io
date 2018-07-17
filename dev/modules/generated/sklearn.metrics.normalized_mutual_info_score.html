@@ -205,12 +205,13 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.metrics" title="sklearn.metrics"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.metrics</span></code></a>.normalized_mutual_info_score<a class="headerlink" href="#sklearn-metrics-normalized-mutual-info-score" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.metrics.normalized_mutual_info_score">
-<code class="descclassname">sklearn.metrics.</code><code class="descname">normalized_mutual_info_score</code><span class="sig-paren">(</span><em>labels_true</em>, <em>labels_pred</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/52b6a66/sklearn/metrics/cluster/supervised.py#L716"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.metrics.normalized_mutual_info_score" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sklearn.metrics.</code><code class="descname">normalized_mutual_info_score</code><span class="sig-paren">(</span><em>labels_true</em>, <em>labels_pred</em>, <em>average_method=’warn’</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8e2c2aa/sklearn/metrics/cluster/supervised.py#L763"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.metrics.normalized_mutual_info_score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Normalized Mutual Information between two clusterings.</p>
 <p>Normalized Mutual Information (NMI) is an normalization of the Mutual
 Information (MI) score to scale the results between 0 (no mutual
 information) and 1 (perfect correlation). In this function, mutual
-information is normalized by <code class="docutils literal"><span class="pre">sqrt(H(labels_true)</span> <span class="pre">*</span> <span class="pre">H(labels_pred))</span></code>.</p>
+information is normalized by some generalized mean of <code class="docutils literal"><span class="pre">H(labels_true)</span></code>
+and <code class="docutils literal"><span class="pre">H(labels_pred))</span></code>, defined by the <cite>average_method</cite>.</p>
 <p>This measure is not adjusted for chance. Therefore
 <code class="xref py py-func docutils literal"><span class="pre">adjusted_mustual_info_score</span></code> might be preferred.</p>
 <p>This metric is independent of the absolute values of the labels:
@@ -232,6 +233,15 @@ on the same dataset when the real ground truth is not known.</p>
 <dt><strong>labels_pred</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array, shape = [n_samples]</span></dt>
 <dd><p class="first last">A clustering of the data into disjoint subsets.</p>
 </dd>
+<dt><strong>average_method</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string, optional (default: ‘warn’)</span></dt>
+<dd><p class="first">How to compute the normalizer in the denominator. Possible options
+are ‘min’, ‘geometric’, ‘arithmetic’, and ‘max’.
+If ‘warn’, ‘geometric’ will be used. The default will change to
+‘arithmetic’ in version 0.22.</p>
+<div class="last versionadded">
+<p><span class="versionmodified">New in version 0.20.</span></p>
+</div>
+</dd>
 </dl>
 </td>
 </tr>
@@ -247,6 +257,8 @@ on the same dataset when the real ground truth is not known.</p>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <dl class="last docutils">
+<dt><a class="reference internal" href="sklearn.metrics.v_measure_score.html#sklearn.metrics.v_measure_score" title="sklearn.metrics.v_measure_score"><code class="xref py py-obj docutils literal"><span class="pre">v_measure_score</span></code></a></dt>
+<dd>V-Measure (NMI with arithmetic mean option.)</dd>
 <dt><a class="reference internal" href="sklearn.metrics.adjusted_rand_score.html#sklearn.metrics.adjusted_rand_score" title="sklearn.metrics.adjusted_rand_score"><code class="xref py py-obj docutils literal"><span class="pre">adjusted_rand_score</span></code></a></dt>
 <dd>Adjusted Rand Index</dd>
 <dt><a class="reference internal" href="sklearn.metrics.adjusted_mutual_info_score.html#sklearn.metrics.adjusted_mutual_info_score" title="sklearn.metrics.adjusted_mutual_info_score"><code class="xref py py-obj docutils literal"><span class="pre">adjusted_mutual_info_score</span></code></a></dt>
