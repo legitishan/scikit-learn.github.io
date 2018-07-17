@@ -92,7 +92,7 @@ high-dimensional categorical embedding of the data.
 
     # Supervised transformation based on random forests
     rf = RandomForestClassifier(max_depth=3, n_estimators=n_estimator)
-    rf_enc = OneHotEncoder()
+    rf_enc = OneHotEncoder(categories='auto')
     rf_lm = LogisticRegression()
     rf.fit(X_train, y_train)
     rf_enc.fit(rf.apply(X_train))
@@ -102,7 +102,7 @@ high-dimensional categorical embedding of the data.
     fpr_rf_lm, tpr_rf_lm, _ = roc_curve(y_test, y_pred_rf_lm)
 
     grd = GradientBoostingClassifier(n_estimators=n_estimator)
-    grd_enc = OneHotEncoder()
+    grd_enc = OneHotEncoder(categories='auto')
     grd_lm = LogisticRegression()
     grd.fit(X_train, y_train)
     grd_enc.fit(grd.apply(X_train)[:, :, 0])
@@ -150,7 +150,7 @@ high-dimensional categorical embedding of the data.
     plt.legend(loc='best')
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  2.036 seconds)
+**Total running time of the script:** ( 0 minutes  2.281 seconds)
 
 
 .. _sphx_glr_download_auto_examples_ensemble_plot_feature_transformation.py:
