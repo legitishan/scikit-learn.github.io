@@ -600,7 +600,7 @@ preprocessing or a specific feature extraction method:</p>
 variable, but apply a <a class="reference internal" href="generated/sklearn.feature_extraction.text.CountVectorizer.html#sklearn.feature_extraction.text.CountVectorizer" title="sklearn.feature_extraction.text.CountVectorizer"><code class="xref py py-class docutils literal"><span class="pre">feature_extraction.text.CountVectorizer</span></code></a> to the <code class="docutils literal"><span class="pre">'title'</span></code> column.
 As we might use multiple feature extraction methods on the same column, we give
 each transformer a unique name, say <code class="docutils literal"><span class="pre">'city_category'</span></code> and <code class="docutils literal"><span class="pre">'title_bow'</span></code>.
-We can ignore the remaining rating columns by setting <code class="docutils literal"><span class="pre">remainder='drop'</span></code>:</p>
+By default, the remaining rating columns are ignored (<code class="docutils literal"><span class="pre">remainder='drop'</span></code>):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.compose</span> <span class="k">import</span> <span class="n">ColumnTransformer</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="k">import</span> <span class="n">CountVectorizer</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">column_trans</span> <span class="o">=</span> <span class="n">ColumnTransformer</span><span class="p">(</span>
@@ -679,7 +679,7 @@ above example would be:</p>
 <span class="gp">... </span>    <span class="p">(</span><span class="s1">&#39;city&#39;</span><span class="p">,</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">analyzer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">])),</span>
 <span class="gp">... </span>    <span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="n">CountVectorizer</span><span class="p">()))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">column_trans</span> 
-<span class="go">ColumnTransformer(n_jobs=1, remainder=&#39;passthrough&#39;, transformer_weights=None,</span>
+<span class="go">ColumnTransformer(n_jobs=1, remainder=&#39;drop&#39;, transformer_weights=None,</span>
 <span class="go">         transformers=[(&#39;countvectorizer-1&#39;, ...)</span>
 </pre></div>
 </div>
