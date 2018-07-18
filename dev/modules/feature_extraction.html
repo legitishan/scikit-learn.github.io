@@ -192,7 +192,10 @@
 <li><a class="reference internal" href="#text-feature-extraction">4.2.3. Text feature extraction</a><ul>
 <li><a class="reference internal" href="#the-bag-of-words-representation">4.2.3.1. The Bag of Words representation</a></li>
 <li><a class="reference internal" href="#sparsity">4.2.3.2. Sparsity</a></li>
-<li><a class="reference internal" href="#common-vectorizer-usage">4.2.3.3. Common Vectorizer usage</a></li>
+<li><a class="reference internal" href="#common-vectorizer-usage">4.2.3.3. Common Vectorizer usage</a><ul>
+<li><a class="reference internal" href="#using-stop-words">4.2.3.3.1. Using stop words</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#tfidf-term-weighting">4.2.3.4. Tf–idf term weighting</a></li>
 <li><a class="reference internal" href="#decoding-text-files">4.2.3.5. Decoding text files</a></li>
 <li><a class="reference internal" href="#applications-and-examples">4.2.3.6. Applications and examples</a></li>
@@ -557,6 +560,36 @@ last document:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X_2</span><span class="p">[:,</span> <span class="n">feature_index</span><span class="p">]</span>     
 <span class="go">array([0, 0, 0, 1]...)</span>
 </pre></div>
+</div>
+<div class="section" id="using-stop-words">
+<span id="stop-words"></span><h4>4.2.3.3.1. Using stop words<a class="headerlink" href="#using-stop-words" title="Permalink to this headline">¶</a></h4>
+<p>Stop words are words like “and”, “the”, “him”, which are presumed to be
+uninformative in representing the content of a text, and which may be
+removed to avoid them being construed as signal for prediction.  Sometimes,
+however, similar words are useful for prediction, such as in classifying
+writing style or personality.</p>
+<p>There are several known issues in our provided ‘english’ stop word list. See
+<a class="reference internal" href="#nqy18" id="id5">[NQY18]</a>.</p>
+<p>Please take care in choosing a stop word list.
+Popular stop word lists may include words that are highly informative to
+some tasks, such as <em>computer</em>.</p>
+<p>You should also make sure that the stop word list has had the same
+preprocessing and tokenization applied as the one used in the vectorizer.
+The word <em>we’ve</em> is split into <em>we</em> and <em>ve</em> by CountVectorizer’s default
+tokenizer, so if <em>we’ve</em> is in <code class="docutils literal"><span class="pre">stop_words</span></code>, but <em>ve</em> is not, <em>ve</em> will
+be retained from <em>we’ve</em> in transformed text.  Our vectorizers will try to
+identify and warn about some kinds of inconsistencies.</p>
+<div class="topic">
+<p class="topic-title first">References</p>
+<table class="docutils citation" frame="void" id="nqy18" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id5">[NQY18]</a></td><td>J. Nothman, H. Qin and R. Yurchak (2018).
+<a class="reference external" href="http://aclweb.org/anthology/W18-2502">“Stop Word Lists in Free Open-source Software Packages”</a>.
+In <em>Proc. Workshop for NLP Open Source Software</em>.</td></tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 <div class="section" id="tfidf-term-weighting">
@@ -1056,7 +1089,7 @@ that do not use an explicit word separator such as whitespace.</p>
 </div>
 </div>
 <div class="section" id="image-feature-extraction">
-<span id="id5"></span><h2>4.2.4. Image feature extraction<a class="headerlink" href="#image-feature-extraction" title="Permalink to this headline">¶</a></h2>
+<span id="id6"></span><h2>4.2.4. Image feature extraction<a class="headerlink" href="#image-feature-extraction" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="patch-extraction">
 <h3>4.2.4.1. Patch extraction<a class="headerlink" href="#patch-extraction" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="generated/sklearn.feature_extraction.image.extract_patches_2d.html#sklearn.feature_extraction.image.extract_patches_2d" title="sklearn.feature_extraction.image.extract_patches_2d"><code class="xref py py-func docutils literal"><span class="pre">extract_patches_2d</span></code></a> function extracts patches from an image stored
