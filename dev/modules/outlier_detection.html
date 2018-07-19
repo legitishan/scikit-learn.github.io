@@ -190,9 +190,9 @@
 <li><a class="reference internal" href="#fitting-an-elliptic-envelope">2.7.3.1. Fitting an elliptic envelope</a></li>
 <li><a class="reference internal" href="#isolation-forest">2.7.3.2. Isolation Forest</a></li>
 <li><a class="reference internal" href="#local-outlier-factor">2.7.3.3. Local Outlier Factor</a></li>
-<li><a class="reference internal" href="#one-class-svm-versus-elliptic-envelope-versus-isolation-forest-versus-lof">2.7.3.4. One-class SVM versus Elliptic Envelope versus Isolation Forest versus LOF</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#novelty-detection-with-local-outlier-factor">2.7.4. Novelty detection with Local Outlier Factor</a></li>
 </ul>
 </li>
 </ul>
@@ -223,16 +223,29 @@ distinction must be made:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">novelty detection:</th></tr>
-<tr class="field-odd field"><td>&#160;</td><td class="field-body">The training data is not polluted by outliers, and we are interested in
-detecting anomalies in new observations.</td>
+<tr class="field-odd field"><th class="field-name" colspan="2">outlier detection:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body">The training data contains outliers which are defined as observations that
+are far from the others. Outlier detection estimators thus try to fit the
+regions where the training data is the most concentrated, ignoring the
+deviant observations.</td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">outlier detection:</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body">The training data contains outliers, and we need to fit the central
-mode of the training data, ignoring the deviant observations.</td>
+<tr class="field-even field"><th class="field-name" colspan="2">novelty detection:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body">The training data is not polluted by outliers and we are interested in
+detecting whether a <strong>new</strong> observation is an outlier. In this context an
+outlier is also called a novelty.</td>
 </tr>
 </tbody>
 </table>
+<p>Outlier detection and novelty detection are both used for anomaly
+detection, where one is interested in detecting abnormal or unusual
+observations. Outlier detection is then also known as unsupervised anomaly
+detection and novelty detection as semi-supervised anomaly detection. In the
+context of outlier detection, the outliers/anomalies cannot form a
+dense cluster as available estimators assume that the outliers/anomalies are
+located in low density regions. On the contrary, in the context of novelty
+detection, novelties/anomalies can form a dense cluster as long as they are in
+a low density region of the training data, considered as normal in this
+context.</p>
 <p>The scikit-learn project provides a set of machine learning tools that
 can be used both for novelty or outliers detection. This strategy is
 implemented with objects learning in an unsupervised way from the data:</p>
@@ -256,13 +269,50 @@ inliers:</p>
 </pre></div>
 </div>
 <p>Note that <a class="reference internal" href="generated/sklearn.neighbors.LocalOutlierFactor.html#sklearn.neighbors.LocalOutlierFactor" title="sklearn.neighbors.LocalOutlierFactor"><code class="xref py py-class docutils literal"><span class="pre">neighbors.LocalOutlierFactor</span></code></a> does not support
-<code class="docutils literal"><span class="pre">predict</span></code> and <code class="docutils literal"><span class="pre">decision_function</span></code> methods, as this algorithm is
-purely transductive and is thus not designed to deal with new data.</p>
+<code class="docutils literal"><span class="pre">predict</span></code>, <code class="docutils literal"><span class="pre">decision_function</span></code> and <code class="docutils literal"><span class="pre">score_samples</span></code> methods by default
+but only a <code class="docutils literal"><span class="pre">fit_predict</span></code> method, as this estimator was originally meant to
+be applied for outlier detection. The scores of abnormality of the training
+samples are accessible through the <code class="docutils literal"><span class="pre">negative_outlier_factor_</span></code> attribute.</p>
+<p>If you really want to use <a class="reference internal" href="generated/sklearn.neighbors.LocalOutlierFactor.html#sklearn.neighbors.LocalOutlierFactor" title="sklearn.neighbors.LocalOutlierFactor"><code class="xref py py-class docutils literal"><span class="pre">neighbors.LocalOutlierFactor</span></code></a> for novelty
+detection, i.e. predict labels or compute the score of abnormality of new
+unseen data, you can instantiate the estimator with the <code class="docutils literal"><span class="pre">novelty</span></code> parameter
+set to <code class="docutils literal"><span class="pre">True</span></code> before fitting the estimator. In this case, <code class="docutils literal"><span class="pre">fit_predict</span></code> is
+not available.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p><strong>Novelty detection with Local Outlier Factor</strong></p>
+<p class="last">When <code class="docutils literal"><span class="pre">novelty</span></code> is set to <code class="docutils literal"><span class="pre">True</span></code> be aware that you must only use
+<code class="docutils literal"><span class="pre">predict</span></code>, <code class="docutils literal"><span class="pre">decision_function</span></code> and <code class="docutils literal"><span class="pre">score_samples</span></code> on new unseen data
+and not on the training samples as this would lead to wrong results.
+The scores of abnormality of the training samples are always accessible
+through the <code class="docutils literal"><span class="pre">negative_outlier_factor_</span></code> attribute.</p>
+</div>
 <div class="section" id="overview-of-outlier-detection-methods">
 <h2>2.7.1. Overview of outlier detection methods<a class="headerlink" href="#overview-of-outlier-detection-methods" title="Permalink to this headline">¶</a></h2>
-<div class="figure align-center" id="id3">
+<p>A comparison of the outlier detection algorithms in scikit-learn. Local
+Outlier Factor (LOF) does not show a decision boundary in black as it
+has no predict method to be applied on new data when it is used for outlier
+detection.</p>
+<div class="figure align-center">
 <a class="reference external image-reference" href="../auto_examples/plot_anomaly_comparison.html"><img alt="../_images/sphx_glr_plot_anomaly_comparison_0011.png" src="../_images/sphx_glr_plot_anomaly_comparison_0011.png" style="width: 550.0px; height: 625.0px;" /></a>
-<p class="caption"><span class="caption-text">A comparison of the outlier detection algorithms in scikit-learn</span></p>
+</div>
+<p><a class="reference internal" href="generated/sklearn.ensemble.IsolationForest.html#sklearn.ensemble.IsolationForest" title="sklearn.ensemble.IsolationForest"><code class="xref py py-class docutils literal"><span class="pre">ensemble.IsolationForest</span></code></a> and <a class="reference internal" href="generated/sklearn.neighbors.LocalOutlierFactor.html#sklearn.neighbors.LocalOutlierFactor" title="sklearn.neighbors.LocalOutlierFactor"><code class="xref py py-class docutils literal"><span class="pre">neighbors.LocalOutlierFactor</span></code></a>
+perform reasonably well on the data sets considered here.
+The <a class="reference internal" href="generated/sklearn.svm.OneClassSVM.html#sklearn.svm.OneClassSVM" title="sklearn.svm.OneClassSVM"><code class="xref py py-class docutils literal"><span class="pre">svm.OneClassSVM</span></code></a> is known to be sensitive to outliers and thus
+does not perform very well for outlier detection. Finally,
+<a class="reference internal" href="generated/sklearn.covariance.EllipticEnvelope.html#sklearn.covariance.EllipticEnvelope" title="sklearn.covariance.EllipticEnvelope"><code class="xref py py-class docutils literal"><span class="pre">covariance.EllipticEnvelope</span></code></a> assumes the data is Gaussian and learns
+an ellipse. For more details on the different estimators refer to the example
+<a class="reference internal" href="../auto_examples/plot_anomaly_comparison.html#sphx-glr-auto-examples-plot-anomaly-comparison-py"><span class="std std-ref">Comparing anomaly detection algorithms for outlier detection on toy datasets</span></a> and the sections
+hereunder.</p>
+<div class="topic">
+<p class="topic-title first">Examples:</p>
+<ul class="simple">
+<li>See <a class="reference internal" href="../auto_examples/plot_anomaly_comparison.html#sphx-glr-auto-examples-plot-anomaly-comparison-py"><span class="std std-ref">Comparing anomaly detection algorithms for outlier detection on toy datasets</span></a>
+for a comparison of the <a class="reference internal" href="generated/sklearn.svm.OneClassSVM.html#sklearn.svm.OneClassSVM" title="sklearn.svm.OneClassSVM"><code class="xref py py-class docutils literal"><span class="pre">svm.OneClassSVM</span></code></a>, the
+<a class="reference internal" href="generated/sklearn.ensemble.IsolationForest.html#sklearn.ensemble.IsolationForest" title="sklearn.ensemble.IsolationForest"><code class="xref py py-class docutils literal"><span class="pre">ensemble.IsolationForest</span></code></a>, the
+<a class="reference internal" href="generated/sklearn.neighbors.LocalOutlierFactor.html#sklearn.neighbors.LocalOutlierFactor" title="sklearn.neighbors.LocalOutlierFactor"><code class="xref py py-class docutils literal"><span class="pre">neighbors.LocalOutlierFactor</span></code></a> and
+<a class="reference internal" href="generated/sklearn.covariance.EllipticEnvelope.html#sklearn.covariance.EllipticEnvelope" title="sklearn.covariance.EllipticEnvelope"><code class="xref py py-class docutils literal"><span class="pre">covariance.EllipticEnvelope</span></code></a>.</li>
+</ul>
 </div>
 </div>
 <div class="section" id="novelty-detection">
@@ -379,7 +429,7 @@ lengths for particular samples, they are highly likely to be anomalies.</p>
 <ul class="simple">
 <li>See <a class="reference internal" href="../auto_examples/ensemble/plot_isolation_forest.html#sphx-glr-auto-examples-ensemble-plot-isolation-forest-py"><span class="std std-ref">IsolationForest example</span></a> for
 an illustration of the use of IsolationForest.</li>
-<li>See <a class="reference internal" href="../auto_examples/covariance/plot_outlier_detection.html#sphx-glr-auto-examples-covariance-plot-outlier-detection-py"><span class="std std-ref">Outlier detection with several methods.</span></a> for a
+<li>See <a class="reference internal" href="../auto_examples/plot_anomaly_comparison.html#sphx-glr-auto-examples-plot-anomaly-comparison-py"><span class="std std-ref">Comparing anomaly detection algorithms for outlier detection on toy datasets</span></a> for a
 comparison of <a class="reference internal" href="generated/sklearn.ensemble.IsolationForest.html#sklearn.ensemble.IsolationForest" title="sklearn.ensemble.IsolationForest"><code class="xref py py-class docutils literal"><span class="pre">ensemble.IsolationForest</span></code></a> with
 <a class="reference internal" href="generated/sklearn.neighbors.LocalOutlierFactor.html#sklearn.neighbors.LocalOutlierFactor" title="sklearn.neighbors.LocalOutlierFactor"><code class="xref py py-class docutils literal"><span class="pre">neighbors.LocalOutlierFactor</span></code></a>,
 <a class="reference internal" href="generated/sklearn.svm.OneClassSVM.html#sklearn.svm.OneClassSVM" title="sklearn.svm.OneClassSVM"><code class="xref py py-class docutils literal"><span class="pre">svm.OneClassSVM</span></code></a> (tuned to perform like an outlier detection
@@ -425,18 +475,27 @@ properties of datasets into consideration: it can perform well even in datasets
 where abnormal samples have different underlying densities.
 The question is not, how isolated the sample is, but how isolated it is
 with respect to the surrounding neighborhood.</p>
+<p>When applying LOF for outlier detection, there are no <code class="docutils literal"><span class="pre">predict</span></code>,
+<code class="docutils literal"><span class="pre">decision_function</span></code> and <code class="docutils literal"><span class="pre">score_samples</span></code> methods but only a <code class="docutils literal"><span class="pre">fit_predict</span></code>
+method. The scores of abnormality of the training samples are accessible
+through the <code class="docutils literal"><span class="pre">negative_outlier_factor_</span></code> attribute.
+Note that <code class="docutils literal"><span class="pre">predict</span></code>, <code class="docutils literal"><span class="pre">decision_function</span></code> and <code class="docutils literal"><span class="pre">score_samples</span></code> can be used
+on new unseen data when LOF is applied for novelty detection, i.e. when the
+<code class="docutils literal"><span class="pre">novelty</span></code> parameter is set to <code class="docutils literal"><span class="pre">True</span></code>. See <a class="reference internal" href="#novelty-with-lof"><span class="std std-ref">Novelty detection with Local Outlier Factor</span></a>.</p>
 <p>This strategy is illustrated below.</p>
 <div class="figure align-center">
-<a class="reference external image-reference" href="../auto_examples/neighbors/plot_lof.html"><img alt="../_images/sphx_glr_plot_lof_0011.png" src="../_images/sphx_glr_plot_lof_0011.png" style="width: 480.0px; height: 360.0px;" /></a>
+<a class="reference external image-reference" href="../auto_examples/neighbors/sphx_glr_plot_lof_outlier_detection.html"><img alt="../_images/sphx_glr_plot_lof_outlier_detection_0011.png" src="../_images/sphx_glr_plot_lof_outlier_detection_0011.png" style="width: 480.0px; height: 360.0px;" /></a>
 </div>
 <div class="topic">
 <p class="topic-title first">Examples:</p>
 <ul class="simple">
-<li>See <a class="reference internal" href="../auto_examples/neighbors/plot_lof.html#sphx-glr-auto-examples-neighbors-plot-lof-py"><span class="std std-ref">Anomaly detection with Local Outlier Factor (LOF)</span></a> for
-an illustration of the use of <a class="reference internal" href="generated/sklearn.neighbors.LocalOutlierFactor.html#sklearn.neighbors.LocalOutlierFactor" title="sklearn.neighbors.LocalOutlierFactor"><code class="xref py py-class docutils literal"><span class="pre">neighbors.LocalOutlierFactor</span></code></a>.</li>
-<li>See <a class="reference internal" href="../auto_examples/covariance/plot_outlier_detection.html#sphx-glr-auto-examples-covariance-plot-outlier-detection-py"><span class="std std-ref">Outlier detection with several methods.</span></a> for a
-comparison with other anomaly detection methods.</li>
+<li>See <a class="reference internal" href="../auto_examples/neighbors/plot_lof_outlier_detection.html#sphx-glr-auto-examples-neighbors-plot-lof-outlier-detection-py"><span class="std std-ref">Outlier detection with Local Outlier Factor (LOF)</span></a></li>
 </ul>
+<p>for an illustration of the use of <a class="reference internal" href="generated/sklearn.neighbors.LocalOutlierFactor.html#sklearn.neighbors.LocalOutlierFactor" title="sklearn.neighbors.LocalOutlierFactor"><code class="xref py py-class docutils literal"><span class="pre">neighbors.LocalOutlierFactor</span></code></a>.</p>
+<ul class="simple">
+<li>See <a class="reference internal" href="../auto_examples/plot_anomaly_comparison.html#sphx-glr-auto-examples-plot-anomaly-comparison-py"><span class="std std-ref">Comparing anomaly detection algorithms for outlier detection on toy datasets</span></a> for a</li>
+</ul>
+<p>comparison with other anomaly detection methods.</p>
 </div>
 <div class="topic">
 <p class="topic-title first">References:</p>
@@ -447,67 +506,65 @@ Proc. ACM SIGMOD</li>
 </ul>
 </div>
 </div>
-<div class="section" id="one-class-svm-versus-elliptic-envelope-versus-isolation-forest-versus-lof">
-<h3>2.7.3.4. One-class SVM versus Elliptic Envelope versus Isolation Forest versus LOF<a class="headerlink" href="#one-class-svm-versus-elliptic-envelope-versus-isolation-forest-versus-lof" title="Permalink to this headline">¶</a></h3>
-<p>Strictly-speaking, the One-class SVM is not an outlier-detection method,
-but a novelty-detection method: its training set should not be
-contaminated by outliers as it may fit them. That said, outlier detection
-in high-dimension, or without any assumptions on the distribution of the
-inlying data is very challenging, and a One-class SVM gives useful
-results in these situations.</p>
-<p>The examples below illustrate how the performance of the
-<a class="reference internal" href="generated/sklearn.covariance.EllipticEnvelope.html#sklearn.covariance.EllipticEnvelope" title="sklearn.covariance.EllipticEnvelope"><code class="xref py py-class docutils literal"><span class="pre">covariance.EllipticEnvelope</span></code></a> degrades as the data is less and
-less unimodal. The <a class="reference internal" href="generated/sklearn.svm.OneClassSVM.html#sklearn.svm.OneClassSVM" title="sklearn.svm.OneClassSVM"><code class="xref py py-class docutils literal"><span class="pre">svm.OneClassSVM</span></code></a> works better on data with
-multiple modes and <a class="reference internal" href="generated/sklearn.ensemble.IsolationForest.html#sklearn.ensemble.IsolationForest" title="sklearn.ensemble.IsolationForest"><code class="xref py py-class docutils literal"><span class="pre">ensemble.IsolationForest</span></code></a> and
-<a class="reference internal" href="generated/sklearn.neighbors.LocalOutlierFactor.html#sklearn.neighbors.LocalOutlierFactor" title="sklearn.neighbors.LocalOutlierFactor"><code class="xref py py-class docutils literal"><span class="pre">neighbors.LocalOutlierFactor</span></code></a> perform well in every cases.</p>
-<table border="1" class="colwidths-given docutils" id="id4">
-<caption><span class="caption-text"><strong>Comparing One-class SVM, Isolation Forest, LOF, and Elliptic Envelope</strong></span><a class="headerlink" href="#id4" title="Permalink to this table">¶</a></caption>
+</div>
+<div class="section" id="novelty-detection-with-local-outlier-factor">
+<span id="novelty-with-lof"></span><h2>2.7.4. Novelty detection with Local Outlier Factor<a class="headerlink" href="#novelty-detection-with-local-outlier-factor" title="Permalink to this headline">¶</a></h2>
+<p>To use <a class="reference internal" href="generated/sklearn.neighbors.LocalOutlierFactor.html#sklearn.neighbors.LocalOutlierFactor" title="sklearn.neighbors.LocalOutlierFactor"><code class="xref py py-class docutils literal"><span class="pre">neighbors.LocalOutlierFactor</span></code></a> for novelty detection, i.e.
+predict labels or compute the score of abnormality of new unseen data, you
+need to instantiate the estimator with the <code class="docutils literal"><span class="pre">novelty</span></code> parameter
+set to <code class="docutils literal"><span class="pre">True</span></code> before fitting the estimator:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">lof</span> <span class="o">=</span> <span class="n">LocalOutlierFactor</span><span class="p">(</span><span class="n">novelty</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">lof</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that <code class="docutils literal"><span class="pre">fit_predict</span></code> is not available in this case.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p><strong>Novelty detection with Local Outlier Factor`</strong></p>
+<p class="last">When <code class="docutils literal"><span class="pre">novelty</span></code> is set to <code class="docutils literal"><span class="pre">True</span></code> be aware that you must only use
+<code class="docutils literal"><span class="pre">predict</span></code>, <code class="docutils literal"><span class="pre">decision_function</span></code> and <code class="docutils literal"><span class="pre">score_samples</span></code> on new unseen data
+and not on the training samples as this would lead to wrong results.
+The scores of abnormality of the training samples are always accessible
+through the <code class="docutils literal"><span class="pre">negative_outlier_factor_</span></code> attribute.</p>
+</div>
+<p>The behavior of LOF is summarized in the following table.</p>
+<table border="1" class="docutils">
 <colgroup>
-<col width="40%" />
-<col width="60%" />
+<col width="27%" />
+<col width="44%" />
+<col width="29%" />
 </colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Method</th>
+<th class="head">Outlier detection</th>
+<th class="head">Novelty detection</th>
+</tr>
+</thead>
 <tbody valign="top">
-<tr class="row-odd"><td>For a inlier mode well-centered and elliptic, the
-<a class="reference internal" href="generated/sklearn.svm.OneClassSVM.html#sklearn.svm.OneClassSVM" title="sklearn.svm.OneClassSVM"><code class="xref py py-class docutils literal"><span class="pre">svm.OneClassSVM</span></code></a> is not able to benefit from the
-rotational symmetry of the inlier population. In addition, it
-fits a bit the outliers present in the training set. On the
-opposite, the decision rule based on fitting an
-<a class="reference internal" href="generated/sklearn.covariance.EllipticEnvelope.html#sklearn.covariance.EllipticEnvelope" title="sklearn.covariance.EllipticEnvelope"><code class="xref py py-class docutils literal"><span class="pre">covariance.EllipticEnvelope</span></code></a> learns an ellipse, which
-fits well the inlier distribution. The <a class="reference internal" href="generated/sklearn.ensemble.IsolationForest.html#sklearn.ensemble.IsolationForest" title="sklearn.ensemble.IsolationForest"><code class="xref py py-class docutils literal"><span class="pre">ensemble.IsolationForest</span></code></a>
-and <a class="reference internal" href="generated/sklearn.neighbors.LocalOutlierFactor.html#sklearn.neighbors.LocalOutlierFactor" title="sklearn.neighbors.LocalOutlierFactor"><code class="xref py py-class docutils literal"><span class="pre">neighbors.LocalOutlierFactor</span></code></a> perform as well.</td>
-<td><a class="reference external" href="../auto_examples/covariance/plot_outlier_detection.html"><img alt="outlier1" src="../_images/sphx_glr_plot_outlier_detection_0011.png" style="width: 450.0px; height: 350.0px;" /></a></td>
+<tr class="row-even"><td><cite>fit_predict</cite></td>
+<td>OK</td>
+<td>Not available</td>
 </tr>
-<tr class="row-even"><td>As the inlier distribution becomes bimodal, the
-<a class="reference internal" href="generated/sklearn.covariance.EllipticEnvelope.html#sklearn.covariance.EllipticEnvelope" title="sklearn.covariance.EllipticEnvelope"><code class="xref py py-class docutils literal"><span class="pre">covariance.EllipticEnvelope</span></code></a> does not fit well the
-inliers. However, we can see that <a class="reference internal" href="generated/sklearn.ensemble.IsolationForest.html#sklearn.ensemble.IsolationForest" title="sklearn.ensemble.IsolationForest"><code class="xref py py-class docutils literal"><span class="pre">ensemble.IsolationForest</span></code></a>,
-<a class="reference internal" href="generated/sklearn.svm.OneClassSVM.html#sklearn.svm.OneClassSVM" title="sklearn.svm.OneClassSVM"><code class="xref py py-class docutils literal"><span class="pre">svm.OneClassSVM</span></code></a> and <a class="reference internal" href="generated/sklearn.neighbors.LocalOutlierFactor.html#sklearn.neighbors.LocalOutlierFactor" title="sklearn.neighbors.LocalOutlierFactor"><code class="xref py py-class docutils literal"><span class="pre">neighbors.LocalOutlierFactor</span></code></a>
-have difficulties to detect the two modes,
-and that the <a class="reference internal" href="generated/sklearn.svm.OneClassSVM.html#sklearn.svm.OneClassSVM" title="sklearn.svm.OneClassSVM"><code class="xref py py-class docutils literal"><span class="pre">svm.OneClassSVM</span></code></a>
-tends to overfit: because it has no model of inliers, it
-interprets a region where, by chance some outliers are
-clustered, as inliers.</td>
-<td><a class="reference external" href="../auto_examples/covariance/plot_outlier_detection.html"><img alt="outlier2" src="../_images/sphx_glr_plot_outlier_detection_0021.png" style="width: 450.0px; height: 350.0px;" /></a></td>
+<tr class="row-odd"><td><cite>predict</cite></td>
+<td>Not available</td>
+<td>Use only on test data</td>
 </tr>
-<tr class="row-odd"><td>If the inlier distribution is strongly non Gaussian, the
-<a class="reference internal" href="generated/sklearn.svm.OneClassSVM.html#sklearn.svm.OneClassSVM" title="sklearn.svm.OneClassSVM"><code class="xref py py-class docutils literal"><span class="pre">svm.OneClassSVM</span></code></a> is able to recover a reasonable
-approximation as well as <a class="reference internal" href="generated/sklearn.ensemble.IsolationForest.html#sklearn.ensemble.IsolationForest" title="sklearn.ensemble.IsolationForest"><code class="xref py py-class docutils literal"><span class="pre">ensemble.IsolationForest</span></code></a>
-and <a class="reference internal" href="generated/sklearn.neighbors.LocalOutlierFactor.html#sklearn.neighbors.LocalOutlierFactor" title="sklearn.neighbors.LocalOutlierFactor"><code class="xref py py-class docutils literal"><span class="pre">neighbors.LocalOutlierFactor</span></code></a>,
-whereas the <a class="reference internal" href="generated/sklearn.covariance.EllipticEnvelope.html#sklearn.covariance.EllipticEnvelope" title="sklearn.covariance.EllipticEnvelope"><code class="xref py py-class docutils literal"><span class="pre">covariance.EllipticEnvelope</span></code></a> completely fails.</td>
-<td><a class="reference external" href="../auto_examples/covariance/plot_outlier_detection.html"><img alt="outlier3" src="../_images/sphx_glr_plot_outlier_detection_0031.png" style="width: 450.0px; height: 350.0px;" /></a></td>
+<tr class="row-even"><td><cite>decision_function</cite></td>
+<td>Not available</td>
+<td>Use only on test data</td>
+</tr>
+<tr class="row-odd"><td><cite>score_samples</cite></td>
+<td>Use <cite>negative_outlier_factor_</cite></td>
+<td>Use only on test data</td>
 </tr>
 </tbody>
 </table>
-<div class="topic">
-<p class="topic-title first">Examples:</p>
-<ul class="simple">
-<li>See <a class="reference internal" href="../auto_examples/covariance/plot_outlier_detection.html#sphx-glr-auto-examples-covariance-plot-outlier-detection-py"><span class="std std-ref">Outlier detection with several methods.</span></a> for a
-comparison of the <a class="reference internal" href="generated/sklearn.svm.OneClassSVM.html#sklearn.svm.OneClassSVM" title="sklearn.svm.OneClassSVM"><code class="xref py py-class docutils literal"><span class="pre">svm.OneClassSVM</span></code></a> (tuned to perform like
-an outlier detection method), the <a class="reference internal" href="generated/sklearn.ensemble.IsolationForest.html#sklearn.ensemble.IsolationForest" title="sklearn.ensemble.IsolationForest"><code class="xref py py-class docutils literal"><span class="pre">ensemble.IsolationForest</span></code></a>,
-the <a class="reference internal" href="generated/sklearn.neighbors.LocalOutlierFactor.html#sklearn.neighbors.LocalOutlierFactor" title="sklearn.neighbors.LocalOutlierFactor"><code class="xref py py-class docutils literal"><span class="pre">neighbors.LocalOutlierFactor</span></code></a>
-and a covariance-based outlier detection <a class="reference internal" href="generated/sklearn.covariance.EllipticEnvelope.html#sklearn.covariance.EllipticEnvelope" title="sklearn.covariance.EllipticEnvelope"><code class="xref py py-class docutils literal"><span class="pre">covariance.EllipticEnvelope</span></code></a>.</li>
-</ul>
+<p>This strategy is illustrated below.</p>
+<blockquote>
+<div><div class="figure align-center">
+<a class="reference external image-reference" href="../auto_examples/neighbors/sphx_glr_plot_lof_novelty_detection.html"><img alt="../_images/sphx_glr_plot_lof_novelty_detection_0011.png" src="../_images/sphx_glr_plot_lof_novelty_detection_0011.png" style="width: 480.0px; height: 360.0px;" /></a>
 </div>
-</div>
+</div></blockquote>
 </div>
 </div>
 
