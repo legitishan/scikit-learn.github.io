@@ -96,6 +96,8 @@ of the results_.
             MaxAbsScaler().fit_transform(X)),
         ('Data after robust scaling',
             RobustScaler(quantile_range=(25, 75)).fit_transform(X)),
+        ('Data after power transformation (Yeo-Johnson)',
+         PowerTransformer(method='yeo-johnson').fit_transform(X)),
         ('Data after power transformation (Box-Cox)',
          PowerTransformer(method='box-cox').fit_transform(X)),
         ('Data after quantile transformation (gaussian pdf)',
@@ -383,19 +385,18 @@ required (see below).
 
 
 
-PowerTransformer (Box-Cox)
---------------------------
+PowerTransformer
+----------------
 
-``PowerTransformer`` applies a power transformation to each
-feature to make the data more Gaussian-like. Currently,
-``PowerTransformer`` implements the Box-Cox transform. The Box-Cox transform
-finds the optimal scaling factor to stabilize variance and mimimize skewness
-through maximum likelihood estimation. By default, ``PowerTransformer`` also
-applies zero-mean, unit variance normalization to the transformed output.
-Note that Box-Cox can only be applied to positive, non-zero data. Income and
-number of households happen to be strictly positive, but if negative values
-are present, a constant can be added to each feature to shift it into the
-positive range - this is known as the two-parameter Box-Cox transform.
+``PowerTransformer`` applies a power transformation to each feature to make
+the data more Gaussian-like. Currently, ``PowerTransformer`` implements the
+Yeo-Johnson and Box-Cox transforms. The power transform finds the optimal
+scaling factor to stabilize variance and mimimize skewness through maximum
+likelihood estimation. By default, ``PowerTransformer`` also applies
+zero-mean, unit variance normalization to the transformed output. Note that
+Box-Cox can only be applied to strictly positive data. Income and number of
+households happen to be strictly positive, but if negative values are present
+the Yeo-Johnson transformed is to be preferred.
 
 
 
@@ -403,12 +404,23 @@ positive range - this is known as the two-parameter Box-Cox transform.
 
 
     make_plot(5)
+    make_plot(6)
 
 
 
 
-.. image:: /auto_examples/preprocessing/images/sphx_glr_plot_all_scaling_006.png
-    :class: sphx-glr-single-img
+.. rst-class:: sphx-glr-horizontal
+
+
+    *
+
+      .. image:: /auto_examples/preprocessing/images/sphx_glr_plot_all_scaling_006.png
+            :class: sphx-glr-multi-img
+
+    *
+
+      .. image:: /auto_examples/preprocessing/images/sphx_glr_plot_all_scaling_007.png
+            :class: sphx-glr-multi-img
 
 
 
@@ -426,12 +438,12 @@ for extreme values.
 .. code-block:: python
 
 
-    make_plot(6)
+    make_plot(7)
 
 
 
 
-.. image:: /auto_examples/preprocessing/images/sphx_glr_plot_all_scaling_007.png
+.. image:: /auto_examples/preprocessing/images/sphx_glr_plot_all_scaling_008.png
     :class: sphx-glr-single-img
 
 
@@ -457,12 +469,12 @@ any outlier by setting them to the a priori defined range boundaries (0 and
 .. code-block:: python
 
 
-    make_plot(7)
+    make_plot(8)
 
 
 
 
-.. image:: /auto_examples/preprocessing/images/sphx_glr_plot_all_scaling_008.png
+.. image:: /auto_examples/preprocessing/images/sphx_glr_plot_all_scaling_009.png
     :class: sphx-glr-single-img
 
 
@@ -483,19 +495,19 @@ case if some original features had a mix of positive and negative values.
 .. code-block:: python
 
 
-    make_plot(8)
+    make_plot(9)
 
     plt.show()
 
 
 
-.. image:: /auto_examples/preprocessing/images/sphx_glr_plot_all_scaling_009.png
+.. image:: /auto_examples/preprocessing/images/sphx_glr_plot_all_scaling_010.png
     :class: sphx-glr-single-img
 
 
 
 
-**Total running time of the script:** ( 0 minutes  5.944 seconds)
+**Total running time of the script:** ( 0 minutes  7.503 seconds)
 
 
 .. _sphx_glr_download_auto_examples_preprocessing_plot_all_scaling.py:

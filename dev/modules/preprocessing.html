@@ -488,18 +488,28 @@ previously defined:</p>
 Power transforms are a family of parametric, monotonic transformations that aim
 to map data from any distribution to as close to a Gaussian distribution as
 possible in order to stabilize variance and minimize skewness.</p>
-<p><a class="reference internal" href="generated/sklearn.preprocessing.PowerTransformer.html#sklearn.preprocessing.PowerTransformer" title="sklearn.preprocessing.PowerTransformer"><code class="xref py py-class docutils literal"><span class="pre">PowerTransformer</span></code></a> currently provides one such power transformation,
-the Box-Cox transform. The Box-Cox transform is given by:</p>
+<p><a class="reference internal" href="generated/sklearn.preprocessing.PowerTransformer.html#sklearn.preprocessing.PowerTransformer" title="sklearn.preprocessing.PowerTransformer"><code class="xref py py-class docutils literal"><span class="pre">PowerTransformer</span></code></a> currently provides two such power transformations,
+the Yeo-Johnson transform and the Box-Cox transform.</p>
+<p>The Yeo-Johnson transform is given by:</p>
 <div class="math">
-\[\begin{split}y_i^{(\lambda)} =
+\[\begin{split}x_i^{(\lambda)} =
 \begin{cases}
-\dfrac{y_i^\lambda - 1}{\lambda} &amp; \text{if } \lambda \neq 0, \\[8pt]
-\ln{(y_i)} &amp; \text{if } \lambda = 0,
+ [(x_i + 1)^\lambda - 1] / \lambda &amp; \text{if } \lambda \neq 0, x_i \geq 0, \\[8pt]
+\ln{(x_i) + 1} &amp; \text{if } \lambda = 0, x_i \geq 0 \\[8pt]
+-[(-x_i + 1)^{2 - \lambda} - 1] / (2 - \lambda) &amp; \text{if } \lambda \neq 2, x_i &lt; 0, \\[8pt]
+ - \ln (- x_i + 1) &amp; \text{if } \lambda = 2, x_i &lt; 0
 \end{cases}\end{split}\]</div>
-<p>Box-Cox can only be applied to strictly positive data. The transformation is
-parameterized by <span class="math">\(\lambda\)</span>, which is determined through maximum likelihood
-estimation. Here is an example of using Box-Cox to map samples drawn from a
-lognormal distribution to a normal distribution:</p>
+<p>while the Box-Cox transform is given by:</p>
+<div class="math">
+\[\begin{split}x_i^{(\lambda)} =
+\begin{cases}
+\dfrac{x_i^\lambda - 1}{\lambda} &amp; \text{if } \lambda \neq 0, \\[8pt]
+\ln{(x_i)} &amp; \text{if } \lambda = 0,
+\end{cases}\end{split}\]</div>
+<p>Box-Cox can only be applied to strictly positive data. In both methods, the
+transformation is parameterized by <span class="math">\(\lambda\)</span>, which is determined through
+maximum likelihood estimation. Here is an example of using Box-Cox to map
+samples drawn from a lognormal distribution to a normal distribution:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pt</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">PowerTransformer</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;box-cox&#39;</span><span class="p">,</span> <span class="n">standardize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X_lognormal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">616</span><span class="p">)</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X_lognormal</span>                                         
@@ -515,12 +525,13 @@ lognormal distribution to a normal distribution:</p>
 <p>While the above example sets the <cite>standardize</cite> option to <cite>False</cite>,
 <a class="reference internal" href="generated/sklearn.preprocessing.PowerTransformer.html#sklearn.preprocessing.PowerTransformer" title="sklearn.preprocessing.PowerTransformer"><code class="xref py py-class docutils literal"><span class="pre">PowerTransformer</span></code></a> will apply zero-mean, unit-variance normalization
 to the transformed output by default.</p>
-<p>Below are examples of Box-Cox applied to various probability distributions.
-Note that when applied to certain distributions, Box-Cox achieves very
-Gaussian-like results, but with others, it is ineffective. This highlights
-the importance of visualizing the data before and after transformation.</p>
+<p>Below are examples of Box-Cox and Yeo-Johnson applied to various probability
+distributions.  Note that when applied to certain distributions, the power
+transforms achieve very Gaussian-like results, but with others, they are
+ineffective. This highlights the importance of visualizing the data before and
+after transformation.</p>
 <div class="figure align-center">
-<a class="reference external image-reference" href="../auto_examples/preprocessing/plot_power_transformer.html"><img alt="../_images/sphx_glr_plot_power_transformer_0011.png" src="../_images/sphx_glr_plot_power_transformer_0011.png" style="width: 640.0px; height: 480.0px;" /></a>
+<a class="reference external image-reference" href="../auto_examples/preprocessing/plot_map_data_to_normal.html"><img alt="../_images/sphx_glr_plot_map_data_to_normal_0011.png" src="../_images/sphx_glr_plot_map_data_to_normal_0011.png" style="width: 400.0px; height: 800.0px;" /></a>
 </div>
 <p>It is also possible to map data to a normal distribution using
 <a class="reference internal" href="generated/sklearn.preprocessing.QuantileTransformer.html#sklearn.preprocessing.QuantileTransformer" title="sklearn.preprocessing.QuantileTransformer"><code class="xref py py-class docutils literal"><span class="pre">QuantileTransformer</span></code></a> by setting <code class="docutils literal"><span class="pre">output_distribution='normal'</span></code>.

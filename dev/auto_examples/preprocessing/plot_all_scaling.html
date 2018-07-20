@@ -38,8 +38,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Feature discretization" href="plot_discretization_classification.html" />
-    <link rel="prev" title="Importance of Feature Scaling" href="plot_scaling_importance.html" />
+    <link rel="next" title="Decision boundary of label propagation versus SVM on the Iris dataset" href="../semi_supervised/plot_label_propagation_versus_svm_iris.html" />
+    <link rel="prev" title="Feature discretization" href="plot_discretization_classification.html" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -133,14 +133,14 @@
         <div class="rel">
     
         <div class="rellink">
-        <a href="plot_scaling_importance.html"
+        <a href="plot_discretization_classification.html"
         accesskey="P">Previous
         <br/>
         <span class="smallrellink">
-        Importance of...
+        Feature discr...
         </span>
             <span class="hiddenrellink">
-            Importance of Feature Scaling
+            Feature discretization
             </span>
         </a>
         </div>
@@ -148,14 +148,14 @@
             &nbsp;
             </div>
         <div class="rellink">
-        <a href="plot_discretization_classification.html"
+        <a href="../semi_supervised/plot_label_propagation_versus_svm_iris.html"
         accesskey="N">Next
         <br/>
         <span class="smallrellink">
-        Feature discr...
+        Decision boun...
         </span>
             <span class="hiddenrellink">
-            Feature discretization
+            Decision boundary of label propagation versus SVM on the Iris dataset
             </span>
         </a>
         </div>
@@ -189,7 +189,7 @@
 <li><a class="reference internal" href="#minmaxscaler">MinMaxScaler</a></li>
 <li><a class="reference internal" href="#maxabsscaler">MaxAbsScaler</a></li>
 <li><a class="reference internal" href="#robustscaler">RobustScaler</a></li>
-<li><a class="reference internal" href="#powertransformer-box-cox">PowerTransformer (Box-Cox)</a></li>
+<li><a class="reference internal" href="#powertransformer">PowerTransformer</a></li>
 <li><a class="reference internal" href="#quantiletransformer-gaussian-output">QuantileTransformer (Gaussian output)</a></li>
 <li><a class="reference internal" href="#quantiletransformer-uniform-output">QuantileTransformer (uniform output)</a></li>
 <li><a class="reference internal" href="#normalizer">Normalizer</a></li>
@@ -289,6 +289,8 @@ of the <a class="reference internal" href="#results">results</a>.</p>
         <a href="../../modules/generated/sklearn.preprocessing.MaxAbsScaler.html#sklearn.preprocessing.MaxAbsScaler" title="View documentation for sklearn.preprocessing.MaxAbsScaler"><span class="n">MaxAbsScaler</span></a><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)),</span>
     <span class="p">(</span><span class="s1">&#39;Data after robust scaling&#39;</span><span class="p">,</span>
         <a href="../../modules/generated/sklearn.preprocessing.RobustScaler.html#sklearn.preprocessing.RobustScaler" title="View documentation for sklearn.preprocessing.RobustScaler"><span class="n">RobustScaler</span></a><span class="p">(</span><span class="n">quantile_range</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">75</span><span class="p">))</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s1">&#39;Data after power transformation (Yeo-Johnson)&#39;</span><span class="p">,</span>
+     <a href="../../modules/generated/sklearn.preprocessing.PowerTransformer.html#sklearn.preprocessing.PowerTransformer" title="View documentation for sklearn.preprocessing.PowerTransformer"><span class="n">PowerTransformer</span></a><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;yeo-johnson&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)),</span>
     <span class="p">(</span><span class="s1">&#39;Data after power transformation (Box-Cox)&#39;</span><span class="p">,</span>
      <a href="../../modules/generated/sklearn.preprocessing.PowerTransformer.html#sklearn.preprocessing.PowerTransformer" title="View documentation for sklearn.preprocessing.PowerTransformer"><span class="n">PowerTransformer</span></a><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;box-cox&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)),</span>
     <span class="p">(</span><span class="s1">&#39;Data after quantile transformation (gaussian pdf)&#39;</span><span class="p">,</span>
@@ -489,22 +491,27 @@ required (see below).</p>
 </div>
 <img alt="../../_images/sphx_glr_plot_all_scaling_005.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_all_scaling_005.png" />
 </div>
-<div class="section" id="powertransformer-box-cox">
-<h2>PowerTransformer (Box-Cox)<a class="headerlink" href="#powertransformer-box-cox" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal"><span class="pre">PowerTransformer</span></code> applies a power transformation to each
-feature to make the data more Gaussian-like. Currently,
-<code class="docutils literal"><span class="pre">PowerTransformer</span></code> implements the Box-Cox transform. The Box-Cox transform
-finds the optimal scaling factor to stabilize variance and mimimize skewness
-through maximum likelihood estimation. By default, <code class="docutils literal"><span class="pre">PowerTransformer</span></code> also
-applies zero-mean, unit variance normalization to the transformed output.
-Note that Box-Cox can only be applied to positive, non-zero data. Income and
-number of households happen to be strictly positive, but if negative values
-are present, a constant can be added to each feature to shift it into the
-positive range - this is known as the two-parameter Box-Cox transform.</p>
+<div class="section" id="powertransformer">
+<h2>PowerTransformer<a class="headerlink" href="#powertransformer" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">PowerTransformer</span></code> applies a power transformation to each feature to make
+the data more Gaussian-like. Currently, <code class="docutils literal"><span class="pre">PowerTransformer</span></code> implements the
+Yeo-Johnson and Box-Cox transforms. The power transform finds the optimal
+scaling factor to stabilize variance and mimimize skewness through maximum
+likelihood estimation. By default, <code class="docutils literal"><span class="pre">PowerTransformer</span></code> also applies
+zero-mean, unit variance normalization to the transformed output. Note that
+Box-Cox can only be applied to strictly positive data. Income and number of
+households happen to be strictly positive, but if negative values are present
+the Yeo-Johnson transformed is to be preferred.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">make_plot</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">make_plot</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_plot_all_scaling_006.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_all_scaling_006.png" />
+<ul class="sphx-glr-horizontal">
+<li><img alt="../../_images/sphx_glr_plot_all_scaling_006.png" class="sphx-glr-multi-img first" src="../../_images/sphx_glr_plot_all_scaling_006.png" />
+</li>
+<li><img alt="../../_images/sphx_glr_plot_all_scaling_007.png" class="sphx-glr-multi-img first" src="../../_images/sphx_glr_plot_all_scaling_007.png" />
+</li>
+</ul>
 </div>
 <div class="section" id="quantiletransformer-gaussian-output">
 <h2>QuantileTransformer (Gaussian output)<a class="headerlink" href="#quantiletransformer-gaussian-output" title="Permalink to this headline">¶</a></h2>
@@ -512,10 +519,10 @@ positive range - this is known as the two-parameter Box-Cox transform.</p>
 allowing to match a Gaussian distribution instead of a uniform distribution.
 Note that this non-parametetric transformer introduces saturation artifacts
 for extreme values.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">make_plot</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">make_plot</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_plot_all_scaling_007.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_all_scaling_007.png" />
+<img alt="../../_images/sphx_glr_plot_all_scaling_008.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_all_scaling_008.png" />
 </div>
 <div class="section" id="quantiletransformer-uniform-output">
 <h2>QuantileTransformer (uniform output)<a class="headerlink" href="#quantiletransformer-uniform-output" title="Permalink to this headline">¶</a></h2>
@@ -529,10 +536,10 @@ approximately the same transformation on held out data. But contrary to
 <code class="docutils literal"><span class="pre">RobustScaler</span></code>, <code class="docutils literal"><span class="pre">QuantileTransformer</span></code> will also automatically collapse
 any outlier by setting them to the a priori defined range boundaries (0 and
 1).</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">make_plot</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">make_plot</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_plot_all_scaling_008.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_all_scaling_008.png" />
+<img alt="../../_images/sphx_glr_plot_all_scaling_009.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_all_scaling_009.png" />
 </div>
 <div class="section" id="normalizer">
 <h2>Normalizer<a class="headerlink" href="#normalizer" title="Permalink to this headline">¶</a></h2>
@@ -542,13 +549,13 @@ figures below where all samples are mapped onto the unit circle. In our
 example the two selected features have only positive values; therefore the
 transformed data only lie in the positive quadrant. This would not be the
 case if some original features had a mix of positive and negative values.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">make_plot</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">make_plot</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
 
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_plot_all_scaling_009.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_all_scaling_009.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  5.944 seconds)</p>
+<img alt="../../_images/sphx_glr_plot_all_scaling_010.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_all_scaling_010.png" />
+<p><strong>Total running time of the script:</strong> ( 0 minutes  7.503 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-preprocessing-plot-all-scaling-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/plot_all_scaling.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_all_scaling.py</span></code></a></div>
@@ -574,11 +581,11 @@ case if some original features had a mix of positive and negative values.</p>
      <div class="rel">
     
     <div class="buttonPrevious">
-      <a href="plot_scaling_importance.html">Previous
+      <a href="plot_discretization_classification.html">Previous
       </a>
     </div>
     <div class="buttonNext">
-      <a href="plot_discretization_classification.html">Next
+      <a href="../semi_supervised/plot_label_propagation_versus_svm_iris.html">Next
       </a>
     </div>
     

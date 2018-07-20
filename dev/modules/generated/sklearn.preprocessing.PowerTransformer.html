@@ -208,16 +208,17 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.preprocessing" title="sklearn.preprocessing"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.preprocessing</span></code></a>.PowerTransformer<a class="headerlink" href="#sklearn-preprocessing-powertransformer" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="sklearn.preprocessing.PowerTransformer">
-<em class="property">class </em><code class="descclassname">sklearn.preprocessing.</code><code class="descname">PowerTransformer</code><span class="sig-paren">(</span><em>method=’box-cox’</em>, <em>standardize=True</em>, <em>copy=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1984dac/sklearn/preprocessing/data.py#L2395"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.PowerTransformer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">sklearn.preprocessing.</code><code class="descname">PowerTransformer</code><span class="sig-paren">(</span><em>method=’yeo-johnson’</em>, <em>standardize=True</em>, <em>copy=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d232ac/sklearn/preprocessing/data.py#L2396"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.PowerTransformer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply a power transform featurewise to make data more Gaussian-like.</p>
 <p>Power transforms are a family of parametric, monotonic transformations
 that are applied to make data more Gaussian-like. This is useful for
 modeling issues related to heteroscedasticity (non-constant variance),
 or other situations where normality is desired.</p>
-<p>Currently, PowerTransformer supports the Box-Cox transform. Box-Cox
-requires input data to be strictly positive. The optimal parameter
-for stabilizing variance and minimizing skewness is estimated through
-maximum likelihood.</p>
+<p>Currently, PowerTransformer supports the Box-Cox transform and the
+Yeo-Johson transform. The optimal parameter for stabilizing variance and
+minimizing skewness is estimated through maximum likelihood.</p>
+<p>Box-Cox requires input data to be strictly positive, while Yeo-Johnson
+supports both positive or negative data.</p>
 <p>By default, zero-mean, unit-variance normalization is applied to the
 transformed data.</p>
 <p>Read more in the <a class="reference internal" href="../preprocessing.html#preprocessing-transformer"><span class="std std-ref">User Guide</span></a>.</p>
@@ -226,9 +227,12 @@ transformed data.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>method</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, (default=’box-cox’)</span></dt>
-<dd><p class="first last">The power transform method. Currently, ‘box-cox’ (Box-Cox transform)
-is the only option available.</p>
+<dt><strong>method</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, (default=’yeo-johnson’)</span></dt>
+<dd><p class="first">The power transform method. Available methods are:</p>
+<ul class="last simple">
+<li>‘yeo-johnson’ <a class="reference internal" href="#rf3e1504535de-1" id="id1">[1]</a>, works with positive and negative values</li>
+<li>‘box-cox’ <a class="reference internal" href="#rf3e1504535de-2" id="id2">[2]</a>, only works with strictly positive values</li>
+</ul>
 </dd>
 <dt><strong>standardize</strong> <span class="classifier-delimiter">:</span> <span class="classifier">boolean, default=True</span></dt>
 <dd><p class="first last">Set to True to apply zero-mean, unit-variance normalization to the
@@ -264,21 +268,34 @@ transform.</p>
 <p>For a comparison of the different scalers, transformers, and normalizers,
 see <a class="reference internal" href="../../auto_examples/preprocessing/plot_all_scaling.html#sphx-glr-auto-examples-preprocessing-plot-all-scaling-py"><span class="std std-ref">examples/preprocessing/plot_all_scaling.py</span></a>.</p>
 <p class="rubric">References</p>
-<p>G.E.P. Box and D.R. Cox, “An Analysis of Transformations”, Journal of the
-Royal Statistical Society B, 26, 211-252 (1964).</p>
+<table class="docutils citation" frame="void" id="rf3e1504535de-1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[1]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id3">2</a>)</em> I.K. Yeo and R.A. Johnson, “A new family of power transformations to
+improve normality or symmetry.” Biometrika, 87(4), pp.954-959,
+(2000).</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="rf3e1504535de-2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[2]</td><td><em>(<a class="fn-backref" href="#id2">1</a>, <a class="fn-backref" href="#id4">2</a>)</em> G.E.P. Box and D.R. Cox, “An Analysis of Transformations”, Journal
+of the Royal Statistical Society B, 26, 211-252 (1964).</td></tr>
+</tbody>
+</table>
 <p class="rubric">Examples</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">PowerTransformer</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pt</span> <span class="o">=</span> <span class="n">PowerTransformer</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
-<span class="go">PowerTransformer(copy=True, method=&#39;box-cox&#39;, standardize=True)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">lambdas_</span><span class="p">)</span>  
-<span class="go">[ 1.051... -2.345...]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>  
-<span class="go">[[-1.332... -0.707...]</span>
-<span class="go"> [ 0.256... -0.707...]</span>
-<span class="go"> [ 1.076...  1.414...]]</span>
+<span class="go">PowerTransformer(copy=True, method=&#39;yeo-johnson&#39;, standardize=True)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">lambdas_</span><span class="p">)</span>
+<span class="go">[1.38668178e+00 5.93926346e-09]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="go">[[-1.31616039 -0.70710678]</span>
+<span class="go"> [ 0.20998268 -0.70710678]</span>
+<span class="go"> [ 1.1061777   1.41421356]]</span>
 </pre></div>
 </div>
 <p class="rubric">Methods</p>
@@ -289,10 +306,10 @@ Royal Statistical Society B, 26, 211-252 (1964).</p>
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td><a class="reference internal" href="#sklearn.preprocessing.PowerTransformer.fit" title="sklearn.preprocessing.PowerTransformer.fit"><code class="xref py py-obj docutils literal"><span class="pre">fit</span></code></a>(X[,&nbsp;y])</td>
-<td>Estimate the optimal parameter for each feature.</td>
+<td>Estimate the optimal parameter lambda for each feature.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#sklearn.preprocessing.PowerTransformer.fit_transform" title="sklearn.preprocessing.PowerTransformer.fit_transform"><code class="xref py py-obj docutils literal"><span class="pre">fit_transform</span></code></a>(X[,&nbsp;y])</td>
-<td>Fit to data, then transform it.</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">fit_transform</span></code>(X[,&nbsp;y])</td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#sklearn.preprocessing.PowerTransformer.get_params" title="sklearn.preprocessing.PowerTransformer.get_params"><code class="xref py py-obj docutils literal"><span class="pre">get_params</span></code></a>([deep])</td>
 <td>Get parameters for this estimator.</td>
@@ -310,16 +327,15 @@ Royal Statistical Society B, 26, 211-252 (1964).</p>
 </table>
 <dl class="method">
 <dt id="sklearn.preprocessing.PowerTransformer.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>method=’box-cox’</em>, <em>standardize=True</em>, <em>copy=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1984dac/sklearn/preprocessing/data.py#L2468"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.PowerTransformer.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>method=’yeo-johnson’</em>, <em>standardize=True</em>, <em>copy=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d232ac/sklearn/preprocessing/data.py#L2477"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.PowerTransformer.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="sklearn.preprocessing.PowerTransformer.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1984dac/sklearn/preprocessing/data.py#L2473"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.PowerTransformer.fit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Estimate the optimal parameter for each feature.</p>
-<p>The optimal parameter for minimizing skewness is estimated
-on each feature independently. If the method is Box-Cox,
-the lambdas are estimated using maximum likelihood.</p>
+<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d232ac/sklearn/preprocessing/data.py#L2482"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.PowerTransformer.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate the optimal parameter lambda for each feature.</p>
+<p>The optimal lambda parameter for minimizing skewness is estimated on
+each feature independently using maximum likelihood.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -344,39 +360,8 @@ the lambdas are estimated using maximum likelihood.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="sklearn.preprocessing.PowerTransformer.fit_transform">
-<code class="descname">fit_transform</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1984dac/sklearn/base.py#L435"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.PowerTransformer.fit_transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fit to data, then transform it.</p>
-<p>Fits transformer to X and y with optional parameters fit_params
-and returns a transformed version of X.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">numpy array of shape [n_samples, n_features]</span></dt>
-<dd><p class="first last">Training set.</p>
-</dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">numpy array of shape [n_samples]</span></dt>
-<dd><p class="first last">Target values.</p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>X_new</strong> <span class="classifier-delimiter">:</span> <span class="classifier">numpy array of shape [n_samples, n_features_new]</span></dt>
-<dd><p class="first last">Transformed array.</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="sklearn.preprocessing.PowerTransformer.get_params">
-<code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1984dac/sklearn/base.py#L166"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.PowerTransformer.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d232ac/sklearn/base.py#L166"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.PowerTransformer.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -403,7 +388,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.preprocessing.PowerTransformer.inverse_transform">
-<code class="descname">inverse_transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1984dac/sklearn/preprocessing/data.py#L2532"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.PowerTransformer.inverse_transform" title="Permalink to this definition">¶</a></dt>
+<code class="descname">inverse_transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d232ac/sklearn/preprocessing/data.py#L2566"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.PowerTransformer.inverse_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply the inverse power transformation using the fitted lambdas.</p>
 <p>The inverse of the Box-Cox transformation is given by:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="k">lambda</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -412,13 +397,31 @@ contained subobjects that are estimators.</p>
     <span class="n">X</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_trans</span> <span class="o">*</span> <span class="k">lambda</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="k">lambda</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>The inverse of the Yeo-Johnson transformation is given by:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">X</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="k">lambda</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span><span class="n">X_trans</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="k">elif</span> <span class="n">X</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="k">lambda</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_trans</span> <span class="o">*</span> <span class="k">lambda</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="k">lambda</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="k">elif</span> <span class="n">X</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="k">lambda</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="mi">2</span> <span class="o">-</span> <span class="k">lambda</span><span class="p">)</span> <span class="o">*</span> <span class="n">X_trans</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">-</span> <span class="k">lambda</span><span class="p">))</span>
+<span class="k">elif</span> <span class="n">X</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="k">lambda</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">X_trans</span><span class="p">)</span>
+</pre></div>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
 <dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_samples, n_features)</span></dt>
 <dd><p class="first last">The transformed data.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_samples, n_features)</span></dt>
+<dd><p class="first last">The original data</p>
 </dd>
 </dl>
 </td>
@@ -429,7 +432,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.preprocessing.PowerTransformer.set_params">
-<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1984dac/sklearn/base.py#L189"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.PowerTransformer.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d232ac/sklearn/base.py#L189"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.PowerTransformer.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
@@ -451,15 +454,22 @@ component of a nested object.</p>
 
 <dl class="method">
 <dt id="sklearn.preprocessing.PowerTransformer.transform">
-<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1984dac/sklearn/preprocessing/data.py#L2513"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.PowerTransformer.transform" title="Permalink to this definition">¶</a></dt>
+<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d232ac/sklearn/preprocessing/data.py#L2538"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.PowerTransformer.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply the power transform to each feature using the fitted lambdas.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
 <dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_samples, n_features)</span></dt>
 <dd><p class="first last">The data to be transformed using a power transformation.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>X_trans</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_samples, n_features)</span></dt>
+<dd><p class="first last">The transformed data.</p>
 </dd>
 </dl>
 </td>
@@ -472,11 +482,11 @@ component of a nested object.</p>
 
 <div class="section" id="examples-using-sklearn-preprocessing-powertransformer">
 <h2>Examples using <code class="docutils literal"><span class="pre">sklearn.preprocessing.PowerTransformer</span></code><a class="headerlink" href="#examples-using-sklearn-preprocessing-powertransformer" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the use of the Box-Cox transform through :class:`preprocessing.PowerT..."><div class="figure" id="id1">
-<img alt="../../_images/sphx_glr_plot_power_transformer_thumb.png" src="../../_images/sphx_glr_plot_power_transformer_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/preprocessing/plot_power_transformer.html#sphx-glr-auto-examples-preprocessing-plot-power-transformer-py"><span class="std std-ref">Using PowerTransformer to apply the Box-Cox transformation</span></a></span></p>
+<div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the use of the Box-Cox and Yeo-Johnson transforms through :class:`pre..."><div class="figure" id="id5">
+<img alt="../../_images/sphx_glr_plot_map_data_to_normal_thumb.png" src="../../_images/sphx_glr_plot_map_data_to_normal_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/preprocessing/plot_map_data_to_normal.html#sphx-glr-auto-examples-preprocessing-plot-map-data-to-normal-py"><span class="std std-ref">Map data to a normal distribution</span></a></span></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Feature 0 (median income in a block) and feature 5 (number of households) of the `California ho..."><div class="figure" id="id2">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Feature 0 (median income in a block) and feature 5 (number of households) of the `California ho..."><div class="figure" id="id6">
 <img alt="../../_images/sphx_glr_plot_all_scaling_thumb.png" src="../../_images/sphx_glr_plot_all_scaling_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/preprocessing/plot_all_scaling.html#sphx-glr-auto-examples-preprocessing-plot-all-scaling-py"><span class="std std-ref">Compare the effect of different scalers on data with outliers</span></a></span></p>
 </div>
