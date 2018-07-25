@@ -205,7 +205,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.cluster.bicluster" title="sklearn.cluster.bicluster"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.cluster.bicluster</span></code></a>.SpectralCoclustering<a class="headerlink" href="#sklearn-cluster-bicluster-spectralcoclustering" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="sklearn.cluster.bicluster.SpectralCoclustering">
-<em class="property">class </em><code class="descclassname">sklearn.cluster.bicluster.</code><code class="descname">SpectralCoclustering</code><span class="sig-paren">(</span><em>n_clusters=3</em>, <em>svd_method=’randomized’</em>, <em>n_svd_vecs=None</em>, <em>mini_batch=False</em>, <em>init=’k-means++’</em>, <em>n_init=10</em>, <em>n_jobs=1</em>, <em>random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/3a0b009/sklearn/cluster/bicluster.py#L182"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.bicluster.SpectralCoclustering" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">sklearn.cluster.bicluster.</code><code class="descname">SpectralCoclustering</code><span class="sig-paren">(</span><em>n_clusters=3</em>, <em>svd_method=’randomized’</em>, <em>n_svd_vecs=None</em>, <em>mini_batch=False</em>, <em>init=’k-means++’</em>, <em>n_init=10</em>, <em>n_jobs=1</em>, <em>random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c2b7478/sklearn/cluster/bicluster.py#L182"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.bicluster.SpectralCoclustering" title="Permalink to this definition">¶</a></dt>
 <dd><p>Spectral Co-Clustering algorithm (Dhillon, 2001).</p>
 <p>Clusters rows and columns of an array <cite>X</cite> to solve the relaxed
 normalized cut of the bipartite graph created from <cite>X</cite> as follows:
@@ -292,6 +292,22 @@ cluster <cite>i</cite> contains row <cite>r</cite>. Available only after calling
 <li>Dhillon, Inderjit S, 2001. <a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.140.3011">Co-clustering documents and words using
 bipartite spectral graph partitioning</a>.</li>
 </ul>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="k">import</span> <span class="n">SpectralCoclustering</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>              <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clustering</span> <span class="o">=</span> <span class="n">SpectralCoclustering</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clustering</span><span class="o">.</span><span class="n">row_labels_</span>
+<span class="go">array([0, 1, 1, 0, 0, 0], dtype=int32)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clustering</span><span class="o">.</span><span class="n">column_labels_</span>
+<span class="go">array([0, 0], dtype=int32)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clustering</span> 
+<span class="go">SpectralCoclustering(init=&#39;k-means++&#39;, mini_batch=False, n_clusters=2,</span>
+<span class="go">           n_init=10, n_jobs=1, n_svd_vecs=None, random_state=0,</span>
+<span class="go">           svd_method=&#39;randomized&#39;)</span>
+</pre></div>
+</div>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -321,7 +337,7 @@ bipartite spectral graph partitioning</a>.</li>
 </table>
 <dl class="method">
 <dt id="sklearn.cluster.bicluster.SpectralCoclustering.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>n_clusters=3</em>, <em>svd_method=’randomized’</em>, <em>n_svd_vecs=None</em>, <em>mini_batch=False</em>, <em>init=’k-means++’</em>, <em>n_init=10</em>, <em>n_jobs=1</em>, <em>random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/3a0b009/sklearn/cluster/bicluster.py#L269"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.bicluster.SpectralCoclustering.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>n_clusters=3</em>, <em>svd_method=’randomized’</em>, <em>n_svd_vecs=None</em>, <em>mini_batch=False</em>, <em>init=’k-means++’</em>, <em>n_init=10</em>, <em>n_jobs=1</em>, <em>random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c2b7478/sklearn/cluster/bicluster.py#L285"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.bicluster.SpectralCoclustering.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -333,7 +349,7 @@ bipartite spectral graph partitioning</a>.</li>
 
 <dl class="method">
 <dt id="sklearn.cluster.bicluster.SpectralCoclustering.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/3a0b009/sklearn/cluster/bicluster.py#L113"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.bicluster.SpectralCoclustering.fit" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c2b7478/sklearn/cluster/bicluster.py#L113"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.bicluster.SpectralCoclustering.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a biclustering for X.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -353,7 +369,7 @@ bipartite spectral graph partitioning</a>.</li>
 
 <dl class="method">
 <dt id="sklearn.cluster.bicluster.SpectralCoclustering.get_indices">
-<code class="descname">get_indices</code><span class="sig-paren">(</span><em>i</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/3a0b009/sklearn/base.py#L367"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.bicluster.SpectralCoclustering.get_indices" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_indices</code><span class="sig-paren">(</span><em>i</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c2b7478/sklearn/base.py#L367"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.bicluster.SpectralCoclustering.get_indices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Row and column indices of the i’th bicluster.</p>
 <p>Only works if <code class="docutils literal"><span class="pre">rows_</span></code> and <code class="docutils literal"><span class="pre">columns_</span></code> attributes exist.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -383,7 +399,7 @@ bipartite spectral graph partitioning</a>.</li>
 
 <dl class="method">
 <dt id="sklearn.cluster.bicluster.SpectralCoclustering.get_params">
-<code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/3a0b009/sklearn/base.py#L166"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.bicluster.SpectralCoclustering.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c2b7478/sklearn/base.py#L166"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.bicluster.SpectralCoclustering.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -410,7 +426,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.cluster.bicluster.SpectralCoclustering.get_shape">
-<code class="descname">get_shape</code><span class="sig-paren">(</span><em>i</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/3a0b009/sklearn/base.py#L389"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.bicluster.SpectralCoclustering.get_shape" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_shape</code><span class="sig-paren">(</span><em>i</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c2b7478/sklearn/base.py#L389"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.bicluster.SpectralCoclustering.get_shape" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shape of the i’th bicluster.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -436,7 +452,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.cluster.bicluster.SpectralCoclustering.get_submatrix">
-<code class="descname">get_submatrix</code><span class="sig-paren">(</span><em>i</em>, <em>data</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/3a0b009/sklearn/base.py#L405"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.bicluster.SpectralCoclustering.get_submatrix" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_submatrix</code><span class="sig-paren">(</span><em>i</em>, <em>data</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c2b7478/sklearn/base.py#L405"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.bicluster.SpectralCoclustering.get_submatrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the submatrix corresponding to bicluster <cite>i</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -468,7 +484,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.cluster.bicluster.SpectralCoclustering.set_params">
-<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/3a0b009/sklearn/base.py#L189"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.bicluster.SpectralCoclustering.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c2b7478/sklearn/base.py#L189"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.bicluster.SpectralCoclustering.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
