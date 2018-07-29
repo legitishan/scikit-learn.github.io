@@ -777,57 +777,54 @@ the dataset.</li>
 </div>
 <div class="section" id="balanced-accuracy-score">
 <span id="id3"></span><h3>3.3.2.3. Balanced accuracy score<a class="headerlink" href="#balanced-accuracy-score" title="Permalink to this headline">¶</a></h3>
-<p>The <a class="reference internal" href="generated/sklearn.metrics.balanced_accuracy_score.html#sklearn.metrics.balanced_accuracy_score" title="sklearn.metrics.balanced_accuracy_score"><code class="xref py py-func docutils literal"><span class="pre">balanced_accuracy_score</span></code></a> function computes the
-<a class="reference external" href="https://en.wikipedia.org/wiki/Accuracy_and_precision">balanced accuracy</a>, which
-avoids inflated performance estimates on imbalanced datasets. It is defined as the
-arithmetic mean of <a class="reference external" href="https://en.wikipedia.org/wiki/Sensitivity_and_specificity">sensitivity</a>
-(true positive rate) and <a class="reference external" href="https://en.wikipedia.org/wiki/Sensitivity_and_specificity">specificity</a>
-(true negative rate), or the average of <a class="reference external" href="https://en.wikipedia.org/wiki/Precision_and_recall">recall scores</a>
-obtained on either class.</p>
-<p>If the classifier performs equally well on either class, this term reduces to the
-conventional accuracy (i.e., the number of correct predictions divided by the total
-number of predictions). In contrast, if the conventional accuracy is above chance only
-because the classifier takes advantage of an imbalanced test set, then the balanced
-accuracy, as appropriate, will drop to 50%.</p>
-<p>If <span class="math">\(\hat{y}_i\in\{0,1\}\)</span> is the predicted value of
-the <span class="math">\(i\)</span>-th sample and <span class="math">\(y_i\in\{0,1\}\)</span> is the corresponding true value,
-then the balanced accuracy is defined as</p>
+<p>The <a class="reference internal" href="generated/sklearn.metrics.balanced_accuracy_score.html#sklearn.metrics.balanced_accuracy_score" title="sklearn.metrics.balanced_accuracy_score"><code class="xref py py-func docutils literal"><span class="pre">balanced_accuracy_score</span></code></a> function computes the <a class="reference external" href="https://en.wikipedia.org/wiki/Accuracy_and_precision">balanced accuracy</a>, which avoids inflated
+performance estimates on imbalanced datasets. It is the macro-average of recall
+scores per class or, equivalently, raw accuracy where each sample is weighted
+according to the inverse prevalence of its true class.
+Thus for balanced datasets, the score is equal to accuracy.</p>
+<p>In the binary case, balanced accuracy is equal to the arithmetic mean of
+<a class="reference external" href="https://en.wikipedia.org/wiki/Sensitivity_and_specificity">sensitivity</a>
+(true positive rate) and <a class="reference external" href="https://en.wikipedia.org/wiki/Sensitivity_and_specificity">specificity</a> (true negative
+rate), or the area under the ROC curve with binary predictions rather than
+scores.</p>
+<p>If the classifier performs equally well on either class, this term reduces to
+the conventional accuracy (i.e., the number of correct predictions divided by
+the total number of predictions).</p>
+<p>In contrast, if the conventional accuracy is above chance only because the
+classifier takes advantage of an imbalanced test set, then the balanced
+accuracy, as appropriate, will drop to <span class="math">\(\frac{1}{\text{n\_classes}}\)</span>.</p>
+<p>The score ranges from 0 to 1, or when <code class="docutils literal"><span class="pre">adjusted=True</span></code> is used, it rescaled to
+the range <span class="math">\(\frac{1}{1 - \text{n\_classes}}\)</span> to 1, inclusive, with
+performance at random scoring 0.</p>
+<p>If <span class="math">\(y_i\)</span> is the true value of the <span class="math">\(i\)</span>-th sample, and <span class="math">\(w_i\)</span>
+is the corresponding sample weight, then we adjust the sample weight to:</p>
 <div class="math">
-\[\texttt{balanced-accuracy}(y, \hat{y}) = \frac{1}{2} \left(\frac{\sum_i 1(\hat{y}_i = 1 \land y_i = 1)}{\sum_i 1(y_i = 1)} + \frac{\sum_i 1(\hat{y}_i = 0 \land y_i = 0)}{\sum_i 1(y_i = 0)}\right)\]</div>
-<p>where <span class="math">\(1(x)\)</span> is the <a class="reference external" href="https://en.wikipedia.org/wiki/Indicator_function">indicator function</a>.</p>
-<p>Under this definition, the balanced accuracy coincides with <a class="reference internal" href="generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score" title="sklearn.metrics.roc_auc_score"><code class="xref py py-func docutils literal"><span class="pre">roc_auc_score</span></code></a>
-given binary <code class="docutils literal"><span class="pre">y_true</span></code> and <code class="docutils literal"><span class="pre">y_pred</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">balanced_accuracy_score</span><span class="p">,</span> <span class="n">roc_auc_score</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y_true</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y_pred</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">balanced_accuracy_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
-<span class="go">0.625</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
-<span class="go">0.625</span>
-</pre></div>
-</div>
-<p>(but in general, <a class="reference internal" href="generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score" title="sklearn.metrics.roc_auc_score"><code class="xref py py-func docutils literal"><span class="pre">roc_auc_score</span></code></a> takes as its second argument non-binary scores).</p>
+\[\hat{w}_i = \frac{w_i}{\sum_j{1(y_j = y_i) w_j}}\]</div>
+<p>where <span class="math">\(1(x)\)</span> is the <a class="reference external" href="https://en.wikipedia.org/wiki/Indicator_function">indicator function</a>.
+Given predicted <span class="math">\(\hat{y}_i\)</span> for sample <span class="math">\(i\)</span>, balanced accuracy is
+defined as:</p>
+<div class="math">
+\[\texttt{balanced-accuracy}(y, \hat{y}, w) = \frac{1}{\sum{\hat{w}_i}} \sum_i 1(\hat{y}_i = y_i) \hat{w}_i\]</div>
+<p>With <code class="docutils literal"><span class="pre">adjusted=True</span></code>, balanced accuracy reports the relative increase from
+<span class="math">\(\texttt{balanced-accuracy}(y, \mathbf{0}, w) =
+\frac{1}{\text{n\_classes}}\)</span>.  In the binary case, this is also known as
+<a class="reference external" href="https://en.wikipedia.org/wiki/Youden%27s_J_statistic">*Youden’s J statistic*</a>,
+or <em>informedness</em>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>Currently this score function is only defined for binary classification problems, you
-may need to wrap it by yourself if you want to use it for multilabel problems.</p>
-<p>There is no clear consensus on the definition of a balanced accuracy for the
-multiclass setting. Here are some definitions that can be found in the literature:</p>
-<ul class="simple">
-<li>Macro-average recall as described in <a class="reference internal" href="#mosley2013" id="id5">[Mosley2013]</a>, <a class="reference internal" href="#kelleher2015" id="id6">[Kelleher2015]</a> and <a class="reference internal" href="#guyon2015" id="id7">[Guyon2015]</a>:
-the recall for each class is computed independently and the average is taken over all classes.
-In <a class="reference internal" href="#guyon2015" id="id8">[Guyon2015]</a>, the macro-average recall is then adjusted to ensure that random predictions
-have a score of <span class="math">\(0\)</span> while perfect predictions have a score of <span class="math">\(1\)</span>.
-One can compute the macro-average recall using <code class="docutils literal"><span class="pre">recall_score(average=&quot;macro&quot;)</span></code> in <a class="reference internal" href="generated/sklearn.metrics.recall_score.html#sklearn.metrics.recall_score" title="sklearn.metrics.recall_score"><code class="xref py py-func docutils literal"><span class="pre">recall_score</span></code></a>.</li>
+<p>The multiclass definition here seems the most reasonable extension of the
+metric used in binary classification, though there is no certain consensus
+in the literature:</p>
+<ul class="last simple">
+<li>Our definition: <a class="reference internal" href="#mosley2013" id="id5">[Mosley2013]</a>, <a class="reference internal" href="#kelleher2015" id="id6">[Kelleher2015]</a> and <a class="reference internal" href="#guyon2015" id="id7">[Guyon2015]</a>, where
+<a class="reference internal" href="#guyon2015" id="id8">[Guyon2015]</a> adopt the adjusted version to ensure that random predictions
+have a score of <span class="math">\(0\)</span> and perfect predictions have a score of <span class="math">\(1\)</span>..</li>
 <li>Class balanced accuracy as described in <a class="reference internal" href="#mosley2013" id="id9">[Mosley2013]</a>: the minimum between the precision
 and the recall for each class is computed. Those values are then averaged over the total
 number of classes to get the balanced accuracy.</li>
-<li>Balanced Accuracy as described in <a class="reference internal" href="#urbanowicz2015" id="id10">[Urbanowicz2015]</a>: the average of sensitivity and selectivity
+<li>Balanced Accuracy as described in <a class="reference internal" href="#urbanowicz2015" id="id10">[Urbanowicz2015]</a>: the average of sensitivity and specificity
 is computed for each class and then averaged over total number of classes.</li>
 </ul>
-<p class="last">Note that none of these different definitions are currently implemented within
-the <a class="reference internal" href="generated/sklearn.metrics.balanced_accuracy_score.html#sklearn.metrics.balanced_accuracy_score" title="sklearn.metrics.balanced_accuracy_score"><code class="xref py py-func docutils literal"><span class="pre">balanced_accuracy_score</span></code></a> function.</p>
 </div>
 <div class="topic">
 <p class="topic-title first">References:</p>
