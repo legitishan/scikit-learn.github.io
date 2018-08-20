@@ -57,7 +57,7 @@ by Thomas P. Minka is also compared.
     best n_components by PCA CV = 10
     best n_components by FactorAnalysis CV = 10
     best n_components by PCA MLE = 10
-    best n_components by PCA CV = 40
+    best n_components by PCA CV = 35
     best n_components by FactorAnalysis CV = 10
     best n_components by PCA MLE = 38
 
@@ -115,20 +115,20 @@ by Thomas P. Minka is also compared.
         for n in n_components:
             pca.n_components = n
             fa.n_components = n
-            pca_scores.append(np.mean(cross_val_score(pca, X)))
-            fa_scores.append(np.mean(cross_val_score(fa, X)))
+            pca_scores.append(np.mean(cross_val_score(pca, X, cv=5)))
+            fa_scores.append(np.mean(cross_val_score(fa, X, cv=5)))
 
         return pca_scores, fa_scores
 
 
     def shrunk_cov_score(X):
         shrinkages = np.logspace(-2, 0, 30)
-        cv = GridSearchCV(ShrunkCovariance(), {'shrinkage': shrinkages})
-        return np.mean(cross_val_score(cv.fit(X).best_estimator_, X))
+        cv = GridSearchCV(ShrunkCovariance(), {'shrinkage': shrinkages}, cv=5)
+        return np.mean(cross_val_score(cv.fit(X).best_estimator_, X, cv=5))
 
 
     def lw_score(X):
-        return np.mean(cross_val_score(LedoitWolf(), X))
+        return np.mean(cross_val_score(LedoitWolf(), X, cv=5))
 
 
     for X, title in [(X_homo, 'Homoscedastic Noise'),
@@ -170,7 +170,7 @@ by Thomas P. Minka is also compared.
 
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  23.821 seconds)
+**Total running time of the script:** ( 1 minutes  22.383 seconds)
 
 
 .. _sphx_glr_download_auto_examples_decomposition_plot_pca_vs_fa_model_selection.py:

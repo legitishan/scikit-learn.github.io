@@ -219,31 +219,31 @@ is most likely a noise effect and would not carry over to a held-out test set.</
 <p>Note that in practice, one would not search over this many different parameters
 simultaneously using grid search, but pick only the ones deemed most important.</p>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>RandomizedSearchCV took 3.76 seconds for 20 candidates parameter settings.
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>RandomizedSearchCV took 6.73 seconds for 20 candidates parameter settings.
 Model with rank: 1
-Mean validation score: 0.927 (std: 0.004)
+Mean validation score: 0.931 (std: 0.015)
 Parameters: {&#39;bootstrap&#39;: False, &#39;criterion&#39;: &#39;entropy&#39;, &#39;max_depth&#39;: None, &#39;max_features&#39;: 5, &#39;min_samples_leaf&#39;: 4, &#39;min_samples_split&#39;: 5}
 
 Model with rank: 2
-Mean validation score: 0.925 (std: 0.008)
-Parameters: {&#39;bootstrap&#39;: False, &#39;criterion&#39;: &#39;entropy&#39;, &#39;max_depth&#39;: None, &#39;max_features&#39;: 7, &#39;min_samples_leaf&#39;: 3, &#39;min_samples_split&#39;: 5}
-
-Model with rank: 3
-Mean validation score: 0.923 (std: 0.007)
+Mean validation score: 0.925 (std: 0.028)
 Parameters: {&#39;bootstrap&#39;: False, &#39;criterion&#39;: &#39;entropy&#39;, &#39;max_depth&#39;: None, &#39;max_features&#39;: 4, &#39;min_samples_leaf&#39;: 1, &#39;min_samples_split&#39;: 7}
 
-GridSearchCV took 35.43 seconds for 216 candidate parameter settings.
+Model with rank: 3
+Mean validation score: 0.920 (std: 0.028)
+Parameters: {&#39;bootstrap&#39;: False, &#39;criterion&#39;: &#39;gini&#39;, &#39;max_depth&#39;: None, &#39;max_features&#39;: 10, &#39;min_samples_leaf&#39;: 4, &#39;min_samples_split&#39;: 8}
+
+GridSearchCV took 63.14 seconds for 216 candidate parameter settings.
 Model with rank: 1
-Mean validation score: 0.937 (std: 0.012)
-Parameters: {&#39;bootstrap&#39;: False, &#39;criterion&#39;: &#39;gini&#39;, &#39;max_depth&#39;: None, &#39;max_features&#39;: 10, &#39;min_samples_leaf&#39;: 1, &#39;min_samples_split&#39;: 2}
+Mean validation score: 0.932 (std: 0.027)
+Parameters: {&#39;bootstrap&#39;: False, &#39;criterion&#39;: &#39;gini&#39;, &#39;max_depth&#39;: None, &#39;max_features&#39;: 3, &#39;min_samples_leaf&#39;: 1, &#39;min_samples_split&#39;: 3}
 
 Model with rank: 2
-Mean validation score: 0.933 (std: 0.001)
-Parameters: {&#39;bootstrap&#39;: False, &#39;criterion&#39;: &#39;entropy&#39;, &#39;max_depth&#39;: None, &#39;max_features&#39;: 3, &#39;min_samples_leaf&#39;: 3, &#39;min_samples_split&#39;: 3}
+Mean validation score: 0.931 (std: 0.024)
+Parameters: {&#39;bootstrap&#39;: False, &#39;criterion&#39;: &#39;gini&#39;, &#39;max_depth&#39;: None, &#39;max_features&#39;: 3, &#39;min_samples_leaf&#39;: 1, &#39;min_samples_split&#39;: 2}
 
 Model with rank: 3
-Mean validation score: 0.930 (std: 0.007)
-Parameters: {&#39;bootstrap&#39;: False, &#39;criterion&#39;: &#39;entropy&#39;, &#39;max_depth&#39;: None, &#39;max_features&#39;: 3, &#39;min_samples_leaf&#39;: 3, &#39;min_samples_split&#39;: 10}
+Mean validation score: 0.930 (std: 0.027)
+Parameters: {&#39;bootstrap&#39;: False, &#39;criterion&#39;: &#39;gini&#39;, &#39;max_depth&#39;: None, &#39;max_features&#39;: 10, &#39;min_samples_leaf&#39;: 1, &#39;min_samples_split&#39;: 3}
 </pre></div>
 </div>
 <div class="line-block">
@@ -293,7 +293,7 @@ Parameters: {&#39;bootstrap&#39;: False, &#39;criterion&#39;: &#39;entropy&#39;,
 <span class="c1"># run randomized search</span>
 <span class="n">n_iter_search</span> <span class="o">=</span> <span class="mi">20</span>
 <span class="n">random_search</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.model_selection.RandomizedSearchCV.html#sklearn.model_selection.RandomizedSearchCV" title="View documentation for sklearn.model_selection.RandomizedSearchCV"><span class="n">RandomizedSearchCV</span></a><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">param_distributions</span><span class="o">=</span><span class="n">param_dist</span><span class="p">,</span>
-                                   <span class="n">n_iter</span><span class="o">=</span><span class="n">n_iter_search</span><span class="p">)</span>
+                                   <span class="n">n_iter</span><span class="o">=</span><span class="n">n_iter_search</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 
 <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">random_search</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
@@ -310,7 +310,7 @@ Parameters: {&#39;bootstrap&#39;: False, &#39;criterion&#39;: &#39;entropy&#39;,
               <span class="s2">&quot;criterion&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;gini&quot;</span><span class="p">,</span> <span class="s2">&quot;entropy&quot;</span><span class="p">]}</span>
 
 <span class="c1"># run grid search</span>
-<span class="n">grid_search</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV" title="View documentation for sklearn.model_selection.GridSearchCV"><span class="n">GridSearchCV</span></a><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">param_grid</span><span class="o">=</span><span class="n">param_grid</span><span class="p">)</span>
+<span class="n">grid_search</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV" title="View documentation for sklearn.model_selection.GridSearchCV"><span class="n">GridSearchCV</span></a><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">param_grid</span><span class="o">=</span><span class="n">param_grid</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">grid_search</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
@@ -319,7 +319,7 @@ Parameters: {&#39;bootstrap&#39;: False, &#39;criterion&#39;: &#39;entropy&#39;,
 <span class="n">report</span><span class="p">(</span><span class="n">grid_search</span><span class="o">.</span><span class="n">cv_results_</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  39.301 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 1 minutes  10.010 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-model-selection-plot-randomized-search-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/plot_randomized_search.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_randomized_search.py</span></code></a></div>
