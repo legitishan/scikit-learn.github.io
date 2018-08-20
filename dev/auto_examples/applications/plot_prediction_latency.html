@@ -233,7 +233,7 @@ Benchmarking RandomForestRegressor(bootstrap=True, criterion=&#39;mse&#39;, max_
            max_features=&#39;auto&#39;, max_leaf_nodes=None,
            min_impurity_decrease=0.0, min_impurity_split=None,
            min_samples_leaf=1, min_samples_split=2,
-           min_weight_fraction_leaf=0.0, n_estimators=100, n_jobs=1,
+           min_weight_fraction_leaf=0.0, n_estimators=100, n_jobs=None,
            oob_score=False, random_state=None, verbose=0, warm_start=False)
 Benchmarking SVR(C=1.0, cache_size=200, coef0=0.0, degree=3, epsilon=0.1,
   gamma=&#39;auto_deprecated&#39;, kernel=&#39;rbf&#39;, max_iter=-1, shrinking=True,
@@ -241,7 +241,7 @@ Benchmarking SVR(C=1.0, cache_size=200, coef0=0.0, degree=3, epsilon=0.1,
 benchmarking with 100 features
 benchmarking with 250 features
 benchmarking with 500 features
-example run in 12.17s
+example run in 12.32s
 </pre></div>
 </div>
 <div class="line-block">
@@ -260,7 +260,6 @@ example run in 12.17s
 
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler" title="View documentation for sklearn.preprocessing.StandardScaler"><span class="n">StandardScaler</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="View documentation for sklearn.model_selection.train_test_split"><span class="n">train_test_split</span></a>
-<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.scoreatpercentile.html#scipy.stats.scoreatpercentile" title="View documentation for scipy.stats.scoreatpercentile"><span class="n">scoreatpercentile</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.datasets.samples_generator</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.datasets.make_regression.html#sklearn.datasets.make_regression" title="View documentation for sklearn.datasets.samples_generator.make_regression"><span class="n">make_regression</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.ensemble.forest</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor" title="View documentation for sklearn.ensemble.forest.RandomForestRegressor"><span class="n">RandomForestRegressor</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.linear_model.ridge</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge" title="View documentation for sklearn.linear_model.ridge.Ridge"><span class="n">Ridge</span></a>
@@ -284,7 +283,7 @@ example run in 12.17s
         <span class="n">estimator</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
         <span class="n">runtimes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;atomic_benchmark runtimes:&quot;</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">runtimes</span><span class="p">),</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.scoreatpercentile.html#scipy.stats.scoreatpercentile" title="View documentation for scipy.stats.scoreatpercentile"><span class="n">scoreatpercentile</span></a><span class="p">(</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;atomic_benchmark runtimes:&quot;</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">runtimes</span><span class="p">),</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.percentile.html#numpy.percentile" title="View documentation for numpy.percentile"><span class="n">np</span><span class="o">.</span><span class="n">percentile</span></a><span class="p">(</span>
             <span class="n">runtimes</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">runtimes</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">runtimes</span>
 
@@ -299,7 +298,7 @@ example run in 12.17s
         <span class="n">runtimes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
     <span class="n">runtimes</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">n_instances</span><span class="p">),</span> <span class="n">runtimes</span><span class="p">)))</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;bulk_benchmark runtimes:&quot;</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">runtimes</span><span class="p">),</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.scoreatpercentile.html#scipy.stats.scoreatpercentile" title="View documentation for scipy.stats.scoreatpercentile"><span class="n">scoreatpercentile</span></a><span class="p">(</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;bulk_benchmark runtimes:&quot;</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">runtimes</span><span class="p">),</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.percentile.html#numpy.percentile" title="View documentation for numpy.percentile"><span class="n">np</span><span class="o">.</span><span class="n">percentile</span></a><span class="p">(</span>
             <span class="n">runtimes</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">runtimes</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">runtimes</span>
 
@@ -441,8 +440,8 @@ example run in 12.17s
             <span class="n">estimator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
             <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
             <span class="n">runtimes</span> <span class="o">=</span> <span class="n">bulk_benchmark_estimator</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
-            <span class="n">percentiles</span><span class="p">[</span><span class="n">cls_name</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e6</span> <span class="o">*</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.scoreatpercentile.html#scipy.stats.scoreatpercentile" title="View documentation for scipy.stats.scoreatpercentile"><span class="n">scoreatpercentile</span></a><span class="p">(</span><span class="n">runtimes</span><span class="p">,</span>
-                                                               <span class="n">percentile</span><span class="p">)</span>
+            <span class="n">percentiles</span><span class="p">[</span><span class="n">cls_name</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e6</span> <span class="o">*</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.percentile.html#numpy.percentile" title="View documentation for numpy.percentile"><span class="n">np</span><span class="o">.</span><span class="n">percentile</span></a><span class="p">(</span><span class="n">runtimes</span><span class="p">,</span>
+                                                           <span class="n">percentile</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">percentiles</span>
 
 
@@ -546,7 +545,7 @@ example run in 12.17s
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;example run in </span><span class="si">%.2f</span><span class="s2">s&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">stop_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">))</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  12.177 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  12.326 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-applications-plot-prediction-latency-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/plot_prediction_latency.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_prediction_latency.py</span></code></a></div>

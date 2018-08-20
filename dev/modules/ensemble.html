@@ -221,12 +221,12 @@
 </li>
 <li><a class="reference internal" href="#voting-classifier">1.11.5. Voting Classifier</a><ul>
 <li><a class="reference internal" href="#majority-class-labels-majority-hard-voting">1.11.5.1. Majority Class Labels (Majority/Hard Voting)</a><ul>
-<li><a class="reference internal" href="#id25">1.11.5.1.1. Usage</a></li>
+<li><a class="reference internal" href="#id26">1.11.5.1.1. Usage</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#weighted-average-probabilities-soft-voting">1.11.5.2. Weighted Average Probabilities (Soft Voting)</a></li>
 <li><a class="reference internal" href="#using-the-votingclassifier-with-gridsearch">1.11.5.3. Using the <cite>VotingClassifier</cite> with <cite>GridSearch</cite></a><ul>
-<li><a class="reference internal" href="#id26">1.11.5.3.1. Usage</a></li>
+<li><a class="reference internal" href="#id27">1.11.5.3.1. Usage</a></li>
 </ul>
 </li>
 </ul>
@@ -522,10 +522,15 @@ respect to the predictability of the target variable. Features used at
 the top of the tree contribute to the final prediction decision of a
 larger fraction of the input samples. The <strong>expected fraction of the
 samples</strong> they contribute to can thus be used as an estimate of the
-<strong>relative importance of the features</strong>.</p>
-<p>By <strong>averaging</strong> those expected activity rates over several randomized
+<strong>relative importance of the features</strong>. In scikit-learn, the fraction of
+samples a feature contributes to is combined with the decrease in impurity
+from splitting them to create a normalized estimate of the predictive power
+of that feature.</p>
+<p>By <strong>averaging</strong> the estimates of predictive ability over several randomized
 trees one can <strong>reduce the variance</strong> of such an estimate and use it
-for feature selection.</p>
+for feature selection. This is known as the mean decrease in impurity, or MDI.
+Refer to <a class="reference internal" href="#l2014" id="id7">[L2014]</a> for more information on MDI and feature importance
+evaluation with Random Forests.</p>
 <p>The following example shows a color-coded representation of the relative
 importances of each individual pixel for a face recognition task using
 a <a class="reference internal" href="generated/sklearn.ensemble.ExtraTreesClassifier.html#sklearn.ensemble.ExtraTreesClassifier" title="sklearn.ensemble.ExtraTreesClassifier"><code class="xref py py-class docutils literal"><span class="pre">ExtraTreesClassifier</span></code></a> model.</p>
@@ -544,9 +549,20 @@ to the prediction function.</p>
 <li><a class="reference internal" href="../auto_examples/ensemble/plot_forest_importances.html#sphx-glr-auto-examples-ensemble-plot-forest-importances-py"><span class="std std-ref">Feature importances with forests of trees</span></a></li>
 </ul>
 </div>
+<div class="topic" id="random-trees-embedding">
+<p class="topic-title first">References</p>
+<table class="docutils citation" frame="void" id="l2014" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id7">[L2014]</a></td><td>G. Louppe,
+“Understanding Random Forests: From Theory to Practice”,
+PhD Thesis, U. of Liege, 2014.</td></tr>
+</tbody>
+</table>
+</div>
 </div>
 <div class="section" id="totally-random-trees-embedding">
-<span id="random-trees-embedding"></span><h3>1.11.2.6. Totally Random Trees Embedding<a class="headerlink" href="#totally-random-trees-embedding" title="Permalink to this headline">¶</a></h3>
+<h3>1.11.2.6. Totally Random Trees Embedding<a class="headerlink" href="#totally-random-trees-embedding" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference internal" href="generated/sklearn.ensemble.RandomTreesEmbedding.html#sklearn.ensemble.RandomTreesEmbedding" title="sklearn.ensemble.RandomTreesEmbedding"><code class="xref py py-class docutils literal"><span class="pre">RandomTreesEmbedding</span></code></a> implements an unsupervised transformation of the
 data.  Using a forest of completely random trees, <a class="reference internal" href="generated/sklearn.ensemble.RandomTreesEmbedding.html#sklearn.ensemble.RandomTreesEmbedding" title="sklearn.ensemble.RandomTreesEmbedding"><code class="xref py py-class docutils literal"><span class="pre">RandomTreesEmbedding</span></code></a>
 encodes the data by the indices of the leaves a data point ends up in.  This
@@ -579,9 +595,9 @@ dimensionality reduction.</p>
 </div>
 </div>
 <div class="section" id="adaboost">
-<span id="id7"></span><h2>1.11.3. AdaBoost<a class="headerlink" href="#adaboost" title="Permalink to this headline">¶</a></h2>
+<span id="id8"></span><h2>1.11.3. AdaBoost<a class="headerlink" href="#adaboost" title="Permalink to this headline">¶</a></h2>
 <p>The module <a class="reference internal" href="classes.html#module-sklearn.ensemble" title="sklearn.ensemble"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.ensemble</span></code></a> includes the popular boosting algorithm
-AdaBoost, introduced in 1995 by Freund and Schapire <a class="reference internal" href="#fs1995" id="id8">[FS1995]</a>.</p>
+AdaBoost, introduced in 1995 by Freund and Schapire <a class="reference internal" href="#fs1995" id="id9">[FS1995]</a>.</p>
 <p>The core principle of AdaBoost is to fit a sequence of weak learners (i.e.,
 models that are only slightly better than random guessing, such as small
 decision trees) on repeatedly modified versions of the data. The predictions
@@ -598,7 +614,7 @@ whereas the weights are decreased for those that were predicted correctly. As
 iterations proceed, examples that are difficult to predict receive
 ever-increasing influence. Each subsequent weak learner is thereby forced to
 concentrate on the examples that are missed by the previous ones in the sequence
-<a class="reference internal" href="#htf" id="id9">[HTF]</a>.</p>
+<a class="reference internal" href="#htf" id="id10">[HTF]</a>.</p>
 <div class="figure align-center">
 <a class="reference external image-reference" href="../auto_examples/ensemble/plot_adaboost_hastie_10_2.html"><img alt="../_images/sphx_glr_plot_adaboost_hastie_10_2_0011.png" src="../_images/sphx_glr_plot_adaboost_hastie_10_2_0011.png" style="width: 480.0px; height: 360.0px;" /></a>
 </div>
@@ -606,8 +622,8 @@ concentrate on the examples that are missed by the previous ones in the sequence
 <blockquote>
 <div><ul class="simple">
 <li>For multi-class classification, <a class="reference internal" href="generated/sklearn.ensemble.AdaBoostClassifier.html#sklearn.ensemble.AdaBoostClassifier" title="sklearn.ensemble.AdaBoostClassifier"><code class="xref py py-class docutils literal"><span class="pre">AdaBoostClassifier</span></code></a> implements
-AdaBoost-SAMME and AdaBoost-SAMME.R <a class="reference internal" href="#zzrh2009" id="id10">[ZZRH2009]</a>.</li>
-<li>For regression, <a class="reference internal" href="generated/sklearn.ensemble.AdaBoostRegressor.html#sklearn.ensemble.AdaBoostRegressor" title="sklearn.ensemble.AdaBoostRegressor"><code class="xref py py-class docutils literal"><span class="pre">AdaBoostRegressor</span></code></a> implements AdaBoost.R2 <a class="reference internal" href="#d1997" id="id11">[D1997]</a>.</li>
+AdaBoost-SAMME and AdaBoost-SAMME.R <a class="reference internal" href="#zzrh2009" id="id11">[ZZRH2009]</a>.</li>
+<li>For regression, <a class="reference internal" href="generated/sklearn.ensemble.AdaBoostRegressor.html#sklearn.ensemble.AdaBoostRegressor" title="sklearn.ensemble.AdaBoostRegressor"><code class="xref py py-class docutils literal"><span class="pre">AdaBoostRegressor</span></code></a> implements AdaBoost.R2 <a class="reference internal" href="#d1997" id="id12">[D1997]</a>.</li>
 </ul>
 </div></blockquote>
 <div class="section" id="usage">
@@ -653,21 +669,21 @@ with the AdaBoost.R2 algorithm.</li>
 <table class="docutils citation" frame="void" id="fs1995" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id8">[FS1995]</a></td><td>Y. Freund, and R. Schapire, “A Decision-Theoretic Generalization of
+<tr><td class="label"><a class="fn-backref" href="#id9">[FS1995]</a></td><td>Y. Freund, and R. Schapire, “A Decision-Theoretic Generalization of
 On-Line Learning and an Application to Boosting”, 1997.</td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="zzrh2009" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id10">[ZZRH2009]</a></td><td>J. Zhu, H. Zou, S. Rosset, T. Hastie. “Multi-class AdaBoost”,
+<tr><td class="label"><a class="fn-backref" href="#id11">[ZZRH2009]</a></td><td>J. Zhu, H. Zou, S. Rosset, T. Hastie. “Multi-class AdaBoost”,
 2009.</td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="d1997" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id11">[D1997]</a></td><td><ol class="first last upperalpha simple" start="8">
+<tr><td class="label"><a class="fn-backref" href="#id12">[D1997]</a></td><td><ol class="first last upperalpha simple" start="8">
 <li>Drucker. “Improving Regressors using Boosting Techniques”, 1997.</li>
 </ol>
 </td></tr>
@@ -676,7 +692,7 @@ On-Line Learning and an Application to Boosting”, 1997.</td></tr>
 <table class="docutils citation" frame="void" id="htf" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id9">[HTF]</a></td><td>T. Hastie, R. Tibshirani and J. Friedman, “Elements of
+<tr><td class="label"><a class="fn-backref" href="#id10">[HTF]</a></td><td>T. Hastie, R. Tibshirani and J. Friedman, “Elements of
 Statistical Learning Ed. 2”, Springer, 2009.</td></tr>
 </tbody>
 </table>
@@ -815,7 +831,7 @@ model interactions of up to order <code class="docutils literal"><span class="pr
 but is significantly faster to train at the expense of a slightly higher
 training error.
 The parameter <code class="docutils literal"><span class="pre">max_leaf_nodes</span></code> corresponds to the variable <code class="docutils literal"><span class="pre">J</span></code> in the
-chapter on gradient boosting in <a class="reference internal" href="#f2001" id="id13">[F2001]</a> and is related to the parameter
+chapter on gradient boosting in <a class="reference internal" href="#f2001" id="id14">[F2001]</a> and is related to the parameter
 <code class="docutils literal"><span class="pre">interaction.depth</span></code> in R’s gbm package where <code class="docutils literal"><span class="pre">max_leaf_nodes</span> <span class="pre">==</span> <span class="pre">interaction.depth</span> <span class="pre">+</span> <span class="pre">1</span></code> .</p>
 </div>
 <div class="section" id="mathematical-formulation">
@@ -885,7 +901,7 @@ regression. The initial model is given by the median of the
 target values.</li>
 <li>Huber (<code class="docutils literal"><span class="pre">'huber'</span></code>): Another robust loss function that combines
 least squares and least absolute deviation; use <code class="docutils literal"><span class="pre">alpha</span></code> to
-control the sensitivity with regards to outliers (see <a class="reference internal" href="#f2001" id="id14">[F2001]</a> for
+control the sensitivity with regards to outliers (see <a class="reference internal" href="#f2001" id="id15">[F2001]</a> for
 more details).</li>
 <li>Quantile (<code class="docutils literal"><span class="pre">'quantile'</span></code>): A loss function for quantile regression.
 Use <code class="docutils literal"><span class="pre">0</span> <span class="pre">&lt;</span> <span class="pre">alpha</span> <span class="pre">&lt;</span> <span class="pre">1</span></code> to specify the quantile. This loss function
@@ -919,7 +935,7 @@ classification.</li>
 <h3>1.11.4.6. Regularization<a class="headerlink" href="#regularization" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="shrinkage">
 <span id="gradient-boosting-shrinkage"></span><h4>1.11.4.6.1. Shrinkage<a class="headerlink" href="#shrinkage" title="Permalink to this headline">¶</a></h4>
-<p><a class="reference internal" href="#f2001" id="id15">[F2001]</a> proposed a simple regularization strategy that scales
+<p><a class="reference internal" href="#f2001" id="id16">[F2001]</a> proposed a simple regularization strategy that scales
 the contribution of each weak learner by a factor <span class="math">\(\nu\)</span>:</p>
 <div class="math">
 \[F_m(x) = F_{m-1}(x) + \nu \gamma_m h_m(x)\]</div>
@@ -930,15 +946,15 @@ be set via the <code class="docutils literal"><span class="pre">learning_rate</s
 <code class="docutils literal"><span class="pre">n_estimators</span></code>, the number of weak learners to fit. Smaller values
 of <code class="docutils literal"><span class="pre">learning_rate</span></code> require larger numbers of weak learners to maintain
 a constant training error. Empirical evidence suggests that small
-values of <code class="docutils literal"><span class="pre">learning_rate</span></code> favor better test error. <a class="reference internal" href="#htf2009" id="id16">[HTF2009]</a>
+values of <code class="docutils literal"><span class="pre">learning_rate</span></code> favor better test error. <a class="reference internal" href="#htf2009" id="id17">[HTF2009]</a>
 recommend to set the learning rate to a small constant
 (e.g. <code class="docutils literal"><span class="pre">learning_rate</span> <span class="pre">&lt;=</span> <span class="pre">0.1</span></code>) and choose <code class="docutils literal"><span class="pre">n_estimators</span></code> by early
 stopping. For a more detailed discussion of the interaction between
-<code class="docutils literal"><span class="pre">learning_rate</span></code> and <code class="docutils literal"><span class="pre">n_estimators</span></code> see <a class="reference internal" href="#r2007" id="id17">[R2007]</a>.</p>
+<code class="docutils literal"><span class="pre">learning_rate</span></code> and <code class="docutils literal"><span class="pre">n_estimators</span></code> see <a class="reference internal" href="#r2007" id="id18">[R2007]</a>.</p>
 </div>
 <div class="section" id="subsampling">
 <h4>1.11.4.6.2. Subsampling<a class="headerlink" href="#subsampling" title="Permalink to this headline">¶</a></h4>
-<p><a class="reference internal" href="#f1999" id="id18">[F1999]</a> proposed stochastic gradient boosting, which combines gradient
+<p><a class="reference internal" href="#f1999" id="id19">[F1999]</a> proposed stochastic gradient boosting, which combines gradient
 boosting with bootstrap averaging (bagging). At each iteration
 the base classifier is trained on a fraction <code class="docutils literal"><span class="pre">subsample</span></code> of
 the available training data. The subsample is drawn without replacement.
@@ -1023,12 +1039,12 @@ accessed via the <code class="docutils literal"><span class="pre">feature_import
 </div>
 </div>
 <div class="section" id="partial-dependence">
-<span id="id19"></span><h4>1.11.4.7.2. Partial dependence<a class="headerlink" href="#partial-dependence" title="Permalink to this headline">¶</a></h4>
+<span id="id20"></span><h4>1.11.4.7.2. Partial dependence<a class="headerlink" href="#partial-dependence" title="Permalink to this headline">¶</a></h4>
 <p>Partial dependence plots (PDP) show the dependence between the target response
 and a set of ‘target’ features, marginalizing over the
 values of all other features (the ‘complement’ features).
 Intuitively, we can interpret the partial dependence as the expected
-target response <a class="footnote-reference" href="#id22" id="id20">[1]</a> as a function of the ‘target’ features <a class="footnote-reference" href="#id23" id="id21">[2]</a>.</p>
+target response <a class="footnote-reference" href="#id23" id="id21">[1]</a> as a function of the ‘target’ features <a class="footnote-reference" href="#id24" id="id22">[2]</a>.</p>
 <p>Due to the limits of human perception the size of the target feature
 set must be small (usually, one or two) thus the target features are
 usually chosen among the most important features.</p>
@@ -1108,17 +1124,17 @@ dependence is given by a weighted average of all visited leaves. For
 tree ensembles the results of each individual tree are again
 averaged.</p>
 <p class="rubric">Footnotes</p>
-<table class="docutils footnote" frame="void" id="id22" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id20">[1]</a></td><td>For classification with <code class="docutils literal"><span class="pre">loss='deviance'</span></code>  the target
-response is logit(p).</td></tr>
-</tbody>
-</table>
 <table class="docutils footnote" frame="void" id="id23" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id21">[2]</a></td><td>More precisely its the expectation of the target response after
+<tr><td class="label"><a class="fn-backref" href="#id21">[1]</a></td><td>For classification with <code class="docutils literal"><span class="pre">loss='deviance'</span></code>  the target
+response is logit(p).</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id24" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id22">[2]</a></td><td>More precisely its the expectation of the target response after
 accounting for the initial model; partial dependence plots
 do not include the <code class="docutils literal"><span class="pre">init</span></code> model.</td></tr>
 </tbody>
@@ -1134,14 +1150,14 @@ do not include the <code class="docutils literal"><span class="pre">init</span><
 <table class="docutils citation" frame="void" id="f2001" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label">[F2001]</td><td><em>(<a class="fn-backref" href="#id13">1</a>, <a class="fn-backref" href="#id14">2</a>, <a class="fn-backref" href="#id15">3</a>)</em> J. Friedman, “Greedy Function Approximation: A Gradient Boosting Machine”,
+<tr><td class="label">[F2001]</td><td><em>(<a class="fn-backref" href="#id14">1</a>, <a class="fn-backref" href="#id15">2</a>, <a class="fn-backref" href="#id16">3</a>)</em> J. Friedman, “Greedy Function Approximation: A Gradient Boosting Machine”,
 The Annals of Statistics, Vol. 29, No. 5, 2001.</td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="f1999" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id18">[F1999]</a></td><td><ol class="first last upperalpha simple" start="10">
+<tr><td class="label"><a class="fn-backref" href="#id19">[F1999]</a></td><td><ol class="first last upperalpha simple" start="10">
 <li>Friedman, “Stochastic Gradient Boosting”, 1999</li>
 </ol>
 </td></tr>
@@ -1150,7 +1166,7 @@ The Annals of Statistics, Vol. 29, No. 5, 2001.</td></tr>
 <table class="docutils citation" frame="void" id="htf2009" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id16">[HTF2009]</a></td><td><ol class="first last upperalpha simple" start="20">
+<tr><td class="label"><a class="fn-backref" href="#id17">[HTF2009]</a></td><td><ol class="first last upperalpha simple" start="20">
 <li>Hastie, R. Tibshirani and J. Friedman, “Elements of Statistical Learning Ed. 2”, Springer, 2009.</li>
 </ol>
 </td></tr>
@@ -1159,7 +1175,7 @@ The Annals of Statistics, Vol. 29, No. 5, 2001.</td></tr>
 <table class="docutils citation" frame="void" id="r2007" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id17">[R2007]</a></td><td><ol class="first last upperalpha simple" start="7">
+<tr><td class="label"><a class="fn-backref" href="#id18">[R2007]</a></td><td><ol class="first last upperalpha simple" start="7">
 <li>Ridgeway, “Generalized Boosted Models: A guide to the gbm package”, 2007</li>
 </ol>
 </td></tr>
@@ -1170,7 +1186,7 @@ The Annals of Statistics, Vol. 29, No. 5, 2001.</td></tr>
 </div>
 </div>
 <div class="section" id="voting-classifier">
-<span id="id24"></span><h2>1.11.5. Voting Classifier<a class="headerlink" href="#voting-classifier" title="Permalink to this headline">¶</a></h2>
+<span id="id25"></span><h2>1.11.5. Voting Classifier<a class="headerlink" href="#voting-classifier" title="Permalink to this headline">¶</a></h2>
 <p>The idea behind the <code class="xref py py-class docutils literal"><span class="pre">VotingClassifier</span></code> is to combine
 conceptually different machine learning classifiers and use a majority vote
 or the average predicted probabilities (soft vote) to predict the class labels.
@@ -1196,8 +1212,8 @@ on the ascending sort order. E.g., in the following scenario</p>
 <li>classifier 2 -&gt; class 1</li>
 </ul>
 <p>the class label 1 will be assigned to the sample.</p>
-<div class="section" id="id25">
-<h4>1.11.5.1.1. Usage<a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id26">
+<h4>1.11.5.1.1. Usage<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h4>
 <p>The following example shows how to fit the majority rule classifier:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">datasets</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">cross_val_score</span>
@@ -1326,8 +1342,8 @@ to tune the hyperparameters of the individual estimators:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="section" id="id26">
-<h4>1.11.5.3.1. Usage<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id27">
+<h4>1.11.5.3.1. Usage<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h4>
 <p>In order to predict the class labels based on the predicted
 class-probabilities (scikit-learn estimators in the VotingClassifier
 must support <code class="docutils literal"><span class="pre">predict_proba</span></code> method):</p>

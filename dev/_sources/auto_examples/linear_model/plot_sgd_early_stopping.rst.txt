@@ -80,7 +80,7 @@ is held out with the validation stopping criterion.
     import matplotlib.pyplot as plt
 
     from sklearn import linear_model
-    from sklearn.datasets import fetch_mldata
+    from sklearn.datasets import fetch_openml
     from sklearn.model_selection import train_test_split
     from sklearn.utils.testing import ignore_warnings
     from sklearn.exceptions import ConvergenceWarning
@@ -89,9 +89,10 @@ is held out with the validation stopping criterion.
     print(__doc__)
 
 
-    def load_mnist(n_samples=None, class_0=0, class_1=8):
+    def load_mnist(n_samples=None, class_0='0', class_1='8'):
         """Load MNIST, select two classes, shuffle and return only n_samples."""
-        mnist = fetch_mldata('MNIST original')
+        # Load data from http://openml.org/d/554
+        mnist = fetch_openml('mnist_784', version=1)
 
         # take only two classes for binary classification
         mask = np.logical_or(mnist.target == class_0, mnist.target == class_1)
@@ -181,7 +182,7 @@ is held out with the validation stopping criterion.
     fig.tight_layout()
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  28.329 seconds)
+**Total running time of the script:** ( 1 minutes  6.341 seconds)
 
 
 .. _sphx_glr_download_auto_examples_linear_model_plot_sgd_early_stopping.py:

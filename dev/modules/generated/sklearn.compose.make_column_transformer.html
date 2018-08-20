@@ -205,7 +205,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.compose" title="sklearn.compose"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.compose</span></code></a>.make_column_transformer<a class="headerlink" href="#sklearn-compose-make-column-transformer" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.compose.make_column_transformer">
-<code class="descclassname">sklearn.compose.</code><code class="descname">make_column_transformer</code><span class="sig-paren">(</span><em>*transformers</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/eb453b6/sklearn/compose/_column_transformer.py#L645"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.compose.make_column_transformer" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sklearn.compose.</code><code class="descname">make_column_transformer</code><span class="sig-paren">(</span><em>*transformers</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/774f1aa/sklearn/compose/_column_transformer.py#L648"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.compose.make_column_transformer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Construct a ColumnTransformer from the given transformers.</p>
 <p>This is a shorthand for the ColumnTransformer constructor; it does not
 require, and does not permit, naming the transformers. Instead, they will
@@ -230,8 +230,11 @@ By setting <code class="docutils literal"><span class="pre">remainder</span></co
 non-specified columns will use the <code class="docutils literal"><span class="pre">remainder</span></code> estimator. The
 estimator must support <cite>fit</cite> and <cite>transform</cite>.</p>
 </dd>
-<dt><strong>n_jobs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, optional</span></dt>
-<dd><p class="first last">Number of jobs to run in parallel (default 1).</p>
+<dt><strong>n_jobs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int or None, optional (default=None)</span></dt>
+<dd><p class="first last">Number of jobs to run in parallel.
+<code class="docutils literal"><span class="pre">None</span></code> means 1 unless in a <a class="reference external" href="https://joblib.readthedocs.io/en/latest/parallel.html#joblib.parallel_backend" title="(in joblib v0.12.2)"><code class="xref py py-obj docutils literal"><span class="pre">joblib.parallel_backend</span></code></a> context.
+<code class="docutils literal"><span class="pre">-1</span></code> means using all processors. See <a class="reference internal" href="../../glossary.html#term-n-jobs"><span class="xref std std-term">Glossary</span></a>
+for more details.</p>
 </dd>
 </dl>
 </td>
@@ -258,7 +261,7 @@ estimator must support <cite>fit</cite> and <cite>transform</cite>.</p>
 <span class="gp">... </span>    <span class="p">([</span><span class="s1">&#39;numerical_column&#39;</span><span class="p">],</span> <span class="n">StandardScaler</span><span class="p">()),</span>
 <span class="gp">... </span>    <span class="p">([</span><span class="s1">&#39;categorical_column&#39;</span><span class="p">],</span> <span class="n">OneHotEncoder</span><span class="p">()))</span>
 <span class="gp">... </span>    
-<span class="go">ColumnTransformer(n_jobs=1, remainder=&#39;drop&#39;, sparse_threshold=0.3,</span>
+<span class="go">ColumnTransformer(n_jobs=None, remainder=&#39;drop&#39;, sparse_threshold=0.3,</span>
 <span class="go">         transformer_weights=None,</span>
 <span class="go">         transformers=[(&#39;standardscaler&#39;,</span>
 <span class="go">                        StandardScaler(...),</span>

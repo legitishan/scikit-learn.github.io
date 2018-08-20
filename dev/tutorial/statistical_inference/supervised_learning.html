@@ -296,7 +296,7 @@ estimator on <strong>new data</strong>. This is why datasets are often split int
 <span class="gp">&gt;&gt;&gt; </span><span class="n">knn</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">knn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">iris_X_train</span><span class="p">,</span> <span class="n">iris_y_train</span><span class="p">)</span> 
 <span class="go">KNeighborsClassifier(algorithm=&#39;auto&#39;, leaf_size=30, metric=&#39;minkowski&#39;,</span>
-<span class="go">           metric_params=None, n_jobs=1, n_neighbors=5, p=2,</span>
+<span class="go">           metric_params=None, n_jobs=None, n_neighbors=5, p=2,</span>
 <span class="go">           weights=&#39;uniform&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">knn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">iris_X_test</span><span class="p">)</span>
 <span class="go">array([1, 2, 1, 0, 0, 0, 2, 1, 2, 0])</span>
@@ -365,13 +365,16 @@ of the model as small as possible.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">linear_model</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">regr</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">LinearRegression</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">regr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">diabetes_X_train</span><span class="p">,</span> <span class="n">diabetes_y_train</span><span class="p">)</span>
-<span class="go">LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1, normalize=False)</span>
+<span class="gp">... </span>                                      
+<span class="go">LinearRegression(copy_X=True, fit_intercept=True, n_jobs=None,</span>
+<span class="go">                 normalize=False)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">regr</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span>
 <span class="go">[   0.30349955 -237.63931533  510.53060544  327.73698041 -814.13170937</span>
 <span class="go">  492.81458798  102.84845219  184.60648906  743.51961675   76.09517222]</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># The mean square error</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">regr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">diabetes_X_test</span><span class="p">)</span><span class="o">-</span><span class="n">diabetes_y_test</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">... </span>                                                  
 <span class="go">2004.56760268...</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Explained variance score: 1 is perfect prediction</span>
@@ -428,8 +431,11 @@ diabetes dataset rather than our synthetic data:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">([</span><span class="n">regr</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span>
 <span class="gp">... </span>            <span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">diabetes_X_train</span><span class="p">,</span> <span class="n">diabetes_y_train</span><span class="p">,</span>
-<span class="gp">... </span>            <span class="p">)</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">diabetes_X_test</span><span class="p">,</span> <span class="n">diabetes_y_test</span><span class="p">)</span> <span class="k">for</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="n">alphas</span><span class="p">])</span> 
-<span class="go">[0.5851110683883..., 0.5852073015444..., 0.5854677540698..., 0.5855512036503..., 0.5830717085554..., 0.57058999437...]</span>
+<span class="gp">... </span>            <span class="p">)</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">diabetes_X_test</span><span class="p">,</span> <span class="n">diabetes_y_test</span><span class="p">)</span>
+<span class="gp">... </span>       <span class="k">for</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="n">alphas</span><span class="p">])</span>
+<span class="gp">... </span>                           
+<span class="go">[0.5851110683883..., 0.5852073015444..., 0.5854677540698...,</span>
+<span class="go"> 0.5855512036503..., 0.5830717085554..., 0.57058999437...]</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -505,7 +511,7 @@ function or <strong>logistic</strong> function:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">logistic</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">iris_X_train</span><span class="p">,</span> <span class="n">iris_y_train</span><span class="p">)</span>
 <span class="go">LogisticRegression(C=100000.0, class_weight=None, dual=False,</span>
 <span class="go">          fit_intercept=True, intercept_scaling=1, max_iter=100,</span>
-<span class="go">          multi_class=&#39;ovr&#39;, n_jobs=1, penalty=&#39;l2&#39;, random_state=None,</span>
+<span class="go">          multi_class=&#39;ovr&#39;, n_jobs=None, penalty=&#39;l2&#39;, random_state=None,</span>
 <span class="go">          solver=&#39;liblinear&#39;, tol=0.0001, verbose=0, warm_start=False)</span>
 </pre></div>
 </div>

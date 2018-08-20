@@ -239,8 +239,8 @@ functions, array-like is any type object for which
 <li>a numpy array</li>
 <li>a list of numbers</li>
 <li>a list of length-k lists of numbers for some fixed length k</li>
-<li>a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.3)"><code class="xref py py-class docutils literal"><span class="pre">pandas.DataFrame</span></code></a> with all columns numeric</li>
-<li>a numeric <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.html#pandas.Series" title="(in pandas v0.23.3)"><code class="xref py py-class docutils literal"><span class="pre">pandas.Series</span></code></a></li>
+<li>a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-class docutils literal"><span class="pre">pandas.DataFrame</span></code></a> with all columns numeric</li>
+<li>a numeric <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.html#pandas.Series" title="(in pandas v0.23.4)"><code class="xref py py-class docutils literal"><span class="pre">pandas.Series</span></code></a></li>
 </ul>
 <p>It excludes:</p>
 <ul class="simple">
@@ -1427,11 +1427,11 @@ pass over every sample in the data).</p>
 between ConvergenceWarning and max_iter.</p>
 </dd>
 <dt id="term-memory"><code class="docutils literal"><span class="pre">memory</span></code></dt>
-<dd><p class="first">Some estimators make use of <code class="xref py py-class docutils literal"><span class="pre">joblib.Memory</span></code> to
+<dd><p class="first">Some estimators make use of <a class="reference external" href="https://joblib.readthedocs.io/en/latest/generated/joblib.Memory.html#joblib.Memory" title="(in joblib v0.12.2)"><code class="xref py py-class docutils literal"><span class="pre">joblib.Memory</span></code></a> to
 store partial solutions during fitting. Thus when <code class="docutils literal"><span class="pre">fit</span></code> is called
 again, those partial solutions have been memoized and can be reused.</p>
 <p>A <code class="docutils literal"><span class="pre">memory</span></code> parameter can be specified as a string with a path to a
-directory, or a <code class="xref py py-class docutils literal"><span class="pre">joblib.Memory</span></code> instance (or an object with a
+directory, or a <a class="reference external" href="https://joblib.readthedocs.io/en/latest/generated/joblib.Memory.html#joblib.Memory" title="(in joblib v0.12.2)"><code class="xref py py-class docutils literal"><span class="pre">joblib.Memory</span></code></a> instance (or an object with a
 similar interface, i.e. a <code class="docutils literal"><span class="pre">cache</span></code> method) can be used.</p>
 <p class="last"><code class="docutils literal"><span class="pre">memory</span></code> values are validated and interpreted with
 <a class="reference internal" href="modules/generated/sklearn.utils.validation.check_memory.html#sklearn.utils.validation.check_memory" title="sklearn.utils.validation.check_memory"><code class="xref py py-func docutils literal"><span class="pre">utils.validation.check_memory</span></code></a>.</p>
@@ -1462,8 +1462,14 @@ may be configured to use a threaded numerical processor library (like
 MKL; see <a class="reference internal" href="faq.html#faq-mkl-threading"><span class="std std-ref">FAQ</span></a>).</p>
 <p><code class="docutils literal"><span class="pre">n_jobs</span></code> is an int, specifying the maximum number of concurrently
 running jobs.  If set to -1, all CPUs are used. If 1 is given, no
-parallel computing code is used at all.  For n_jobs below -1, (n_cpus +
-1 + n_jobs) are used. Thus for n_jobs = -2, all CPUs but one are used.</p>
+joblib level parallelism is used at all, which is useful for
+debugging. Even with <code class="docutils literal"><span class="pre">n_jobs</span> <span class="pre">=</span> <span class="pre">1</span></code>, parallelism may occur due to
+numerical processing libraries (see <a class="reference internal" href="faq.html#faq-mkl-threading"><span class="std std-ref">FAQ</span></a>).
+For n_jobs below -1, (n_cpus + 1 + n_jobs) are used. Thus for
+<code class="docutils literal"><span class="pre">n_jobs</span> <span class="pre">=</span> <span class="pre">-2</span></code>, all CPUs but one are used.</p>
+<p><code class="docutils literal"><span class="pre">n_jobs=None</span></code> means <em>unset</em>; it will generally be interpreted as
+<code class="docutils literal"><span class="pre">n_jobs=1</span></code>, unless the current <a class="reference external" href="https://joblib.readthedocs.io/en/latest/generated/joblib.Parallel.html#joblib.Parallel" title="(in joblib v0.12.2)"><code class="xref py py-class docutils literal"><span class="pre">joblib.Parallel</span></code></a> backend
+context specifies otherwise.</p>
 <p>The use of <code class="docutils literal"><span class="pre">n_jobs</span></code>-based parallelism in estimators varies:</p>
 <ul class="simple">
 <li>Most often parallelism happens in <a class="reference internal" href="#term-fit"><span class="xref std std-term">fitting</span></a>, but

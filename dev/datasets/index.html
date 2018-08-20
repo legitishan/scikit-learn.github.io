@@ -229,8 +229,7 @@
 <li><a class="reference internal" href="#loading-other-datasets">5.5. Loading other datasets</a><ul>
 <li><a class="reference internal" href="#sample-images">5.5.1. Sample images</a></li>
 <li><a class="reference internal" href="#datasets-in-svmlight-libsvm-format">5.5.2. Datasets in svmlight / libsvm format</a></li>
-<li><a class="reference internal" href="#downloading-datasets-from-the-mldata-org-repository">5.5.3. Downloading datasets from the mldata.org repository</a></li>
-<li><a class="reference internal" href="#loading-from-external-datasets">5.5.4. Loading from external datasets</a></li>
+<li><a class="reference internal" href="#loading-from-external-datasets">5.5.3. Loading from external datasets</a></li>
 </ul>
 </li>
 </ul>
@@ -2095,74 +2094,8 @@ features:</p>
 <p><span class="target" id="faster-api-compatible-implementation">Faster API-compatible implementation</span>: <a class="reference external" href="https://github.com/mblondel/svmlight-loader">https://github.com/mblondel/svmlight-loader</a></p>
 </div>
 </div>
-<div class="section" id="downloading-datasets-from-the-mldata-org-repository">
-<span id="mldata"></span><h3>5.5.3. Downloading datasets from the mldata.org repository<a class="headerlink" href="#downloading-datasets-from-the-mldata-org-repository" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference external" href="http://mldata.org">mldata.org</a> is a public repository for machine learning
-data, supported by the <a class="reference external" href="http://www.pascal-network.org">PASCAL network</a> .</p>
-<p>The <code class="docutils literal"><span class="pre">sklearn.datasets</span></code> package is able to directly download data
-sets from the repository using the function
-<a class="reference internal" href="../modules/generated/sklearn.datasets.fetch_mldata.html#sklearn.datasets.fetch_mldata" title="sklearn.datasets.fetch_mldata"><code class="xref py py-func docutils literal"><span class="pre">sklearn.datasets.fetch_mldata</span></code></a>.</p>
-<p>For example, to download the MNIST digit recognition database:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">fetch_mldata</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mnist</span> <span class="o">=</span> <span class="n">fetch_mldata</span><span class="p">(</span><span class="s1">&#39;MNIST original&#39;</span><span class="p">,</span> <span class="n">data_home</span><span class="o">=</span><span class="n">custom_data_home</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>The MNIST database contains a total of 70000 examples of handwritten digits
-of size 28x28 pixels, labeled from 0 to 9:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mnist</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
-<span class="go">(70000, 784)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mnist</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">shape</span>
-<span class="go">(70000,)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">mnist</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
-<span class="go">array([0., 1., 2., 3., 4., 5., 6., 7., 8., 9.])</span>
-</pre></div>
-</div>
-<p>After the first download, the dataset is cached locally in the path
-specified by the <code class="docutils literal"><span class="pre">data_home</span></code> keyword argument, which defaults to
-<code class="docutils literal"><span class="pre">~/scikit_learn_data/</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">custom_data_home</span><span class="p">,</span> <span class="s1">&#39;mldata&#39;</span><span class="p">))</span>
-<span class="go">[&#39;mnist-original.mat&#39;]</span>
-</pre></div>
-</div>
-<p>Data sets in <a class="reference external" href="http://mldata.org">mldata.org</a> do not adhere to a strict
-naming or formatting convention. <a class="reference internal" href="../modules/generated/sklearn.datasets.fetch_mldata.html#sklearn.datasets.fetch_mldata" title="sklearn.datasets.fetch_mldata"><code class="xref py py-func docutils literal"><span class="pre">sklearn.datasets.fetch_mldata</span></code></a> is
-able to make sense of the most common cases, but allows to tailor the
-defaults to individual datasets:</p>
-<ul>
-<li><p class="first">The data arrays in <a class="reference external" href="http://mldata.org">mldata.org</a> are most often
-shaped as <code class="docutils literal"><span class="pre">(n_features,</span> <span class="pre">n_samples)</span></code>. This is the opposite of the
-<code class="docutils literal"><span class="pre">scikit-learn</span></code> convention, so <a class="reference internal" href="../modules/generated/sklearn.datasets.fetch_mldata.html#sklearn.datasets.fetch_mldata" title="sklearn.datasets.fetch_mldata"><code class="xref py py-func docutils literal"><span class="pre">sklearn.datasets.fetch_mldata</span></code></a>
-transposes the matrix by default. The <code class="docutils literal"><span class="pre">transpose_data</span></code> keyword controls
-this behavior:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">iris</span> <span class="o">=</span> <span class="n">fetch_mldata</span><span class="p">(</span><span class="s1">&#39;iris&#39;</span><span class="p">,</span> <span class="n">data_home</span><span class="o">=</span><span class="n">custom_data_home</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
-<span class="go">(150, 4)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">iris</span> <span class="o">=</span> <span class="n">fetch_mldata</span><span class="p">(</span><span class="s1">&#39;iris&#39;</span><span class="p">,</span> <span class="n">transpose_data</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<span class="gp">... </span>                    <span class="n">data_home</span><span class="o">=</span><span class="n">custom_data_home</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
-<span class="go">(4, 150)</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">For datasets with multiple columns, <a class="reference internal" href="../modules/generated/sklearn.datasets.fetch_mldata.html#sklearn.datasets.fetch_mldata" title="sklearn.datasets.fetch_mldata"><code class="xref py py-func docutils literal"><span class="pre">sklearn.datasets.fetch_mldata</span></code></a>
-tries to identify the target and data columns and rename them to <code class="docutils literal"><span class="pre">target</span></code>
-and <code class="docutils literal"><span class="pre">data</span></code>. This is done by looking for arrays named <code class="docutils literal"><span class="pre">label</span></code> and
-<code class="docutils literal"><span class="pre">data</span></code> in the dataset, and failing that by choosing the first array to be
-<code class="docutils literal"><span class="pre">target</span></code> and the second to be <code class="docutils literal"><span class="pre">data</span></code>. This behavior can be changed with
-the <code class="docutils literal"><span class="pre">target_name</span></code> and <code class="docutils literal"><span class="pre">data_name</span></code> keywords, setting them to a specific
-name or index number (the name and order of the columns in the datasets
-can be found at its <a class="reference external" href="http://mldata.org">mldata.org</a> under the tab “Data”:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">iris2</span> <span class="o">=</span> <span class="n">fetch_mldata</span><span class="p">(</span><span class="s1">&#39;datasets-UCI iris&#39;</span><span class="p">,</span> <span class="n">target_name</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">data_name</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-<span class="gp">... </span>                     <span class="n">data_home</span><span class="o">=</span><span class="n">custom_data_home</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">iris3</span> <span class="o">=</span> <span class="n">fetch_mldata</span><span class="p">(</span><span class="s1">&#39;datasets-UCI iris&#39;</span><span class="p">,</span> <span class="n">target_name</span><span class="o">=</span><span class="s1">&#39;class&#39;</span><span class="p">,</span>
-<span class="gp">... </span>                     <span class="n">data_name</span><span class="o">=</span><span class="s1">&#39;double0&#39;</span><span class="p">,</span> <span class="n">data_home</span><span class="o">=</span><span class="n">custom_data_home</span><span class="p">)</span>
-</pre></div>
-</div>
-</li>
-</ul>
-</div>
 <div class="section" id="loading-from-external-datasets">
-<span id="external-datasets"></span><h3>5.5.4. Loading from external datasets<a class="headerlink" href="#loading-from-external-datasets" title="Permalink to this headline">¶</a></h3>
+<span id="external-datasets"></span><h3>5.5.3. Loading from external datasets<a class="headerlink" href="#loading-from-external-datasets" title="Permalink to this headline">¶</a></h3>
 <p>scikit-learn works on any numeric data stored as numpy arrays or scipy sparse
 matrices. Other types that are convertible to numeric arrays such as pandas
 DataFrame are also acceptable.</p>
