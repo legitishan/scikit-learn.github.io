@@ -493,27 +493,17 @@ how the tree is fitting to your data, and then increase the depth.</li>
 <li>Remember that the number of samples required to populate the tree doubles
 for each additional level the tree grows to.  Use <code class="docutils literal"><span class="pre">max_depth</span></code> to control
 the size of the tree to prevent overfitting.</li>
-<li>Use <code class="docutils literal"><span class="pre">min_samples_split</span></code> or <code class="docutils literal"><span class="pre">min_samples_leaf</span></code> to control the number of
-samples at a leaf node.  A very small number will usually mean the tree
-will overfit, whereas a large number will prevent the tree from learning
-the data. Try <code class="docutils literal"><span class="pre">min_samples_leaf=5</span></code> as an initial value. If the sample size
-varies greatly, a float number can be used as percentage in these two parameters.
-The main difference between the two is that <code class="docutils literal"><span class="pre">min_samples_leaf</span></code> guarantees
-a minimum number of samples in a leaf, while <code class="docutils literal"><span class="pre">min_samples_split</span></code> can
-create arbitrary small leaves, though <code class="docutils literal"><span class="pre">min_samples_split</span></code> is more common
-in the literature.</li>
+<li>Use <code class="docutils literal"><span class="pre">min_samples_split</span></code> to control the number of samples at a leaf node.
+A very small number will usually mean the tree will overfit, whereas a
+large number will prevent the tree from learning the data. If the sample
+size varies greatly, a float number can be used as percentage in this
+parameter. Note that <code class="docutils literal"><span class="pre">min_samples_split</span></code> can create arbitrarily
+small leaves.</li>
 <li>Balance your dataset before training to prevent the tree from being biased
 toward the classes that are dominant. Class balancing can be done by
 sampling an equal number of samples from each class, or preferably by
 normalizing the sum of the sample weights (<code class="docutils literal"><span class="pre">sample_weight</span></code>) for each
-class to the same value. Also note that weight-based pre-pruning criteria,
-such as <code class="docutils literal"><span class="pre">min_weight_fraction_leaf</span></code>, will then be less biased toward
-dominant classes than criteria that are not aware of the sample weights,
-like <code class="docutils literal"><span class="pre">min_samples_leaf</span></code>.</li>
-<li>If the samples are weighted, it will be easier to optimize the tree
-structure using weight-based pre-pruning criterion such as
-<code class="docutils literal"><span class="pre">min_weight_fraction_leaf</span></code>, which ensure that leaf nodes contain at least
-a fraction of the overall sum of the sample weights.</li>
+class to the same value.</li>
 <li>All decision trees use <code class="docutils literal"><span class="pre">np.float32</span></code> arrays internally.
 If training data is not in this format, a copy of the dataset will be made.</li>
 <li>If the input matrix X is very sparse, it is recommended to convert to sparse
