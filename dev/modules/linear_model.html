@@ -900,29 +900,60 @@ number of features are large.</p>
 <p>The “saga” solver <a class="footnote-reference" href="#id28" id="id25">[7]</a> is a variant of “sag” that also supports the
 non-smooth <cite>penalty=”l1”</cite> option. This is therefore the solver of choice
 for sparse multinomial logistic regression.</p>
-<p>In a nutshell, one may choose the solver with the following rules:</p>
+<p>In a nutshell, the following table summarizes the solvers characteristics:</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="47%" />
-<col width="53%" />
+<col width="41%" />
+<col width="16%" />
+<col width="10%" />
+<col width="16%" />
+<col width="7%" />
+<col width="9%" />
 </colgroup>
 <thead valign="bottom">
-<tr class="row-odd"><th class="head">Case</th>
-<th class="head">Solver</th>
+<tr class="row-odd"><th class="head">solver</th>
+<th class="head">‘liblinear’</th>
+<th class="head">‘lbfgs’</th>
+<th class="head">‘newton-cg’</th>
+<th class="head">‘sag’</th>
+<th class="head">‘saga’</th>
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td>L1 penalty</td>
-<td>“liblinear” or “saga”</td>
+<tr class="row-even"><td>Multinomial + L2 penalty</td>
+<td>no</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
 </tr>
-<tr class="row-odd"><td>Multinomial loss</td>
-<td>“lbfgs”, “sag”, “saga” or “newton-cg”</td>
+<tr class="row-odd"><td>OVR + L2 penalty</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
 </tr>
-<tr class="row-even"><td>Very Large dataset (<cite>n_samples</cite>)</td>
-<td>“sag” or “saga”</td>
+<tr class="row-even"><td>Multinomial + L1 penalty</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td>yes</td>
+</tr>
+<tr class="row-odd"><td>OVR + L1 penalty</td>
+<td>yes</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td>yes</td>
 </tr>
 </tbody>
 </table>
+<p>Penalize the intercept (bad)   yes          no       no           no     no
+Faster for large datasets      no           no       no           yes    yes
+Robust to unscaled datasets    yes          yes      yes          no     no
+============================   ===========  =======  ===========  =====  ======</p>
 <p>The “saga” solver is often the best choice. The “liblinear” solver is
 used by default for historical reasons.</p>
 <p>For large dataset, you may also consider using <a class="reference internal" href="generated/sklearn.linear_model.SGDClassifier.html#sklearn.linear_model.SGDClassifier" title="sklearn.linear_model.SGDClassifier"><code class="xref py py-class docutils literal"><span class="pre">SGDClassifier</span></code></a>
