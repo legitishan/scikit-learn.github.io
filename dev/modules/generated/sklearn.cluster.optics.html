@@ -205,7 +205,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.cluster" title="sklearn.cluster"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.cluster</span></code></a>.optics<a class="headerlink" href="#sklearn-cluster-optics" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.cluster.optics">
-<code class="descclassname">sklearn.cluster.</code><code class="descname">optics</code><span class="sig-paren">(</span><em>X</em>, <em>min_samples=5</em>, <em>max_eps=inf</em>, <em>metric=’euclidean’</em>, <em>p=2</em>, <em>metric_params=None</em>, <em>maxima_ratio=0.75</em>, <em>rejection_ratio=0.7</em>, <em>similarity_threshold=0.4</em>, <em>significant_min=0.003</em>, <em>min_cluster_size_ratio=0.005</em>, <em>min_maxima_ratio=0.001</em>, <em>algorithm=’ball_tree’</em>, <em>leaf_size=30</em>, <em>n_jobs=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/84c4e54/sklearn/cluster/optics_.py#L24"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.optics" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sklearn.cluster.</code><code class="descname">optics</code><span class="sig-paren">(</span><em>X</em>, <em>min_samples=5</em>, <em>max_eps=inf</em>, <em>metric=’euclidean’</em>, <em>p=2</em>, <em>metric_params=None</em>, <em>maxima_ratio=0.75</em>, <em>rejection_ratio=0.7</em>, <em>similarity_threshold=0.4</em>, <em>significant_min=0.003</em>, <em>min_cluster_size_ratio=0.005</em>, <em>min_maxima_ratio=0.001</em>, <em>algorithm=’ball_tree’</em>, <em>leaf_size=30</em>, <em>n_jobs=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/07051bc/sklearn/cluster/optics_.py#L24"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.optics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform OPTICS clustering from vector array</p>
 <p>OPTICS: Ordering Points To Identify the Clustering Structure
 Equivalent to DBSCAN, finds core sample of high density and expands
@@ -220,20 +220,19 @@ neighborhood radius. Optimized for usage on large point datasets.</p>
 <dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array, shape (n_samples, n_features)</span></dt>
 <dd><p class="first last">The data.</p>
 </dd>
-<dt><strong>min_samples</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dt><strong>min_samples</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int (default=5)</span></dt>
 <dd><p class="first last">The number of samples in a neighborhood for a point to be considered
 as a core point.</p>
 </dd>
-<dt><strong>max_eps</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dt><strong>max_eps</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional (default=np.inf)</span></dt>
 <dd><p class="first last">The maximum distance between two samples for them to be considered
-as in the same neighborhood. This is also the largest object size
-expected within the dataset. Default value of “np.inf” will identify
+as in the same neighborhood. Default value of “np.inf” will identify
 clusters across all scales; reducing <cite>max_eps</cite> will result in
 shorter run times.</p>
 </dd>
-<dt><strong>metric</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string or callable, optional</span></dt>
+<dt><strong>metric</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string or callable, optional (default=’euclidean’)</span></dt>
 <dd><p class="first last">The distance metric to use for neighborhood lookups. Default is
-“minkowski”. Other options include “euclidean”, “manhattan”,
+“euclidean”. Other options include “minkowski”, “manhattan”,
 “chebyshev”, “haversine”, “seuclidean”, “hamming”, “canberra”,
 and “braycurtis”. The “wminkowski” and “mahalanobis” metrics are
 also valid with an additional argument.</p>
@@ -247,20 +246,20 @@ equivalent to using manhattan_distance (l1), and euclidean_distance
 <dt><strong>metric_params</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dict, optional (default=None)</span></dt>
 <dd><p class="first last">Additional keyword arguments for the metric function.</p>
 </dd>
-<dt><strong>maxima_ratio</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dt><strong>maxima_ratio</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional (default=.75)</span></dt>
 <dd><p class="first last">The maximum ratio we allow of average height of clusters on the
 right and left to the local maxima in question. The higher the
 ratio, the more generous the algorithm is to preserving local
 minima, and the more cuts the resulting tree will have.</p>
 </dd>
-<dt><strong>rejection_ratio</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dt><strong>rejection_ratio</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional (default=.7)</span></dt>
 <dd><p class="first last">Adjusts the fitness of the clustering. When the maxima_ratio is
 exceeded, determine which of the clusters to the left and right to
 reject based on rejection_ratio. Higher values will result in points
 being more readily classified as noise; conversely, lower values will
 result in more points being clustered.</p>
 </dd>
-<dt><strong>similarity_threshold</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dt><strong>similarity_threshold</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional (default=.4)</span></dt>
 <dd><p class="first last">Used to check if nodes can be moved up one level, that is, if the
 new cluster created is too “similar” to its parent, given the
 similarity threshold. Similarity can be determined by 1) the size
@@ -270,19 +269,21 @@ relative to the average of the reachability values of the parent
 node. A lower value for the similarity threshold means less levels
 in the tree.</p>
 </dd>
-<dt><strong>significant_min</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dt><strong>significant_min</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional (default=.003)</span></dt>
 <dd><p class="first last">Sets a lower threshold on how small a significant maxima can be.</p>
 </dd>
-<dt><strong>min_cluster_size_ratio</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dt><strong>min_cluster_size_ratio</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional (default=.005)</span></dt>
 <dd><p class="first last">Minimum percentage of dataset expected for cluster membership.</p>
 </dd>
-<dt><strong>min_maxima_ratio</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
-<dd><p class="first last">Used to determine neighborhood size for minimum cluster membership.</p>
+<dt><strong>min_maxima_ratio</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional (default=.001)</span></dt>
+<dd><p class="first last">Used to determine neighborhood size for minimum cluster membership.
+Each local maxima should be a largest value in a neighborhood
+of the <cite>size min_maxima_ratio * len(X)</cite> from left and right.</p>
 </dd>
 <dt><strong>algorithm</strong> <span class="classifier-delimiter">:</span> <span class="classifier">{‘auto’, ‘ball_tree’, ‘kd_tree’, ‘brute’}, optional</span></dt>
 <dd><p class="first">Algorithm used to compute the nearest neighbors:</p>
 <ul class="simple">
-<li>‘ball_tree’ will use <code class="xref py py-class docutils literal"><span class="pre">BallTree</span></code></li>
+<li>‘ball_tree’ will use <code class="xref py py-class docutils literal"><span class="pre">BallTree</span></code> (default)</li>
 <li>‘kd_tree’ will use <code class="xref py py-class docutils literal"><span class="pre">KDTree</span></code></li>
 <li>‘brute’ will use a brute-force search.</li>
 <li>‘auto’ will attempt to decide the most appropriate algorithm
