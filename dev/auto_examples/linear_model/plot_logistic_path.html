@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
   
-    <title>Path with L1- Logistic Regression &#8212; scikit-learn 0.21.dev0 documentation</title>
+    <title>Regularization path of L1- Logistic Regression &#8212; scikit-learn 0.21.dev0 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../../_static/css/bootstrap.min.css" media="screen" />
@@ -38,8 +38,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Plot Ridge coefficients as a function of the L2 regularization" href="plot_ridge_coeffs.html" />
-    <link rel="prev" title="SGD: convex loss functions" href="plot_sgd_loss_functions.html" />
+    <link rel="next" title="Polynomial interpolation" href="plot_polynomial_interpolation.html" />
+    <link rel="prev" title="Ordinary Least Squares and Ridge Regression Variance" href="plot_ols_ridge_variance.html" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -133,14 +133,14 @@
         <div class="rel">
     
         <div class="rellink">
-        <a href="plot_sgd_loss_functions.html"
+        <a href="plot_ols_ridge_variance.html"
         accesskey="P">Previous
         <br/>
         <span class="smallrellink">
-        SGD: convex l...
+        Ordinary Leas...
         </span>
             <span class="hiddenrellink">
-            SGD: convex loss functions
+            Ordinary Least Squares and Ridge Regression Variance
             </span>
         </a>
         </div>
@@ -148,14 +148,14 @@
             &nbsp;
             </div>
         <div class="rellink">
-        <a href="plot_ridge_coeffs.html"
+        <a href="plot_polynomial_interpolation.html"
         accesskey="N">Next
         <br/>
         <span class="smallrellink">
-        Plot Ridge co...
+        Polynomial in...
         </span>
             <span class="hiddenrellink">
-            Plot Ridge coefficients as a function of the L2 regularization
+            Polynomial interpolation
             </span>
         </a>
         </div>
@@ -183,7 +183,7 @@
       <a href="http://scikit-learn.org/stable/support.html#documentation-resources">Other versions</a></p>
     <p class="citing">Please <b><a href="../../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
-<li><a class="reference internal" href="#">Path with L1- Logistic Regression</a></li>
+<li><a class="reference internal" href="#">Regularization path of L1- Logistic Regression</a></li>
 </ul>
 
     </div>
@@ -205,13 +205,26 @@
 <p class="first admonition-title">Note</p>
 <p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-linear-model-plot-logistic-path-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="path-with-l1-logistic-regression">
-<span id="sphx-glr-auto-examples-linear-model-plot-logistic-path-py"></span><h1>Path with L1- Logistic Regression<a class="headerlink" href="#path-with-l1-logistic-regression" title="Permalink to this headline">¶</a></h1>
-<p>Computes path on IRIS dataset.</p>
+<div class="sphx-glr-example-title section" id="regularization-path-of-l1-logistic-regression">
+<span id="sphx-glr-auto-examples-linear-model-plot-logistic-path-py"></span><h1>Regularization path of L1- Logistic Regression<a class="headerlink" href="#regularization-path-of-l1-logistic-regression" title="Permalink to this headline">¶</a></h1>
+<p>Train l1-penalized logistic regression models on a binary classification
+problem derived from the Iris dataset.</p>
+<p>The models are ordered from strongest regularized to least regularized. The 4
+coefficients of the models are collected and plotted as a “regularization
+path”: on the left-hand side of the figure (strong regularizers), all the
+coefficients are exactly 0. When regularization gets progressively looser,
+coefficients can get non-zero values one after the other.</p>
+<p>Here we choose the SAGA solver because it can efficiently optimize for the
+Logistic Regression loss with a non-smooth, sparsity inducing l1 penalty.</p>
+<p>Also note that we set a low value for the tolerance to make sure that the model
+has converged before collecting the coefficients.</p>
+<p>We also use warm_start=True which means that the coefficients of the models are
+reused to initialize the next model fit to speed-up the computation of the
+full-path.</p>
 <img alt="../../_images/sphx_glr_plot_logistic_path_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_logistic_path_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>Computing regularization path ...
-This took  0:00:00.053659
+This took 5.379s
 </pre></div>
 </div>
 <div class="line-block">
@@ -222,7 +235,7 @@ This took  0:00:00.053659
 <span class="c1"># Author: Alexandre Gramfort &lt;alexandre.gramfort@inria.fr&gt;</span>
 <span class="c1"># License: BSD 3 clause</span>
 
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 
@@ -237,26 +250,28 @@ This took  0:00:00.053659
 <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">y</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">]</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">y</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">]</span>
 
-<span class="n">X</span> <span class="o">-=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.mean.html#numpy.mean" title="View documentation for numpy.mean"><span class="n">np</span><span class="o">.</span><span class="n">mean</span></a><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">/=</span> <span class="n">X</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>  <span class="c1"># Normalize X to speed-up convergence</span>
 
 <span class="c1"># #############################################################################</span>
 <span class="c1"># Demo path functions</span>
 
-<span class="n">cs</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.svm.l1_min_c.html#sklearn.svm.l1_min_c" title="View documentation for sklearn.svm.l1_min_c"><span class="n">l1_min_c</span></a><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">)</span> <span class="o">*</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.logspace.html#numpy.logspace" title="View documentation for numpy.logspace"><span class="n">np</span><span class="o">.</span><span class="n">logspace</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">cs</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.svm.l1_min_c.html#sklearn.svm.l1_min_c" title="View documentation for sklearn.svm.l1_min_c"><span class="n">l1_min_c</span></a><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">)</span> <span class="o">*</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.logspace.html#numpy.logspace" title="View documentation for numpy.logspace"><span class="n">np</span><span class="o">.</span><span class="n">logspace</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
 
 
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Computing regularization path ...&quot;</span><span class="p">)</span>
-<span class="n">start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
-<span class="n">clf</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="View documentation for sklearn.linear_model.LogisticRegression"><span class="n">linear_model</span><span class="o">.</span><span class="n">LogisticRegression</span></a><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">penalty</span><span class="o">=</span><span class="s1">&#39;l1&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">clf</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="View documentation for sklearn.linear_model.LogisticRegression"><span class="n">linear_model</span><span class="o">.</span><span class="n">LogisticRegression</span></a><span class="p">(</span><span class="n">penalty</span><span class="o">=</span><span class="s1">&#39;l1&#39;</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;saga&#39;</span><span class="p">,</span>
+                                      <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e6</span><span class="p">),</span>
+                                      <span class="n">warm_start</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="n">coefs_</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cs</span><span class="p">:</span>
     <span class="n">clf</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
     <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
     <span class="n">coefs_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">coef_</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;This took &quot;</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;This took </span><span class="si">%0.3f</span><span class="s2">s&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">))</span>
 
 <span class="n">coefs_</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">coefs_</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.log10.html#numpy.log10" title="View documentation for numpy.log10"><span class="n">np</span><span class="o">.</span><span class="n">log10</span></a><span class="p">(</span><span class="n">cs</span><span class="p">),</span> <span class="n">coefs_</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.log10.html#numpy.log10" title="View documentation for numpy.log10"><span class="n">np</span><span class="o">.</span><span class="n">log10</span></a><span class="p">(</span><span class="n">cs</span><span class="p">),</span> <span class="n">coefs_</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
 <span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylim.html#matplotlib.pyplot.ylim" title="View documentation for matplotlib.pyplot.ylim"><span class="n">plt</span><span class="o">.</span><span class="n">ylim</span></a><span class="p">()</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="View documentation for matplotlib.pyplot.xlabel"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s1">&#39;log(C)&#39;</span><span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="View documentation for matplotlib.pyplot.ylabel"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="s1">&#39;Coefficients&#39;</span><span class="p">)</span>
@@ -265,7 +280,7 @@ This took  0:00:00.053659
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.075 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  5.404 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-linear-model-plot-logistic-path-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/plot_logistic_path.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_logistic_path.py</span></code></a></div>
@@ -290,11 +305,11 @@ This took  0:00:00.053659
      <div class="rel">
     
     <div class="buttonPrevious">
-      <a href="plot_sgd_loss_functions.html">Previous
+      <a href="plot_ols_ridge_variance.html">Previous
       </a>
     </div>
     <div class="buttonNext">
-      <a href="plot_ridge_coeffs.html">Next
+      <a href="plot_polynomial_interpolation.html">Next
       </a>
     </div>
     

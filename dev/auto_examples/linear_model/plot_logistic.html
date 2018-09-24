@@ -38,8 +38,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Polynomial interpolation" href="plot_polynomial_interpolation.html" />
-    <link rel="prev" title="Ordinary Least Squares and Ridge Regression Variance" href="plot_ols_ridge_variance.html" />
+    <link rel="next" title="SGD: Weighted samples" href="plot_sgd_weighted_samples.html" />
+    <link rel="prev" title="Polynomial interpolation" href="plot_polynomial_interpolation.html" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -133,14 +133,14 @@
         <div class="rel">
     
         <div class="rellink">
-        <a href="plot_ols_ridge_variance.html"
+        <a href="plot_polynomial_interpolation.html"
         accesskey="P">Previous
         <br/>
         <span class="smallrellink">
-        Ordinary Leas...
+        Polynomial in...
         </span>
             <span class="hiddenrellink">
-            Ordinary Least Squares and Ridge Regression Variance
+            Polynomial interpolation
             </span>
         </a>
         </div>
@@ -148,14 +148,14 @@
             &nbsp;
             </div>
         <div class="rellink">
-        <a href="plot_polynomial_interpolation.html"
+        <a href="plot_sgd_weighted_samples.html"
         accesskey="N">Next
         <br/>
         <span class="smallrellink">
-        Polynomial in...
+        SGD: Weighted samples
         </span>
             <span class="hiddenrellink">
-            Polynomial interpolation
+            SGD: Weighted samples
             </span>
         </a>
         </div>
@@ -222,8 +222,7 @@ i.e. class one or two, using the logistic curve.</p>
 
 <span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">linear_model</span>
 
-<span class="c1"># this is our test set, it&#39;s just a straight line with some</span>
-<span class="c1"># Gaussian noise</span>
+<span class="c1"># General a toy dataset:s it&#39;s just a straight line with some Gaussian noise:</span>
 <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span>
 <span class="n">n_samples</span> <span class="o">=</span> <span class="mi">100</span>
 <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.seed.html#numpy.random.seed" title="View documentation for numpy.random.seed"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span></a><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -233,8 +232,9 @@ i.e. class one or two, using the logistic curve.</p>
 <span class="n">X</span> <span class="o">+=</span> <span class="o">.</span><span class="mi">3</span> <span class="o">*</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.normal.html#numpy.random.normal" title="View documentation for numpy.random.normal"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span></a><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
 
 <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <a href="https://docs.scipy.org/doc/numpy/reference/constants.html#numpy.newaxis" title="View documentation for numpy.newaxis"><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span></a><span class="p">]</span>
-<span class="c1"># run the classifier</span>
-<span class="n">clf</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="View documentation for sklearn.linear_model.LogisticRegression"><span class="n">linear_model</span><span class="o">.</span><span class="n">LogisticRegression</span></a><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mf">1e5</span><span class="p">)</span>
+
+<span class="c1"># Fit the classifier</span>
+<span class="n">clf</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="View documentation for sklearn.linear_model.LogisticRegression"><span class="n">linear_model</span><span class="o">.</span><span class="n">LogisticRegression</span></a><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mf">1e5</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;lbfgs&#39;</span><span class="p">)</span>
 <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
 <span class="c1"># and plot the result</span>
@@ -246,6 +246,8 @@ i.e. class one or two, using the logistic curve.</p>
 
 <span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.exp.html#numpy.exp" title="View documentation for numpy.exp"><span class="n">np</span><span class="o">.</span><span class="n">exp</span></a><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">))</span>
+
+
 <span class="n">loss</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">X_test</span> <span class="o">*</span> <span class="n">clf</span><span class="o">.</span><span class="n">coef_</span> <span class="o">+</span> <span class="n">clf</span><span class="o">.</span><span class="n">intercept_</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 
@@ -262,10 +264,11 @@ i.e. class one or two, using the logistic curve.</p>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlim.html#matplotlib.pyplot.xlim" title="View documentation for matplotlib.pyplot.xlim"><span class="n">plt</span><span class="o">.</span><span class="n">xlim</span></a><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.legend.html#matplotlib.pyplot.legend" title="View documentation for matplotlib.pyplot.legend"><span class="n">plt</span><span class="o">.</span><span class="n">legend</span></a><span class="p">((</span><span class="s1">&#39;Logistic Regression Model&#39;</span><span class="p">,</span> <span class="s1">&#39;Linear Regression Model&#39;</span><span class="p">),</span>
            <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower right&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;small&#39;</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="View documentation for matplotlib.pyplot.tight_layout"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.038 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.062 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-linear-model-plot-logistic-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/plot_logistic.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_logistic.py</span></code></a></div>
@@ -290,11 +293,11 @@ i.e. class one or two, using the logistic curve.</p>
      <div class="rel">
     
     <div class="buttonPrevious">
-      <a href="plot_ols_ridge_variance.html">Previous
+      <a href="plot_polynomial_interpolation.html">Previous
       </a>
     </div>
     <div class="buttonNext">
-      <a href="plot_polynomial_interpolation.html">Next
+      <a href="plot_sgd_weighted_samples.html">Next
       </a>
     </div>
     
