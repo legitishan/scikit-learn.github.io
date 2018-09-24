@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
   
-    <title>3.2.4.1.4. sklearn.linear_model.LassoLarsCV &#8212; scikit-learn 0.20rc1 documentation</title>
+    <title>3.2.4.1.4. sklearn.linear_model.LassoLarsCV &#8212; scikit-learn 0.20 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../../_static/css/bootstrap.min.css" media="screen" />
@@ -22,7 +22,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.20rc1',
+        VERSION:     '0.20',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -179,7 +179,7 @@
         </div>
     </div>
     
-      <p class="doc-version"><b>scikit-learn v0.20rc1</b><br/>
+      <p class="doc-version"><b>scikit-learn v0.20</b><br/>
       <a href="http://scikit-learn.org/stable/support.html#documentation-resources">Other versions</a></p>
     <p class="citing">Please <b><a href="../../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
@@ -208,7 +208,7 @@
 <h1>3.2.4.1.4. <a class="reference internal" href="../classes.html#module-sklearn.linear_model" title="sklearn.linear_model"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.linear_model</span></code></a>.LassoLarsCV<a class="headerlink" href="#sklearn-linear-model-lassolarscv" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="sklearn.linear_model.LassoLarsCV">
-<em class="property">class </em><code class="descclassname">sklearn.linear_model.</code><code class="descname">LassoLarsCV</code><span class="sig-paren">(</span><em>fit_intercept=True</em>, <em>verbose=False</em>, <em>max_iter=500</em>, <em>normalize=True</em>, <em>precompute=’auto’</em>, <em>cv=’warn’</em>, <em>max_n_alphas=1000</em>, <em>n_jobs=None</em>, <em>eps=2.220446049250313e-16</em>, <em>copy_X=True</em>, <em>positive=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c196ec4/sklearn/linear_model/least_angle.py#L1183"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.LassoLarsCV" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">sklearn.linear_model.</code><code class="descname">LassoLarsCV</code><span class="sig-paren">(</span><em>fit_intercept=True</em>, <em>verbose=False</em>, <em>max_iter=500</em>, <em>normalize=True</em>, <em>precompute=’auto’</em>, <em>cv=’warn’</em>, <em>max_n_alphas=1000</em>, <em>n_jobs=None</em>, <em>eps=2.220446049250313e-16</em>, <em>copy_X=True</em>, <em>positive=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8d8939b/sklearn/linear_model/least_angle.py#L1196"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.LassoLarsCV" title="Permalink to this definition">¶</a></dt>
 <dd><p>Cross-validated Lasso, using the LARS algorithm</p>
 <p>The optimization objective for Lasso is:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n_samples</span><span class="p">))</span> <span class="o">*</span> <span class="o">||</span><span class="n">y</span> <span class="o">-</span> <span class="n">Xw</span><span class="o">||^</span><span class="mi">2</span><span class="n">_2</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="o">||</span><span class="n">w</span><span class="o">||</span><span class="n">_1</span>
@@ -337,6 +337,19 @@ However, it is more fragile to heavily multicollinear datasets.</p>
 <p>It is more efficient than the LassoCV if only a small number of
 features are selected compared to the total number, for instance if
 there are very few samples compared to the number of features.</p>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LassoLarsCV</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">make_regression</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_regression</span><span class="p">(</span><span class="n">noise</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reg</span> <span class="o">=</span> <span class="n">LassoLarsCV</span><span class="p">(</span><span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reg</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> 
+<span class="go">0.9992...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reg</span><span class="o">.</span><span class="n">alpha_</span>
+<span class="go">0.0484...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="mi">1</span><span class="p">,])</span>
+<span class="go">array([-77.8723...])</span>
+</pre></div>
+</div>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -363,7 +376,7 @@ there are very few samples compared to the number of features.</p>
 </table>
 <dl class="method">
 <dt id="sklearn.linear_model.LassoLarsCV.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>fit_intercept=True</em>, <em>verbose=False</em>, <em>max_iter=500</em>, <em>normalize=True</em>, <em>precompute=’auto’</em>, <em>cv=’warn’</em>, <em>max_n_alphas=1000</em>, <em>n_jobs=None</em>, <em>eps=2.220446049250313e-16</em>, <em>copy_X=True</em>, <em>positive=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c196ec4/sklearn/linear_model/least_angle.py#L1312"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.LassoLarsCV.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>fit_intercept=True</em>, <em>verbose=False</em>, <em>max_iter=500</em>, <em>normalize=True</em>, <em>precompute=’auto’</em>, <em>cv=’warn’</em>, <em>max_n_alphas=1000</em>, <em>n_jobs=None</em>, <em>eps=2.220446049250313e-16</em>, <em>copy_X=True</em>, <em>positive=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8d8939b/sklearn/linear_model/least_angle.py#L1338"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.LassoLarsCV.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -374,7 +387,7 @@ there are very few samples compared to the number of features.</p>
 
 <dl class="method">
 <dt id="sklearn.linear_model.LassoLarsCV.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c196ec4/sklearn/linear_model/least_angle.py#L1095"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.LassoLarsCV.fit" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8d8939b/sklearn/linear_model/least_angle.py#L1108"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.LassoLarsCV.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the model using X, y as training data.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -403,7 +416,7 @@ there are very few samples compared to the number of features.</p>
 
 <dl class="method">
 <dt id="sklearn.linear_model.LassoLarsCV.get_params">
-<code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c196ec4/sklearn/base.py#L166"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.LassoLarsCV.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8d8939b/sklearn/base.py#L166"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.LassoLarsCV.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -430,7 +443,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.linear_model.LassoLarsCV.predict">
-<code class="descname">predict</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c196ec4/sklearn/linear_model/base.py#L200"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.LassoLarsCV.predict" title="Permalink to this definition">¶</a></dt>
+<code class="descname">predict</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8d8939b/sklearn/linear_model/base.py#L200"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.LassoLarsCV.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Predict using the linear model</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -456,7 +469,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.linear_model.LassoLarsCV.score">
-<code class="descname">score</code><span class="sig-paren">(</span><em>X</em>, <em>y</em>, <em>sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c196ec4/sklearn/base.py#L296"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.LassoLarsCV.score" title="Permalink to this definition">¶</a></dt>
+<code class="descname">score</code><span class="sig-paren">(</span><em>X</em>, <em>y</em>, <em>sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8d8939b/sklearn/base.py#L296"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.LassoLarsCV.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the coefficient of determination R^2 of the prediction.</p>
 <p>The coefficient R^2 is defined as (1 - u/v), where u is the residual
 sum of squares ((y_true - y_pred) ** 2).sum() and v is the total
@@ -498,7 +511,7 @@ samples used in the fitting for the estimator.</p>
 
 <dl class="method">
 <dt id="sklearn.linear_model.LassoLarsCV.set_params">
-<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c196ec4/sklearn/base.py#L189"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.LassoLarsCV.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8d8939b/sklearn/base.py#L189"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.LassoLarsCV.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
@@ -555,17 +568,13 @@ component of a nested object.</p>
      </div>
 
     
-    <script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-22606712-2']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
+    <script>
+        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+        ga('create', 'UA-22606712-2', 'auto');
+        ga('set', 'anonymizeIp', true);
+        ga('send', 'pageview');
     </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
     
     <script>
       (function() {

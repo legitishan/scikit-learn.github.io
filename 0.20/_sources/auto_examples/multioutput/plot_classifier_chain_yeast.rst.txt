@@ -74,14 +74,15 @@ with randomly ordered chains).
 
     # Fit an independent logistic regression model for each class using the
     # OneVsRestClassifier wrapper.
-    ovr = OneVsRestClassifier(LogisticRegression())
+    base_lr = LogisticRegression(solver='lbfgs')
+    ovr = OneVsRestClassifier(base_lr)
     ovr.fit(X_train, Y_train)
     Y_pred_ovr = ovr.predict(X_test)
     ovr_jaccard_score = jaccard_similarity_score(Y_test, Y_pred_ovr)
 
     # Fit an ensemble of logistic regression classifier chains and take the
     # take the average prediction of all the chains.
-    chains = [ClassifierChain(LogisticRegression(), order='random', random_state=i)
+    chains = [ClassifierChain(base_lr, order='random', random_state=i)
               for i in range(10)]
     for chain in chains:
         chain.fit(X_train, Y_train)
@@ -129,7 +130,7 @@ with randomly ordered chains).
     plt.tight_layout()
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  5.693 seconds)
+**Total running time of the script:** ( 0 minutes  11.155 seconds)
 
 
 .. _sphx_glr_download_auto_examples_multioutput_plot_classifier_chain_yeast.py:

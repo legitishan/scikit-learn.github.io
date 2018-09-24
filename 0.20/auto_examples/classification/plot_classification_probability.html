@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
   
-    <title>Plot classification probability &#8212; scikit-learn 0.20rc1 documentation</title>
+    <title>Plot classification probability &#8212; scikit-learn 0.20 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../../_static/css/bootstrap.min.css" media="screen" />
@@ -22,7 +22,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.20rc1',
+        VERSION:     '0.20',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -179,7 +179,7 @@
         </div>
     </div>
     
-      <p class="doc-version"><b>scikit-learn v0.20rc1</b><br/>
+      <p class="doc-version"><b>scikit-learn v0.20</b><br/>
       <a href="http://scikit-learn.org/stable/support.html#documentation-resources">Other versions</a></p>
     <p class="citing">Please <b><a href="../../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
@@ -207,19 +207,22 @@
 </div>
 <div class="sphx-glr-example-title section" id="plot-classification-probability">
 <span id="sphx-glr-auto-examples-classification-plot-classification-probability-py"></span><h1>Plot classification probability<a class="headerlink" href="#plot-classification-probability" title="Permalink to this headline">¶</a></h1>
-<p>Plot the classification probability for different classifiers. We use a 3
-class dataset, and we classify it with a Support Vector classifier, L1
-and L2 penalized logistic regression with either a One-Vs-Rest or multinomial
-setting, and Gaussian process classification.</p>
-<p>The logistic regression is not a multiclass classifier out of the box. As
-a result it can identify only the first class.</p>
+<p>Plot the classification probability for different classifiers. We use a 3 class
+dataset, and we classify it with a Support Vector classifier, L1 and L2
+penalized logistic regression with either a One-Vs-Rest or multinomial setting,
+and Gaussian process classification.</p>
+<p>Linear SVC is not a probabilistic classifier by default but it has a built-in
+calibration option enabled in this example (<cite>probability=True</cite>).</p>
+<p>The logistic regression with One-Vs-Rest is not a multiclass classifier out of
+the box. As a result it has more trouble in separating class 2 and 3 than the
+other estimators.</p>
 <img alt="../../_images/sphx_glr_plot_classification_probability_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_classification_probability_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>classif_rate for L1 logistic : 79.333333
-classif_rate for L2 logistic (OvR) : 76.666667
-classif_rate for Linear SVC : 82.000000
-classif_rate for L2 logistic (Multinomial) : 82.000000
-classif_rate for GPC : 82.666667
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>Accuracy (train) for L1 logistic: 82.7%
+Accuracy (train) for L2 logistic (Multinomial): 82.7%
+Accuracy (train) for L2 logistic (OvR): 79.3%
+Accuracy (train) for Linear SVC: 82.0%
+Accuracy (train) for GPC: 82.7%
 </pre></div>
 </div>
 <div class="line-block">
@@ -233,6 +236,7 @@ classif_rate for GPC : 82.666667
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.metrics.accuracy_score.html#sklearn.metrics.accuracy_score" title="View documentation for sklearn.metrics.accuracy_score"><span class="n">accuracy_score</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="View documentation for sklearn.linear_model.LogisticRegression"><span class="n">LogisticRegression</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC" title="View documentation for sklearn.svm.SVC"><span class="n">SVC</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.gaussian_process</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.gaussian_process.GaussianProcessClassifier.html#sklearn.gaussian_process.GaussianProcessClassifier" title="View documentation for sklearn.gaussian_process.GaussianProcessClassifier"><span class="n">GaussianProcessClassifier</span></a>
@@ -245,19 +249,27 @@ classif_rate for GPC : 82.666667
 
 <span class="n">n_features</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
-<span class="n">C</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">C</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">kernel</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <a href="../../modules/generated/sklearn.gaussian_process.kernels.RBF.html#sklearn.gaussian_process.kernels.RBF" title="View documentation for sklearn.gaussian_process.kernels.RBF"><span class="n">RBF</span></a><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>  <span class="c1"># for GPC</span>
 
-<span class="c1"># Create different classifiers. The logistic regression cannot do</span>
-<span class="c1"># multiclass out of the box.</span>
-<span class="n">classifiers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;L1 logistic&#39;</span><span class="p">:</span> <a href="../../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="View documentation for sklearn.linear_model.LogisticRegression"><span class="n">LogisticRegression</span></a><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">,</span> <span class="n">penalty</span><span class="o">=</span><span class="s1">&#39;l1&#39;</span><span class="p">),</span>
-               <span class="s1">&#39;L2 logistic (OvR)&#39;</span><span class="p">:</span> <a href="../../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="View documentation for sklearn.linear_model.LogisticRegression"><span class="n">LogisticRegression</span></a><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">,</span> <span class="n">penalty</span><span class="o">=</span><span class="s1">&#39;l2&#39;</span><span class="p">),</span>
-               <span class="s1">&#39;Linear SVC&#39;</span><span class="p">:</span> <a href="../../modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC" title="View documentation for sklearn.svm.SVC"><span class="n">SVC</span></a><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">,</span> <span class="n">probability</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-                                 <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
-               <span class="s1">&#39;L2 logistic (Multinomial)&#39;</span><span class="p">:</span> <a href="../../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="View documentation for sklearn.linear_model.LogisticRegression"><span class="n">LogisticRegression</span></a><span class="p">(</span>
-                <span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;lbfgs&#39;</span><span class="p">,</span> <span class="n">multi_class</span><span class="o">=</span><span class="s1">&#39;multinomial&#39;</span><span class="p">),</span>
-               <span class="s1">&#39;GPC&#39;</span><span class="p">:</span> <a href="../../modules/generated/sklearn.gaussian_process.GaussianProcessClassifier.html#sklearn.gaussian_process.GaussianProcessClassifier" title="View documentation for sklearn.gaussian_process.GaussianProcessClassifier"><span class="n">GaussianProcessClassifier</span></a><span class="p">(</span><span class="n">kernel</span><span class="p">)</span>
-               <span class="p">}</span>
+<span class="c1"># Create different classifiers.</span>
+<span class="n">classifiers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;L1 logistic&#39;</span><span class="p">:</span> <a href="../../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="View documentation for sklearn.linear_model.LogisticRegression"><span class="n">LogisticRegression</span></a><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">,</span> <span class="n">penalty</span><span class="o">=</span><span class="s1">&#39;l1&#39;</span><span class="p">,</span>
+                                      <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;saga&#39;</span><span class="p">,</span>
+                                      <span class="n">multi_class</span><span class="o">=</span><span class="s1">&#39;multinomial&#39;</span><span class="p">,</span>
+                                      <span class="n">max_iter</span><span class="o">=</span><span class="mi">10000</span><span class="p">),</span>
+    <span class="s1">&#39;L2 logistic (Multinomial)&#39;</span><span class="p">:</span> <a href="../../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="View documentation for sklearn.linear_model.LogisticRegression"><span class="n">LogisticRegression</span></a><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">,</span> <span class="n">penalty</span><span class="o">=</span><span class="s1">&#39;l2&#39;</span><span class="p">,</span>
+                                                    <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;saga&#39;</span><span class="p">,</span>
+                                                    <span class="n">multi_class</span><span class="o">=</span><span class="s1">&#39;multinomial&#39;</span><span class="p">,</span>
+                                                    <span class="n">max_iter</span><span class="o">=</span><span class="mi">10000</span><span class="p">),</span>
+    <span class="s1">&#39;L2 logistic (OvR)&#39;</span><span class="p">:</span> <a href="../../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="View documentation for sklearn.linear_model.LogisticRegression"><span class="n">LogisticRegression</span></a><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">,</span> <span class="n">penalty</span><span class="o">=</span><span class="s1">&#39;l2&#39;</span><span class="p">,</span>
+                                            <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;saga&#39;</span><span class="p">,</span>
+                                            <span class="n">multi_class</span><span class="o">=</span><span class="s1">&#39;ovr&#39;</span><span class="p">,</span>
+                                            <span class="n">max_iter</span><span class="o">=</span><span class="mi">10000</span><span class="p">),</span>
+    <span class="s1">&#39;Linear SVC&#39;</span><span class="p">:</span> <a href="../../modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC" title="View documentation for sklearn.svm.SVC"><span class="n">SVC</span></a><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">,</span> <span class="n">probability</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                      <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+    <span class="s1">&#39;GPC&#39;</span><span class="p">:</span> <a href="../../modules/generated/sklearn.gaussian_process.GaussianProcessClassifier.html#sklearn.gaussian_process.GaussianProcessClassifier" title="View documentation for sklearn.gaussian_process.GaussianProcessClassifier"><span class="n">GaussianProcessClassifier</span></a><span class="p">(</span><span class="n">kernel</span><span class="p">)</span>
+<span class="p">}</span>
 
 <span class="n">n_classifiers</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">classifiers</span><span class="p">)</span>
 
@@ -273,10 +285,10 @@ classif_rate for GPC : 82.666667
     <span class="n">classifier</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
     <span class="n">y_pred</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-    <span class="n">classif_rate</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.mean.html#numpy.mean" title="View documentation for numpy.mean"><span class="n">np</span><span class="o">.</span><span class="n">mean</span></a><span class="p">(</span><span class="n">y_pred</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="o">==</span> <span class="n">y</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span> <span class="o">*</span> <span class="mi">100</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;classif_rate for </span><span class="si">%s</span><span class="s2"> : </span><span class="si">%f</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">classif_rate</span><span class="p">))</span>
+    <span class="n">accuracy</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.metrics.accuracy_score.html#sklearn.metrics.accuracy_score" title="View documentation for sklearn.metrics.accuracy_score"><span class="n">accuracy_score</span></a><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Accuracy (train) for </span><span class="si">%s</span><span class="s2">: </span><span class="si">%0.1f%%</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">accuracy</span> <span class="o">*</span> <span class="mi">100</span><span class="p">))</span>
 
-    <span class="c1"># View probabilities=</span>
+    <span class="c1"># View probabilities:</span>
     <span class="n">probas</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">Xfull</span><span class="p">)</span>
     <span class="n">n_classes</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.unique.html#numpy.unique" title="View documentation for numpy.unique"><span class="n">np</span><span class="o">.</span><span class="n">unique</span></a><span class="p">(</span><span class="n">y_pred</span><span class="p">)</span><span class="o">.</span><span class="n">size</span>
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_classes</span><span class="p">):</span>
@@ -299,7 +311,7 @@ classif_rate for GPC : 82.666667
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  12.072 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  8.688 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-classification-plot-classification-probability-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/plot_classification_probability.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_classification_probability.py</span></code></a></div>
@@ -335,17 +347,13 @@ classif_rate for GPC : 82.666667
      </div>
 
     
-    <script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-22606712-2']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
+    <script>
+        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+        ga('create', 'UA-22606712-2', 'auto');
+        ga('set', 'anonymizeIp', true);
+        ga('send', 'pageview');
     </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
     
     <script>
       (function() {

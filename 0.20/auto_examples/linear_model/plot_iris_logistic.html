@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
   
-    <title>Logistic Regression 3-class Classifier &#8212; scikit-learn 0.20rc1 documentation</title>
+    <title>Logistic Regression 3-class Classifier &#8212; scikit-learn 0.20 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../../_static/css/bootstrap.min.css" media="screen" />
@@ -22,7 +22,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.20rc1',
+        VERSION:     '0.20',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -38,8 +38,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="SGD: Weighted samples" href="plot_sgd_weighted_samples.html" />
-    <link rel="prev" title="Polynomial interpolation" href="plot_polynomial_interpolation.html" />
+    <link rel="next" title="Linear Regression Example" href="plot_ols.html" />
+    <link rel="prev" title="SGD: Weighted samples" href="plot_sgd_weighted_samples.html" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -133,14 +133,14 @@
         <div class="rel">
     
         <div class="rellink">
-        <a href="plot_polynomial_interpolation.html"
+        <a href="plot_sgd_weighted_samples.html"
         accesskey="P">Previous
         <br/>
         <span class="smallrellink">
-        Polynomial in...
+        SGD: Weighted samples
         </span>
             <span class="hiddenrellink">
-            Polynomial interpolation
+            SGD: Weighted samples
             </span>
         </a>
         </div>
@@ -148,14 +148,14 @@
             &nbsp;
             </div>
         <div class="rellink">
-        <a href="plot_sgd_weighted_samples.html"
+        <a href="plot_ols.html"
         accesskey="N">Next
         <br/>
         <span class="smallrellink">
-        SGD: Weighted samples
+        Linear Regres...
         </span>
             <span class="hiddenrellink">
-            SGD: Weighted samples
+            Linear Regression Example
             </span>
         </a>
         </div>
@@ -179,7 +179,7 @@
         </div>
     </div>
     
-      <p class="doc-version"><b>scikit-learn v0.20rc1</b><br/>
+      <p class="doc-version"><b>scikit-learn v0.20</b><br/>
       <a href="http://scikit-learn.org/stable/support.html#documentation-resources">Other versions</a></p>
     <p class="citing">Please <b><a href="../../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
@@ -208,11 +208,10 @@
 <div class="sphx-glr-example-title section" id="logistic-regression-3-class-classifier">
 <span id="sphx-glr-auto-examples-linear-model-plot-iris-logistic-py"></span><h1>Logistic Regression 3-class Classifier<a class="headerlink" href="#logistic-regression-3-class-classifier" title="Permalink to this headline">¶</a></h1>
 <p>Show below is a logistic-regression classifiers decision boundaries on the
-<a class="reference external" href="https://en.wikipedia.org/wiki/Iris_flower_data_set">iris</a> dataset. The
-datapoints are colored according to their labels.</p>
+first two dimensions (sepal length and width) of the <a class="reference external" href="https://en.wikipedia.org/wiki/Iris_flower_data_set">iris</a> dataset. The datapoints
+are colored according to their labels.</p>
 <img alt="../../_images/sphx_glr_plot_iris_logistic_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_iris_logistic_001.png" />
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
-
 
 <span class="c1"># Code source: Gaël Varoquaux</span>
 <span class="c1"># Modified for documentation by Jaques Grobler</span>
@@ -220,16 +219,15 @@ datapoints are colored according to their labels.</p>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">linear_model</span><span class="p">,</span> <span class="n">datasets</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="View documentation for sklearn.linear_model.LogisticRegression"><span class="n">LogisticRegression</span></a>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
 
 <span class="c1"># import some data to play with</span>
 <span class="n">iris</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.load_iris.html#sklearn.datasets.load_iris" title="View documentation for sklearn.datasets.load_iris"><span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span></a><span class="p">()</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>  <span class="c1"># we only take the first two features.</span>
 <span class="n">Y</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span>
 
-<span class="n">h</span> <span class="o">=</span> <span class="o">.</span><span class="mo">02</span>  <span class="c1"># step size in the mesh</span>
-
-<span class="n">logreg</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="View documentation for sklearn.linear_model.LogisticRegression"><span class="n">linear_model</span><span class="o">.</span><span class="n">LogisticRegression</span></a><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mf">1e5</span><span class="p">)</span>
+<span class="n">logreg</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="View documentation for sklearn.linear_model.LogisticRegression"><span class="n">LogisticRegression</span></a><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mf">1e5</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;lbfgs&#39;</span><span class="p">,</span> <span class="n">multi_class</span><span class="o">=</span><span class="s1">&#39;multinomial&#39;</span><span class="p">)</span>
 
 <span class="c1"># we create an instance of Neighbours Classifier and fit the data.</span>
 <span class="n">logreg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
@@ -238,6 +236,7 @@ datapoints are colored according to their labels.</p>
 <span class="c1"># point in the mesh [x_min, x_max]x[y_min, y_max].</span>
 <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="o">.</span><span class="mi">5</span>
 <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="o">.</span><span class="mi">5</span>
+<span class="n">h</span> <span class="o">=</span> <span class="o">.</span><span class="mo">02</span>  <span class="c1"># step size in the mesh</span>
 <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.meshgrid.html#numpy.meshgrid" title="View documentation for numpy.meshgrid"><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span></a><span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="View documentation for numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="View documentation for numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="n">h</span><span class="p">))</span>
 <span class="n">Z</span> <span class="o">=</span> <span class="n">logreg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.c_.html#numpy.c_" title="View documentation for numpy.c_"><span class="n">np</span><span class="o">.</span><span class="n">c_</span></a><span class="p">[</span><span class="n">xx</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">yy</span><span class="o">.</span><span class="n">ravel</span><span class="p">()])</span>
 
@@ -259,7 +258,7 @@ datapoints are colored according to their labels.</p>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.029 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.065 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-linear-model-plot-iris-logistic-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/plot_iris_logistic.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_iris_logistic.py</span></code></a></div>
@@ -284,28 +283,24 @@ datapoints are colored according to their labels.</p>
      <div class="rel">
     
     <div class="buttonPrevious">
-      <a href="plot_polynomial_interpolation.html">Previous
+      <a href="plot_sgd_weighted_samples.html">Previous
       </a>
     </div>
     <div class="buttonNext">
-      <a href="plot_sgd_weighted_samples.html">Next
+      <a href="plot_ols.html">Next
       </a>
     </div>
     
      </div>
 
     
-    <script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-22606712-2']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
+    <script>
+        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+        ga('create', 'UA-22606712-2', 'auto');
+        ga('set', 'anonymizeIp', true);
+        ga('send', 'pageview');
     </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
     
     <script>
       (function() {
