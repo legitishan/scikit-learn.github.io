@@ -409,9 +409,9 @@ callable or None, the keys will be - <code class="docutils literal"><span class=
 <p>And for multiple metric evaluation, the return value is a dict with the
 following keys -
 <code class="docutils literal"><span class="pre">['test_&lt;scorer1_name&gt;',</span> <span class="pre">'test_&lt;scorer2_name&gt;',</span> <span class="pre">'test_&lt;scorer...&gt;',</span> <span class="pre">'fit_time',</span> <span class="pre">'score_time']</span></code></p>
-<p><code class="docutils literal"><span class="pre">return_train_score</span></code> is set to <code class="docutils literal"><span class="pre">True</span></code> by default. It adds train score keys
-for all the scorers. If train scores are not needed, this should be set to
-<code class="docutils literal"><span class="pre">False</span></code> explicitly.</p>
+<p><code class="docutils literal"><span class="pre">return_train_score</span></code> is set to <code class="docutils literal"><span class="pre">False</span></code> by default to save computation time.
+To evaluate the scores on the training set as well you need to be set to
+<code class="docutils literal"><span class="pre">True</span></code>.</p>
 <p>You may also retain the estimator fitted on each training set by setting
 <code class="docutils literal"><span class="pre">return_estimator=True</span></code>.</p>
 <p>The multiple metrics can be specified either as a list, tuple or set of
@@ -421,7 +421,7 @@ predefined scorer names:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">scoring</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;precision_macro&#39;</span><span class="p">,</span> <span class="s1">&#39;recall_macro&#39;</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">scores</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="n">scoring</span><span class="p">,</span>
-<span class="gp">... </span>                        <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">... </span>                        <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">scores</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 <span class="go">[&#39;fit_time&#39;, &#39;score_time&#39;, &#39;test_precision_macro&#39;, &#39;test_recall_macro&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">scores</span><span class="p">[</span><span class="s1">&#39;test_recall_macro&#39;</span><span class="p">]</span>                       
@@ -446,7 +446,7 @@ predefined scorer names:</p>
 <span class="gp">... </span>                        <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;precision_macro&#39;</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
 <span class="gp">... </span>                        <span class="n">return_estimator</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">scores</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-<span class="go">[&#39;estimator&#39;, &#39;fit_time&#39;, &#39;score_time&#39;, &#39;test_score&#39;, &#39;train_score&#39;]</span>
+<span class="go">[&#39;estimator&#39;, &#39;fit_time&#39;, &#39;score_time&#39;, &#39;test_score&#39;]</span>
 </pre></div>
 </div>
 </div>

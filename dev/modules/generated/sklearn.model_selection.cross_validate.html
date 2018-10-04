@@ -205,7 +205,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.model_selection" title="sklearn.model_selection"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.model_selection</span></code></a>.cross_validate<a class="headerlink" href="#sklearn-model-selection-cross-validate" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.model_selection.cross_validate">
-<code class="descclassname">sklearn.model_selection.</code><code class="descname">cross_validate</code><span class="sig-paren">(</span><em>estimator</em>, <em>X</em>, <em>y=None</em>, <em>groups=None</em>, <em>scoring=None</em>, <em>cv=’warn’</em>, <em>n_jobs=None</em>, <em>verbose=0</em>, <em>fit_params=None</em>, <em>pre_dispatch=‘2*n_jobs’</em>, <em>return_train_score=’warn’</em>, <em>return_estimator=False</em>, <em>error_score=’raise-deprecating’</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/3e5777a/sklearn/model_selection/_validation.py#L41"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.model_selection.cross_validate" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sklearn.model_selection.</code><code class="descname">cross_validate</code><span class="sig-paren">(</span><em>estimator</em>, <em>X</em>, <em>y=None</em>, <em>groups=None</em>, <em>scoring=None</em>, <em>cv=’warn’</em>, <em>n_jobs=None</em>, <em>verbose=0</em>, <em>fit_params=None</em>, <em>pre_dispatch=‘2*n_jobs’</em>, <em>return_train_score=False</em>, <em>return_estimator=False</em>, <em>error_score=’raise-deprecating’</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e0e7387/sklearn/model_selection/_validation.py#L40"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.model_selection.cross_validate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate metric(s) by cross-validation and also record fit/score times.</p>
 <p>Read more in the <a class="reference internal" href="../cross_validation.html#multimetric-cross-validation"><span class="std std-ref">User Guide</span></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -287,11 +287,8 @@ as in ‘2*n_jobs’</li>
 </ul>
 </div></blockquote>
 </dd>
-<dt><strong>return_train_score</strong> <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
-<dd><p class="first">Whether to include train scores.</p>
-<p class="last">Current default is <code class="docutils literal"><span class="pre">'warn'</span></code>, which behaves as <code class="docutils literal"><span class="pre">True</span></code> in addition
-to raising a warning when a training score is looked up.
-That default will be changed to <code class="docutils literal"><span class="pre">False</span></code> in 0.21.
+<dt><strong>return_train_score</strong> <span class="classifier-delimiter">:</span> <span class="classifier">boolean, default=False</span></dt>
+<dd><p class="first last">Whether to include train scores.
 Computing training scores is used to get insights on how different
 parameter settings impact the overfitting/underfitting trade-off.
 However computing the scores on the training set can be computationally
@@ -375,8 +372,7 @@ is set to <code class="docutils literal"><span class="pre">True</span></code>.</
 </pre></div>
 </div>
 <p>Single metric evaluation using <code class="docutils literal"><span class="pre">cross_validate</span></code></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cv_results</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">lasso</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-<span class="gp">... </span>                            <span class="n">return_train_score</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cv_results</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">lasso</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">cv_results</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>                         
 <span class="go">[&#39;fit_time&#39;, &#39;score_time&#39;, &#39;test_score&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cv_results</span><span class="p">[</span><span class="s1">&#39;test_score&#39;</span><span class="p">]</span>    
