@@ -205,16 +205,16 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.preprocessing" title="sklearn.preprocessing"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.preprocessing</span></code></a>.power_transform<a class="headerlink" href="#sklearn-preprocessing-power-transform" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.preprocessing.power_transform">
-<code class="descclassname">sklearn.preprocessing.</code><code class="descname">power_transform</code><span class="sig-paren">(</span><em>X</em>, <em>method=’box-cox’</em>, <em>standardize=True</em>, <em>copy=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/03c3af5/sklearn/preprocessing/data.py#L2847"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.power_transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Apply a power transform featurewise to make data more Gaussian-like.</p>
-<p>Power transforms are a family of parametric, monotonic transformations
+<code class="descclassname">sklearn.preprocessing.</code><code class="descname">power_transform</code><span class="sig-paren">(</span><em>X</em>, <em>method=’warn’</em>, <em>standardize=True</em>, <em>copy=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/bbb0d93/sklearn/preprocessing/data.py#L2847"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.power_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Power transforms are a family of parametric, monotonic transformations
 that are applied to make data more Gaussian-like. This is useful for
 modeling issues related to heteroscedasticity (non-constant variance),
 or other situations where normality is desired.</p>
-<p>Currently, power_transform() supports the Box-Cox transform. Box-Cox
-requires input data to be strictly positive. The optimal parameter
-for stabilizing variance and minimizing skewness is estimated
-through maximum likelihood.</p>
+<p>Currently, power_transform supports the Box-Cox transform and the
+Yeo-Johnson transform. The optimal parameter for stabilizing variance and
+minimizing skewness is estimated through maximum likelihood.</p>
+<p>Box-Cox requires input data to be strictly positive, while Yeo-Johnson
+supports both positive or negative data.</p>
 <p>By default, zero-mean, unit-variance normalization is applied to the
 transformed data.</p>
 <p>Read more in the <a class="reference internal" href="../preprocessing.html#preprocessing-transformer"><span class="std std-ref">User Guide</span></a>.</p>
@@ -222,20 +222,33 @@ transformed data.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
 <dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_samples, n_features)</span></dt>
 <dd><p class="first last">The data to be transformed using a power transformation.</p>
 </dd>
-<dt><strong>method</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, (default=’box-cox’)</span></dt>
-<dd><p class="first last">The power transform method. Currently, ‘box-cox’ (Box-Cox transform)
-is the only option available.</p>
+<dt><strong>method</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd><p class="first">The power transform method. Available methods are:</p>
+<ul class="simple">
+<li>‘yeo-johnson’ <a class="reference internal" href="#r742a88cfa144-1" id="id1">[1]</a>, works with positive and negative values</li>
+<li>‘box-cox’ <a class="reference internal" href="#r742a88cfa144-2" id="id2">[2]</a>, only works with strictly positive values</li>
+</ul>
+<p class="last">The default method will be changed from ‘box-cox’ to ‘yeo-johnson’
+in version 0.23. To suppress the FutureWarning, explicitly set the
+parameter.</p>
 </dd>
 <dt><strong>standardize</strong> <span class="classifier-delimiter">:</span> <span class="classifier">boolean, default=True</span></dt>
 <dd><p class="first last">Set to True to apply zero-mean, unit-variance normalization to the
 transformed output.</p>
 </dd>
 <dt><strong>copy</strong> <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional, default=True</span></dt>
-<dd><p class="first last">Set to False to perform inplace computation.</p>
+<dd><p class="first last">Set to False to perform inplace computation during transformation.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>X_trans</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_samples, n_features)</span></dt>
+<dd><p class="first last">The transformed data.</p>
 </dd>
 </dl>
 </td>
@@ -246,24 +259,37 @@ transformed output.</p>
 <p class="first admonition-title">See also</p>
 <dl class="last docutils">
 <dt><a class="reference internal" href="sklearn.preprocessing.PowerTransformer.html#sklearn.preprocessing.PowerTransformer" title="sklearn.preprocessing.PowerTransformer"><code class="xref py py-obj docutils literal"><span class="pre">PowerTransformer</span></code></a></dt>
-<dd>Performs power transformation using the <code class="docutils literal"><span class="pre">Transformer</span></code> API (as part of a preprocessing <a class="reference internal" href="sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal"><span class="pre">sklearn.pipeline.Pipeline</span></code></a>).</dd>
+<dd>Equivalent transformation with the <code class="docutils literal"><span class="pre">Transformer</span></code> API (e.g. as part of a preprocessing <a class="reference internal" href="sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal"><span class="pre">sklearn.pipeline.Pipeline</span></code></a>).</dd>
 <dt><a class="reference internal" href="sklearn.preprocessing.quantile_transform.html#sklearn.preprocessing.quantile_transform" title="sklearn.preprocessing.quantile_transform"><code class="xref py py-obj docutils literal"><span class="pre">quantile_transform</span></code></a></dt>
 <dd>Maps data to a standard normal distribution with the parameter <cite>output_distribution=’normal’</cite>.</dd>
 </dl>
 </div>
 <p class="rubric">Notes</p>
-<p>NaNs are treated as missing values: disregarded to compute the statistics,
-and maintained during the data transformation.</p>
+<p>NaNs are treated as missing values: disregarded in <code class="docutils literal"><span class="pre">fit</span></code>, and maintained
+in <code class="docutils literal"><span class="pre">transform</span></code>.</p>
 <p>For a comparison of the different scalers, transformers, and normalizers,
 see <a class="reference internal" href="../../auto_examples/preprocessing/plot_all_scaling.html#sphx-glr-auto-examples-preprocessing-plot-all-scaling-py"><span class="std std-ref">examples/preprocessing/plot_all_scaling.py</span></a>.</p>
 <p class="rubric">References</p>
-<p>G.E.P. Box and D.R. Cox, “An Analysis of Transformations”, Journal of the
-Royal Statistical Society B, 26, 211-252 (1964).</p>
+<table class="docutils citation" frame="void" id="r742a88cfa144-1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[1]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id3">2</a>)</em> I.K. Yeo and R.A. Johnson, “A new family of power transformations to
+improve normality or symmetry.” Biometrika, 87(4), pp.954-959,
+(2000).</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="r742a88cfa144-2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[2]</td><td><em>(<a class="fn-backref" href="#id2">1</a>, <a class="fn-backref" href="#id4">2</a>)</em> G.E.P. Box and D.R. Cox, “An Analysis of Transformations”, Journal
+of the Royal Statistical Society B, 26, 211-252 (1964).</td></tr>
+</tbody>
+</table>
 <p class="rubric">Examples</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">power_transform</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">power_transform</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">power_transform</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;box-cox&#39;</span><span class="p">))</span>  
 <span class="go">[[-1.332... -0.707...]</span>
 <span class="go"> [ 0.256... -0.707...]</span>
 <span class="go"> [ 1.076...  1.414...]]</span>
