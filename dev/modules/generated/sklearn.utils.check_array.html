@@ -205,11 +205,11 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.utils" title="sklearn.utils"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.utils</span></code></a>.check_array<a class="headerlink" href="#sklearn-utils-check-array" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.utils.check_array">
-<code class="descclassname">sklearn.utils.</code><code class="descname">check_array</code><span class="sig-paren">(</span><em>array</em>, <em>accept_sparse=False</em>, <em>accept_large_sparse=True</em>, <em>dtype=’numeric’</em>, <em>order=None</em>, <em>copy=False</em>, <em>force_all_finite=True</em>, <em>ensure_2d=True</em>, <em>allow_nd=False</em>, <em>ensure_min_samples=1</em>, <em>ensure_min_features=1</em>, <em>warn_on_dtype=False</em>, <em>estimator=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/bbb0d93/sklearn/utils/validation.py#L357"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.utils.check_array" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sklearn.utils.</code><code class="descname">check_array</code><span class="sig-paren">(</span><em>array</em>, <em>accept_sparse=False</em>, <em>accept_large_sparse=True</em>, <em>dtype=’numeric’</em>, <em>order=None</em>, <em>copy=False</em>, <em>force_all_finite=True</em>, <em>ensure_2d=True</em>, <em>allow_nd=False</em>, <em>ensure_min_samples=1</em>, <em>ensure_min_features=1</em>, <em>warn_on_dtype=False</em>, <em>estimator=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c8a4132/sklearn/utils/validation.py#L357"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.utils.check_array" title="Permalink to this definition">¶</a></dt>
 <dd><p>Input validation on an array, list, sparse matrix or similar.</p>
-<p>By default, the input is converted to an at least 2D numpy array.
-If the dtype of the array is object, attempt converting to float,
-raising on failure.</p>
+<p>By default, the input is checked to be a non-empty 2D array containing
+only finite values. If the dtype of the array is object, attempt
+converting to float, raising on failure.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -256,23 +256,23 @@ to the original array.</p>
 be triggered by a conversion.</p>
 </dd>
 <dt><strong>force_all_finite</strong> <span class="classifier-delimiter">:</span> <span class="classifier">boolean or ‘allow-nan’, (default=True)</span></dt>
-<dd><p class="first">Whether to raise an error on np.inf and np.nan in X. The possibilities
-are:</p>
+<dd><p class="first">Whether to raise an error on np.inf and np.nan in array. The
+possibilities are:</p>
 <ul class="simple">
-<li>True: Force all values of X to be finite.</li>
-<li>False: accept both np.inf and np.nan in X.</li>
-<li>‘allow-nan’:  accept  only  np.nan  values in  X.  Values  cannot  be
-infinite.</li>
+<li>True: Force all values of array to be finite.</li>
+<li>False: accept both np.inf and np.nan in array.</li>
+<li>‘allow-nan’: accept only np.nan values in array. Values cannot
+be infinite.</li>
 </ul>
 <div class="last versionadded">
 <p><span class="versionmodified">New in version 0.20: </span><code class="docutils literal"><span class="pre">force_all_finite</span></code> accepts the string <code class="docutils literal"><span class="pre">'allow-nan'</span></code>.</p>
 </div>
 </dd>
 <dt><strong>ensure_2d</strong> <span class="classifier-delimiter">:</span> <span class="classifier">boolean (default=True)</span></dt>
-<dd><p class="first last">Whether to raise a value error if X is not 2d.</p>
+<dd><p class="first last">Whether to raise a value error if array is not 2D.</p>
 </dd>
 <dt><strong>allow_nd</strong> <span class="classifier-delimiter">:</span> <span class="classifier">boolean (default=False)</span></dt>
-<dd><p class="first last">Whether to allow X.ndim &gt; 2.</p>
+<dd><p class="first last">Whether to allow array.ndim &gt; 2.</p>
 </dd>
 <dt><strong>ensure_min_samples</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int (default=1)</span></dt>
 <dd><p class="first last">Make sure that the array has a minimum number of samples in its first
@@ -296,8 +296,8 @@ does not match the requested dtype, causing a memory copy.</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>X_converted</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd><p class="first last">The converted and validated X.</p>
+<dt><strong>array_converted</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first last">The converted and validated array.</p>
 </dd>
 </dl>
 </td>
