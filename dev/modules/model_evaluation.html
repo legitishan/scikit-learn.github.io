@@ -221,11 +221,12 @@
 </li>
 <li><a class="reference internal" href="#regression-metrics">3.3.4. Regression metrics</a><ul>
 <li><a class="reference internal" href="#explained-variance-score">3.3.4.1. Explained variance score</a></li>
-<li><a class="reference internal" href="#mean-absolute-error">3.3.4.2. Mean absolute error</a></li>
-<li><a class="reference internal" href="#mean-squared-error">3.3.4.3. Mean squared error</a></li>
-<li><a class="reference internal" href="#mean-squared-logarithmic-error">3.3.4.4. Mean squared logarithmic error</a></li>
-<li><a class="reference internal" href="#median-absolute-error">3.3.4.5. Median absolute error</a></li>
-<li><a class="reference internal" href="#r2-score-the-coefficient-of-determination">3.3.4.6. R² score, the coefficient of determination</a></li>
+<li><a class="reference internal" href="#max-error">3.3.4.2. Max error</a></li>
+<li><a class="reference internal" href="#mean-absolute-error">3.3.4.3. Mean absolute error</a></li>
+<li><a class="reference internal" href="#mean-squared-error">3.3.4.4. Mean squared error</a></li>
+<li><a class="reference internal" href="#mean-squared-logarithmic-error">3.3.4.5. Mean squared logarithmic error</a></li>
+<li><a class="reference internal" href="#median-absolute-error">3.3.4.6. Median absolute error</a></li>
+<li><a class="reference internal" href="#r2-score-the-coefficient-of-determination">3.3.4.7. R² score, the coefficient of determination</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#clustering-metrics">3.3.5. Clustering metrics</a></li>
@@ -403,23 +404,27 @@ of the metric.</p>
 <td><a class="reference internal" href="generated/sklearn.metrics.explained_variance_score.html#sklearn.metrics.explained_variance_score" title="sklearn.metrics.explained_variance_score"><code class="xref py py-func docutils literal"><span class="pre">metrics.explained_variance_score</span></code></a></td>
 <td>&#160;</td>
 </tr>
-<tr class="row-odd"><td>‘neg_mean_absolute_error’</td>
+<tr class="row-odd"><td>‘max_error’</td>
+<td><a class="reference internal" href="generated/sklearn.metrics.max_error.html#sklearn.metrics.max_error" title="sklearn.metrics.max_error"><code class="xref py py-func docutils literal"><span class="pre">metrics.max_error</span></code></a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>‘neg_mean_absolute_error’</td>
 <td><a class="reference internal" href="generated/sklearn.metrics.mean_absolute_error.html#sklearn.metrics.mean_absolute_error" title="sklearn.metrics.mean_absolute_error"><code class="xref py py-func docutils literal"><span class="pre">metrics.mean_absolute_error</span></code></a></td>
 <td>&#160;</td>
 </tr>
-<tr class="row-even"><td>‘neg_mean_squared_error’</td>
+<tr class="row-odd"><td>‘neg_mean_squared_error’</td>
 <td><a class="reference internal" href="generated/sklearn.metrics.mean_squared_error.html#sklearn.metrics.mean_squared_error" title="sklearn.metrics.mean_squared_error"><code class="xref py py-func docutils literal"><span class="pre">metrics.mean_squared_error</span></code></a></td>
 <td>&#160;</td>
 </tr>
-<tr class="row-odd"><td>‘neg_mean_squared_log_error’</td>
+<tr class="row-even"><td>‘neg_mean_squared_log_error’</td>
 <td><a class="reference internal" href="generated/sklearn.metrics.mean_squared_log_error.html#sklearn.metrics.mean_squared_log_error" title="sklearn.metrics.mean_squared_log_error"><code class="xref py py-func docutils literal"><span class="pre">metrics.mean_squared_log_error</span></code></a></td>
 <td>&#160;</td>
 </tr>
-<tr class="row-even"><td>‘neg_median_absolute_error’</td>
+<tr class="row-odd"><td>‘neg_median_absolute_error’</td>
 <td><a class="reference internal" href="generated/sklearn.metrics.median_absolute_error.html#sklearn.metrics.median_absolute_error" title="sklearn.metrics.median_absolute_error"><code class="xref py py-func docutils literal"><span class="pre">metrics.median_absolute_error</span></code></a></td>
 <td>&#160;</td>
 </tr>
-<tr class="row-odd"><td>‘r2’</td>
+<tr class="row-even"><td>‘r2’</td>
 <td><a class="reference internal" href="generated/sklearn.metrics.r2_score.html#sklearn.metrics.r2_score" title="sklearn.metrics.r2_score"><code class="xref py py-func docutils literal"><span class="pre">metrics.r2_score</span></code></a></td>
 <td>&#160;</td>
 </tr>
@@ -1807,8 +1812,31 @@ function:</p>
 </pre></div>
 </div>
 </div>
+<div class="section" id="max-error">
+<span id="id31"></span><h3>3.3.4.2. Max error<a class="headerlink" href="#max-error" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference internal" href="generated/sklearn.metrics.max_error.html#sklearn.metrics.max_error" title="sklearn.metrics.max_error"><code class="xref py py-func docutils literal"><span class="pre">max_error</span></code></a> function computes the maximum <a class="reference external" href="https://en.wikipedia.org/wiki/Errors_and_residuals">residual error</a> , a metric
+that captures the worst case error between the predicted value and
+the true value. In a perfectly fitted single output regression
+model, <code class="docutils literal"><span class="pre">max_error</span></code> would be <code class="docutils literal"><span class="pre">0</span></code> on the training set and though this
+would be highly unlikely in the real world, this metric shows the
+extent of error that the model had when it was fitted.</p>
+<p>If <span class="math">\(\hat{y}_i\)</span> is the predicted value of the <span class="math">\(i\)</span>-th sample,
+and <span class="math">\(y_i\)</span> is the corresponding true value, then the max error is
+defined as</p>
+<div class="math">
+\[\text{Max Error}(y, \hat{y}) = max(| y_i - \hat{y}_i |)\]</div>
+<p>Here is a small example of usage of the <a class="reference internal" href="generated/sklearn.metrics.max_error.html#sklearn.metrics.max_error" title="sklearn.metrics.max_error"><code class="xref py py-func docutils literal"><span class="pre">max_error</span></code></a> function:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">max_error</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_true</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_pred</span> <span class="o">=</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">max_error</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="go">6</span>
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="generated/sklearn.metrics.max_error.html#sklearn.metrics.max_error" title="sklearn.metrics.max_error"><code class="xref py py-func docutils literal"><span class="pre">max_error</span></code></a> does not support multioutput.</p>
+</div>
 <div class="section" id="mean-absolute-error">
-<span id="id31"></span><h3>3.3.4.2. Mean absolute error<a class="headerlink" href="#mean-absolute-error" title="Permalink to this headline">¶</a></h3>
+<span id="id32"></span><h3>3.3.4.3. Mean absolute error<a class="headerlink" href="#mean-absolute-error" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="generated/sklearn.metrics.mean_absolute_error.html#sklearn.metrics.mean_absolute_error" title="sklearn.metrics.mean_absolute_error"><code class="xref py py-func docutils literal"><span class="pre">mean_absolute_error</span></code></a> function computes <a class="reference external" href="https://en.wikipedia.org/wiki/Mean_absolute_error">mean absolute
 error</a>, a risk
 metric corresponding to the expected value of the absolute error loss or
@@ -1837,7 +1865,7 @@ and <span class="math">\(y_i\)</span> is the corresponding true value, then the 
 </div>
 </div>
 <div class="section" id="mean-squared-error">
-<span id="id33"></span><h3>3.3.4.3. Mean squared error<a class="headerlink" href="#mean-squared-error" title="Permalink to this headline">¶</a></h3>
+<span id="id34"></span><h3>3.3.4.4. Mean squared error<a class="headerlink" href="#mean-squared-error" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="generated/sklearn.metrics.mean_squared_error.html#sklearn.metrics.mean_squared_error" title="sklearn.metrics.mean_squared_error"><code class="xref py py-func docutils literal"><span class="pre">mean_squared_error</span></code></a> function computes <a class="reference external" href="https://en.wikipedia.org/wiki/Mean_squared_error">mean square
 error</a>, a risk
 metric corresponding to the expected value of the squared (quadratic) error or
@@ -1870,7 +1898,7 @@ evaluate gradient boosting regression.</li>
 </div>
 </div>
 <div class="section" id="mean-squared-logarithmic-error">
-<span id="mean-squared-log-error"></span><h3>3.3.4.4. Mean squared logarithmic error<a class="headerlink" href="#mean-squared-logarithmic-error" title="Permalink to this headline">¶</a></h3>
+<span id="mean-squared-log-error"></span><h3>3.3.4.5. Mean squared logarithmic error<a class="headerlink" href="#mean-squared-logarithmic-error" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="generated/sklearn.metrics.mean_squared_log_error.html#sklearn.metrics.mean_squared_log_error" title="sklearn.metrics.mean_squared_log_error"><code class="xref py py-func docutils literal"><span class="pre">mean_squared_log_error</span></code></a> function computes a risk metric
 corresponding to the expected value of the squared logarithmic (quadratic)
 error or loss.</p>
@@ -1900,7 +1928,7 @@ function:</p>
 </div>
 </div>
 <div class="section" id="median-absolute-error">
-<span id="id34"></span><h3>3.3.4.5. Median absolute error<a class="headerlink" href="#median-absolute-error" title="Permalink to this headline">¶</a></h3>
+<span id="id35"></span><h3>3.3.4.6. Median absolute error<a class="headerlink" href="#median-absolute-error" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="generated/sklearn.metrics.median_absolute_error.html#sklearn.metrics.median_absolute_error" title="sklearn.metrics.median_absolute_error"><code class="xref py py-func docutils literal"><span class="pre">median_absolute_error</span></code></a> is particularly interesting because it is
 robust to outliers. The loss is calculated by taking the median of all absolute
 differences between the target and the prediction.</p>
@@ -1921,7 +1949,7 @@ function:</p>
 </div>
 </div>
 <div class="section" id="r2-score-the-coefficient-of-determination">
-<span id="r2-score"></span><h3>3.3.4.6. R² score, the coefficient of determination<a class="headerlink" href="#r2-score-the-coefficient-of-determination" title="Permalink to this headline">¶</a></h3>
+<span id="r2-score"></span><h3>3.3.4.7. R² score, the coefficient of determination<a class="headerlink" href="#r2-score-the-coefficient-of-determination" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="generated/sklearn.metrics.r2_score.html#sklearn.metrics.r2_score" title="sklearn.metrics.r2_score"><code class="xref py py-func docutils literal"><span class="pre">r2_score</span></code></a> function computes R², the <a class="reference external" href="https://en.wikipedia.org/wiki/Coefficient_of_determination">coefficient of
 determination</a>.
 It provides a measure of how well future samples are likely to
@@ -1970,14 +1998,14 @@ evaluate Lasso and Elastic Net on sparse signals.</li>
 </div>
 </div>
 <div class="section" id="clustering-metrics">
-<span id="id35"></span><h2>3.3.5. Clustering metrics<a class="headerlink" href="#clustering-metrics" title="Permalink to this headline">¶</a></h2>
+<span id="id36"></span><h2>3.3.5. Clustering metrics<a class="headerlink" href="#clustering-metrics" title="Permalink to this headline">¶</a></h2>
 <p>The <a class="reference internal" href="classes.html#module-sklearn.metrics" title="sklearn.metrics"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.metrics</span></code></a> module implements several loss, score, and utility
 functions. For more information see the <a class="reference internal" href="clustering.html#clustering-evaluation"><span class="std std-ref">Clustering performance evaluation</span></a>
 section for instance clustering, and <a class="reference internal" href="biclustering.html#biclustering-evaluation"><span class="std std-ref">Biclustering evaluation</span></a> for
 biclustering.</p>
 </div>
 <div class="section" id="dummy-estimators">
-<span id="id36"></span><h2>3.3.6. Dummy estimators<a class="headerlink" href="#dummy-estimators" title="Permalink to this headline">¶</a></h2>
+<span id="id37"></span><h2>3.3.6. Dummy estimators<a class="headerlink" href="#dummy-estimators" title="Permalink to this headline">¶</a></h2>
 <p>When doing supervised learning, a simple sanity check consists of comparing
 one’s estimator against simple rules of thumb. <a class="reference internal" href="generated/sklearn.dummy.DummyClassifier.html#sklearn.dummy.DummyClassifier" title="sklearn.dummy.DummyClassifier"><code class="xref py py-class docutils literal"><span class="pre">DummyClassifier</span></code></a>
 implements several such simple strategies for classification:</p>
