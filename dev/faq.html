@@ -419,13 +419,13 @@ etc.</p>
 <div class="section" id="why-do-i-sometime-get-a-crash-freeze-with-n-jobs-1-under-osx-or-linux">
 <h2>Why do I sometime get a crash/freeze with n_jobs &gt; 1 under OSX or Linux?<a class="headerlink" href="#why-do-i-sometime-get-a-crash-freeze-with-n-jobs-1-under-osx-or-linux" title="Permalink to this headline">¶</a></h2>
 <p>Several scikit-learn tools such as <code class="docutils literal"><span class="pre">GridSearchCV</span></code> and <code class="docutils literal"><span class="pre">cross_val_score</span></code>
-rely internally on Python’s <cite>multiprocessing</cite> module to parallelize execution
+rely internally on Python’s <a class="reference external" href="https://docs.python.org/3/library/multiprocessing.html#module-multiprocessing" title="(in Python v3.7)"><code class="xref any docutils literal"><span class="pre">multiprocessing</span></code></a> module to parallelize execution
 onto several Python processes by passing <code class="docutils literal"><span class="pre">n_jobs</span> <span class="pre">&gt;</span> <span class="pre">1</span></code> as argument.</p>
 <p>The problem is that Python <code class="docutils literal"><span class="pre">multiprocessing</span></code> does a <code class="docutils literal"><span class="pre">fork</span></code> system call
 without following it with an <code class="docutils literal"><span class="pre">exec</span></code> system call for performance reasons. Many
 libraries like (some versions of) Accelerate / vecLib under OSX, (some versions
 of) MKL, the OpenMP runtime of GCC, nvidia’s Cuda (and probably many others),
-manage their own internal thread pool. Upon a call to <cite>fork</cite>, the thread pool
+manage their own internal thread pool. Upon a call to <code class="xref any docutils literal"><span class="pre">fork</span></code>, the thread pool
 state in the child process is corrupted: the thread pool believes it has many
 threads while only the main thread state has been forked. It is possible to
 change the libraries to make them detect when a fork happens and reinitialize
