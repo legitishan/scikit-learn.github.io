@@ -1307,6 +1307,15 @@ an affinity matrix which are precomputed from the data matrix <code class="docut
 data dependent. A tolerance stopping criterion <code class="docutils literal"><span class="pre">tol</span></code> is not directly
 data dependent (although the optimal value according to some scoring
 function probably is).</p>
+<p>When <code class="docutils literal"><span class="pre">fit</span></code> is called, any previous call to <code class="docutils literal"><span class="pre">fit</span></code> should be ignored. In
+general, calling <code class="docutils literal"><span class="pre">estimator.fit(X1)</span></code> and then <code class="docutils literal"><span class="pre">estimator.fit(X2)</span></code> should
+be the same as only calling <code class="docutils literal"><span class="pre">estimator.fit(X2)</span></code>. However, this may not be
+true in practice when <code class="docutils literal"><span class="pre">fit</span></code> depends on some random process, see
+<a class="reference internal" href="../glossary.html#term-random-state"><span class="xref std std-term">random_state</span></a>. Another exception to this rule is when the
+hyper-parameter <code class="docutils literal"><span class="pre">warm_start</span></code> is set to <code class="docutils literal"><span class="pre">True</span></code> for estimators that
+support it. <code class="docutils literal"><span class="pre">warm_start=True</span></code> means that the previous state of the
+trainable parameters of the estimator are reused instead of using the
+default initialization strategy.</p>
 </div>
 <div class="section" id="estimated-attributes">
 <h4>Estimated Attributes<a class="headerlink" href="#estimated-attributes" title="Permalink to this headline">¶</a></h4>
@@ -1314,9 +1323,8 @@ function probably is).</p>
 ending with trailing underscore, for example the coefficients of
 some regression estimator would be stored in a <code class="docutils literal"><span class="pre">coef_</span></code> attribute after
 <code class="docutils literal"><span class="pre">fit</span></code> has been called.</p>
-<p>The last-mentioned attributes are expected to be overridden when
-you call <code class="docutils literal"><span class="pre">fit</span></code> a second time without taking any previous value into
-account: <strong>fit should be idempotent</strong>.</p>
+<p>The estimated attributes are expected to be overridden when you call <code class="docutils literal"><span class="pre">fit</span></code>
+a second time.</p>
 </div>
 <div class="section" id="optional-arguments">
 <h4>Optional Arguments<a class="headerlink" href="#optional-arguments" title="Permalink to this headline">¶</a></h4>
