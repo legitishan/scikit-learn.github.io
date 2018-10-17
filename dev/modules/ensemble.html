@@ -846,19 +846,18 @@ uses <a class="reference internal" href="tree.html#tree"><span class="std std-re
 learners. Decision trees have a number of abilities that make them
 valuable for boosting, namely the ability to handle data of mixed type
 and the ability to model complex functions.</p>
-<p>Similar to other boosting algorithms GBRT builds the additive model in
-a forward stagewise fashion:</p>
+<p>Similar to other boosting algorithms, GBRT builds the additive model in
+a greedy fashion:</p>
 <blockquote>
 <div><div class="math">
-\[F_m(x) = F_{m-1}(x) + \gamma_m h_m(x)\]</div>
+\[F_m(x) = F_{m-1}(x) + \gamma_m h_m(x),\]</div>
 </div></blockquote>
-<p>At each stage the decision tree <span class="math">\(h_m(x)\)</span> is chosen to
-minimize the loss function <span class="math">\(L\)</span> given the current model
-<span class="math">\(F_{m-1}\)</span> and its fit <span class="math">\(F_{m-1}(x_i)\)</span></p>
+<p>where the newly added tree <span class="math">\(h_m\)</span> tries to minimize the loss <span class="math">\(L\)</span>,
+given the previous ensemble <span class="math">\(F_{m-1}\)</span>:</p>
 <blockquote>
 <div><div class="math">
-\[F_m(x) = F_{m-1}(x) + \arg\min_{h} \sum_{i=1}^{n} L(y_i,
-F_{m-1}(x_i) + h(x))\]</div>
+\[h_m =  \arg\min_{h} \sum_{i=1}^{n} L(y_i,
+F_{m-1}(x_i) + h(x_i)).\]</div>
 </div></blockquote>
 <p>The initial model <span class="math">\(F_{0}\)</span> is problem specific, for least-squares
 regression one usually chooses the mean of the target values.</p>
