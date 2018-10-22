@@ -28,6 +28,7 @@ Finds core samples of high density and expands clusters from them.
  .. code-block:: none
 
     Estimated number of clusters: 3
+    Estimated number of noise points: 18
     Homogeneity: 0.953
     Completeness: 0.883
     V-measure: 0.917
@@ -70,8 +71,10 @@ Finds core samples of high density and expands clusters from them.
 
     # Number of clusters in labels, ignoring noise if present.
     n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
+    n_noise_ = list(labels).count(-1)
 
     print('Estimated number of clusters: %d' % n_clusters_)
+    print('Estimated number of noise points: %d' % n_noise_)
     print("Homogeneity: %0.3f" % metrics.homogeneity_score(labels_true, labels))
     print("Completeness: %0.3f" % metrics.completeness_score(labels_true, labels))
     print("V-measure: %0.3f" % metrics.v_measure_score(labels_true, labels))
@@ -108,7 +111,7 @@ Finds core samples of high density and expands clusters from them.
     plt.title('Estimated number of clusters: %d' % n_clusters_)
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  0.037 seconds)
+**Total running time of the script:** ( 0 minutes  0.039 seconds)
 
 
 .. _sphx_glr_download_auto_examples_cluster_plot_dbscan.py:
