@@ -208,9 +208,10 @@
 <li><a class="reference internal" href="#hinge-loss">3.3.2.10. Hinge loss</a></li>
 <li><a class="reference internal" href="#log-loss">3.3.2.11. Log loss</a></li>
 <li><a class="reference internal" href="#matthews-correlation-coefficient">3.3.2.12. Matthews correlation coefficient</a></li>
-<li><a class="reference internal" href="#receiver-operating-characteristic-roc">3.3.2.13. Receiver operating characteristic (ROC)</a></li>
-<li><a class="reference internal" href="#zero-one-loss">3.3.2.14. Zero one loss</a></li>
-<li><a class="reference internal" href="#brier-score-loss">3.3.2.15. Brier score loss</a></li>
+<li><a class="reference internal" href="#multi-label-confusion-matrix">3.3.2.13. Multi-label confusion matrix</a></li>
+<li><a class="reference internal" href="#receiver-operating-characteristic-roc">3.3.2.14. Receiver operating characteristic (ROC)</a></li>
+<li><a class="reference internal" href="#zero-one-loss">3.3.2.15. Zero one loss</a></li>
+<li><a class="reference internal" href="#brier-score-loss">3.3.2.16. Brier score loss</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#multilabel-ranking-metrics">3.3.3. Multilabel ranking metrics</a><ul>
@@ -670,16 +671,19 @@ to the overall score, through the <code class="docutils literal"><span class="pr
 <tr class="row-odd"><td><a class="reference internal" href="generated/sklearn.metrics.log_loss.html#sklearn.metrics.log_loss" title="sklearn.metrics.log_loss"><code class="xref py py-obj docutils literal"><span class="pre">log_loss</span></code></a>(y_true,&nbsp;y_pred[,&nbsp;eps,&nbsp;normalize,&nbsp;…])</td>
 <td>Log loss, aka logistic loss or cross-entropy loss.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/sklearn.metrics.precision_recall_fscore_support.html#sklearn.metrics.precision_recall_fscore_support" title="sklearn.metrics.precision_recall_fscore_support"><code class="xref py py-obj docutils literal"><span class="pre">precision_recall_fscore_support</span></code></a>(y_true,&nbsp;y_pred)</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/sklearn.metrics.multilabel_confusion_matrix.html#sklearn.metrics.multilabel_confusion_matrix" title="sklearn.metrics.multilabel_confusion_matrix"><code class="xref py py-obj docutils literal"><span class="pre">multilabel_confusion_matrix</span></code></a>(y_true,&nbsp;y_pred)</td>
+<td>Compute a confusion matrix for each class or sample</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/sklearn.metrics.precision_recall_fscore_support.html#sklearn.metrics.precision_recall_fscore_support" title="sklearn.metrics.precision_recall_fscore_support"><code class="xref py py-obj docutils literal"><span class="pre">precision_recall_fscore_support</span></code></a>(y_true,&nbsp;y_pred)</td>
 <td>Compute precision, recall, F-measure and support for each class</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/sklearn.metrics.precision_score.html#sklearn.metrics.precision_score" title="sklearn.metrics.precision_score"><code class="xref py py-obj docutils literal"><span class="pre">precision_score</span></code></a>(y_true,&nbsp;y_pred[,&nbsp;labels,&nbsp;…])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/sklearn.metrics.precision_score.html#sklearn.metrics.precision_score" title="sklearn.metrics.precision_score"><code class="xref py py-obj docutils literal"><span class="pre">precision_score</span></code></a>(y_true,&nbsp;y_pred[,&nbsp;labels,&nbsp;…])</td>
 <td>Compute the precision</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/sklearn.metrics.recall_score.html#sklearn.metrics.recall_score" title="sklearn.metrics.recall_score"><code class="xref py py-obj docutils literal"><span class="pre">recall_score</span></code></a>(y_true,&nbsp;y_pred[,&nbsp;labels,&nbsp;…])</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/sklearn.metrics.recall_score.html#sklearn.metrics.recall_score" title="sklearn.metrics.recall_score"><code class="xref py py-obj docutils literal"><span class="pre">recall_score</span></code></a>(y_true,&nbsp;y_pred[,&nbsp;labels,&nbsp;…])</td>
 <td>Compute the recall</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/sklearn.metrics.zero_one_loss.html#sklearn.metrics.zero_one_loss" title="sklearn.metrics.zero_one_loss"><code class="xref py py-obj docutils literal"><span class="pre">zero_one_loss</span></code></a>(y_true,&nbsp;y_pred[,&nbsp;normalize,&nbsp;…])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/sklearn.metrics.zero_one_loss.html#sklearn.metrics.zero_one_loss" title="sklearn.metrics.zero_one_loss"><code class="xref py py-obj docutils literal"><span class="pre">zero_one_loss</span></code></a>(y_true,&nbsp;y_pred[,&nbsp;normalize,&nbsp;…])</td>
 <td>Zero-one classification loss.</td>
 </tr>
 </tbody>
@@ -1472,8 +1476,108 @@ function:</p>
 </pre></div>
 </div>
 </div>
+<div class="section" id="multi-label-confusion-matrix">
+<span id="multilabel-confusion-matrix"></span><h3>3.3.2.13. Multi-label confusion matrix<a class="headerlink" href="#multi-label-confusion-matrix" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference internal" href="generated/sklearn.metrics.multilabel_confusion_matrix.html#sklearn.metrics.multilabel_confusion_matrix" title="sklearn.metrics.multilabel_confusion_matrix"><code class="xref py py-func docutils literal"><span class="pre">multilabel_confusion_matrix</span></code></a> function computes class-wise (default)
+or sample-wise (samplewise=True) multilabel confusion matrix to evaluate
+the accuracy of a classification. multilabel_confusion_matrix also treats
+multiclass data as if it were multilabel, as this is a transformation commonly
+applied to evaluate multiclass problems with binary classification metrics
+(such as precision, recall, etc.).</p>
+<p>When calculating class-wise multilabel confusion matrix <span class="math">\(C\)</span>, the
+count of true negatives for class <span class="math">\(i\)</span> is <span class="math">\(C_{i,0,0}\)</span>, false
+negatives is <span class="math">\(C_{i,1,0}\)</span>, true positives is <span class="math">\(C_{i,1,1}\)</span>
+and false positives is <span class="math">\(C_{i,0,1}\)</span>.</p>
+<p>Here is an example demonstrating the use of the
+<a class="reference internal" href="generated/sklearn.metrics.multilabel_confusion_matrix.html#sklearn.metrics.multilabel_confusion_matrix" title="sklearn.metrics.multilabel_confusion_matrix"><code class="xref py py-func docutils literal"><span class="pre">multilabel_confusion_matrix</span></code></a> function with
+<a class="reference internal" href="../glossary.html#term-multilabel-indicator-matrix"><span class="xref std std-term">multilabel indicator matrix</span></a> input:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">multilabel_confusion_matrix</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="gp">... </span>                   <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>                   <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">multilabel_confusion_matrix</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="go">array([[[1, 0],</span>
+<span class="go">        [0, 1]],</span>
+
+<span class="go">       [[1, 0],</span>
+<span class="go">        [0, 1]],</span>
+
+<span class="go">       [[0, 1],</span>
+<span class="go">        [1, 0]]])</span>
+</pre></div>
+</div>
+<p>Or a confusion matrix can be constructed for each sample’s labels:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">multilabel_confusion_matrix</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">samplewise</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">array([[[1, 0],</span>
+<span class="go">        [1, 1]],</span>
+
+<span class="go">       [[1, 1],</span>
+<span class="go">        [0, 1]]])</span>
+</pre></div>
+</div>
+<p>Here is an example demonstrating the use of the
+<a class="reference internal" href="generated/sklearn.metrics.multilabel_confusion_matrix.html#sklearn.metrics.multilabel_confusion_matrix" title="sklearn.metrics.multilabel_confusion_matrix"><code class="xref py py-func docutils literal"><span class="pre">multilabel_confusion_matrix</span></code></a> function with
+<a class="reference internal" href="../glossary.html#term-multiclass"><span class="xref std std-term">multiclass</span></a> input:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y_true</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="s2">&quot;ant&quot;</span><span class="p">,</span> <span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="s2">&quot;ant&quot;</span><span class="p">,</span> <span class="s2">&quot;bird&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_pred</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ant&quot;</span><span class="p">,</span> <span class="s2">&quot;ant&quot;</span><span class="p">,</span> <span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="s2">&quot;ant&quot;</span><span class="p">,</span> <span class="s2">&quot;cat&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">multilabel_confusion_matrix</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span>
+<span class="gp">... </span>                            <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ant&quot;</span><span class="p">,</span> <span class="s2">&quot;bird&quot;</span><span class="p">,</span> <span class="s2">&quot;cat&quot;</span><span class="p">])</span>
+<span class="go">array([[[3, 1],</span>
+<span class="go">        [0, 2]],</span>
+
+<span class="go">       [[5, 0],</span>
+<span class="go">        [1, 0]],</span>
+
+<span class="go">       [[2, 1],</span>
+<span class="go">        [1, 2]]])</span>
+</pre></div>
+</div>
+<p>Here are some examples demonstrating the use of the
+<a class="reference internal" href="generated/sklearn.metrics.multilabel_confusion_matrix.html#sklearn.metrics.multilabel_confusion_matrix" title="sklearn.metrics.multilabel_confusion_matrix"><code class="xref py py-func docutils literal"><span class="pre">multilabel_confusion_matrix</span></code></a> function to calculate recall
+(or sensitivity), specificity, fall out and miss rate for each class in a
+problem with multilabel indicator matrix input.</p>
+<p>Calculating
+<a class="reference external" href="https://en.wikipedia.org/wiki/Sensitivity_and_specificity">recall</a>
+(also called the true positive rate or the sensitivity) for each class:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="gp">... </span>                   <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>                   <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>                   <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="gp">... </span>                   <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mcm</span> <span class="o">=</span> <span class="n">multilabel_confusion_matrix</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tn</span> <span class="o">=</span> <span class="n">mcm</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tp</span> <span class="o">=</span> <span class="n">mcm</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">=</span> <span class="n">mcm</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fp</span> <span class="o">=</span> <span class="n">mcm</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tp</span> <span class="o">/</span> <span class="p">(</span><span class="n">tp</span> <span class="o">+</span> <span class="n">fn</span><span class="p">)</span>
+<span class="go">array([1. , 0.5, 0. ])</span>
+</pre></div>
+</div>
+<p>Calculating
+<a class="reference external" href="https://en.wikipedia.org/wiki/Sensitivity_and_specificity">specificity</a>
+(also called the true negative rate) for each class:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tn</span> <span class="o">/</span> <span class="p">(</span><span class="n">tn</span> <span class="o">+</span> <span class="n">fp</span><span class="p">)</span>
+<span class="go">array([1. , 0. , 0.5])</span>
+</pre></div>
+</div>
+<p>Calculating <a class="reference external" href="https://en.wikipedia.org/wiki/False_positive_rate">fall out</a>
+(also called the false positive rate) for each class:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fp</span> <span class="o">/</span> <span class="p">(</span><span class="n">fp</span> <span class="o">+</span> <span class="n">tn</span><span class="p">)</span>
+<span class="go">array([0. , 1. , 0.5])</span>
+</pre></div>
+</div>
+<p>Calculating <a class="reference external" href="https://en.wikipedia.org/wiki/False_positives_and_false_negatives">miss rate</a>
+(also called the false negative rate) for each class:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">/</span> <span class="p">(</span><span class="n">fn</span> <span class="o">+</span> <span class="n">tp</span><span class="p">)</span>
+<span class="go">array([0. , 0.5, 1. ])</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="receiver-operating-characteristic-roc">
-<span id="roc-metrics"></span><h3>3.3.2.13. Receiver operating characteristic (ROC)<a class="headerlink" href="#receiver-operating-characteristic-roc" title="Permalink to this headline">¶</a></h3>
+<span id="roc-metrics"></span><h3>3.3.2.14. Receiver operating characteristic (ROC)<a class="headerlink" href="#receiver-operating-characteristic-roc" title="Permalink to this headline">¶</a></h3>
 <p>The function <a class="reference internal" href="generated/sklearn.metrics.roc_curve.html#sklearn.metrics.roc_curve" title="sklearn.metrics.roc_curve"><code class="xref py py-func docutils literal"><span class="pre">roc_curve</span></code></a> computes the
 <a class="reference external" href="https://en.wikipedia.org/wiki/Receiver_operating_characteristic">receiver operating characteristic curve, or ROC curve</a>.
 Quoting Wikipedia :</p>
@@ -1543,7 +1647,7 @@ model species distribution.</li>
 </div>
 </div>
 <div class="section" id="zero-one-loss">
-<span id="id23"></span><h3>3.3.2.14. Zero one loss<a class="headerlink" href="#zero-one-loss" title="Permalink to this headline">¶</a></h3>
+<span id="id23"></span><h3>3.3.2.15. Zero one loss<a class="headerlink" href="#zero-one-loss" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="generated/sklearn.metrics.zero_one_loss.html#sklearn.metrics.zero_one_loss" title="sklearn.metrics.zero_one_loss"><code class="xref py py-func docutils literal"><span class="pre">zero_one_loss</span></code></a> function computes the sum or the average of the 0-1
 classification loss (<span class="math">\(L_{0-1}\)</span>) over <span class="math">\(n_{\text{samples}}\)</span>. By
 default, the function normalizes over the sample. To get the sum of the
@@ -1587,7 +1691,7 @@ elimination with cross-validation.</li>
 </div>
 </div>
 <div class="section" id="brier-score-loss">
-<span id="id25"></span><h3>3.3.2.15. Brier score loss<a class="headerlink" href="#brier-score-loss" title="Permalink to this headline">¶</a></h3>
+<span id="id25"></span><h3>3.3.2.16. Brier score loss<a class="headerlink" href="#brier-score-loss" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="generated/sklearn.metrics.brier_score_loss.html#sklearn.metrics.brier_score_loss" title="sklearn.metrics.brier_score_loss"><code class="xref py py-func docutils literal"><span class="pre">brier_score_loss</span></code></a> function computes the
 <a class="reference external" href="https://en.wikipedia.org/wiki/Brier_score">Brier score</a>
 for binary classes. Quoting Wikipedia:</p>
