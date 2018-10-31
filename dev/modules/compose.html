@@ -671,16 +671,18 @@ the transformation:</p>
 <span class="go">       [1. , 0. ]])</span>
 </pre></div>
 </div>
-<p>The <code class="xref py py-func docutils literal"><span class="pre">make_columntransformer</span></code> function is available
+<p>The <a class="reference internal" href="generated/sklearn.compose.make_column_transformer.html#sklearn.compose.make_column_transformer" title="sklearn.compose.make_column_transformer"><code class="xref py py-func docutils literal"><span class="pre">make_column_transformer</span></code></a> function is available
 to more easily create a <a class="reference internal" href="generated/sklearn.compose.ColumnTransformer.html#sklearn.compose.ColumnTransformer" title="sklearn.compose.ColumnTransformer"><code class="xref py py-class docutils literal"><span class="pre">ColumnTransformer</span></code></a> object.
 Specifically, the names will be given automatically. The equivalent for the
 above example would be:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.compose</span> <span class="k">import</span> <span class="n">make_column_transformer</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">column_trans</span> <span class="o">=</span> <span class="n">make_column_transformer</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="p">(</span><span class="s1">&#39;city&#39;</span><span class="p">,</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">analyzer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">])),</span>
-<span class="gp">... </span>    <span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="n">CountVectorizer</span><span class="p">()))</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="n">CountVectorizer</span><span class="p">()),</span>
+<span class="gp">... </span>    <span class="n">remainder</span><span class="o">=</span><span class="n">MinMaxScaler</span><span class="p">())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">column_trans</span> 
-<span class="go">ColumnTransformer(n_jobs=None, remainder=&#39;drop&#39;, sparse_threshold=0.3,</span>
+<span class="go">ColumnTransformer(n_jobs=None, remainder=MinMaxScaler(copy=True, ...),</span>
+<span class="go">         sparse_threshold=0.3,</span>
 <span class="go">         transformer_weights=None,</span>
 <span class="go">         transformers=[(&#39;countvectorizer-1&#39;, ...)</span>
 </pre></div>
