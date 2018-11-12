@@ -367,6 +367,21 @@ validation iterator instead, for instance:</p>
 <span class="go">array([0.977..., 0.977..., 1.  ..., 0.955..., 1.        ])</span>
 </pre></div>
 </div>
+<p>Another option is to use an iterable yielding (train, test) splits as arrays of
+indices, for example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">custom_cv_2folds</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">n</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">... </span>    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n</span> <span class="o">*</span> <span class="n">i</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="k">yield</span> <span class="n">idx</span><span class="p">,</span> <span class="n">idx</span>
+<span class="gp">... </span>        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">custom_cv</span> <span class="o">=</span> <span class="n">custom_cv_2folds</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cross_val_score</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">custom_cv</span><span class="p">)</span>
+<span class="go">array([1.        , 0.973...])</span>
+</pre></div>
+</div>
 <div class="topic">
 <p class="topic-title first">Data transformation with held out data</p>
 <p>Just as it is important to test a predictor on data held-out from
