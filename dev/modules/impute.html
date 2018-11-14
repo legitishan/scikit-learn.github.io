@@ -312,6 +312,46 @@ whether or not they contain missing values:</p>
 <span class="go">array([0, 1, 2, 3])</span>
 </pre></div>
 </div>
+<p>When using the <a class="reference internal" href="generated/sklearn.impute.MissingIndicator.html#sklearn.impute.MissingIndicator" title="sklearn.impute.MissingIndicator"><code class="xref py py-class docutils literal"><span class="pre">MissingIndicator</span></code></a> in a <code class="xref py py-class docutils literal"><span class="pre">Pipeline</span></code>, be sure to use
+the <code class="xref py py-class docutils literal"><span class="pre">FeatureUnion</span></code> or <code class="xref py py-class docutils literal"><span class="pre">ColumnTransformer</span></code> to add the indicator
+features to the regular features. First we obtain the <code class="xref any docutils literal"><span class="pre">iris</span></code> dataset, and add
+some missing values to it.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">load_iris</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.impute</span> <span class="k">import</span> <span class="n">SimpleImputer</span><span class="p">,</span> <span class="n">MissingIndicator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="k">import</span> <span class="n">FeatureUnion</span><span class="p">,</span> <span class="n">make_pipeline</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="k">import</span> <span class="n">DecisionTreeClassifier</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<span class="gp">... </span>                                               <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now we create a <code class="xref py py-class docutils literal"><span class="pre">FeatureUnion</span></code>. All features will be imputed using
+<a class="reference internal" href="generated/sklearn.impute.SimpleImputer.html#sklearn.impute.SimpleImputer" title="sklearn.impute.SimpleImputer"><code class="xref py py-class docutils literal"><span class="pre">SimpleImputer</span></code></a>, in order to enable classifiers to work with this data.
+Additionally, it adds the the indicator variables from
+<a class="reference internal" href="generated/sklearn.impute.MissingIndicator.html#sklearn.impute.MissingIndicator" title="sklearn.impute.MissingIndicator"><code class="xref py py-class docutils literal"><span class="pre">MissingIndicator</span></code></a>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transformer</span> <span class="o">=</span> <span class="n">FeatureUnion</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">transformer_list</span><span class="o">=</span><span class="p">[</span>
+<span class="gp">... </span>        <span class="p">(</span><span class="s1">&#39;features&#39;</span><span class="p">,</span> <span class="n">SimpleImputer</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">)),</span>
+<span class="gp">... </span>        <span class="p">(</span><span class="s1">&#39;indicators&#39;</span><span class="p">,</span> <span class="n">MissingIndicator</span><span class="p">())])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transformer</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(100, 8)</span>
+</pre></div>
+</div>
+<p>Of course, we cannot use the transformer to make any predictions. We should
+wrap this in a <code class="xref py py-class docutils literal"><span class="pre">Pipeline</span></code> with a classifier (e.g., a
+<code class="xref py py-class docutils literal"><span class="pre">DecisionTreeClassifier</span></code>) to be able to make predictions.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">transformer</span><span class="p">,</span> <span class="n">DecisionTreeClassifier</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(100,)</span>
+</pre></div>
+</div>
 </div>
 </div>
 
