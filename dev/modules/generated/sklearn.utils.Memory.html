@@ -6,7 +6,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <meta content="noindex" name="robots" />
+
   
     <title>sklearn.utils.Memory &#8212; scikit-learn 0.21.dev0 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
@@ -39,7 +40,7 @@
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="sklearn.utils.Parallel" href="sklearn.utils.Parallel.html" />
-    <link rel="prev" title="sklearn.utils.testing.all_estimators" href="sklearn.utils.testing.all_estimators.html" />
+    <link rel="prev" title="sklearn.utils.register_parallel_backend" href="sklearn.utils.register_parallel_backend.html" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -133,14 +134,14 @@
         <div class="rel">
     
         <div class="rellink">
-        <a href="sklearn.utils.testing.all_estimators.html"
+        <a href="sklearn.utils.register_parallel_backend.html"
         accesskey="P">Previous
         <br/>
         <span class="smallrellink">
         sklearn.utils...
         </span>
             <span class="hiddenrellink">
-            sklearn.utils.testing.all_estimators
+            sklearn.utils.register_parallel_backend
             </span>
         </a>
         </div>
@@ -183,10 +184,7 @@
       <a href="http://scikit-learn.org/dev/versions.html">Other versions</a></p>
     <p class="citing">Please <b><a href="../../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
-<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">sklearn.utils</span></code>.Memory</a><ul>
-<li><a class="reference internal" href="#examples-using-sklearn-utils-memory">Examples using <code class="docutils literal"><span class="pre">sklearn.utils.Memory</span></code></a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">sklearn.utils</span></code>.Memory</a></li>
 </ul>
 
     </div>
@@ -206,59 +204,18 @@
             
   <div class="section" id="sklearn-utils-memory">
 <h1><a class="reference internal" href="../classes.html#module-sklearn.utils" title="sklearn.utils"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.utils</span></code></a>.Memory<a class="headerlink" href="#sklearn-utils-memory" title="Permalink to this headline">¶</a></h1>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last"><strong>DEPRECATED</strong></p>
+</div>
 <dl class="class">
 <dt id="sklearn.utils.Memory">
-<em class="property">class </em><code class="descclassname">sklearn.utils.</code><code class="descname">Memory</code><span class="sig-paren">(</span><em>location=None</em>, <em>backend=’local’</em>, <em>cachedir=None</em>, <em>mmap_mode=None</em>, <em>compress=False</em>, <em>verbose=1</em>, <em>bytes_limit=None</em>, <em>backend_options=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/4ab6055/sklearn/externals/joblib/memory.py#L800"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.utils.Memory" title="Permalink to this definition">¶</a></dt>
-<dd><p>A context object for caching a function’s return value each time it
-is called with the same input arguments.</p>
-<p>All values are cached on the filesystem, in a deep directory
-structure.</p>
-<p>Read more in the <a class="reference external" href="https://docs.python.org/3/c-api/memory.html#memory" title="(in Python v3.7)"><span class="xref std std-ref">User Guide</span></a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
+<em class="property">class </em><code class="descclassname">sklearn.utils.</code><code class="descname">Memory</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/d25da1b/sklearn/utils/__init__.py#L49"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.utils.Memory" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>location: str or None</strong></dt>
-<dd><p class="first last">The path of the base directory to use as a data store
-or None. If None is given, no caching is done and
-the Memory object is completely transparent. This option
-replaces cachedir since version 0.12.</p>
-</dd>
-<dt><strong>backend: str, optional</strong></dt>
-<dd><p class="first last">Type of store backend for reading/writing cache files.
-Default: ‘local’.
-The ‘local’ backend is using regular filesystem operations to
-manipulate data (open, mv, etc) in the backend.</p>
-</dd>
-<dt><strong>cachedir: str or None, optional</strong></dt>
-<dd></dd>
-<dt><strong>mmap_mode: {None, ‘r+’, ‘r’, ‘w+’, ‘c’}, optional</strong></dt>
-<dd><p class="first last">The memmapping mode used when loading from cache
-numpy arrays. See numpy.load for the meaning of the
-arguments.</p>
-</dd>
-<dt><strong>compress: boolean, or integer, optional</strong></dt>
-<dd><p class="first last">Whether to zip the stored data on disk. If an integer is
-given, it should be between 1 and 9, and sets the amount
-of compression. Note that compressed arrays cannot be
-read by memmapping.</p>
-</dd>
-<dt><strong>verbose: int, optional</strong></dt>
-<dd><p class="first last">Verbosity flag, controls the debug messages that are issued
-as functions are evaluated.</p>
-</dd>
-<dt><strong>bytes_limit: int, optional</strong></dt>
-<dd><p class="first last">Limit in bytes of the size of the cache.</p>
-</dd>
-<dt><strong>backend_options: dict, optional</strong></dt>
-<dd><p class="first last">Contains a dictionnary of named parameters used to configure
-the store backend.</p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><strong>cachedir</strong></dt>
 <dd></dd>
 </dl>
@@ -306,12 +263,13 @@ the store backend.</p>
 </table>
 <dl class="method">
 <dt id="sklearn.utils.Memory.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>location=None</em>, <em>backend=’local’</em>, <em>cachedir=None</em>, <em>mmap_mode=None</em>, <em>compress=False</em>, <em>verbose=1</em>, <em>bytes_limit=None</em>, <em>backend_options=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/4ab6055/sklearn/externals/joblib/memory.py#L855"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.utils.Memory.__init__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/d25da1b/sklearn/utils/deprecation.py#L57"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.utils.Memory.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>DEPRECATED: deprecated in version 0.20.1 to be removed in version 0.23. Please import this functionality directly from joblib, which can be installed with: pip install joblib.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="sklearn.utils.Memory.cache">
-<code class="descname">cache</code><span class="sig-paren">(</span><em>func=None</em>, <em>ignore=None</em>, <em>verbose=None</em>, <em>mmap_mode=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/4ab6055/sklearn/externals/joblib/memory.py#L910"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.utils.Memory.cache" title="Permalink to this definition">¶</a></dt>
+<code class="descname">cache</code><span class="sig-paren">(</span><em>func=None</em>, <em>ignore=None</em>, <em>verbose=None</em>, <em>mmap_mode=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/d25da1b/sklearn/externals/joblib/memory.py#L910"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.utils.Memory.cache" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorates the given function func to only compute its return
 value for input arguments not cached on disk.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -353,13 +311,13 @@ documentation for <a class="reference external" href="https://joblib.readthedocs
 
 <dl class="method">
 <dt id="sklearn.utils.Memory.clear">
-<code class="descname">clear</code><span class="sig-paren">(</span><em>warn=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/4ab6055/sklearn/externals/joblib/memory.py#L955"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.utils.Memory.clear" title="Permalink to this definition">¶</a></dt>
+<code class="descname">clear</code><span class="sig-paren">(</span><em>warn=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/d25da1b/sklearn/externals/joblib/memory.py#L955"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.utils.Memory.clear" title="Permalink to this definition">¶</a></dt>
 <dd><p>Erase the complete cache directory.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="sklearn.utils.Memory.eval">
-<code class="descname">eval</code><span class="sig-paren">(</span><em>func</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/4ab6055/sklearn/externals/joblib/memory.py#L968"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.utils.Memory.eval" title="Permalink to this definition">¶</a></dt>
+<code class="descname">eval</code><span class="sig-paren">(</span><em>func</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/d25da1b/sklearn/externals/joblib/memory.py#L968"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.utils.Memory.eval" title="Permalink to this definition">¶</a></dt>
 <dd><p>Eval function func with arguments <code class="xref any docutils literal"><span class="pre">*args</span></code> and <code class="xref any docutils literal"><span class="pre">**kwargs</span></code>,
 in the context of the memory.</p>
 <p>This method works similarly to the builtin <a class="reference internal" href="sklearn.ensemble.ExtraTreesClassifier.html#sklearn.ensemble.ExtraTreesClassifier.apply" title="sklearn.ensemble.ExtraTreesClassifier.apply"><code class="xref any py py-meth docutils literal"><span class="pre">apply</span></code></a>, except
@@ -369,34 +327,19 @@ up to date.</p>
 
 <dl class="method">
 <dt id="sklearn.utils.Memory.format">
-<code class="descname">format</code><span class="sig-paren">(</span><em>obj</em>, <em>indent=0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/4ab6055/sklearn/externals/joblib/logger.py#L83"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.utils.Memory.format" title="Permalink to this definition">¶</a></dt>
+<code class="descname">format</code><span class="sig-paren">(</span><em>obj</em>, <em>indent=0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/d25da1b/sklearn/externals/joblib/logger.py#L83"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.utils.Memory.format" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the formatted representation of the object.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="sklearn.utils.Memory.reduce_size">
-<code class="descname">reduce_size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/4ab6055/sklearn/externals/joblib/memory.py#L963"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.utils.Memory.reduce_size" title="Permalink to this definition">¶</a></dt>
+<code class="descname">reduce_size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/d25da1b/sklearn/externals/joblib/memory.py#L963"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.utils.Memory.reduce_size" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove cache elements to make cache size fit in <code class="docutils literal"><span class="pre">bytes_limit</span></code>.</p>
 </dd></dl>
 
 </dd></dl>
 
-<div class="section" id="examples-using-sklearn-utils-memory">
-<h2>Examples using <code class="docutils literal"><span class="pre">sklearn.utils.Memory</span></code><a class="headerlink" href="#examples-using-sklearn-utils-memory" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="A classical way to assert the relative importance of vertices in a graph is to compute the prin..."><div class="figure" id="id1">
-<img alt="../../_images/sphx_glr_wikipedia_principal_eigenvector_thumb.png" src="../../_images/sphx_glr_wikipedia_principal_eigenvector_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/applications/wikipedia_principal_eigenvector.html#sphx-glr-auto-examples-applications-wikipedia-principal-eigenvector-py"><span class="std std-ref">Wikipedia principal eigenvector</span></a></span></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="This example compares 2 dimensionality reduction strategies:"><div class="figure" id="id2">
-<img alt="../../_images/sphx_glr_plot_feature_agglomeration_vs_univariate_selection_thumb.png" src="../../_images/sphx_glr_plot_feature_agglomeration_vs_univariate_selection_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/cluster/plot_feature_agglomeration_vs_univariate_selection.html#sphx-glr-auto-examples-cluster-plot-feature-agglomeration-vs-univariate-selection-py"><span class="std std-ref">Feature agglomeration vs. univariate selection</span></a></span></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="This example constructs a pipeline that does dimensionality reduction followed by prediction wi..."><div class="figure" id="id3">
-<img alt="../../_images/sphx_glr_plot_compare_reduction_thumb.png" src="../../_images/sphx_glr_plot_compare_reduction_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/compose/plot_compare_reduction.html#sphx-glr-auto-examples-compose-plot-compare-reduction-py"><span class="std std-ref">Selecting dimensionality reduction with Pipeline and GridSearchCV</span></a></span></p>
-</div>
-</div><div class="clearer"></div></div>
-</div>
+<div class="clearer"></div></div>
 
 
           </div>
@@ -413,7 +356,7 @@ up to date.</p>
      <div class="rel">
     
     <div class="buttonPrevious">
-      <a href="sklearn.utils.testing.all_estimators.html">Previous
+      <a href="sklearn.utils.register_parallel_backend.html">Previous
       </a>
     </div>
     <div class="buttonNext">
