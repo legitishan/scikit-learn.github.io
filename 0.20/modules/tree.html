@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
   
-    <title>1.10. Decision Trees &#8212; scikit-learn 0.20.0 documentation</title>
+    <title>1.10. Decision Trees &#8212; scikit-learn 0.20.1 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../_static/css/bootstrap.min.css" media="screen" />
@@ -22,7 +22,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.20.0',
+        VERSION:     '0.20.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -179,7 +179,7 @@
         </div>
     </div>
     
-      <p class="doc-version"><b>scikit-learn v0.20.0</b><br/>
+      <p class="doc-version"><b>scikit-learn v0.20.1</b><br/>
       <a href="http://scikit-learn.org/dev/versions.html">Other versions</a></p>
     <p class="citing">Please <b><a href="../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
@@ -335,10 +335,10 @@ options, including coloring nodes by their class (or value for regression) and
 using explicit variable and class names if desired. Jupyter notebooks also
 render these plots inline automatically:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dot_data</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">export_graphviz</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">out_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
-<span class="go">                         feature_names=iris.feature_names,  </span>
-<span class="go">                         class_names=iris.target_names,  </span>
-<span class="go">                         filled=True, rounded=True,  </span>
-<span class="go">                         special_characters=True)  </span>
+<span class="gp">... </span>                     <span class="n">feature_names</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">feature_names</span><span class="p">,</span>  
+<span class="gp">... </span>                     <span class="n">class_names</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">target_names</span><span class="p">,</span>  
+<span class="gp">... </span>                     <span class="n">filled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">rounded</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  
+<span class="gp">... </span>                     <span class="n">special_characters</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  
 <span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">graphviz</span><span class="o">.</span><span class="n">Source</span><span class="p">(</span><span class="n">dot_data</span><span class="p">)</span>  
 <span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> 
 </pre></div>
@@ -540,7 +540,8 @@ more accurate.</p>
 it differs in that it supports numerical target variables (regression) and
 does not compute rule sets. CART constructs binary trees using the feature
 and threshold that yield the largest information gain at each node.</p>
-<p>scikit-learn uses an optimised version of the CART algorithm.</p>
+<p>scikit-learn uses an optimised version of the CART algorithm; however, scikit-learn
+implementation does not support categorical variables for now.</p>
 </div>
 <div class="section" id="mathematical-formulation">
 <span id="tree-mathematical-formulation"></span><h2>1.10.7. Mathematical formulation<a class="headerlink" href="#mathematical-formulation" title="Permalink to this headline">¶</a></h2>
@@ -576,7 +577,7 @@ observations, let</p>
 <p>Common measures of impurity are Gini</p>
 <div class="math">
 \[H(X_m) = \sum_k p_{mk} (1 - p_{mk})\]</div>
-<p>Cross-Entropy</p>
+<p>Entropy</p>
 <div class="math">
 \[H(X_m) = - \sum_k p_{mk} \log(p_{mk})\]</div>
 <p>and Misclassification</p>

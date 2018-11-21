@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
   
-    <title>sklearn.covariance.LedoitWolf &#8212; scikit-learn 0.20.0 documentation</title>
+    <title>sklearn.covariance.LedoitWolf &#8212; scikit-learn 0.20.1 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../../_static/css/bootstrap.min.css" media="screen" />
@@ -22,7 +22,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.20.0',
+        VERSION:     '0.20.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -179,7 +179,7 @@
         </div>
     </div>
     
-      <p class="doc-version"><b>scikit-learn v0.20.0</b><br/>
+      <p class="doc-version"><b>scikit-learn v0.20.1</b><br/>
       <a href="http://scikit-learn.org/dev/versions.html">Other versions</a></p>
     <p class="citing">Please <b><a href="../../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
@@ -208,7 +208,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.covariance" title="sklearn.covariance"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.covariance</span></code></a>.LedoitWolf<a class="headerlink" href="#sklearn-covariance-ledoitwolf" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="sklearn.covariance.LedoitWolf">
-<em class="property">class </em><code class="descclassname">sklearn.covariance.</code><code class="descname">LedoitWolf</code><span class="sig-paren">(</span><em>store_precision=True</em>, <em>assume_centered=False</em>, <em>block_size=1000</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/bac89c2/sklearn/covariance/shrunk_covariance_.py#L328"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.covariance.LedoitWolf" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">sklearn.covariance.</code><code class="descname">LedoitWolf</code><span class="sig-paren">(</span><em>store_precision=True</em>, <em>assume_centered=False</em>, <em>block_size=1000</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/6ccb5e4/sklearn/covariance/shrunk_covariance_.py#L328"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.covariance.LedoitWolf" title="Permalink to this definition">¶</a></dt>
 <dd><p>LedoitWolf Estimator</p>
 <p>Ledoit-Wolf is a particular form of shrinkage, where the shrinkage
 coefficient is computed using O. Ledoit and M. Wolf’s formula as
@@ -239,6 +239,9 @@ optimization and does not affect results.</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>location_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_features,)</span></dt>
+<dd><p class="first last">Estimated location, i.e. the estimated mean.</p>
+</dd>
 <dt><strong>covariance_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_features, n_features)</span></dt>
 <dd><p class="first last">Estimated covariance matrix</p>
 </dd>
@@ -264,6 +267,23 @@ and shrinkage is given by the Ledoit and Wolf formula (see References)</p>
 <p>“A Well-Conditioned Estimator for Large-Dimensional Covariance Matrices”,
 Ledoit and Wolf, Journal of Multivariate Analysis, Volume 88, Issue 2,
 February 2004, pages 365-411.</p>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.covariance</span> <span class="k">import</span> <span class="n">LedoitWolf</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">real_cov</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">.</span><span class="mi">4</span><span class="p">,</span> <span class="o">.</span><span class="mi">2</span><span class="p">],</span>
+<span class="gp">... </span>                     <span class="p">[</span><span class="o">.</span><span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="mi">8</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>                                  <span class="n">cov</span><span class="o">=</span><span class="n">real_cov</span><span class="p">,</span>
+<span class="gp">... </span>                                  <span class="n">size</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cov</span> <span class="o">=</span> <span class="n">LedoitWolf</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cov</span><span class="o">.</span><span class="n">covariance_</span> 
+<span class="go">array([[0.4406..., 0.1616...],</span>
+<span class="go">       [0.1616..., 0.8022...]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cov</span><span class="o">.</span><span class="n">location_</span>
+<span class="go">array([ 0.0595... , -0.0075...])</span>
+</pre></div>
+</div>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -296,12 +316,12 @@ February 2004, pages 365-411.</p>
 </table>
 <dl class="method">
 <dt id="sklearn.covariance.LedoitWolf.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>store_precision=True</em>, <em>assume_centered=False</em>, <em>block_size=1000</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/bac89c2/sklearn/covariance/shrunk_covariance_.py#L384"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.covariance.LedoitWolf.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>store_precision=True</em>, <em>assume_centered=False</em>, <em>block_size=1000</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/6ccb5e4/sklearn/covariance/shrunk_covariance_.py#L404"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.covariance.LedoitWolf.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="sklearn.covariance.LedoitWolf.error_norm">
-<code class="descname">error_norm</code><span class="sig-paren">(</span><em>comp_cov</em>, <em>norm=’frobenius’</em>, <em>scaling=True</em>, <em>squared=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/bac89c2/sklearn/covariance/empirical_covariance_.py#L236"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.covariance.LedoitWolf.error_norm" title="Permalink to this definition">¶</a></dt>
+<code class="descname">error_norm</code><span class="sig-paren">(</span><em>comp_cov</em>, <em>norm=’frobenius’</em>, <em>scaling=True</em>, <em>squared=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/6ccb5e4/sklearn/covariance/empirical_covariance_.py#L236"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.covariance.LedoitWolf.error_norm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the Mean Squared Error between two covariance estimators.
 (In the sense of the Frobenius norm).</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -344,7 +364,7 @@ If False, the error norm is returned.</p>
 
 <dl class="method">
 <dt id="sklearn.covariance.LedoitWolf.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/bac89c2/sklearn/covariance/shrunk_covariance_.py#L390"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.covariance.LedoitWolf.fit" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/6ccb5e4/sklearn/covariance/shrunk_covariance_.py#L410"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.covariance.LedoitWolf.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fits the Ledoit-Wolf shrunk covariance model
 according to the given training data and parameters.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -374,7 +394,7 @@ and n_features is the number of features.</p>
 
 <dl class="method">
 <dt id="sklearn.covariance.LedoitWolf.get_params">
-<code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/bac89c2/sklearn/base.py#L166"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.covariance.LedoitWolf.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/6ccb5e4/sklearn/base.py#L166"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.covariance.LedoitWolf.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -401,7 +421,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.covariance.LedoitWolf.get_precision">
-<code class="descname">get_precision</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/bac89c2/sklearn/covariance/empirical_covariance_.py#L162"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.covariance.LedoitWolf.get_precision" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_precision</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/6ccb5e4/sklearn/covariance/empirical_covariance_.py#L162"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.covariance.LedoitWolf.get_precision" title="Permalink to this definition">¶</a></dt>
 <dd><p>Getter for the precision matrix.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -420,7 +440,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.covariance.LedoitWolf.mahalanobis">
-<code class="descname">mahalanobis</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/bac89c2/sklearn/covariance/empirical_covariance_.py#L288"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.covariance.LedoitWolf.mahalanobis" title="Permalink to this definition">¶</a></dt>
+<code class="descname">mahalanobis</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/6ccb5e4/sklearn/covariance/empirical_covariance_.py#L288"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.covariance.LedoitWolf.mahalanobis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the squared Mahalanobis distances of given observations.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -448,7 +468,7 @@ distribution than the data used in fit.</p>
 
 <dl class="method">
 <dt id="sklearn.covariance.LedoitWolf.score">
-<code class="descname">score</code><span class="sig-paren">(</span><em>X_test</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/bac89c2/sklearn/covariance/empirical_covariance_.py#L206"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.covariance.LedoitWolf.score" title="Permalink to this definition">¶</a></dt>
+<code class="descname">score</code><span class="sig-paren">(</span><em>X_test</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/6ccb5e4/sklearn/covariance/empirical_covariance_.py#L206"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.covariance.LedoitWolf.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the log-likelihood of a Gaussian data set with
 <cite>self.covariance_</cite> as an estimator of its covariance matrix.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -482,7 +502,7 @@ estimator of its covariance matrix.</p>
 
 <dl class="method">
 <dt id="sklearn.covariance.LedoitWolf.set_params">
-<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/bac89c2/sklearn/base.py#L189"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.covariance.LedoitWolf.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/6ccb5e4/sklearn/base.py#L189"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.covariance.LedoitWolf.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form

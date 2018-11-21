@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
   
-    <title>Working With Text Data &#8212; scikit-learn 0.20.0 documentation</title>
+    <title>Working With Text Data &#8212; scikit-learn 0.20.1 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../../_static/css/bootstrap.min.css" media="screen" />
@@ -22,7 +22,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.20.0',
+        VERSION:     '0.20.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -179,7 +179,7 @@
         </div>
     </div>
     
-      <p class="doc-version"><b>scikit-learn v0.20.0</b><br/>
+      <p class="doc-version"><b>scikit-learn v0.20.1</b><br/>
       <a href="http://scikit-learn.org/dev/versions.html">Other versions</a></p>
     <p class="citing">Please <b><a href="../../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
@@ -492,9 +492,10 @@ on the transformers, since they have already been fit to the training set:</p>
 to work with, <code class="docutils literal"><span class="pre">scikit-learn</span></code> provides a <a class="reference internal" href="../../modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal"><span class="pre">Pipeline</span></code></a> class that behaves
 like a compound classifier:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="k">import</span> <span class="n">Pipeline</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">text_clf</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s1">&#39;vect&#39;</span><span class="p">,</span> <span class="n">CountVectorizer</span><span class="p">()),</span>
-<span class="gp">... </span>                     <span class="p">(</span><span class="s1">&#39;tfidf&#39;</span><span class="p">,</span> <span class="n">TfidfTransformer</span><span class="p">()),</span>
-<span class="gp">... </span>                     <span class="p">(</span><span class="s1">&#39;clf&#39;</span><span class="p">,</span> <span class="n">MultinomialNB</span><span class="p">()),</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">text_clf</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="s1">&#39;vect&#39;</span><span class="p">,</span> <span class="n">CountVectorizer</span><span class="p">()),</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="s1">&#39;tfidf&#39;</span><span class="p">,</span> <span class="n">TfidfTransformer</span><span class="p">()),</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="s1">&#39;clf&#39;</span><span class="p">,</span> <span class="n">MultinomialNB</span><span class="p">()),</span>
 <span class="gp">... </span><span class="p">])</span>
 </pre></div>
 </div>
@@ -525,12 +526,14 @@ the best text classification algorithms (although it’s also a bit slower
 than naïve Bayes). We can change the learner by simply plugging a different
 classifier object into our pipeline:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">SGDClassifier</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">text_clf</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s1">&#39;vect&#39;</span><span class="p">,</span> <span class="n">CountVectorizer</span><span class="p">()),</span>
-<span class="gp">... </span>                     <span class="p">(</span><span class="s1">&#39;tfidf&#39;</span><span class="p">,</span> <span class="n">TfidfTransformer</span><span class="p">()),</span>
-<span class="gp">... </span>                     <span class="p">(</span><span class="s1">&#39;clf&#39;</span><span class="p">,</span> <span class="n">SGDClassifier</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;hinge&#39;</span><span class="p">,</span> <span class="n">penalty</span><span class="o">=</span><span class="s1">&#39;l2&#39;</span><span class="p">,</span>
-<span class="gp">... </span>                                           <span class="n">alpha</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
-<span class="gp">... </span>                                           <span class="n">max_iter</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="kc">None</span><span class="p">)),</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">text_clf</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="s1">&#39;vect&#39;</span><span class="p">,</span> <span class="n">CountVectorizer</span><span class="p">()),</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="s1">&#39;tfidf&#39;</span><span class="p">,</span> <span class="n">TfidfTransformer</span><span class="p">()),</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="s1">&#39;clf&#39;</span><span class="p">,</span> <span class="n">SGDClassifier</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;hinge&#39;</span><span class="p">,</span> <span class="n">penalty</span><span class="o">=</span><span class="s1">&#39;l2&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                          <span class="n">alpha</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+<span class="gp">... </span>                          <span class="n">max_iter</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="kc">None</span><span class="p">)),</span>
 <span class="gp">... </span><span class="p">])</span>
+
 <span class="gp">&gt;&gt;&gt; </span><span class="n">text_clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">twenty_train</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">twenty_train</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>  
 <span class="go">Pipeline(...)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">predicted</span> <span class="o">=</span> <span class="n">text_clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">docs_test</span><span class="p">)</span>
@@ -581,9 +584,10 @@ parameters on a grid of possible values. We try out all classifiers
 on either words or bigrams, with or without idf, and with a penalty
 parameter of either 0.01 or 0.001 for the linear SVM:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">GridSearchCV</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;vect__ngram_range&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)],</span>
-<span class="gp">... </span>              <span class="s1">&#39;tfidf__use_idf&#39;</span><span class="p">:</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
-<span class="gp">... </span>              <span class="s1">&#39;clf__alpha&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">1e-2</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s1">&#39;vect__ngram_range&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)],</span>
+<span class="gp">... </span>    <span class="s1">&#39;tfidf__use_idf&#39;</span><span class="p">:</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="s1">&#39;clf__alpha&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">1e-2</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">),</span>
 <span class="gp">... </span><span class="p">}</span>
 </pre></div>
 </div>

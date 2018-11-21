@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
   
-    <title>Advanced installation instructions &#8212; scikit-learn 0.20.0 documentation</title>
+    <title>Advanced installation instructions &#8212; scikit-learn 0.20.1 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../_static/css/bootstrap.min.css" media="screen" />
@@ -22,7 +22,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.20.0',
+        VERSION:     '0.20.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -179,7 +179,7 @@
         </div>
     </div>
     
-      <p class="doc-version"><b>scikit-learn v0.20.0</b><br/>
+      <p class="doc-version"><b>scikit-learn v0.20.1</b><br/>
       <a href="http://scikit-learn.org/dev/versions.html">Other versions</a></p>
     <p class="citing">Please <b><a href="../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
@@ -191,8 +191,9 @@
 <li><a class="reference internal" href="#installing-build-dependencies">Installing build dependencies</a><ul>
 <li><a class="reference internal" href="#linux">Linux</a></li>
 <li><a class="reference internal" href="#windows">Windows</a></li>
-<li><a class="reference internal" href="#bit-python">32-bit Python</a></li>
-<li><a class="reference internal" href="#id1">64-bit Python</a></li>
+<li><a class="reference internal" href="#python-3-5">Python &gt;= 3.5</a></li>
+<li><a class="reference internal" href="#bit-python-3-4">32-bit Python (&lt;= 3.4)</a></li>
+<li><a class="reference internal" href="#id1">64-bit Python (&lt;= 3.4)</a></li>
 <li><a class="reference internal" href="#building-binary-packages-and-installers">Building binary packages and installers</a></li>
 <li><a class="reference internal" href="#using-an-alternative-compiler">Using an alternative compiler</a></li>
 </ul>
@@ -290,7 +291,7 @@ builds the extension in place and creates a link to the development directory
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This is fundamentally similar to using the command <code class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">develop</span></code>
-(see <a class="reference external" href="http://setuptools.readthedocs.io/en/latest/setuptools.html#development-mode">the setuptool docs</a>).
+(see <a class="reference external" href="https://setuptools.readthedocs.io/en/latest/setuptools.html#development-mode">the setuptool docs</a>).
 It is however preferred to use pip.</p>
 </div>
 <div class="admonition note">
@@ -387,11 +388,23 @@ You can check the Python version by running the following in <code class="docuti
 <p>The above commands assume that you have the Python installation folder in your
 PATH environment variable.</p>
 </div>
-<div class="section" id="bit-python">
-<h3>32-bit Python<a class="headerlink" href="#bit-python" title="Permalink to this headline">¶</a></h3>
-<p>For 32-bit python it is possible use the standalone installers for
-<a class="reference external" href="http://download.microsoft.com/download/A/5/4/A54BADB6-9C3F-478D-8657-93B3FC9FE62D/vcsetup.exe">microsoft visual c++ express 2008</a>
-for Python 2 or Microsoft Visual C++ Express 2010 for Python 3.</p>
+<div class="section" id="python-3-5">
+<h3>Python &gt;= 3.5<a class="headerlink" href="#python-3-5" title="Permalink to this headline">¶</a></h3>
+<p>For Python versions as of 3.5, you need <a class="reference external" href="https://visualstudio.microsoft.com/de/downloads/">Build Tools for Visual Studio 2017</a>.</p>
+<p>For 64-bit Python, configure the build environment with:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">SET</span> <span class="n">DISTUTILS_USE_SDK</span><span class="o">=</span><span class="mi">1</span>
+<span class="s2">&quot;C:\Program Files (x86)\Microsoft Visual Studio</span><span class="se">\201</span><span class="s2">7\BuildTools\VC\Auxiliary\Build</span><span class="se">\v</span><span class="s2">cvarsall.bat&quot;</span> <span class="n">x64</span>
+</pre></div>
+</div>
+<p>And build scikit-learn from this environment:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
+</pre></div>
+</div>
+<p>Replace <code class="docutils literal"><span class="pre">x64</span></code> by <code class="docutils literal"><span class="pre">x86</span></code> to build for 32-bit Python.</p>
+</div>
+<div class="section" id="bit-python-3-4">
+<h3>32-bit Python (&lt;= 3.4)<a class="headerlink" href="#bit-python-3-4" title="Permalink to this headline">¶</a></h3>
+<p>For 32-bit Python versions up to 3.4 use Microsoft Visual C++ Express 2010.</p>
 <p>Once installed you should be able to build scikit-learn without any
 particular configuration by running the following command in the scikit-learn
 folder:</p>
@@ -400,8 +413,8 @@ folder:</p>
 </div>
 </div>
 <div class="section" id="id1">
-<h3>64-bit Python<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<p>For the 64-bit architecture, you either need the full Visual Studio or
+<h3>64-bit Python (&lt;= 3.4)<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>For 64-bit Python versions up to 3.4, you either need the full Visual Studio or
 the free Windows SDKs that can be downloaded from the links below.</p>
 <p>The Windows SDKs include the MSVC compilers both for 32 and 64-bit
 architectures. They come as a <code class="docutils literal"><span class="pre">GRMSDKX_EN_DVD.iso</span></code> file that can be mounted
@@ -429,9 +442,7 @@ following flags (at least for SDK v7.0):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
 </pre></div>
 </div>
-<p>Replace <code class="docutils literal"><span class="pre">v7.0</span></code> by the <code class="docutils literal"><span class="pre">v7.1</span></code> in the above commands to do the same for
-Python 3 instead of Python 2.</p>
-<p>Replace <code class="docutils literal"><span class="pre">/x64</span></code> by <code class="docutils literal"><span class="pre">/x86</span></code>  to build for 32-bit Python instead of 64-bit
+<p>Replace <code class="docutils literal"><span class="pre">/x64</span></code> by <code class="docutils literal"><span class="pre">/x86</span></code> to build for 32-bit Python instead of 64-bit
 Python.</p>
 </div>
 <div class="section" id="building-binary-packages-and-installers">

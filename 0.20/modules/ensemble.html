@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
   
-    <title>1.11. Ensemble methods &#8212; scikit-learn 0.20.0 documentation</title>
+    <title>1.11. Ensemble methods &#8212; scikit-learn 0.20.1 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../_static/css/bootstrap.min.css" media="screen" />
@@ -22,7 +22,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.20.0',
+        VERSION:     '0.20.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -179,7 +179,7 @@
         </div>
     </div>
     
-      <p class="doc-version"><b>scikit-learn v0.20.0</b><br/>
+      <p class="doc-version"><b>scikit-learn v0.20.1</b><br/>
       <a href="http://scikit-learn.org/dev/versions.html">Other versions</a></p>
     <p class="citing">Please <b><a href="../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
@@ -846,19 +846,18 @@ uses <a class="reference internal" href="tree.html#tree"><span class="std std-re
 learners. Decision trees have a number of abilities that make them
 valuable for boosting, namely the ability to handle data of mixed type
 and the ability to model complex functions.</p>
-<p>Similar to other boosting algorithms GBRT builds the additive model in
-a forward stagewise fashion:</p>
+<p>Similar to other boosting algorithms, GBRT builds the additive model in
+a greedy fashion:</p>
 <blockquote>
 <div><div class="math">
-\[F_m(x) = F_{m-1}(x) + \gamma_m h_m(x)\]</div>
+\[F_m(x) = F_{m-1}(x) + \gamma_m h_m(x),\]</div>
 </div></blockquote>
-<p>At each stage the decision tree <span class="math">\(h_m(x)\)</span> is chosen to
-minimize the loss function <span class="math">\(L\)</span> given the current model
-<span class="math">\(F_{m-1}\)</span> and its fit <span class="math">\(F_{m-1}(x_i)\)</span></p>
+<p>where the newly added tree <span class="math">\(h_m\)</span> tries to minimize the loss <span class="math">\(L\)</span>,
+given the previous ensemble <span class="math">\(F_{m-1}\)</span>:</p>
 <blockquote>
 <div><div class="math">
-\[F_m(x) = F_{m-1}(x) + \arg\min_{h} \sum_{i=1}^{n} L(y_i,
-F_{m-1}(x_i) + h(x))\]</div>
+\[h_m =  \arg\min_{h} \sum_{i=1}^{n} L(y_i,
+F_{m-1}(x_i) + h(x_i)).\]</div>
 </div></blockquote>
 <p>The initial model <span class="math">\(F_{0}\)</span> is problem specific, for least-squares
 regression one usually chooses the mean of the target values.</p>
@@ -1307,19 +1306,20 @@ Vector Machine, a Decision Tree, and a K-nearest neighbor classifier:</p>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Loading some example data</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">iris</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Training classifiers</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf1</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf2</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf3</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">gamma</span><span class="o">=</span><span class="s1">&#39;scale&#39;</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;rbf&#39;</span><span class="p">,</span> <span class="n">probability</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">eclf</span> <span class="o">=</span> <span class="n">VotingClassifier</span><span class="p">(</span><span class="n">estimators</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;dt&#39;</span><span class="p">,</span> <span class="n">clf1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;knn&#39;</span><span class="p">,</span> <span class="n">clf2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;svc&#39;</span><span class="p">,</span> <span class="n">clf3</span><span class="p">)],</span> <span class="n">voting</span><span class="o">=</span><span class="s1">&#39;soft&#39;</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">eclf</span> <span class="o">=</span> <span class="n">VotingClassifier</span><span class="p">(</span><span class="n">estimators</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;dt&#39;</span><span class="p">,</span> <span class="n">clf1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;knn&#39;</span><span class="p">,</span> <span class="n">clf2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;svc&#39;</span><span class="p">,</span> <span class="n">clf3</span><span class="p">)],</span>
+<span class="gp">... </span>                        <span class="n">voting</span><span class="o">=</span><span class="s1">&#39;soft&#39;</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clf1</span> <span class="o">=</span> <span class="n">clf1</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clf2</span> <span class="o">=</span> <span class="n">clf2</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clf3</span> <span class="o">=</span> <span class="n">clf3</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">eclf</span> <span class="o">=</span> <span class="n">eclf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf1</span> <span class="o">=</span> <span class="n">clf1</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf2</span> <span class="o">=</span> <span class="n">clf2</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf3</span> <span class="o">=</span> <span class="n">clf3</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">eclf</span> <span class="o">=</span> <span class="n">eclf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="figure align-center">
@@ -1337,7 +1337,7 @@ to tune the hyperparameters of the individual estimators:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf3</span> <span class="o">=</span> <span class="n">GaussianNB</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">eclf</span> <span class="o">=</span> <span class="n">VotingClassifier</span><span class="p">(</span><span class="n">estimators</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;lr&#39;</span><span class="p">,</span> <span class="n">clf1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span> <span class="n">clf2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;gnb&#39;</span><span class="p">,</span> <span class="n">clf3</span><span class="p">)],</span> <span class="n">voting</span><span class="o">=</span><span class="s1">&#39;soft&#39;</span><span class="p">)</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;lr__C&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">],</span> <span class="s1">&#39;rf__n_estimators&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">200</span><span class="p">],}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;lr__C&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">],</span> <span class="s1">&#39;rf__n_estimators&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">200</span><span class="p">]}</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">eclf</span><span class="p">,</span> <span class="n">param_grid</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
@@ -1352,7 +1352,8 @@ must support <code class="docutils literal"><span class="pre">predict_proba</spa
 </pre></div>
 </div>
 <p>Optionally, weights can be provided for the individual classifiers:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">eclf</span> <span class="o">=</span> <span class="n">VotingClassifier</span><span class="p">(</span><span class="n">estimators</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;lr&#39;</span><span class="p">,</span> <span class="n">clf1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span> <span class="n">clf2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;gnb&#39;</span><span class="p">,</span> <span class="n">clf3</span><span class="p">)],</span> <span class="n">voting</span><span class="o">=</span><span class="s1">&#39;soft&#39;</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">eclf</span> <span class="o">=</span> <span class="n">VotingClassifier</span><span class="p">(</span><span class="n">estimators</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;lr&#39;</span><span class="p">,</span> <span class="n">clf1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span> <span class="n">clf2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;gnb&#39;</span><span class="p">,</span> <span class="n">clf3</span><span class="p">)],</span>
+<span class="gp">... </span>                        <span class="n">voting</span><span class="o">=</span><span class="s1">&#39;soft&#39;</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>

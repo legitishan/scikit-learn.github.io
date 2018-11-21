@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
   
-    <title>3.3. Model evaluation: quantifying the quality of predictions &#8212; scikit-learn 0.20.0 documentation</title>
+    <title>3.3. Model evaluation: quantifying the quality of predictions &#8212; scikit-learn 0.20.1 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../_static/css/bootstrap.min.css" media="screen" />
@@ -22,7 +22,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.20.0',
+        VERSION:     '0.20.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -179,7 +179,7 @@
         </div>
     </div>
     
-      <p class="doc-version"><b>scikit-learn v0.20.0</b><br/>
+      <p class="doc-version"><b>scikit-learn v0.20.1</b><br/>
       <a href="http://scikit-learn.org/dev/versions.html">Other versions</a></p>
     <p class="citing">Please <b><a href="../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
@@ -507,7 +507,7 @@ False.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># and y defined below.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">score</span> <span class="o">=</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">my_custom_loss_func</span><span class="p">,</span> <span class="n">greater_is_better</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span>  <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.dummy</span> <span class="k">import</span> <span class="n">DummyClassifier</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">DummyClassifier</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;most_frequent&#39;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
@@ -576,8 +576,8 @@ permitted and will require a wrapper to return a single metric:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">fp</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span> <span class="k">return</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">fn</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span> <span class="k">return</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">tp</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span> <span class="k">return</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">scoring</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;tp&#39;</span> <span class="p">:</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">tp</span><span class="p">),</span> <span class="s1">&#39;tn&#39;</span> <span class="p">:</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">tn</span><span class="p">),</span>
-<span class="gp">... </span>           <span class="s1">&#39;fp&#39;</span> <span class="p">:</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">fp</span><span class="p">),</span> <span class="s1">&#39;fn&#39;</span> <span class="p">:</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">fn</span><span class="p">)}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scoring</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;tp&#39;</span><span class="p">:</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">tp</span><span class="p">),</span> <span class="s1">&#39;tn&#39;</span><span class="p">:</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">tn</span><span class="p">),</span>
+<span class="gp">... </span>           <span class="s1">&#39;fp&#39;</span><span class="p">:</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">fp</span><span class="p">),</span> <span class="s1">&#39;fn&#39;</span><span class="p">:</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">fn</span><span class="p">)}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cv_results</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">svm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>
 <span class="gp">... </span>                            <span class="n">scoring</span><span class="o">=</span><span class="n">scoring</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Getting the test set true positive scores</span>
@@ -832,14 +832,14 @@ is computed for each class and then averaged over total number of classes.</li>
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label">[Guyon2015]</td><td><em>(<a class="fn-backref" href="#id7">1</a>, <a class="fn-backref" href="#id8">2</a>)</em> I. Guyon, K. Bennett, G. Cawley, H.J. Escalante, S. Escalera, T.K. Ho, N. Macià,
-B. Ray, M. Saeed, A.R. Statnikov, E. Viegas, <a class="reference external" href="http://ieeexplore.ieee.org/document/7280767/">Design of the 2015 ChaLearn AutoML Challenge</a>,
+B. Ray, M. Saeed, A.R. Statnikov, E. Viegas, <a class="reference external" href="https://ieeexplore.ieee.org/document/7280767">Design of the 2015 ChaLearn AutoML Challenge</a>,
 IJCNN 2015.</td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="mosley2013" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label">[Mosley2013]</td><td><em>(<a class="fn-backref" href="#id5">1</a>, <a class="fn-backref" href="#id9">2</a>)</em> L. Mosley, <a class="reference external" href="http://lib.dr.iastate.edu/etd/13537/">A balanced approach to the multi-class imbalance problem</a>,
+<tr><td class="label">[Mosley2013]</td><td><em>(<a class="fn-backref" href="#id5">1</a>, <a class="fn-backref" href="#id9">2</a>)</em> L. Mosley, <a class="reference external" href="https://lib.dr.iastate.edu/etd/13537/">A balanced approach to the multi-class imbalance problem</a>,
 IJCV 2010.</td></tr>
 </tbody>
 </table>
@@ -1042,7 +1042,7 @@ With <span class="math">\(\beta = 1\)</span>,  <span class="math">\(F_\beta\)</s
 from the ground truth label and a score given by the classifier
 by varying a decision threshold.</p>
 <p>The <a class="reference internal" href="generated/sklearn.metrics.average_precision_score.html#sklearn.metrics.average_precision_score" title="sklearn.metrics.average_precision_score"><code class="xref py py-func docutils literal"><span class="pre">average_precision_score</span></code></a> function computes the
-<a class="reference external" href="http://en.wikipedia.org/w/index.php?title=Information_retrieval&amp;oldid=793358396#Average_precision">average precision</a>
+<a class="reference external" href="https://en.wikipedia.org/w/index.php?title=Information_retrieval&amp;oldid=793358396#Average_precision">average precision</a>
 (AP) from prediction scores. The value is between 0 and 1 and higher is better.
 AP is defined as</p>
 <div class="math">
@@ -1611,7 +1611,7 @@ predicted probability of the actual outcome <span class="math">\(o_t\)</span>.</
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">brier_score_loss</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_prob</span><span class="p">)</span>
 <span class="go">0.055</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">brier_score_loss</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">y_prob</span><span class="p">,</span> <span class="n">pos_label</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">brier_score_loss</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">y_prob</span><span class="p">,</span> <span class="n">pos_label</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="go">0.055</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">brier_score_loss</span><span class="p">(</span><span class="n">y_true_categorical</span><span class="p">,</span> <span class="n">y_prob</span><span class="p">,</span> <span class="n">pos_label</span><span class="o">=</span><span class="s2">&quot;ham&quot;</span><span class="p">)</span>
 <span class="go">0.055</span>
@@ -2013,7 +2013,7 @@ dataset:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span> 
 <span class="go">0.63...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">DummyClassifier</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;most_frequent&#39;</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">DummyClassifier</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;most_frequent&#39;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <span class="go">DummyClassifier(constant=None, random_state=0, strategy=&#39;most_frequent&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>  

@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
   
-    <title>sklearn.compose.make_column_transformer &#8212; scikit-learn 0.20.0 documentation</title>
+    <title>sklearn.compose.make_column_transformer &#8212; scikit-learn 0.20.1 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../../_static/css/bootstrap.min.css" media="screen" />
@@ -22,7 +22,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.20.0',
+        VERSION:     '0.20.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -179,7 +179,7 @@
         </div>
     </div>
     
-      <p class="doc-version"><b>scikit-learn v0.20.0</b><br/>
+      <p class="doc-version"><b>scikit-learn v0.20.1</b><br/>
       <a href="http://scikit-learn.org/dev/versions.html">Other versions</a></p>
     <p class="citing">Please <b><a href="../../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
@@ -205,18 +205,18 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.compose" title="sklearn.compose"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.compose</span></code></a>.make_column_transformer<a class="headerlink" href="#sklearn-compose-make-column-transformer" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.compose.make_column_transformer">
-<code class="descclassname">sklearn.compose.</code><code class="descname">make_column_transformer</code><span class="sig-paren">(</span><em>*transformers</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/bac89c2/sklearn/compose/_column_transformer.py#L688"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.compose.make_column_transformer" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sklearn.compose.</code><code class="descname">make_column_transformer</code><span class="sig-paren">(</span><em>*transformers</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/6ccb5e4/sklearn/compose/_column_transformer.py#L747"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.compose.make_column_transformer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Construct a ColumnTransformer from the given transformers.</p>
 <p>This is a shorthand for the ColumnTransformer constructor; it does not
 require, and does not permit, naming the transformers. Instead, they will
 be given names automatically based on their types. It also does not allow
-weighting.</p>
+weighting with <code class="docutils literal"><span class="pre">transformer_weights</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>*transformers</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuples of column selections and transformers</span></dt>
+<dt><strong>*transformers</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuples of transformers and column selections</span></dt>
 <dd></dd>
 <dt><strong>remainder</strong> <span class="classifier-delimiter">:</span> <span class="classifier">{‘drop’, ‘passthrough’} or estimator, default ‘drop’</span></dt>
 <dd><p class="first last">By default, only the specified columns in <cite>transformers</cite> are
@@ -240,7 +240,7 @@ keyword will be ignored.</p>
 </dd>
 <dt><strong>n_jobs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int or None, optional (default=None)</span></dt>
 <dd><p class="first last">Number of jobs to run in parallel.
-<code class="docutils literal"><span class="pre">None</span></code> means 1 unless in a <a class="reference external" href="https://joblib.readthedocs.io/en/latest/parallel.html#joblib.parallel_backend" title="(in joblib v0.12.6.dev0)"><code class="xref py py-obj docutils literal"><span class="pre">joblib.parallel_backend</span></code></a> context.
+<code class="docutils literal"><span class="pre">None</span></code> means 1 unless in a <a class="reference external" href="https://joblib.readthedocs.io/en/latest/parallel.html#joblib.parallel_backend" title="(in joblib v0.13.0)"><code class="xref py py-obj docutils literal"><span class="pre">joblib.parallel_backend</span></code></a> context.
 <code class="docutils literal"><span class="pre">-1</span></code> means using all processors. See <a class="reference internal" href="../../glossary.html#term-n-jobs"><span class="xref std std-term">Glossary</span></a>
 for more details.</p>
 </dd>
@@ -266,8 +266,8 @@ for more details.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">StandardScaler</span><span class="p">,</span> <span class="n">OneHotEncoder</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.compose</span> <span class="k">import</span> <span class="n">make_column_transformer</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">make_column_transformer</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="p">([</span><span class="s1">&#39;numerical_column&#39;</span><span class="p">],</span> <span class="n">StandardScaler</span><span class="p">()),</span>
-<span class="gp">... </span>    <span class="p">([</span><span class="s1">&#39;categorical_column&#39;</span><span class="p">],</span> <span class="n">OneHotEncoder</span><span class="p">()))</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="n">StandardScaler</span><span class="p">(),</span> <span class="p">[</span><span class="s1">&#39;numerical_column&#39;</span><span class="p">]),</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="n">OneHotEncoder</span><span class="p">(),</span> <span class="p">[</span><span class="s1">&#39;categorical_column&#39;</span><span class="p">]))</span>
 <span class="gp">... </span>    
 <span class="go">ColumnTransformer(n_jobs=None, remainder=&#39;drop&#39;, sparse_threshold=0.3,</span>
 <span class="go">         transformer_weights=None,</span>

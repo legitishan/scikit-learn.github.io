@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
   
-    <title>1.7. Gaussian Processes &#8212; scikit-learn 0.20.0 documentation</title>
+    <title>1.7. Gaussian Processes &#8212; scikit-learn 0.20.1 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../_static/css/bootstrap.min.css" media="screen" />
@@ -22,7 +22,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.20.0',
+        VERSION:     '0.20.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -179,7 +179,7 @@
         </div>
     </div>
     
-      <p class="doc-version"><b>scikit-learn v0.20.0</b><br/>
+      <p class="doc-version"><b>scikit-learn v0.20.1</b><br/>
       <a href="http://scikit-learn.org/dev/versions.html">Other versions</a></p>
     <p class="citing">Please <b><a href="../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
@@ -261,7 +261,7 @@ of features exceeds a few dozens.</li>
 regression purposes. For this, the prior of the GP needs to be specified. The
 prior mean is assumed to be constant and zero (for <code class="docutils literal"><span class="pre">normalize_y=False</span></code>) or the
 training data’s mean (for <code class="docutils literal"><span class="pre">normalize_y=True</span></code>). The prior’s
-covariance is specified by a passing a <a class="reference internal" href="#gp-kernels"><span class="std std-ref">kernel</span></a> object. The
+covariance is specified by passing a <a class="reference internal" href="#gp-kernels"><span class="std std-ref">kernel</span></a> object. The
 hyperparameters of the kernel are optimized during fitting of
 GaussianProcessRegressor by maximizing the log-marginal-likelihood (LML) based
 on the passed <code class="docutils literal"><span class="pre">optimizer</span></code>. As the LML may have multiple local optima, the
@@ -438,7 +438,7 @@ GaussianProcessClassifier approximates the non-Gaussian posterior with a
 Gaussian based on the Laplace approximation. More details can be found in
 Chapter 3 of <a class="reference internal" href="#rw2006" id="id4">[RW2006]</a>.</p>
 <p>The GP prior mean is assumed to be zero. The prior’s
-covariance is specified by a passing a <a class="reference internal" href="#gp-kernels"><span class="std std-ref">kernel</span></a> object. The
+covariance is specified by passing a <a class="reference internal" href="#gp-kernels"><span class="std std-ref">kernel</span></a> object. The
 hyperparameters of the kernel are optimized during fitting of
 GaussianProcessRegressor by maximizing the log-marginal-likelihood (LML) based
 on the passed <code class="docutils literal"><span class="pre">optimizer</span></code>. As the LML may have multiple local optima, the
@@ -543,7 +543,7 @@ of a kernel can be called, which is more computationally efficient than the
 equivalent call to <code class="docutils literal"><span class="pre">__call__</span></code>: <code class="docutils literal"><span class="pre">np.diag(k(X,</span> <span class="pre">X))</span> <span class="pre">==</span> <span class="pre">k.diag(X)</span></code></p>
 <p>Kernels are parameterized by a vector <span class="math">\(\theta\)</span> of hyperparameters. These
 hyperparameters can for instance control length-scales or periodicity of a
-kernel (see below). All kernels support computing analytic gradients of
+kernel (see below). All kernels support computing analytic gradients
 of the kernel’s auto-covariance with respect to <span class="math">\(\theta\)</span> via setting
 <code class="docutils literal"><span class="pre">eval_gradient=True</span></code> in the <code class="docutils literal"><span class="pre">__call__</span></code> method. This gradient is used by the
 Gaussian process (both regressor and classifier) in computing the gradient
@@ -597,7 +597,7 @@ kernel but with the hyperparameters set to <code class="docutils literal"><span 
 </div>
 <p>All Gaussian process kernels are interoperable with <a class="reference internal" href="classes.html#module-sklearn.metrics.pairwise" title="sklearn.metrics.pairwise"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.metrics.pairwise</span></code></a>
 and vice versa: instances of subclasses of <a class="reference internal" href="generated/sklearn.gaussian_process.kernels.Kernel.html#sklearn.gaussian_process.kernels.Kernel" title="sklearn.gaussian_process.kernels.Kernel"><code class="xref py py-class docutils literal"><span class="pre">Kernel</span></code></a> can be passed as
-<code class="docutils literal"><span class="pre">metric</span></code> to pairwise_kernels`` from <a class="reference internal" href="classes.html#module-sklearn.metrics.pairwise" title="sklearn.metrics.pairwise"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.metrics.pairwise</span></code></a>. Moreover,
+<code class="docutils literal"><span class="pre">metric</span></code> to <code class="docutils literal"><span class="pre">pairwise_kernels</span></code> from <a class="reference internal" href="classes.html#module-sklearn.metrics.pairwise" title="sklearn.metrics.pairwise"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.metrics.pairwise</span></code></a>. Moreover,
 kernel functions from pairwise can be used as GP kernels by using the wrapper
 class <a class="reference internal" href="generated/sklearn.gaussian_process.kernels.PairwiseKernel.html#sklearn.gaussian_process.kernels.PairwiseKernel" title="sklearn.gaussian_process.kernels.PairwiseKernel"><code class="xref py py-class docutils literal"><span class="pre">PairwiseKernel</span></code></a>. The only caveat is that the gradient of
 the hyperparameters is not analytic but numeric and all those kernels support
@@ -616,7 +616,7 @@ It depends on a parameter <span class="math">\(constant\_value\)</span>. It is d
 <p>The main use-case of the <a class="reference internal" href="generated/sklearn.gaussian_process.kernels.WhiteKernel.html#sklearn.gaussian_process.kernels.WhiteKernel" title="sklearn.gaussian_process.kernels.WhiteKernel"><code class="xref py py-class docutils literal"><span class="pre">WhiteKernel</span></code></a> kernel is as part of a
 sum-kernel where it explains the noise-component of the signal. Tuning its
 parameter <span class="math">\(noise\_level\)</span> corresponds to estimating the noise-level.
-It is defined as:e</p>
+It is defined as:</p>
 <div class="math">
 \[k(x_i, x_j) = noise\_level \text{ if } x_i == x_j \text{ else } 0\]</div>
 </div>

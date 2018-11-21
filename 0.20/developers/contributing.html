@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
   
-    <title>Contributing &#8212; scikit-learn 0.20.0 documentation</title>
+    <title>Contributing &#8212; scikit-learn 0.20.1 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../_static/css/bootstrap.min.css" media="screen" />
@@ -22,7 +22,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.20.0',
+        VERSION:     '0.20.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -179,7 +179,7 @@
         </div>
     </div>
     
-      <p class="doc-version"><b>scikit-learn v0.20.0</b><br/>
+      <p class="doc-version"><b>scikit-learn v0.20.1</b><br/>
       <a href="http://scikit-learn.org/dev/versions.html">Other versions</a></p>
     <p class="citing">Please <b><a href="../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
@@ -350,7 +350,7 @@ follow these guidelines! This will make it a lot easier to provide you with good
 feedback:</p>
 <ul>
 <li><p class="first">The ideal bug report contains a <strong>short reproducible code snippet</strong>, this way
-anyone can try to reproduce the bug easily (see <a class="reference external" href="http://stackoverflow.com/help/mcve">this</a> for more details). If your snippet is
+anyone can try to reproduce the bug easily (see <a class="reference external" href="https://stackoverflow.com/help/mcve">this</a> for more details). If your snippet is
 longer than around 50 lines, please link to a <a class="reference external" href="https://gist.github.com">gist</a> or a github repo.</p>
 </li>
 <li><p class="first">If not feasible to include a reproducible snippet, please be specific about
@@ -447,7 +447,7 @@ command will be:</p>
 </pre></div>
 </div>
 </div>
-<p>If any of the above seems like magic to you, then look up the <a class="reference external" href="https://git-scm.com/documentation">Git documentation</a> and the <a class="reference external" href="http://docs.scipy.org/doc/numpy/dev/gitwash/development_workflow.html">Git development workflow</a> on the
+<p>If any of the above seems like magic to you, then look up the <a class="reference external" href="https://git-scm.com/documentation">Git documentation</a> and the <a class="reference external" href="https://docs.scipy.org/doc/numpy/dev/gitwash/development_workflow.html">Git development workflow</a> on the
 web.</p>
 <p>If some conflicts arise between your branch and the <code class="docutils literal"><span class="pre">master</span></code> branch, you need
 to merge <code class="docutils literal"><span class="pre">master</span></code>. The command will be:</p>
@@ -566,8 +566,8 @@ right direction.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">For two very well documented and more detailed guides on development
-workflow, please pay a visit to the <a class="reference external" href="http://docs.scipy.org/doc/numpy/dev/gitwash/development_workflow.html">Scipy Development Workflow</a> -
-and the <a class="reference external" href="http://astropy.readthedocs.io/en/latest/development/workflow/development_workflow.html">Astropy Workflow for Developers</a>
+workflow, please pay a visit to the <a class="reference external" href="https://docs.scipy.org/doc/numpy/dev/gitwash/development_workflow.html">Scipy Development Workflow</a> -
+and the <a class="reference external" href="https://astropy.readthedocs.io/en/latest/development/workflow/development_workflow.html">Astropy Workflow for Developers</a>
 sections.</p>
 </div>
 <div class="topic">
@@ -575,7 +575,8 @@ sections.</p>
 <ul class="simple">
 <li>Travis is used for testing on Linux platforms</li>
 <li>Appveyor is used for testing on Windows platforms</li>
-<li>CircleCI is used to build the docs for viewing and for testing with PyPy on Linux</li>
+<li>CircleCI is used to build the docs for viewing, for linting with flake8, and
+for testing with PyPy on Linux</li>
 </ul>
 <p>Please note that if one of the following markers appear in the latest commit
 message, the following actions are taken.</p>
@@ -776,7 +777,7 @@ the corresponding subpackages.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p><strong>Workflow to improve test coverage</strong></p>
-<p>To test code coverage, you need to install the <a class="reference external" href="https://pypi.python.org/pypi/coverage">coverage</a> package in addition to pytest.</p>
+<p>To test code coverage, you need to install the <a class="reference external" href="https://pypi.org/project/coverage/">coverage</a> package in addition to pytest.</p>
 <ol class="last arabic simple">
 <li>Run ‘make test-coverage’. The output lists for each file the line
 numbers that are not tested.</li>
@@ -1080,7 +1081,7 @@ just remember that <code class="docutils literal"><span class="pre">print</span>
 integer division is written <code class="docutils literal"><span class="pre">//</span></code>.
 String handling has been overhauled, though, as have parts of
 the Python standard library.
-The <a class="reference external" href="http://pythonhosted.org/six/">six</a> package helps with
+The <a class="reference external" href="https://pythonhosted.org/six/">six</a> package helps with
 cross-compatibility and is included in scikit-learn as
 <code class="docutils literal"><span class="pre">sklearn.externals.six</span></code>.</p>
 </div>
@@ -1307,6 +1308,15 @@ an affinity matrix which are precomputed from the data matrix <code class="docut
 data dependent. A tolerance stopping criterion <code class="docutils literal"><span class="pre">tol</span></code> is not directly
 data dependent (although the optimal value according to some scoring
 function probably is).</p>
+<p>When <code class="docutils literal"><span class="pre">fit</span></code> is called, any previous call to <code class="docutils literal"><span class="pre">fit</span></code> should be ignored. In
+general, calling <code class="docutils literal"><span class="pre">estimator.fit(X1)</span></code> and then <code class="docutils literal"><span class="pre">estimator.fit(X2)</span></code> should
+be the same as only calling <code class="docutils literal"><span class="pre">estimator.fit(X2)</span></code>. However, this may not be
+true in practice when <code class="docutils literal"><span class="pre">fit</span></code> depends on some random process, see
+<a class="reference internal" href="../glossary.html#term-random-state"><span class="xref std std-term">random_state</span></a>. Another exception to this rule is when the
+hyper-parameter <code class="docutils literal"><span class="pre">warm_start</span></code> is set to <code class="docutils literal"><span class="pre">True</span></code> for estimators that
+support it. <code class="docutils literal"><span class="pre">warm_start=True</span></code> means that the previous state of the
+trainable parameters of the estimator are reused instead of using the
+default initialization strategy.</p>
 </div>
 <div class="section" id="estimated-attributes">
 <h4>Estimated Attributes<a class="headerlink" href="#estimated-attributes" title="Permalink to this headline">¶</a></h4>
@@ -1314,9 +1324,8 @@ function probably is).</p>
 ending with trailing underscore, for example the coefficients of
 some regression estimator would be stored in a <code class="docutils literal"><span class="pre">coef_</span></code> attribute after
 <code class="docutils literal"><span class="pre">fit</span></code> has been called.</p>
-<p>The last-mentioned attributes are expected to be overridden when
-you call <code class="docutils literal"><span class="pre">fit</span></code> a second time without taking any previous value into
-account: <strong>fit should be idempotent</strong>.</p>
+<p>The estimated attributes are expected to be overridden when you call <code class="docutils literal"><span class="pre">fit</span></code>
+a second time.</p>
 </div>
 <div class="section" id="optional-arguments">
 <h4>Optional Arguments<a class="headerlink" href="#optional-arguments" title="Permalink to this headline">¶</a></h4>
@@ -1356,7 +1365,7 @@ It provides:</p>
 <li>directory structures and scripts to compile documentation and example
 galleries</li>
 <li>scripts to manage continuous integration (testing on Linux and Windows)</li>
-<li>instructions from getting started to publishing on <a class="reference external" href="https://pypi.python.org/pypi">PyPi</a></li>
+<li>instructions from getting started to publishing on <a class="reference external" href="https://pypi.org/">PyPi</a></li>
 </ul>
 </div>
 <div class="topic">
@@ -1370,7 +1379,7 @@ by deriving a class from <code class="docutils literal"><span class="pre">BaseEs
 and optionally the mixin classes in <code class="docutils literal"><span class="pre">sklearn.base</span></code>.
 For example, below is a custom classifier, with more examples included
 in the scikit-learn-contrib
-<a class="reference external" href="https://github.com/scikit-learn-contrib/project-template/blob/master/skltemplate/template.py">project template</a>.</p>
+<a class="reference external" href="https://github.com/scikit-learn-contrib/project-template/blob/master/skltemplate/_template.py">project template</a>.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="k">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="k">import</span> <span class="n">check_X_y</span><span class="p">,</span> <span class="n">check_array</span><span class="p">,</span> <span class="n">check_is_fitted</span>
