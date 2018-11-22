@@ -205,7 +205,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.linear_model" title="sklearn.linear_model"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.linear_model</span></code></a>.logistic_regression_path<a class="headerlink" href="#sklearn-linear-model-logistic-regression-path" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.linear_model.logistic_regression_path">
-<code class="descclassname">sklearn.linear_model.</code><code class="descname">logistic_regression_path</code><span class="sig-paren">(</span><em>X</em>, <em>y</em>, <em>pos_class=None</em>, <em>Cs=10</em>, <em>fit_intercept=True</em>, <em>max_iter=100</em>, <em>tol=0.0001</em>, <em>verbose=0</em>, <em>solver=’lbfgs’</em>, <em>coef=None</em>, <em>class_weight=None</em>, <em>dual=False</em>, <em>penalty=’l2’</em>, <em>intercept_scaling=1.0</em>, <em>multi_class=’warn’</em>, <em>random_state=None</em>, <em>check_input=True</em>, <em>max_squared_sum=None</em>, <em>sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f6f7e3c/sklearn/linear_model/logistic.py#L478"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.logistic_regression_path" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sklearn.linear_model.</code><code class="descname">logistic_regression_path</code><span class="sig-paren">(</span><em>X</em>, <em>y</em>, <em>pos_class=None</em>, <em>Cs=10</em>, <em>fit_intercept=True</em>, <em>max_iter=100</em>, <em>tol=0.0001</em>, <em>verbose=0</em>, <em>solver=’lbfgs’</em>, <em>coef=None</em>, <em>class_weight=None</em>, <em>dual=False</em>, <em>penalty=’l2’</em>, <em>intercept_scaling=1.0</em>, <em>multi_class=’warn’</em>, <em>random_state=None</em>, <em>check_input=True</em>, <em>max_squared_sum=None</em>, <em>sample_weight=None</em>, <em>l1_ratio=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c1f5874/sklearn/linear_model/logistic.py#L481"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.logistic_regression_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute a Logistic Regression model for a list of regularization
 parameters.</p>
 <p>This is an implementation that uses the result of the previous model
@@ -272,9 +272,10 @@ through the fit method) if sample_weight is specified.</p>
 l2 penalty with liblinear solver. Prefer dual=False when
 n_samples &gt; n_features.</p>
 </dd>
-<dt><strong>penalty</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, ‘l1’ or ‘l2’</span></dt>
+<dt><strong>penalty</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, ‘l1’, ‘l2’, or ‘elasticnet’</span></dt>
 <dd><p class="first last">Used to specify the norm used in the penalization. The ‘newton-cg’,
-‘sag’ and ‘lbfgs’ solvers support only l2 penalties.</p>
+‘sag’ and ‘lbfgs’ solvers support only l2 penalties. ‘elasticnet’ is
+only supported by the ‘saga’ solver.</p>
 </dd>
 <dt><strong>intercept_scaling</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, default 1.</span></dt>
 <dd><p class="first">Useful only when the solver ‘liblinear’ is used
@@ -321,6 +322,13 @@ The value should be precomputed to speed up cross validation.</p>
 <dt><strong>sample_weight</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape(n_samples,) optional</span></dt>
 <dd><p class="first last">Array of weights that are assigned to individual samples.
 If not provided, then each sample is given unit weight.</p>
+</dd>
+<dt><strong>l1_ratio</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float or None, optional (default=None)</span></dt>
+<dd><p class="first last">The Elastic-Net mixing parameter, with <code class="docutils literal"><span class="pre">0</span> <span class="pre">&lt;=</span> <span class="pre">l1_ratio</span> <span class="pre">&lt;=</span> <span class="pre">1</span></code>. Only
+used if <code class="docutils literal"><span class="pre">penalty='elasticnet'</span></code>. Setting <code class="docutils literal"><span class="pre">l1_ratio=0</span></code> is equivalent
+to using <code class="docutils literal"><span class="pre">penalty='l2'</span></code>, while setting <code class="docutils literal"><span class="pre">l1_ratio=1</span></code> is equivalent
+to using <code class="docutils literal"><span class="pre">penalty='l1'</span></code>. For <code class="docutils literal"><span class="pre">0</span> <span class="pre">&lt;</span> <span class="pre">l1_ratio</span> <span class="pre">&lt;1</span></code>, the penalty is a
+combination of L1 and L2.</p>
 </dd>
 </dl>
 </td>

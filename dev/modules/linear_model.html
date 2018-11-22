@@ -203,8 +203,8 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#multi-task-lasso">1.1.4. Multi-task Lasso</a></li>
-<li><a class="reference internal" href="#elastic-net">1.1.5. Elastic Net</a></li>
-<li><a class="reference internal" href="#multi-task-elastic-net">1.1.6. Multi-task Elastic Net</a></li>
+<li><a class="reference internal" href="#elastic-net">1.1.5. Elastic-Net</a></li>
+<li><a class="reference internal" href="#multi-task-elastic-net">1.1.6. Multi-task Elastic-Net</a></li>
 <li><a class="reference internal" href="#least-angle-regression">1.1.7. Least Angle Regression</a></li>
 <li><a class="reference internal" href="#lars-lasso">1.1.8. LARS Lasso</a><ul>
 <li><a class="reference internal" href="#mathematical-formulation">1.1.8.1. Mathematical formulation</a></li>
@@ -518,7 +518,7 @@ The objective function to minimize is:</p>
 the algorithm to fit the coefficients.</p>
 </div>
 <div class="section" id="elastic-net">
-<span id="id6"></span><h2>1.1.5. Elastic Net<a class="headerlink" href="#elastic-net" title="Permalink to this headline">¶</a></h2>
+<span id="id6"></span><h2>1.1.5. Elastic-Net<a class="headerlink" href="#elastic-net" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference internal" href="generated/sklearn.linear_model.ElasticNet.html#sklearn.linear_model.ElasticNet" title="sklearn.linear_model.ElasticNet"><code class="xref py py-class docutils literal"><span class="pre">ElasticNet</span></code></a> is a linear regression model trained with L1 and L2 prior
 as regularizer. This combination allows for learning a sparse model where
 few of the weights are non-zero like <a class="reference internal" href="generated/sklearn.linear_model.Lasso.html#sklearn.linear_model.Lasso" title="sklearn.linear_model.Lasso"><code class="xref py py-class docutils literal"><span class="pre">Lasso</span></code></a>, while still maintaining
@@ -561,7 +561,7 @@ in IEEE Journal of Selected Topics in Signal Processing, 2007
 </div>
 </div>
 <div class="section" id="multi-task-elastic-net">
-<span id="id9"></span><h2>1.1.6. Multi-task Elastic Net<a class="headerlink" href="#multi-task-elastic-net" title="Permalink to this headline">¶</a></h2>
+<span id="id9"></span><h2>1.1.6. Multi-task Elastic-Net<a class="headerlink" href="#multi-task-elastic-net" title="Permalink to this headline">¶</a></h2>
 <p>The <a class="reference internal" href="generated/sklearn.linear_model.MultiTaskElasticNet.html#sklearn.linear_model.MultiTaskElasticNet" title="sklearn.linear_model.MultiTaskElasticNet"><code class="xref py py-class docutils literal"><span class="pre">MultiTaskElasticNet</span></code></a> is an elastic-net model that estimates sparse
 coefficients for multiple regression problems jointly: <code class="docutils literal"><span class="pre">Y</span></code> is a 2D array,
 of shape <code class="docutils literal"><span class="pre">(n_samples,</span> <span class="pre">n_tasks)</span></code>. The constraint is that the selected
@@ -865,18 +865,26 @@ logit regression, maximum-entropy classification (MaxEnt)
 or the log-linear classifier. In this model, the probabilities describing the possible outcomes of a single trial are modeled using a <a class="reference external" href="https://en.wikipedia.org/wiki/Logistic_function">logistic function</a>.</p>
 <p>The implementation of logistic regression in scikit-learn can be accessed from
 class <a class="reference internal" href="generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="sklearn.linear_model.LogisticRegression"><code class="xref py py-class docutils literal"><span class="pre">LogisticRegression</span></code></a>. This implementation can fit binary, One-vs-
-Rest, or multinomial logistic regression with optional L2 or L1
+Rest, or multinomial logistic regression with optional L2, L1 or Elastic-Net
 regularization.</p>
 <p>As an optimization problem, binary class L2 penalized logistic regression
 minimizes the following cost function:</p>
 <div class="math">
 \[\min_{w, c} \frac{1}{2}w^T w + C \sum_{i=1}^n \log(\exp(- y_i (X_i^T w + c)) + 1) .\]</div>
 <p>Similarly, L1 regularized logistic regression solves the following
-optimization problem</p>
+optimization problem:</p>
 <div class="math">
 \[\min_{w, c} \|w\|_1 + C \sum_{i=1}^n \log(\exp(- y_i (X_i^T w + c)) + 1).\]</div>
+<p>Elastic-Net regularization is a combination of L1 and L2, and minimizes the
+following cost function:</p>
+<div class="math">
+\[\min_{w, c} \frac{1 - \rho}{2}w^T w + \rho \|w\|_1 + C \sum_{i=1}^n \log(\exp(- y_i (X_i^T w + c)) + 1),\]</div>
+<p>where <span class="math">\(\rho\)</span> controls the strengh of L1 regularization vs L2
+regularization (it corresponds to the <code class="xref any docutils literal"><span class="pre">l1_ratio</span></code> parameter).</p>
 <p>Note that, in this notation, it’s assumed that the observation <span class="math">\(y_i\)</span> takes values in the set
-<span class="math">\({-1, 1}\)</span> at trial <span class="math">\(i\)</span>.</p>
+<span class="math">\({-1, 1}\)</span> at trial <span class="math">\(i\)</span>. We can also see that Elastic-Net is
+equivalent to L1 when <span class="math">\(\rho = 1\)</span> and equivalent to L2 when
+<span class="math">\(\rho=0\)</span>.</p>
 <p>The solvers implemented in the class <a class="reference internal" href="generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="sklearn.linear_model.LogisticRegression"><code class="xref py py-class docutils literal"><span class="pre">LogisticRegression</span></code></a>
 are “liblinear”, “newton-cg”, “lbfgs”, “sag” and “saga”:</p>
 <p>The solver “liblinear” uses a coordinate descent (CD) algorithm, and relies
@@ -898,9 +906,11 @@ should be better calibrated than the default “one-vs-rest” setting.</p>
 than other solvers for large datasets, when both the number of samples and the
 number of features are large.</p>
 <p>The “saga” solver <a class="footnote-reference" href="#id28" id="id25">[7]</a> is a variant of “sag” that also supports the
-non-smooth <code class="xref any docutils literal"><span class="pre">penalty=&quot;l1&quot;</span></code> option. This is therefore the solver of choice
-for sparse multinomial logistic regression.</p>
-<p>In a nutshell, the following table summarizes the penalties supported by each solver:</p>
+non-smooth <code class="xref any docutils literal"><span class="pre">penalty=&quot;l1&quot;</span></code>. This is therefore the solver of choice for sparse
+multinomial logistic regression. It is also the only solver that supports
+<code class="xref any docutils literal"><span class="pre">penalty=&quot;elasticnet&quot;</span></code>.</p>
+<p>In a nutshell, the following table summarizes the penalties supported by
+each solver:</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="30%" />
@@ -949,24 +959,31 @@ for sparse multinomial logistic regression.</p>
 <td>no</td>
 <td>yes</td>
 </tr>
-<tr class="row-odd"><td><strong>Behaviors</strong></td>
+<tr class="row-odd"><td>Elastic-Net</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td>yes</td>
+</tr>
+<tr class="row-even"><td><strong>Behaviors</strong></td>
 <td colspan="5">&#160;</td>
 </tr>
-<tr class="row-even"><td>Penalize the intercept (bad)</td>
+<tr class="row-odd"><td>Penalize the intercept (bad)</td>
 <td>yes</td>
 <td>no</td>
 <td>no</td>
 <td>no</td>
 <td>no</td>
 </tr>
-<tr class="row-odd"><td>Faster for large datasets</td>
+<tr class="row-even"><td>Faster for large datasets</td>
 <td>no</td>
 <td>no</td>
 <td>no</td>
 <td>yes</td>
 <td>yes</td>
 </tr>
-<tr class="row-even"><td>Robust to unscaled datasets</td>
+<tr class="row-odd"><td>Robust to unscaled datasets</td>
 <td>yes</td>
 <td>yes</td>
 <td>yes</td>
@@ -975,8 +992,8 @@ for sparse multinomial logistic regression.</p>
 </tr>
 </tbody>
 </table>
-<p>The “saga” solver is often the best choice but requires scaling. The “liblinear” solver is
-used by default for historical reasons.</p>
+<p>The “saga” solver is often the best choice but requires scaling. The
+“liblinear” solver is used by default for historical reasons.</p>
 <p>For large dataset, you may also consider using <a class="reference internal" href="generated/sklearn.linear_model.SGDClassifier.html#sklearn.linear_model.SGDClassifier" title="sklearn.linear_model.SGDClassifier"><code class="xref py py-class docutils literal"><span class="pre">SGDClassifier</span></code></a>
 with ‘log’ loss.</p>
 <div class="topic">
@@ -1009,14 +1026,11 @@ advised to set <code class="docutils literal"><span class="pre">fit_intercept=Tr
 thus be used to perform feature selection, as detailed in
 <a class="reference internal" href="feature_selection.html#l1-feature-selection"><span class="std std-ref">L1-based feature selection</span></a>.</p>
 </div>
-<p><a class="reference internal" href="generated/sklearn.linear_model.LogisticRegressionCV.html#sklearn.linear_model.LogisticRegressionCV" title="sklearn.linear_model.LogisticRegressionCV"><code class="xref py py-class docutils literal"><span class="pre">LogisticRegressionCV</span></code></a> implements Logistic Regression with
-builtin cross-validation to find out the optimal C parameter.
-“newton-cg”, “sag”, “saga” and “lbfgs” solvers are found to be faster
-for high-dimensional dense data, due to warm-starting. For the
-multiclass case, if <code class="xref any docutils literal"><span class="pre">multi_class</span></code> option is set to “ovr”, an optimal C
-is obtained for each class and if the <code class="xref any docutils literal"><span class="pre">multi_class</span></code> option is set to
-“multinomial”, an optimal C is obtained by minimizing the cross-entropy
-loss.</p>
+<p><a class="reference internal" href="generated/sklearn.linear_model.LogisticRegressionCV.html#sklearn.linear_model.LogisticRegressionCV" title="sklearn.linear_model.LogisticRegressionCV"><code class="xref py py-class docutils literal"><span class="pre">LogisticRegressionCV</span></code></a> implements Logistic Regression with built-in
+cross-validation support, to find the optimal <code class="xref any docutils literal"><span class="pre">C</span></code> and <code class="xref any docutils literal"><span class="pre">l1_ratio</span></code> parameters
+according to the <code class="docutils literal"><span class="pre">scoring</span></code> attribute. The “newton-cg”, “sag”, “saga” and
+“lbfgs” solvers are found to be faster for high-dimensional dense data, due
+to warm-starting (see <a class="reference internal" href="../glossary.html#term-warm-start"><span class="xref std std-term">Glossary</span></a>).</p>
 <div class="topic">
 <p class="topic-title first">References:</p>
 <table class="docutils footnote" frame="void" id="id26" rules="none">
