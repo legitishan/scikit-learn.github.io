@@ -230,22 +230,22 @@ $ git push origin --tags
 </pre></div>
 </div>
 </li>
-<li><p class="first">create tarballs:</p>
+<li><p class="first">create the source tarball:</p>
 <ul>
 <li><p class="first">Wipe clean your repo:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>$ git clean -xfd
 </pre></div>
 </div>
 </li>
-<li><p class="first">Register and upload on PyPI:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ python setup.py sdist register upload
+<li><p class="first">Generate the tarball:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ python setup.py sdist
 </pre></div>
 </div>
 </li>
 </ul>
-</li>
-<li><p class="first">Push the documentation to the website. Circle CI should do this
-automatically for master and &lt;N&gt;.&lt;N&gt;.X branches.</p>
+<p>The result should be in the <code class="xref any docutils literal"><span class="pre">dist/</span></code> folder. We will upload it later
+with the wheels. Check that you can install it in a new virtualenv and
+that the tests pass.</p>
 </li>
 <li><p class="first">Build binaries using dedicated CI servers by updating the git submodule
 reference to the new scikit-learn tag of the release at:</p>
@@ -253,10 +253,21 @@ reference to the new scikit-learn tag of the release at:</p>
 <p>Once the CI has completed successfully, collect the generated binary wheel
 packages and upload them to PyPI by running the following commands in the
 scikit-learn source folder (checked out at the release tag):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ pip install -U wheelhouse_uploader
-$ python setup.py sdist fetch_artifacts upload_all
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ pip install -U wheelhouse_uploader twine
+$ python setup.py fetch_artifacts
 </pre></div>
 </div>
+<p>Check the content of the <code class="xref any docutils literal"><span class="pre">dist/</span></code> folder: it should contain all the wheels
+along with the source tarball (“scikit-learn-XXX.tar.gz”).</p>
+<p>Make sure that you do not have developer versions or older versions of
+the scikit-learn package in that folder.</p>
+<p>Upload everything at once to <a class="reference external" href="https://pypi.org">https://pypi.org</a>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ twine upload dist/
+</pre></div>
+</div>
+</li>
+<li><p class="first">Push the documentation to the website. Circle CI should do this
+automatically for master and &lt;N&gt;.&lt;N&gt;.X branches.</p>
 </li>
 <li><p class="first">FOR FINAL RELEASE: Update the release date in What’s New</p>
 </li>
