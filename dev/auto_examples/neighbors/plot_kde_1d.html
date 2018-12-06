@@ -238,10 +238,17 @@ as well.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Author: Jake Vanderplas &lt;jakevdp@cs.washington.edu&gt;</span>
 <span class="c1">#</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">distutils.version</span> <span class="kn">import</span> <span class="n">LooseVersion</span>
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html#scipy.stats.norm" title="View documentation for scipy.stats.norm"><span class="n">norm</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.neighbors.KernelDensity.html#sklearn.neighbors.KernelDensity" title="View documentation for sklearn.neighbors.KernelDensity"><span class="n">KernelDensity</span></a>
 
+<span class="c1"># `normed` is being deprecated in favor of `density` in histograms</span>
+<span class="k">if</span> <span class="n">LooseVersion</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="s1">&#39;2.1&#39;</span><span class="p">:</span>
+    <span class="n">density_param</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;density&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">density_param</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;normed&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
 
 <span class="c1">#----------------------------------------------------------------------</span>
 <span class="c1"># Plot the progression of histograms to kernels</span>
@@ -256,11 +263,11 @@ as well.</p>
 <span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
 
 <span class="c1"># histogram 1</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">&#39;#AAAAFF&#39;</span><span class="p">,</span> <span class="n">normed</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">&#39;#AAAAFF&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">density_param</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">-</span><span class="mf">3.5</span><span class="p">,</span> <span class="mf">0.31</span><span class="p">,</span> <span class="s2">&quot;Histogram&quot;</span><span class="p">)</span>
 
 <span class="c1"># histogram 2</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span> <span class="o">+</span> <span class="mf">0.75</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">&#39;#AAAAFF&#39;</span><span class="p">,</span> <span class="n">normed</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span> <span class="o">+</span> <span class="mf">0.75</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">&#39;#AAAAFF&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">density_param</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">-</span><span class="mf">3.5</span><span class="p">,</span> <span class="mf">0.31</span><span class="p">,</span> <span class="s2">&quot;Histogram, bins shifted&quot;</span><span class="p">)</span>
 
 <span class="c1"># tophat KDE</span>

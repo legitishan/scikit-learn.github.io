@@ -29,7 +29,9 @@ example is based on the Boston housing data set.
     from __future__ import print_function, division
 
     import numpy as np
+    import matplotlib
     import matplotlib.pyplot as plt
+    from distutils.version import LooseVersion
 
     print(__doc__)
 
@@ -52,6 +54,13 @@ Synthetic example
     from sklearn.linear_model import RidgeCV
     from sklearn.compose import TransformedTargetRegressor
     from sklearn.metrics import median_absolute_error, r2_score
+
+
+    # `normed` is being deprecated in favor of `density` in histograms
+    if LooseVersion(matplotlib.__version__) >= '2.1':
+        density_param = {'density': True}
+    else:
+        density_param = {'normed': True}
 
 
 
@@ -93,13 +102,13 @@ before and after applying the logarithmic functions.
 
     f, (ax0, ax1) = plt.subplots(1, 2)
 
-    ax0.hist(y, bins=100, normed=True)
+    ax0.hist(y, bins=100, **density_param)
     ax0.set_xlim([0, 2000])
     ax0.set_ylabel('Probability')
     ax0.set_xlabel('Target')
     ax0.set_title('Target distribution')
 
-    ax1.hist(y_trans, bins=100, normed=True)
+    ax1.hist(y_trans, bins=100, **density_param)
     ax1.set_ylabel('Probability')
     ax1.set_xlabel('Target')
     ax1.set_title('Transformed target distribution')
@@ -214,12 +223,12 @@ targets follows a normal distribution before applying a
 
     f, (ax0, ax1) = plt.subplots(1, 2)
 
-    ax0.hist(y, bins=100, normed=True)
+    ax0.hist(y, bins=100, **density_param)
     ax0.set_ylabel('Probability')
     ax0.set_xlabel('Target')
     ax0.set_title('Target distribution')
 
-    ax1.hist(y_trans, bins=100, normed=True)
+    ax1.hist(y_trans, bins=100, **density_param)
     ax1.set_ylabel('Probability')
     ax1.set_xlabel('Target')
     ax1.set_title('Transformed target distribution')
@@ -291,7 +300,7 @@ the transform induces a decrease of the MAE.
 
 
 
-**Total running time of the script:** ( 0 minutes  1.322 seconds)
+**Total running time of the script:** ( 0 minutes  1.237 seconds)
 
 
 .. _sphx_glr_download_auto_examples_compose_plot_transformed_target.py:
