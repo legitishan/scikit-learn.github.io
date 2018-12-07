@@ -136,15 +136,15 @@
 <li><a class="reference internal" href="#changed-models">Changed models</a></li>
 <li><a class="reference internal" href="#changelog">Changelog</a><ul>
 <li><a class="reference internal" href="#sklearn-cluster"><code class="docutils literal"><span class="pre">sklearn.cluster</span></code></a></li>
-<li><a class="reference internal" href="#sklearn-linear-model"><code class="docutils literal"><span class="pre">sklearn.linear_model</span></code></a></li>
+<li><a class="reference internal" href="#sklearn-discriminant-analysis"><code class="docutils literal"><span class="pre">sklearn.discriminant_analysis</span></code></a></li>
 <li><a class="reference internal" href="#sklearn-ensemble"><code class="docutils literal"><span class="pre">sklearn.ensemble</span></code></a></li>
+<li><a class="reference internal" href="#sklearn-linear-model"><code class="docutils literal"><span class="pre">sklearn.linear_model</span></code></a></li>
 <li><a class="reference internal" href="#sklearn-metrics"><code class="docutils literal"><span class="pre">sklearn.metrics</span></code></a></li>
 <li><a class="reference internal" href="#sklearn-model-selection"><code class="docutils literal"><span class="pre">sklearn.model_selection</span></code></a></li>
 <li><a class="reference internal" href="#sklearn-neighbors"><code class="docutils literal"><span class="pre">sklearn.neighbors</span></code></a></li>
 <li><a class="reference internal" href="#sklearn-pipeline"><code class="docutils literal"><span class="pre">sklearn.pipeline</span></code></a></li>
 <li><a class="reference internal" href="#sklearn-preprocessing"><code class="docutils literal"><span class="pre">sklearn.preprocessing</span></code></a></li>
 <li><a class="reference internal" href="#sklearn-tree"><code class="docutils literal"><span class="pre">sklearn.tree</span></code></a></li>
-<li><a class="reference internal" href="#id3"><code class="docutils literal"><span class="pre">sklearn.linear_model</span></code></a></li>
 <li><a class="reference internal" href="#sklearn-manifold"><code class="docutils literal"><span class="pre">sklearn.manifold</span></code></a></li>
 <li><a class="reference internal" href="#multiple-modules">Multiple modules</a></li>
 </ul>
@@ -204,12 +204,15 @@ to set and that scales better, by <a class="reference external" href="https://gi
 <a class="reference external" href="https://github.com/adrinjalali">Adrin Jalali</a>, and <a class="reference external" href="https://github.com/kno10">Erich Schubert</a>.</li>
 </ul>
 </div>
-<div class="section" id="sklearn-linear-model">
-<h3><a class="reference internal" href="../modules/classes.html#module-sklearn.linear_model" title="sklearn.linear_model"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.linear_model</span></code></a><a class="headerlink" href="#sklearn-linear-model" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="sklearn-discriminant-analysis">
+<h3><a class="reference internal" href="../modules/classes.html#module-sklearn.discriminant_analysis" title="sklearn.discriminant_analysis"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.discriminant_analysis</span></code></a><a class="headerlink" href="#sklearn-discriminant-analysis" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><span class="raw-html"><span class="label label-danger">Fix</span></span>  Fixed a bug in <a class="reference internal" href="../modules/generated/sklearn.linear_model.MultiTaskElasticNet.html#sklearn.linear_model.MultiTaskElasticNet" title="sklearn.linear_model.MultiTaskElasticNet"><code class="xref py py-class docutils literal"><span class="pre">linear_model.MultiTaskElasticNet</span></code></a> and
-<a class="reference internal" href="../modules/generated/sklearn.linear_model.MultiTaskLasso.html#sklearn.linear_model.MultiTaskLasso" title="sklearn.linear_model.MultiTaskLasso"><code class="xref py py-class docutils literal"><span class="pre">linear_model.MultiTaskLasso</span></code></a> which were breaking when
-<code class="docutils literal"><span class="pre">warm_start</span> <span class="pre">=</span> <span class="pre">True</span></code>. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/12360">#12360</a> by <a class="reference external" href="https://github.com/joaak">Aakanksha Joshi</a>.</li>
+<li><span class="raw-html"><span class="label label-danger">Fix</span></span>  A <code class="docutils literal"><span class="pre">ChangedBehaviourWarning</span></code> is now raised when
+<a class="reference internal" href="../modules/generated/sklearn.discriminant_analysis.LinearDiscriminantAnalysis.html#sklearn.discriminant_analysis.LinearDiscriminantAnalysis" title="sklearn.discriminant_analysis.LinearDiscriminantAnalysis"><code class="xref py py-class docutils literal"><span class="pre">discriminant_analysis.LinearDiscriminantAnalysis</span></code></a> is given as
+parameter <code class="docutils literal"><span class="pre">n_components</span> <span class="pre">&gt;</span> <span class="pre">min(n_features,</span> <span class="pre">n_classes</span> <span class="pre">-</span> <span class="pre">1)</span></code>, and
+<code class="docutils literal"><span class="pre">n_components</span></code> is changed to <code class="docutils literal"><span class="pre">min(n_features,</span> <span class="pre">n_classes</span> <span class="pre">-</span> <span class="pre">1)</span></code> if so.
+Previously the change was made, but silently. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/11526">#11526</a> by
+<a class="reference external" href="https://github.com/wdevazelhes">William de Vazelhes</a>.</li>
 </ul>
 </div>
 <div class="section" id="sklearn-ensemble">
@@ -220,6 +223,19 @@ processes when running with <code class="docutils literal"><span class="pre">n_j
 fit calls do release the GIL. This changes reduces memory usage and
 communication overhead. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/12543">#12543</a> by <a class="reference external" href="https://github.com/istorch">Isaac Storch</a>
 and <a class="reference external" href="https://twitter.com/ogrisel">Olivier Grisel</a>.</li>
+</ul>
+</div>
+<div class="section" id="sklearn-linear-model">
+<h3><a class="reference internal" href="../modules/classes.html#module-sklearn.linear_model" title="sklearn.linear_model"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.linear_model</span></code></a><a class="headerlink" href="#sklearn-linear-model" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><span class="raw-html"><span class="label label-success">Feature</span></span>  <a class="reference internal" href="../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="sklearn.linear_model.LogisticRegression"><code class="xref py py-class docutils literal"><span class="pre">linear_model.LogisticRegression</span></code></a> and
+<a class="reference internal" href="../modules/generated/sklearn.linear_model.LogisticRegressionCV.html#sklearn.linear_model.LogisticRegressionCV" title="sklearn.linear_model.LogisticRegressionCV"><code class="xref py py-class docutils literal"><span class="pre">linear_model.LogisticRegressionCV</span></code></a> now support Elastic-Net penalty,
+with the ‘saga’ solver. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/11646">#11646</a> by <a class="reference external" href="https://github.com/NicolasHug">Nicolas Hug</a>.</li>
+<li><span class="raw-html"><span class="label label-danger">Fix</span></span>  Fixed a bug in the ‘saga’ solver where the weights would not be
+correctly updated in some cases. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/11646">#11646</a> by <a class="reference external" href="https://github.com/TomDLT">Tom Dupre la Tour</a>.</li>
+<li><span class="raw-html"><span class="label label-danger">Fix</span></span>  Fixed a bug in <a class="reference internal" href="../modules/generated/sklearn.linear_model.MultiTaskElasticNet.html#sklearn.linear_model.MultiTaskElasticNet" title="sklearn.linear_model.MultiTaskElasticNet"><code class="xref py py-class docutils literal"><span class="pre">linear_model.MultiTaskElasticNet</span></code></a> and
+<a class="reference internal" href="../modules/generated/sklearn.linear_model.MultiTaskLasso.html#sklearn.linear_model.MultiTaskLasso" title="sklearn.linear_model.MultiTaskLasso"><code class="xref py py-class docutils literal"><span class="pre">linear_model.MultiTaskLasso</span></code></a> which were breaking when
+<code class="docutils literal"><span class="pre">warm_start</span> <span class="pre">=</span> <span class="pre">True</span></code>. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/12360">#12360</a> by <a class="reference external" href="https://github.com/joaak">Aakanksha Joshi</a>.</li>
 </ul>
 </div>
 <div class="section" id="sklearn-metrics">
@@ -302,16 +318,6 @@ and <a class="reference internal" href="../modules/generated/sklearn.tree.ExtraT
 <code class="docutils literal"><span class="pre">max_depth</span></code> were both specified by the user. Please note that this also
 affects all ensemble methods using decision trees.
 <a href="#id1"><span class="problematic" id="id2">:pr:`12344`</span></a> by <a class="reference external" href="https://github.com/adrinjalali">Adrin Jalali</a>.</li>
-</ul>
-</div>
-<div class="section" id="id3">
-<h3><a class="reference internal" href="../modules/classes.html#module-sklearn.linear_model" title="sklearn.linear_model"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.linear_model</span></code></a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><span class="raw-html"><span class="label label-success">Feature</span></span>  <a class="reference internal" href="../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="sklearn.linear_model.LogisticRegression"><code class="xref py py-class docutils literal"><span class="pre">linear_model.LogisticRegression</span></code></a> and
-<a class="reference internal" href="../modules/generated/sklearn.linear_model.LogisticRegressionCV.html#sklearn.linear_model.LogisticRegressionCV" title="sklearn.linear_model.LogisticRegressionCV"><code class="xref py py-class docutils literal"><span class="pre">linear_model.LogisticRegressionCV</span></code></a> now support Elastic-Net penalty,
-with the ‘saga’ solver. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/11646">#11646</a> by <a class="reference external" href="https://github.com/NicolasHug">Nicolas Hug</a>.</li>
-<li><span class="raw-html"><span class="label label-danger">Fix</span></span>  Fixed a bug in the ‘saga’ solver where the weights would not be
-correctly updated in some cases. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/11646">#11646</a> by <a class="reference external" href="https://github.com/TomDLT">Tom Dupre la Tour</a>.</li>
 </ul>
 </div>
 <div class="section" id="sklearn-manifold">
