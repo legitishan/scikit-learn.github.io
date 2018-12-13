@@ -209,7 +209,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.metrics" title="sklearn.metrics"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.metrics</span></code></a>.classification_report<a class="headerlink" href="#sklearn-metrics-classification-report" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.metrics.classification_report">
-<code class="descclassname">sklearn.metrics.</code><code class="descname">classification_report</code><span class="sig-paren">(</span><em>y_true</em>, <em>y_pred</em>, <em>labels=None</em>, <em>target_names=None</em>, <em>sample_weight=None</em>, <em>digits=2</em>, <em>output_dict=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/3d5388e/sklearn/metrics/classification.py#L1602"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.metrics.classification_report" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sklearn.metrics.</code><code class="descname">classification_report</code><span class="sig-paren">(</span><em>y_true</em>, <em>y_pred</em>, <em>labels=None</em>, <em>target_names=None</em>, <em>sample_weight=None</em>, <em>digits=2</em>, <em>output_dict=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/72ba300/sklearn/metrics/classification.py#L1602"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.metrics.classification_report" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build a text report showing the main classification metrics</p>
 <p>Read more in the <a class="reference internal" href="../model_evaluation.html#classification-report"><span class="std std-ref">User Guide</span></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -257,12 +257,14 @@ following structure:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The reported averages include micro average (averaging the
-total true positives, false negatives and false positives), macro
-average (averaging the unweighted mean per label), weighted average
-(averaging the support-weighted mean per label) and sample average
-(only for multilabel classification). See also
-<a class="reference internal" href="sklearn.metrics.precision_recall_fscore_support.html#sklearn.metrics.precision_recall_fscore_support" title="sklearn.metrics.precision_recall_fscore_support"><code class="xref py py-func docutils literal"><span class="pre">precision_recall_fscore_support</span></code></a> for more details on averages.</p>
+<p>The reported averages include macro average (averaging the unweighted
+mean per label), weighted average (averaging the support-weighted mean
+per label), sample average (only for multilabel classification) and
+micro average (averaging the total true positives, false negatives and
+false positives) it is only shown for multi-label or multi-class
+with a subset of classes because it is accuracy otherwise.
+See also:func:<a class="reference internal" href="sklearn.metrics.precision_recall_fscore_support.html#sklearn.metrics.precision_recall_fscore_support" title="sklearn.metrics.precision_recall_fscore_support"><code class="xref any py py-func docutils literal"><span class="pre">precision_recall_fscore_support</span></code></a> for more details
+on averages.</p>
 <p class="last">Note that in binary classification, recall of the positive class
 is also known as “sensitivity”; recall of the negative class is
 “specificity”.</p>
@@ -288,9 +290,22 @@ is also known as “sensitivity”; recall of the negative class is
 <span class="go">     class 1       0.00      0.00      0.00         1</span>
 <span class="go">     class 2       1.00      0.67      0.80         3</span>
 
-<span class="go">   micro avg       0.60      0.60      0.60         5</span>
+<span class="go">    accuracy                           0.60         5</span>
 <span class="go">   macro avg       0.50      0.56      0.49         5</span>
 <span class="go">weighted avg       0.70      0.60      0.61         5</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_pred</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_true</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]))</span>
+<span class="go">              precision    recall  f1-score   support</span>
+
+<span class="go">           1       1.00      0.67      0.80         3</span>
+<span class="go">           2       0.00      0.00      0.00         0</span>
+<span class="go">           3       0.00      0.00      0.00         0</span>
+
+<span class="go">   micro avg       1.00      0.67      0.80         3</span>
+<span class="go">   macro avg       0.33      0.22      0.27         3</span>
+<span class="go">weighted avg       1.00      0.67      0.80         3</span>
 </pre></div>
 </div>
 </dd></dl>
