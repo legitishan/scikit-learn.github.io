@@ -235,6 +235,7 @@
 <li><a class="reference internal" href="#specific-models">Specific models</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#reading-the-existing-code-base">Reading the existing code base</a></li>
 </ul>
 </li>
 </ul>
@@ -1547,6 +1548,61 @@ that implement common linear model patterns.</p>
 <p>The <code class="xref py py-mod docutils literal"><span class="pre">sklearn.utils.multiclass</span></code> module contains useful functions
 for working with multiclass and multilabel problems.</p>
 </div>
+</div>
+<div class="section" id="reading-the-existing-code-base">
+<span id="reading-code"></span><h2>Reading the existing code base<a class="headerlink" href="#reading-the-existing-code-base" title="Permalink to this headline">¶</a></h2>
+<p>Reading and digesting an existing code base is always a difficult exercise
+that takes time and experience to master. Even though we try to write simple
+code in general, understanding the code can seem overwhelming at first,
+given the sheer size of the project. Here is a list of tips that may help
+make this task easier and faster (in no particular order).</p>
+<ul class="simple">
+<li>Get acquainted with the <a class="reference internal" href="#api-overview"><span class="std std-ref">APIs of scikit-learn objects</span></a>: understand what <a class="reference internal" href="../glossary.html#term-fit"><span class="xref std std-term">fit</span></a>,
+<a class="reference internal" href="../glossary.html#term-predict"><span class="xref std std-term">predict</span></a>, <a class="reference internal" href="../glossary.html#term-transform"><span class="xref std std-term">transform</span></a>, etc. are used for.</li>
+<li>Before diving into reading the code of a function / class, go through the
+docstrings first and try to get an idea of what each parameter / attribute
+is doing. It may also help to stop a minute and think <em>how would I do this
+myself if I had to?</em></li>
+<li>The trickiest thing is often to identify which portions of the code are
+relevant, and which are not. In scikit-learn <strong>a lot</strong> of input checking
+is performed, especially at the beginning of the <a class="reference internal" href="../glossary.html#term-fit"><span class="xref std std-term">fit</span></a> methods.
+Sometimes, only a very small portion of the code is doing the actual job.
+For example looking at the <code class="docutils literal"><span class="pre">fit()</span></code> method of
+<a class="reference internal" href="../modules/generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression" title="sklearn.linear_model.LinearRegression"><code class="xref py py-class docutils literal"><span class="pre">sklearn.linear_model.LinearRegression</span></code></a>, what you’re looking for
+might just be the call the <code class="docutils literal"><span class="pre">scipy.linalg.lstsq</span></code>, but it is buried into
+multiple lines of input checking and the handling of different kinds of
+parameters.</li>
+<li>Due to the use of <a class="reference external" href="https://en.wikipedia.org/wiki/Inheritance_(object-oriented_programming)">Inheritance</a>,
+some methods may be implemented in parent classes. All estimators inherit
+at least from <a class="reference internal" href="../modules/generated/sklearn.base.BaseEstimator.html#sklearn.base.BaseEstimator" title="sklearn.base.BaseEstimator"><code class="xref py py-class docutils literal"><span class="pre">BaseEstimator</span></code></a>, and
+from a <code class="docutils literal"><span class="pre">Mixin</span></code> class (e.g. <a class="reference internal" href="../modules/generated/sklearn.base.ClassifierMixin.html#sklearn.base.ClassifierMixin" title="sklearn.base.ClassifierMixin"><code class="xref py py-class docutils literal"><span class="pre">ClassifierMixin</span></code></a>) that enables default behaviour depending
+on the nature of the estimator (classifier, regressor, transformer, etc.).</li>
+<li>Sometimes, reading the tests for a given function will give you an idea of
+what its intended purpose is. You can use <code class="docutils literal"><span class="pre">git</span> <span class="pre">grep</span></code> (see below) to find
+all the tests written for a function. Most tests for a specific
+function/class are placed under the <code class="docutils literal"><span class="pre">tests/</span></code> folder of the module</li>
+<li>You’ll often see code looking like this:
+<code class="docutils literal"><span class="pre">out</span> <span class="pre">=</span> <span class="pre">Parallel(...)(delayed(some_function)(param)</span> <span class="pre">for</span> <span class="pre">param</span> <span class="pre">in</span>
+<span class="pre">some_iterable)</span></code>. This runs <code class="docutils literal"><span class="pre">some_function</span></code> in parallel using <a class="reference external" href="https://joblib.readthedocs.io/">Joblib</a>. <code class="docutils literal"><span class="pre">out</span></code> is then an iterable containing
+the values returned by <code class="docutils literal"><span class="pre">some_function</span></code> for each call.</li>
+<li>We use <a class="reference external" href="https://cython.org/">Cython</a> to write fast code. Cython code is
+located in <code class="docutils literal"><span class="pre">.pyx</span></code> and <code class="docutils literal"><span class="pre">.pxd</span></code> files. Cython code has a more C-like
+flavor: we use pointers, perform manual memory allocation, etc. Having
+some minimal experience in C / C++ is pretty much mandatory here.</li>
+<li>Master your tools.<ul>
+<li>With such a big project, being efficient with your favorite editor or
+IDE goes a long way towards digesting the code base. Being able to quickly
+jump (or <em>peek</em>) to a function/class/attribute definition helps a lot.
+So does being able to quickly see where a given name is used in a file.</li>
+<li><a class="reference external" href="https://git-scm.com/book/en">git</a> also has some built-in killer
+features. It is often useful to understand how a file changed over time,
+using e.g. <code class="docutils literal"><span class="pre">git</span> <span class="pre">blame</span></code> (<a class="reference external" href="https://git-scm.com/docs/git-blame">manual</a>). This can also be done directly
+on GitHub. <code class="docutils literal"><span class="pre">git</span> <span class="pre">grep</span></code> (<a class="reference external" href="https://git-scm.com/docs/git-grep#_examples">examples</a>) is also extremely
+useful to see every occurrence of a pattern (e.g. a function call or a
+variable) in the code base.</li>
+</ul>
+</li>
+</ul>
 </div>
 </div>
 
