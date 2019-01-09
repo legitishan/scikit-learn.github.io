@@ -867,7 +867,7 @@ or the log-linear classifier. In this model, the probabilities describing the po
 <p>The implementation of logistic regression in scikit-learn can be accessed from
 class <a class="reference internal" href="generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="sklearn.linear_model.LogisticRegression"><code class="xref py py-class docutils literal"><span class="pre">LogisticRegression</span></code></a>. This implementation can fit binary, One-vs-
 Rest, or multinomial logistic regression with optional L2, L1 or Elastic-Net
-regularization.</p>
+regularization. Note that regularization is applied by default.</p>
 <p>As an optimization problem, binary class L2 penalized logistic regression
 minimizes the following cost function:</p>
 <div class="math">
@@ -898,11 +898,11 @@ trained for all classes. This happens under the hood, so
 classifiers. For L1 penalization <a class="reference internal" href="generated/sklearn.svm.l1_min_c.html#sklearn.svm.l1_min_c" title="sklearn.svm.l1_min_c"><code class="xref py py-func docutils literal"><span class="pre">sklearn.svm.l1_min_c</span></code></a> allows to
 calculate the lower bound for C in order to get a non “null” (all feature
 weights to zero) model.</p>
-<p>The “lbfgs”, “sag” and “newton-cg” solvers only support L2 penalization and
-are found to converge faster for some high dimensional data. Setting
-<code class="xref any docutils literal"><span class="pre">multi_class</span></code> to “multinomial” with these solvers learns a true multinomial
-logistic regression model <a class="footnote-reference" href="#id28" id="id23">[5]</a>, which means that its probability estimates
-should be better calibrated than the default “one-vs-rest” setting.</p>
+<p>The “lbfgs”, “sag” and “newton-cg” solvers only support L2 penalization or no
+regularization, and are found to converge faster for some high dimensional
+data. Setting <code class="xref any docutils literal"><span class="pre">multi_class</span></code> to “multinomial” with these solvers learns a true
+multinomial logistic regression model <a class="footnote-reference" href="#id28" id="id23">[5]</a>, which means that its probability
+estimates should be better calibrated than the default “one-vs-rest” setting.</p>
 <p>The “sag” solver uses a Stochastic Average Gradient descent <a class="footnote-reference" href="#id29" id="id24">[6]</a>. It is faster
 than other solvers for large datasets, when both the number of samples and the
 number of features are large.</p>
@@ -970,24 +970,31 @@ small data-sets but for larger datasets its performance suffers. <a class="footn
 <td>no</td>
 <td>yes</td>
 </tr>
-<tr class="row-even"><td><strong>Behaviors</strong></td>
+<tr class="row-even"><td>No penalty (‘none’)</td>
+<td>no</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+</tr>
+<tr class="row-odd"><td><strong>Behaviors</strong></td>
 <td colspan="5">&#160;</td>
 </tr>
-<tr class="row-odd"><td>Penalize the intercept (bad)</td>
+<tr class="row-even"><td>Penalize the intercept (bad)</td>
 <td>yes</td>
 <td>no</td>
 <td>no</td>
 <td>no</td>
 <td>no</td>
 </tr>
-<tr class="row-even"><td>Faster for large datasets</td>
+<tr class="row-odd"><td>Faster for large datasets</td>
 <td>no</td>
 <td>no</td>
 <td>no</td>
 <td>yes</td>
 <td>yes</td>
 </tr>
-<tr class="row-odd"><td>Robust to unscaled datasets</td>
+<tr class="row-even"><td>Robust to unscaled datasets</td>
 <td>yes</td>
 <td>yes</td>
 <td>yes</td>
