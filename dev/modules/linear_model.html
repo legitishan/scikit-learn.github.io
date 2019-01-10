@@ -716,8 +716,8 @@ estimated from the data.</p>
 to be Gaussian distributed around <span class="math">\(X w\)</span>:</p>
 <div class="math">
 \[p(y|X,w,\alpha) = \mathcal{N}(y|X w,\alpha)\]</div>
-<p>Alpha is again treated as a random variable that is to be estimated from the
-data.</p>
+<p>where <span class="math">\(\alpha\)</span> is again treated as a random variable that is to be
+estimated from the data.</p>
 <p>The advantages of Bayesian Regression are:</p>
 <blockquote>
 <div><ul class="simple">
@@ -751,15 +751,20 @@ The prior for the parameter <span class="math">\(w\)</span> is given by a spheri
 \mathcal{N}(w|0,\lambda^{-1}\mathbf{I}_{p})\]</div>
 <p>The priors over <span class="math">\(\alpha\)</span> and <span class="math">\(\lambda\)</span> are chosen to be <a class="reference external" href="https://en.wikipedia.org/wiki/Gamma_distribution">gamma
 distributions</a>, the
-conjugate prior for the precision of the Gaussian.</p>
-<p>The resulting model is called <em>Bayesian Ridge Regression</em>, and is similar to the
-classical <a class="reference internal" href="generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge" title="sklearn.linear_model.Ridge"><code class="xref py py-class docutils literal"><span class="pre">Ridge</span></code></a>.  The parameters <span class="math">\(w\)</span>, <span class="math">\(\alpha\)</span> and
-<span class="math">\(\lambda\)</span> are estimated jointly during the fit of the model.  The
-remaining hyperparameters are the parameters of the gamma priors over
-<span class="math">\(\alpha\)</span> and <span class="math">\(\lambda\)</span>.  These are usually chosen to be
-<em>non-informative</em>.  The parameters are estimated by maximizing the <em>marginal
-log likelihood</em>.</p>
-<p>By default <span class="math">\(\alpha_1 = \alpha_2 =  \lambda_1 = \lambda_2 = 10^{-6}\)</span>.</p>
+conjugate prior for the precision of the Gaussian. The resulting model is
+called <em>Bayesian Ridge Regression</em>, and is similar to the classical
+<a class="reference internal" href="generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge" title="sklearn.linear_model.Ridge"><code class="xref py py-class docutils literal"><span class="pre">Ridge</span></code></a>.</p>
+<p>The parameters <span class="math">\(w\)</span>, <span class="math">\(\alpha\)</span> and <span class="math">\(\lambda\)</span> are estimated
+jointly during the fit of the model, the regularization parameters
+<span class="math">\(\alpha\)</span> and <span class="math">\(\lambda\)</span> being estimated by maximizing the
+<em>log marginal likelihood</em>. The scikit-learn implementation
+is based on the algorithm described in Appendix A of (Tipping, 2001)
+where the update of the parameters <span class="math">\(\alpha\)</span> and <span class="math">\(\lambda\)</span> is done
+as suggested in (MacKay, 1992).</p>
+<p>The remaining hyperparameters are the parameters <span class="math">\(\alpha_1\)</span>,
+<span class="math">\(\alpha_2\)</span>, <span class="math">\(\lambda_1\)</span> and <span class="math">\(\lambda_2\)</span> of the gamma priors
+over <span class="math">\(\alpha\)</span> and <span class="math">\(\lambda\)</span>. These are usually chosen to be
+<em>non-informative</em>. By default <span class="math">\(\alpha_1 = \alpha_2 =  \lambda_1 = \lambda_2 = 10^{-6}\)</span>.</p>
 <div class="figure align-center">
 <a class="reference external image-reference" href="../auto_examples/linear_model/plot_bayesian_ridge.html"><img alt="../_images/sphx_glr_plot_bayesian_ridge_0011.png" src="../_images/sphx_glr_plot_bayesian_ridge_0011.png" style="width: 300.0px; height: 250.0px;" /></a>
 </div>
@@ -794,10 +799,11 @@ is more robust to ill-posed problem.</p>
 </ul>
 </div>
 <div class="topic">
-<p class="topic-title first">References</p>
+<p class="topic-title first">References:</p>
 <ul class="simple">
-<li>More details can be found in the article <a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.27.9072&amp;rep=rep1&amp;type=pdf">Bayesian Interpolation</a>
-by MacKay, David J. C.</li>
+<li>Section 3.3 in Christopher M. Bishop: Pattern Recognition and Machine Learning, 2006</li>
+<li>David J. C. MacKay, <a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.27.9072&amp;rep=rep1&amp;type=pdf">Bayesian Interpolation</a>, 1992.</li>
+<li>Michael E. Tipping, <a class="reference external" href="http://www.jmlr.org/papers/volume1/tipping01a/tipping01a.pdf">Sparse Bayesian Learning and the Relevance Vector Machine</a>, 2001.</li>
 </ul>
 </div>
 </div>
@@ -822,7 +828,7 @@ hyperparameters <span class="math">\(\lambda_1\)</span> and <span class="math">\
 <a class="reference external image-reference" href="../auto_examples/linear_model/plot_ard.html"><img alt="../_images/sphx_glr_plot_ard_0011.png" src="../_images/sphx_glr_plot_ard_0011.png" style="width: 300.0px; height: 250.0px;" /></a>
 </div>
 <p>ARD is also known in the literature as <em>Sparse Bayesian Learning</em> and
-<em>Relevance Vector Machine</em> <a class="footnote-reference" href="#id20" id="id16">[3]</a> <a class="footnote-reference" href="#id21" id="id17">[4]</a>.</p>
+<em>Relevance Vector Machine</em> <a class="footnote-reference" href="#id20" id="id16">[3]</a> <a class="footnote-reference" href="#id22" id="id17">[4]</a>.</p>
 <div class="topic">
 <p class="topic-title first">Examples:</p>
 <ul class="simple">
@@ -849,7 +855,7 @@ hyperparameters <span class="math">\(\lambda_1\)</span> and <span class="math">\
 <tr><td class="label"><a class="fn-backref" href="#id16">[3]</a></td><td>Michael E. Tipping: <a class="reference external" href="http://www.jmlr.org/papers/volume1/tipping01a/tipping01a.pdf">Sparse Bayesian Learning and the Relevance Vector Machine</a></td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id21" rules="none">
+<table class="docutils footnote" frame="void" id="id22" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id17">[4]</a></td><td>Tristan Fletcher: <a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.651.8603&amp;rep=rep1&amp;type=pdf">Relevance Vector Machines explained</a></td></tr>
@@ -859,7 +865,7 @@ hyperparameters <span class="math">\(\lambda_1\)</span> and <span class="math">\
 </div>
 </div>
 <div class="section" id="logistic-regression">
-<span id="id22"></span><h2>1.1.11. Logistic regression<a class="headerlink" href="#logistic-regression" title="Permalink to this headline">¶</a></h2>
+<span id="id23"></span><h2>1.1.11. Logistic regression<a class="headerlink" href="#logistic-regression" title="Permalink to this headline">¶</a></h2>
 <p>Logistic regression, despite its name, is a linear model for classification
 rather than regression. Logistic regression is also known in the literature as
 logit regression, maximum-entropy classification (MaxEnt)
@@ -901,19 +907,19 @@ weights to zero) model.</p>
 <p>The “lbfgs”, “sag” and “newton-cg” solvers only support L2 penalization or no
 regularization, and are found to converge faster for some high dimensional
 data. Setting <code class="xref any docutils literal"><span class="pre">multi_class</span></code> to “multinomial” with these solvers learns a true
-multinomial logistic regression model <a class="footnote-reference" href="#id28" id="id23">[5]</a>, which means that its probability
+multinomial logistic regression model <a class="footnote-reference" href="#id29" id="id24">[5]</a>, which means that its probability
 estimates should be better calibrated than the default “one-vs-rest” setting.</p>
-<p>The “sag” solver uses a Stochastic Average Gradient descent <a class="footnote-reference" href="#id29" id="id24">[6]</a>. It is faster
+<p>The “sag” solver uses a Stochastic Average Gradient descent <a class="footnote-reference" href="#id30" id="id25">[6]</a>. It is faster
 than other solvers for large datasets, when both the number of samples and the
 number of features are large.</p>
-<p>The “saga” solver <a class="footnote-reference" href="#id30" id="id25">[7]</a> is a variant of “sag” that also supports the
+<p>The “saga” solver <a class="footnote-reference" href="#id31" id="id26">[7]</a> is a variant of “sag” that also supports the
 non-smooth <code class="xref any docutils literal"><span class="pre">penalty=&quot;l1&quot;</span></code>. This is therefore the solver of choice for sparse
 multinomial logistic regression. It is also the only solver that supports
 <code class="xref any docutils literal"><span class="pre">penalty=&quot;elasticnet&quot;</span></code>.</p>
 <p>The “lbfgs” is an optimization algorithm that approximates the
-Broyden–Fletcher–Goldfarb–Shanno algorithm <a class="footnote-reference" href="#id31" id="id26">[8]</a>, which belongs to
+Broyden–Fletcher–Goldfarb–Shanno algorithm <a class="footnote-reference" href="#id32" id="id27">[8]</a>, which belongs to
 quasi-Newton methods. The “lbfgs” solver is recommended for use for
-small data-sets but for larger datasets its performance suffers. <a class="footnote-reference" href="#id32" id="id27">[9]</a></p>
+small data-sets but for larger datasets its performance suffers. <a class="footnote-reference" href="#id33" id="id28">[9]</a></p>
 <p>The following table summarizes the penalties supported by each solver:</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -1044,34 +1050,34 @@ according to the <code class="docutils literal"><span class="pre">scoring</span>
 to warm-starting (see <a class="reference internal" href="../glossary.html#term-warm-start"><span class="xref std std-term">Glossary</span></a>).</p>
 <div class="topic">
 <p class="topic-title first">References:</p>
-<table class="docutils footnote" frame="void" id="id28" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id23">[5]</a></td><td>Christopher M. Bishop: Pattern Recognition and Machine Learning, Chapter 4.3.4</td></tr>
-</tbody>
-</table>
 <table class="docutils footnote" frame="void" id="id29" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id24">[6]</a></td><td>Mark Schmidt, Nicolas Le Roux, and Francis Bach: <a class="reference external" href="https://hal.inria.fr/hal-00860051/document">Minimizing Finite Sums with the Stochastic Average Gradient.</a></td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id24">[5]</a></td><td>Christopher M. Bishop: Pattern Recognition and Machine Learning, Chapter 4.3.4</td></tr>
 </tbody>
 </table>
 <table class="docutils footnote" frame="void" id="id30" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id25">[7]</a></td><td>Aaron Defazio, Francis Bach, Simon Lacoste-Julien: <a class="reference external" href="https://arxiv.org/abs/1407.0202">SAGA: A Fast Incremental Gradient Method With Support for Non-Strongly Convex Composite Objectives.</a></td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id25">[6]</a></td><td>Mark Schmidt, Nicolas Le Roux, and Francis Bach: <a class="reference external" href="https://hal.inria.fr/hal-00860051/document">Minimizing Finite Sums with the Stochastic Average Gradient.</a></td></tr>
 </tbody>
 </table>
 <table class="docutils footnote" frame="void" id="id31" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id26">[8]</a></td><td><a class="reference external" href="https://en.wikipedia.org/wiki/Broyden%E2%80%93Fletcher%E2%80%93Goldfarb%E2%80%93Shanno_algorithm">https://en.wikipedia.org/wiki/Broyden%E2%80%93Fletcher%E2%80%93Goldfarb%E2%80%93Shanno_algorithm</a></td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id26">[7]</a></td><td>Aaron Defazio, Francis Bach, Simon Lacoste-Julien: <a class="reference external" href="https://arxiv.org/abs/1407.0202">SAGA: A Fast Incremental Gradient Method With Support for Non-Strongly Convex Composite Objectives.</a></td></tr>
 </tbody>
 </table>
 <table class="docutils footnote" frame="void" id="id32" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id27">[9]</a></td><td><a class="reference external" href="http://www.fuzihao.org/blog/2016/01/16/Comparison-of-Gradient-Descent-Stochastic-Gradient-Descent-and-L-BFGS/">“Performance Evaluation of Lbfgs vs other solvers”</a></td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id27">[8]</a></td><td><a class="reference external" href="https://en.wikipedia.org/wiki/Broyden%E2%80%93Fletcher%E2%80%93Goldfarb%E2%80%93Shanno_algorithm">https://en.wikipedia.org/wiki/Broyden%E2%80%93Fletcher%E2%80%93Goldfarb%E2%80%93Shanno_algorithm</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id33" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id28">[9]</a></td><td><a class="reference external" href="http://www.fuzihao.org/blog/2016/01/16/Comparison-of-Gradient-Descent-Stochastic-Gradient-Descent-and-L-BFGS/">“Performance Evaluation of Lbfgs vs other solvers”</a></td></tr>
 </tbody>
 </table>
 </div>
@@ -1096,7 +1102,7 @@ while with <code class="docutils literal"><span class="pre">loss=&quot;hinge&quo
 </div>
 </div>
 <div class="section" id="perceptron">
-<span id="id33"></span><h2>1.1.13. Perceptron<a class="headerlink" href="#perceptron" title="Permalink to this headline">¶</a></h2>
+<span id="id34"></span><h2>1.1.13. Perceptron<a class="headerlink" href="#perceptron" title="Permalink to this headline">¶</a></h2>
 <p>The <a class="reference internal" href="generated/sklearn.linear_model.Perceptron.html#sklearn.linear_model.Perceptron" title="sklearn.linear_model.Perceptron"><code class="xref py py-class docutils literal"><span class="pre">Perceptron</span></code></a> is another simple classification algorithm suitable for
 large scale learning. By default:</p>
 <blockquote>
@@ -1309,9 +1315,9 @@ corrupted data of up to 29.3%.</p>
 <a class="reference external image-reference" href="../auto_examples/linear_model/plot_theilsen.html"><img alt="../_images/sphx_glr_plot_theilsen_0011.png" src="../_images/sphx_glr_plot_theilsen_0011.png" style="width: 320.0px; height: 240.0px;" /></a>
 </div>
 <p>The implementation of <a class="reference internal" href="generated/sklearn.linear_model.TheilSenRegressor.html#sklearn.linear_model.TheilSenRegressor" title="sklearn.linear_model.TheilSenRegressor"><code class="xref py py-class docutils literal"><span class="pre">TheilSenRegressor</span></code></a> in scikit-learn follows a
-generalization to a multivariate linear regression model <a class="footnote-reference" href="#f1" id="id34">[10]</a> using the
+generalization to a multivariate linear regression model <a class="footnote-reference" href="#f1" id="id35">[10]</a> using the
 spatial median which is a generalization of the median to multiple
-dimensions <a class="footnote-reference" href="#f2" id="id35">[11]</a>.</p>
+dimensions <a class="footnote-reference" href="#f2" id="id36">[11]</a>.</p>
 <p>In terms of time and space complexity, Theil-Sen scales according to</p>
 <div class="math">
 \[\binom{n_{samples}}{n_{subsamples}}\]</div>
@@ -1330,13 +1336,13 @@ considering only a random subset of all possible combinations.</p>
 <table class="docutils footnote" frame="void" id="f1" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id34">[10]</a></td><td>Xin Dang, Hanxiang Peng, Xueqin Wang and Heping Zhang: <a class="reference external" href="http://home.olemiss.edu/~xdang/papers/MTSE.pdf">Theil-Sen Estimators in a Multiple Linear Regression Model.</a></td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id35">[10]</a></td><td>Xin Dang, Hanxiang Peng, Xueqin Wang and Heping Zhang: <a class="reference external" href="http://home.olemiss.edu/~xdang/papers/MTSE.pdf">Theil-Sen Estimators in a Multiple Linear Regression Model.</a></td></tr>
 </tbody>
 </table>
 <table class="docutils footnote" frame="void" id="f2" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id35">[11]</a></td><td><ol class="first last upperalpha simple" start="20">
+<tr><td class="label"><a class="fn-backref" href="#id36">[11]</a></td><td><ol class="first last upperalpha simple" start="20">
 <li>Kärkkäinen and S. Äyrämö: <a class="reference external" href="http://users.jyu.fi/~samiayr/pdf/ayramo_eurogen05.pdf">On Computation of Spatial Median for Robust Data Mining.</a></li>
 </ol>
 </td></tr>
@@ -1346,7 +1352,7 @@ considering only a random subset of all possible combinations.</p>
 </div>
 </div>
 <div class="section" id="huber-regression">
-<span id="id36"></span><h3>1.1.15.4. Huber Regression<a class="headerlink" href="#huber-regression" title="Permalink to this headline">¶</a></h3>
+<span id="id37"></span><h3>1.1.15.4. Huber Regression<a class="headerlink" href="#huber-regression" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="generated/sklearn.linear_model.HuberRegressor.html#sklearn.linear_model.HuberRegressor" title="sklearn.linear_model.HuberRegressor"><code class="xref py py-class docutils literal"><span class="pre">HuberRegressor</span></code></a> is different to <a class="reference internal" href="generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge" title="sklearn.linear_model.Ridge"><code class="xref py py-class docutils literal"><span class="pre">Ridge</span></code></a> because it applies a
 linear loss to samples that are classified as outliers.
 A sample is classified as an inlier if the absolute error of that sample is
