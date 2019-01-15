@@ -541,6 +541,26 @@ unsupervised case).</li>
 Again, by convention higher numbers are better, so if your scorer
 returns loss, that value should be negated.</li>
 </ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p><strong>Using custom scorers in functions where n_jobs &gt; 1</strong></p>
+<p>While defining the custom scoring function alongside the calling function
+should work out of the box with the default joblib backend (loky),
+importing it from another module will be a more robust approach and work
+independently of the joblib backend.</p>
+<p>For example, to use, <code class="docutils literal"><span class="pre">n_jobs</span></code> greater than 1 in the example below,
+<code class="docutils literal"><span class="pre">custom_scoring_function</span></code> function is saved in a user-created module
+(<code class="docutils literal"><span class="pre">custom_scorer_module.py</span></code>) and imported:</p>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">custom_scorer_module</span> <span class="k">import</span> <span class="n">custom_scoring_function</span> 
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cross_val_score</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
+<span class="gp">... </span> <span class="n">X_train</span><span class="p">,</span>
+<span class="gp">... </span> <span class="n">y_train</span><span class="p">,</span>
+<span class="gp">... </span> <span class="n">scoring</span><span class="o">=</span><span class="n">make_scorer</span><span class="p">(</span><span class="n">custom_scoring_function</span><span class="p">,</span> <span class="n">greater_is_better</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+<span class="gp">... </span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+<span class="gp">... </span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="using-multiple-metric-evaluation">
 <span id="multimetric-scoring"></span><h3>3.3.1.4. Using multiple metric evaluation<a class="headerlink" href="#using-multiple-metric-evaluation" title="Permalink to this headline">¶</a></h3>
