@@ -38,8 +38,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Agglomerative clustering with and without structure" href="plot_agglomerative_clustering.html" />
-    <link rel="prev" title="Segmenting the picture of greek coins in regions" href="plot_coin_segmentation.html" />
+    <link rel="next" title="Demo of DBSCAN clustering algorithm" href="plot_dbscan.html" />
+    <link rel="prev" title="Spectral clustering for image segmentation" href="plot_segmentation_toy.html" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -134,14 +134,14 @@
         <div class="rel">
     
         <div class="rellink">
-        <a href="plot_coin_segmentation.html"
+        <a href="plot_segmentation_toy.html"
         accesskey="P">Previous
         <br/>
         <span class="smallrellink">
-        Segmenting th...
+        Spectral clus...
         </span>
             <span class="hiddenrellink">
-            Segmenting the picture of greek coins in regions
+            Spectral clustering for image segmentation
             </span>
         </a>
         </div>
@@ -149,14 +149,14 @@
             &nbsp;
             </div>
         <div class="rellink">
-        <a href="plot_agglomerative_clustering.html"
+        <a href="plot_dbscan.html"
         accesskey="N">Next
         <br/>
         <span class="smallrellink">
-        Agglomerative...
+        Demo of DBSCA...
         </span>
             <span class="hiddenrellink">
-            Agglomerative clustering with and without structure
+            Demo of DBSCAN clustering algorithm
             </span>
         </a>
         </div>
@@ -214,7 +214,7 @@ for each segmented region to be in one piece.</p>
 <img alt="../../_images/sphx_glr_plot_coin_ward_segmentation_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_coin_ward_segmentation_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>Compute structured hierarchical clustering...
-Elapsed time:  0.3692483901977539
+Elapsed time:  0.5444533824920654
 Number of pixels:  4697
 Number of clusters:  27
 </pre></div>
@@ -231,16 +231,23 @@ Number of clusters:  27
 <span class="kn">import</span> <span class="nn">time</span> <span class="kn">as</span> <span class="nn">time</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">distutils.version</span> <span class="kn">import</span> <span class="n">LooseVersion</span>
 <span class="kn">from</span> <span class="nn">scipy.ndimage.filters</span> <span class="kn">import</span> <span class="n">gaussian_filter</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 
+<span class="kn">import</span> <span class="nn">skimage</span>
 <span class="kn">from</span> <span class="nn">skimage.data</span> <span class="kn">import</span> <span class="n">coins</span>
 <span class="kn">from</span> <span class="nn">skimage.transform</span> <span class="kn">import</span> <span class="n">rescale</span>
 
 <span class="kn">from</span> <span class="nn">sklearn.feature_extraction.image</span> <span class="kn">import</span> <span class="n">grid_to_graph</span>
 <span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.cluster.AgglomerativeClustering.html#sklearn.cluster.AgglomerativeClustering" title="View documentation for sklearn.cluster.AgglomerativeClustering"><span class="n">AgglomerativeClustering</span></a>
 
+<span class="c1"># these were introduced in skimage-0.14</span>
+<span class="k">if</span> <span class="n">LooseVersion</span><span class="p">(</span><span class="n">skimage</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="s1">&#39;0.14&#39;</span><span class="p">:</span>
+    <span class="n">rescale_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;anti_aliasing&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s1">&#39;multichannel&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">}</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">rescale_params</span> <span class="o">=</span> <span class="p">{}</span>
 
 <span class="c1"># #############################################################################</span>
 <span class="c1"># Generate data</span>
@@ -250,7 +257,8 @@ Number of clusters:  27
 <span class="c1"># Applying a Gaussian filter for smoothing prior to down-scaling</span>
 <span class="c1"># reduces aliasing artifacts.</span>
 <span class="n">smoothened_coins</span> <span class="o">=</span> <span class="n">gaussian_filter</span><span class="p">(</span><span class="n">orig_coins</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">rescaled_coins</span> <span class="o">=</span> <span class="n">rescale</span><span class="p">(</span><span class="n">smoothened_coins</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;reflect&quot;</span><span class="p">)</span>
+<span class="n">rescaled_coins</span> <span class="o">=</span> <span class="n">rescale</span><span class="p">(</span><span class="n">smoothened_coins</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;reflect&quot;</span><span class="p">,</span>
+                         <span class="o">**</span><span class="n">rescale_params</span><span class="p">)</span>
 
 <span class="n">X</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.reshape.html#numpy.reshape" title="View documentation for numpy.reshape"><span class="n">np</span><span class="o">.</span><span class="n">reshape</span></a><span class="p">(</span><span class="n">rescaled_coins</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 
@@ -283,7 +291,7 @@ Number of clusters:  27
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.530 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.700 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-cluster-plot-coin-ward-segmentation-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/plot_coin_ward_segmentation.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_coin_ward_segmentation.py</span></code></a></div>
@@ -308,11 +316,11 @@ Number of clusters:  27
      <div class="rel">
     
     <div class="buttonPrevious">
-      <a href="plot_coin_segmentation.html">Previous
+      <a href="plot_segmentation_toy.html">Previous
       </a>
     </div>
     <div class="buttonNext">
-      <a href="plot_agglomerative_clustering.html">Next
+      <a href="plot_dbscan.html">Next
       </a>
     </div>
     

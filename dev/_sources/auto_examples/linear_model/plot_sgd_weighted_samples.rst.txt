@@ -47,14 +47,14 @@ is proportional to its weight.
                 cmap=plt.cm.bone, edgecolor='black')
 
     # fit the unweighted model
-    clf = linear_model.SGDClassifier(alpha=0.01, max_iter=100)
+    clf = linear_model.SGDClassifier(alpha=0.01, max_iter=100, tol=1e-3)
     clf.fit(X, y)
     Z = clf.decision_function(np.c_[xx.ravel(), yy.ravel()])
     Z = Z.reshape(xx.shape)
     no_weights = plt.contour(xx, yy, Z, levels=[0], linestyles=['solid'])
 
     # fit the weighted model
-    clf = linear_model.SGDClassifier(alpha=0.01, max_iter=100)
+    clf = linear_model.SGDClassifier(alpha=0.01, max_iter=100, tol=1e-3)
     clf.fit(X, y, sample_weight=sample_weight)
     Z = clf.decision_function(np.c_[xx.ravel(), yy.ravel()])
     Z = Z.reshape(xx.shape)
@@ -67,7 +67,7 @@ is proportional to its weight.
     plt.yticks(())
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  0.079 seconds)
+**Total running time of the script:** ( 0 minutes  0.056 seconds)
 
 
 .. _sphx_glr_download_auto_examples_linear_model_plot_sgd_weighted_samples.py:

@@ -36,7 +36,7 @@ simultaneously using grid search, but pick only the ones deemed most important.
 
  .. code-block:: none
 
-    RandomizedSearchCV took 4.70 seconds for 20 candidates parameter settings.
+    RandomizedSearchCV took 4.87 seconds for 20 candidates parameter settings.
     Model with rank: 1
     Mean validation score: 0.939 (std: 0.024)
     Parameters: {'bootstrap': False, 'criterion': 'entropy', 'max_depth': None, 'max_features': 7, 'min_samples_split': 3}
@@ -49,17 +49,17 @@ simultaneously using grid search, but pick only the ones deemed most important.
     Mean validation score: 0.930 (std: 0.031)
     Parameters: {'bootstrap': True, 'criterion': 'gini', 'max_depth': None, 'max_features': 6, 'min_samples_split': 6}
 
-    GridSearchCV took 14.00 seconds for 72 candidate parameter settings.
+    GridSearchCV took 14.48 seconds for 72 candidate parameter settings.
     Model with rank: 1
     Mean validation score: 0.937 (std: 0.019)
     Parameters: {'bootstrap': False, 'criterion': 'entropy', 'max_depth': None, 'max_features': 10, 'min_samples_split': 2}
 
     Model with rank: 2
-    Mean validation score: 0.935 (std: 0.020)
+    Mean validation score: 0.936 (std: 0.020)
     Parameters: {'bootstrap': False, 'criterion': 'gini', 'max_depth': None, 'max_features': 10, 'min_samples_split': 2}
 
     Model with rank: 3
-    Mean validation score: 0.930 (std: 0.029)
+    Mean validation score: 0.931 (std: 0.029)
     Parameters: {'bootstrap': False, 'criterion': 'entropy', 'max_depth': None, 'max_features': 10, 'min_samples_split': 3}
 
 
@@ -113,7 +113,7 @@ simultaneously using grid search, but pick only the ones deemed most important.
     # run randomized search
     n_iter_search = 20
     random_search = RandomizedSearchCV(clf, param_distributions=param_dist,
-                                       n_iter=n_iter_search, cv=5)
+                                       n_iter=n_iter_search, cv=5, iid=False)
 
     start = time()
     random_search.fit(X, y)
@@ -129,7 +129,7 @@ simultaneously using grid search, but pick only the ones deemed most important.
                   "criterion": ["gini", "entropy"]}
 
     # run grid search
-    grid_search = GridSearchCV(clf, param_grid=param_grid, cv=5)
+    grid_search = GridSearchCV(clf, param_grid=param_grid, cv=5, iid=False)
     start = time()
     grid_search.fit(X, y)
 
@@ -137,7 +137,7 @@ simultaneously using grid search, but pick only the ones deemed most important.
           % (time() - start, len(grid_search.cv_results_['params'])))
     report(grid_search.cv_results_)
 
-**Total running time of the script:** ( 0 minutes  19.372 seconds)
+**Total running time of the script:** ( 0 minutes  19.409 seconds)
 
 
 .. _sphx_glr_download_auto_examples_model_selection_plot_randomized_search.py:

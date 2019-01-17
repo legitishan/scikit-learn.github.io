@@ -54,19 +54,19 @@ value of k on various overlapping sub-samples of the dataset.
     Computing adjusted_rand_score for 10 values of n_clusters and n_samples=100
     done in 0.023s
     Computing v_measure_score for 10 values of n_clusters and n_samples=100
-    done in 0.057s
-    Computing adjusted_mutual_info_score for 10 values of n_clusters and n_samples=100
-    done in 0.353s
+    done in 0.035s
+    Computing ami_score for 10 values of n_clusters and n_samples=100
+    done in 0.308s
     Computing mutual_info_score for 10 values of n_clusters and n_samples=100
-    done in 0.029s
+    done in 0.028s
     Computing adjusted_rand_score for 10 values of n_clusters and n_samples=1000
-    done in 0.050s
+    done in 0.038s
     Computing v_measure_score for 10 values of n_clusters and n_samples=1000
-    done in 0.075s
-    Computing adjusted_mutual_info_score for 10 values of n_clusters and n_samples=1000
-    done in 0.227s
+    done in 0.048s
+    Computing ami_score for 10 values of n_clusters and n_samples=1000
+    done in 0.197s
     Computing mutual_info_score for 10 values of n_clusters and n_samples=1000
-    done in 0.040s
+    done in 0.039s
 
 
 
@@ -85,7 +85,6 @@ value of k on various overlapping sub-samples of the dataset.
     import matplotlib.pyplot as plt
     from time import time
     from sklearn import metrics
-
 
     def uniform_labelings_scores(score_func, n_samples, n_clusters_range,
                                  fixed_n_classes=None, n_runs=5, seed=42):
@@ -111,10 +110,15 @@ value of k on various overlapping sub-samples of the dataset.
                 scores[i, j] = score_func(labels_a, labels_b)
         return scores
 
+
+    def ami_score(U, V):
+        return metrics.adjusted_mutual_info_score(U, V,
+                                                  average_method='arithmetic')
+
     score_funcs = [
         metrics.adjusted_rand_score,
         metrics.v_measure_score,
-        metrics.adjusted_mutual_info_score,
+        ami_score,
         metrics.mutual_info_score,
     ]
 
@@ -143,7 +147,7 @@ value of k on various overlapping sub-samples of the dataset.
     plt.xlabel('Number of clusters (Number of samples is fixed to %d)' % n_samples)
     plt.ylabel('Score value')
     plt.legend(plots, names)
-    plt.ylim(ymin=-0.05, ymax=1.05)
+    plt.ylim(bottom=-0.05, top=1.05)
 
 
     # Random labeling with varying n_clusters against ground class labels
@@ -173,11 +177,11 @@ value of k on various overlapping sub-samples of the dataset.
               "against reference assignment with %d classes" % n_classes)
     plt.xlabel('Number of clusters (Number of samples is fixed to %d)' % n_samples)
     plt.ylabel('Score value')
-    plt.ylim(ymin=-0.05, ymax=1.05)
+    plt.ylim(bottom=-0.05, top=1.05)
     plt.legend(plots, names)
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  0.922 seconds)
+**Total running time of the script:** ( 0 minutes  0.756 seconds)
 
 
 .. _sphx_glr_download_auto_examples_cluster_plot_adjusted_for_chance_measures.py:

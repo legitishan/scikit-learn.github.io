@@ -230,19 +230,19 @@ value of k on various overlapping sub-samples of the dataset.</p>
 <div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>Computing adjusted_rand_score for 10 values of n_clusters and n_samples=100
 done in 0.023s
 Computing v_measure_score for 10 values of n_clusters and n_samples=100
-done in 0.057s
-Computing adjusted_mutual_info_score for 10 values of n_clusters and n_samples=100
-done in 0.353s
+done in 0.035s
+Computing ami_score for 10 values of n_clusters and n_samples=100
+done in 0.308s
 Computing mutual_info_score for 10 values of n_clusters and n_samples=100
-done in 0.029s
+done in 0.028s
 Computing adjusted_rand_score for 10 values of n_clusters and n_samples=1000
-done in 0.050s
+done in 0.038s
 Computing v_measure_score for 10 values of n_clusters and n_samples=1000
-done in 0.075s
-Computing adjusted_mutual_info_score for 10 values of n_clusters and n_samples=1000
-done in 0.227s
+done in 0.048s
+Computing ami_score for 10 values of n_clusters and n_samples=1000
+done in 0.197s
 Computing mutual_info_score for 10 values of n_clusters and n_samples=1000
-done in 0.040s
+done in 0.039s
 </pre></div>
 </div>
 <div class="line-block">
@@ -257,7 +257,6 @@ done in 0.040s
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
 <span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
-
 
 <span class="k">def</span> <span class="nf">uniform_labelings_scores</span><span class="p">(</span><span class="n">score_func</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">,</span> <span class="n">n_clusters_range</span><span class="p">,</span>
                              <span class="n">fixed_n_classes</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">n_runs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">):</span>
@@ -283,10 +282,15 @@ done in 0.040s
             <span class="n">scores</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">score_func</span><span class="p">(</span><span class="n">labels_a</span><span class="p">,</span> <span class="n">labels_b</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">scores</span>
 
+
+<span class="k">def</span> <span class="nf">ami_score</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">):</span>
+    <span class="k">return</span> <a href="../../modules/generated/sklearn.metrics.adjusted_mutual_info_score.html#sklearn.metrics.adjusted_mutual_info_score" title="View documentation for sklearn.metrics.adjusted_mutual_info_score"><span class="n">metrics</span><span class="o">.</span><span class="n">adjusted_mutual_info_score</span></a><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span>
+                                              <span class="n">average_method</span><span class="o">=</span><span class="s1">&#39;arithmetic&#39;</span><span class="p">)</span>
+
 <span class="n">score_funcs</span> <span class="o">=</span> <span class="p">[</span>
     <a href="../../modules/generated/sklearn.metrics.adjusted_rand_score.html#sklearn.metrics.adjusted_rand_score" title="View documentation for sklearn.metrics.adjusted_rand_score"><span class="n">metrics</span><span class="o">.</span><span class="n">adjusted_rand_score</span></a><span class="p">,</span>
     <a href="../../modules/generated/sklearn.metrics.v_measure_score.html#sklearn.metrics.v_measure_score" title="View documentation for sklearn.metrics.v_measure_score"><span class="n">metrics</span><span class="o">.</span><span class="n">v_measure_score</span></a><span class="p">,</span>
-    <a href="../../modules/generated/sklearn.metrics.adjusted_mutual_info_score.html#sklearn.metrics.adjusted_mutual_info_score" title="View documentation for sklearn.metrics.adjusted_mutual_info_score"><span class="n">metrics</span><span class="o">.</span><span class="n">adjusted_mutual_info_score</span></a><span class="p">,</span>
+    <span class="n">ami_score</span><span class="p">,</span>
     <a href="../../modules/generated/sklearn.metrics.mutual_info_score.html#sklearn.metrics.mutual_info_score" title="View documentation for sklearn.metrics.mutual_info_score"><span class="n">metrics</span><span class="o">.</span><span class="n">mutual_info_score</span></a><span class="p">,</span>
 <span class="p">]</span>
 
@@ -315,7 +319,7 @@ done in 0.040s
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="View documentation for matplotlib.pyplot.xlabel"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s1">&#39;Number of clusters (Number of samples is fixed to </span><span class="si">%d</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="n">n_samples</span><span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="View documentation for matplotlib.pyplot.ylabel"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="s1">&#39;Score value&#39;</span><span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.legend.html#matplotlib.pyplot.legend" title="View documentation for matplotlib.pyplot.legend"><span class="n">plt</span><span class="o">.</span><span class="n">legend</span></a><span class="p">(</span><span class="n">plots</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylim.html#matplotlib.pyplot.ylim" title="View documentation for matplotlib.pyplot.ylim"><span class="n">plt</span><span class="o">.</span><span class="n">ylim</span></a><span class="p">(</span><span class="n">ymin</span><span class="o">=-</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mf">1.05</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylim.html#matplotlib.pyplot.ylim" title="View documentation for matplotlib.pyplot.ylim"><span class="n">plt</span><span class="o">.</span><span class="n">ylim</span></a><span class="p">(</span><span class="n">bottom</span><span class="o">=-</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mf">1.05</span><span class="p">)</span>
 
 
 <span class="c1"># Random labeling with varying n_clusters against ground class labels</span>
@@ -345,12 +349,12 @@ done in 0.040s
           <span class="s2">&quot;against reference assignment with </span><span class="si">%d</span><span class="s2"> classes&quot;</span> <span class="o">%</span> <span class="n">n_classes</span><span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="View documentation for matplotlib.pyplot.xlabel"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s1">&#39;Number of clusters (Number of samples is fixed to </span><span class="si">%d</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="n">n_samples</span><span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="View documentation for matplotlib.pyplot.ylabel"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="s1">&#39;Score value&#39;</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylim.html#matplotlib.pyplot.ylim" title="View documentation for matplotlib.pyplot.ylim"><span class="n">plt</span><span class="o">.</span><span class="n">ylim</span></a><span class="p">(</span><span class="n">ymin</span><span class="o">=-</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mf">1.05</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylim.html#matplotlib.pyplot.ylim" title="View documentation for matplotlib.pyplot.ylim"><span class="n">plt</span><span class="o">.</span><span class="n">ylim</span></a><span class="p">(</span><span class="n">bottom</span><span class="o">=-</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mf">1.05</span><span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.legend.html#matplotlib.pyplot.legend" title="View documentation for matplotlib.pyplot.legend"><span class="n">plt</span><span class="o">.</span><span class="n">legend</span></a><span class="p">(</span><span class="n">plots</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.922 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.756 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-cluster-plot-adjusted-for-chance-measures-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/plot_adjusted_for_chance_measures.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_adjusted_for_chance_measures.py</span></code></a></div>

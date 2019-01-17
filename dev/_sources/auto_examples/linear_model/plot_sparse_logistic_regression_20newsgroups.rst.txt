@@ -41,14 +41,15 @@ traditional (l2-penalised) logistic regression model.
 
     Dataset 20newsgroup, train_samples=9000, n_features=130107, n_classes=20
     [model=One versus Rest, solver=saga] Number of epochs: 1
-    [model=One versus Rest, solver=saga] Number of epochs: 3
-    Test accuracy for model ovr: 0.7420
+    [model=One versus Rest, solver=saga] Number of epochs: 2
+    [model=One versus Rest, solver=saga] Number of epochs: 4
+    Test accuracy for model ovr: 0.7490
     % non-zero coefficients for model ovr, per class:
-     [0.28514992 0.65330843 0.79780488 0.73939142 0.6648374  0.71172189
-     0.44117534 0.48114244 1.01147517 0.5418617  0.59258918 0.33664599
-     0.73170544 0.81317685 0.57029983 0.53033273 0.64485385 0.80472227
-     0.44348113 0.40505123]
-    Run time (3 epochs) for model ovr:2.47
+     [0.31743104 0.36815852 0.4181174  0.46115889 0.24595141 0.41350581
+     0.31281945 0.27054655 0.58720899 0.32972861 0.4158116  0.3312658
+     0.41888599 0.41120001 0.59643217 0.31666244 0.34279478 0.28130692
+     0.35278655 0.24748861]
+    Run time (4 epochs) for model ovr:3.42
     [model=Multinomial, solver=saga] Number of epochs: 1
     [model=Multinomial, solver=saga] Number of epochs: 3
     [model=Multinomial, solver=saga] Number of epochs: 7
@@ -58,8 +59,8 @@ traditional (l2-penalised) logistic regression model.
      0.13450468 0.09146318 0.07916561 0.12143851 0.13911627 0.10760374
      0.18984374 0.12143851 0.17524038 0.22289346 0.11605832 0.07916561
      0.07301682 0.15141384]
-    Run time (7 epochs) for model multinomial:5.08
-    Example run in 17.798 s
+    Run time (7 epochs) for model multinomial:3.12
+    Example run in 12.359 s
 
 
 
@@ -69,7 +70,8 @@ traditional (l2-penalised) logistic regression model.
 
 .. code-block:: python
 
-    import time
+    import timeit
+    import warnings
 
     import matplotlib.pyplot as plt
     import numpy as np
@@ -77,11 +79,14 @@ traditional (l2-penalised) logistic regression model.
     from sklearn.datasets import fetch_20newsgroups_vectorized
     from sklearn.linear_model import LogisticRegression
     from sklearn.model_selection import train_test_split
+    from sklearn.exceptions import ConvergenceWarning
 
     print(__doc__)
     # Author: Arthur Mensch
 
-    t0 = time.clock()
+    warnings.filterwarnings("ignore", category=ConvergenceWarning,
+                            module="sklearn")
+    t0 = timeit.default_timer()
 
     # We use SAGA solver
     solver = 'saga'
@@ -106,7 +111,7 @@ traditional (l2-penalised) logistic regression model.
     print('Dataset 20newsgroup, train_samples=%i, n_features=%i, n_classes=%i'
           % (train_samples, n_features, n_classes))
 
-    models = {'ovr': {'name': 'One versus Rest', 'iters': [1, 3]},
+    models = {'ovr': {'name': 'One versus Rest', 'iters': [1, 2, 4]},
               'multinomial': {'name': 'Multinomial', 'iters': [1, 3, 7]}}
 
     for model in models:
@@ -129,9 +134,9 @@ traditional (l2-penalised) logistic regression model.
                                     max_iter=this_max_iter,
                                     random_state=42,
                                     )
-            t1 = time.clock()
+            t1 = timeit.default_timer()
             lr.fit(X_train, y_train)
-            train_time = time.clock() - t1
+            train_time = timeit.default_timer() - t1
 
             y_pred = lr.predict(X_test)
             accuracy = np.sum(y_pred == y_test) / y_test.shape[0]
@@ -164,11 +169,11 @@ traditional (l2-penalised) logistic regression model.
                  'Dataset %s' % '20newsgroups')
     fig.tight_layout()
     fig.subplots_adjust(top=0.85)
-    run_time = time.clock() - t0
+    run_time = timeit.default_timer() - t0
     print('Example run in %.3f s' % run_time)
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  9.232 seconds)
+**Total running time of the script:** ( 0 minutes  12.360 seconds)
 
 
 .. _sphx_glr_download_auto_examples_linear_model_plot_sparse_logistic_regression_20newsgroups.py:
