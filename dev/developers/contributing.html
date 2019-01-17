@@ -198,7 +198,12 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#issues-for-new-contributors">Issues for New Contributors</a></li>
-<li><a class="reference internal" href="#documentation">Documentation</a></li>
+<li><a class="reference internal" href="#documentation">Documentation</a><ul>
+<li><a class="reference internal" href="#building-the-documentation">Building the documentation</a></li>
+<li><a class="reference internal" href="#guidelines-for-writing-documentation">Guidelines for writing documentation</a></li>
+<li><a class="reference internal" href="#generated-documentation-on-circleci">Generated documentation on CircleCI</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#testing-and-improving-test-coverage">Testing and improving test coverage</a></li>
 <li><a class="reference internal" href="#developers-web-site">Developers web site</a></li>
 <li><a class="reference internal" href="#issue-tracker-tags">Issue Tracker Tags</a></li>
@@ -215,7 +220,13 @@
 <li><a class="reference internal" href="#code-review-guidelines">Code Review Guidelines</a></li>
 <li><a class="reference internal" href="#apis-of-scikit-learn-objects">APIs of scikit-learn objects</a><ul>
 <li><a class="reference internal" href="#different-objects">Different objects</a></li>
-<li><a class="reference internal" href="#estimators">Estimators</a></li>
+<li><a class="reference internal" href="#estimators">Estimators</a><ul>
+<li><a class="reference internal" href="#instantiation">Instantiation</a></li>
+<li><a class="reference internal" href="#fitting">Fitting</a></li>
+<li><a class="reference internal" href="#estimated-attributes">Estimated Attributes</a></li>
+<li><a class="reference internal" href="#optional-arguments">Optional Arguments</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#rolling-your-own-estimator">Rolling your own estimator</a><ul>
@@ -596,12 +607,14 @@ sections.</p>
 </div>
 <div class="section" id="continuous-integration-ci">
 <h4>Continuous Integration (CI)<a class="headerlink" href="#continuous-integration-ci" title="Permalink to this headline">¶</a></h4>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li>Travis is used for testing on Linux platforms</li>
 <li>Appveyor is used for testing on Windows platforms</li>
-<li>CircleCI is used to build the docs for viewing, for linting with flake8, and
-for testing with PyPy on Linux</li>
+<li><dl class="first docutils">
+<dt>CircleCI is used to build the docs for viewing, for linting with flake8, and</dt>
+<dd>for testing with PyPy on Linux</dd>
+</dl>
+</li>
 </ul>
 <p>Please note that if one of the following markers appear in the latest commit
 message, the following actions are taken.</p>
@@ -632,7 +645,6 @@ message, the following actions are taken.</p>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
 </div></blockquote>
 </div>
 <div class="section" id="stalled-pull-requests">
@@ -713,6 +725,8 @@ HTML output by typing <code class="docutils literal"><span class="pre">make</spa
 <code class="docutils literal"><span class="pre">make</span></code> can be used to quickly generate the documentation without the example
 gallery. The resulting HTML files will be placed in <code class="docutils literal"><span class="pre">_build/html/stable</span></code> and are viewable
 in a web browser. See the <code class="docutils literal"><span class="pre">README``file</span> <span class="pre">in</span> <span class="pre">the</span> <span class="pre">``doc/</span></code> directory for more information.</p>
+<div class="section" id="building-the-documentation">
+<h4>Building the documentation<a class="headerlink" href="#building-the-documentation" title="Permalink to this headline">¶</a></h4>
 <p>Building the documentation requires installing some additional packages:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">sphinx</span> <span class="n">sphinx</span><span class="o">-</span><span class="n">gallery</span> <span class="n">numpydoc</span> <span class="n">matplotlib</span> <span class="n">Pillow</span> <span class="n">pandas</span> <span class="n">scikit</span><span class="o">-</span><span class="n">image</span> <span class="n">joblib</span>
 </pre></div>
@@ -756,6 +770,9 @@ use the same version as the one we used on CircleCI. Look at this
 <a class="reference external" href="https://github.com/search?utf8=%E2%9C%93&amp;q=sphinx+repo%3Ascikit-learn%2Fscikit-learn+extension%3Ash+path%3Abuild_tools%2Fcircle&amp;type=Code">github search</a>
 to know the exact version.</p>
 </div>
+</div>
+<div class="section" id="guidelines-for-writing-documentation">
+<h4>Guidelines for writing documentation<a class="headerlink" href="#guidelines-for-writing-documentation" title="Permalink to this headline">¶</a></h4>
 <p>It is important to keep a good compromise between mathematical and algorithmic
 details, and give intuition to the reader on what the algorithm does.</p>
 <p>Basically, to elaborate on the above, it is best to always
@@ -798,6 +815,9 @@ with a colon and an explanation, for example:</p>
 80 characters when possible (exceptions include links and tables).</p>
 </li>
 </ul>
+</div>
+<div class="section" id="generated-documentation-on-circleci">
+<h4>Generated documentation on CircleCI<a class="headerlink" href="#generated-documentation-on-circleci" title="Permalink to this headline">¶</a></h4>
 <p>When you change the documentation in a pull request, CircleCI automatically
 builds it. To view the documentation generated by CircleCI:</p>
 <ul class="simple">
@@ -814,6 +834,7 @@ documentation.</li>
 </ul>
 <p>If you often need to look at the documentation generated by CircleCI, e.g. when
 reviewing pull requests, you may find <a class="reference internal" href="tips.html#viewing-rendered-html-documentation"><span class="std std-ref">this tip</span></a> very handy.</p>
+</div>
 </div>
 <div class="section" id="testing-and-improving-test-coverage">
 <span id="testing-coverage"></span><h3>Testing and improving test coverage<a class="headerlink" href="#testing-and-improving-test-coverage" title="Permalink to this headline">¶</a></h3>
@@ -1248,6 +1269,8 @@ data-independent parameters (overriding previous parameter values passed
 to <code class="docutils literal"><span class="pre">__init__</span></code>).</p>
 <p>All estimators in the main scikit-learn codebase should inherit from
 <code class="docutils literal"><span class="pre">sklearn.base.BaseEstimator</span></code>.</p>
+<div class="section" id="instantiation">
+<h4>Instantiation<a class="headerlink" href="#instantiation" title="Permalink to this headline">¶</a></h4>
 <p>This concerns the creation of an object. The object’s <code class="docutils literal"><span class="pre">__init__</span></code> method
 might accept constants as arguments that determine the estimator’s behavior
 (like the C constant in SVMs). It should not, however, take the actual training
@@ -1291,6 +1314,9 @@ The following is wrong:</p>
 <p>The reason for postponing the validation is that the same validation
 would have to be performed in <code class="docutils literal"><span class="pre">set_params</span></code>,
 which is used in algorithms like <code class="docutils literal"><span class="pre">GridSearchCV</span></code>.</p>
+</div>
+<div class="section" id="fitting">
+<h4>Fitting<a class="headerlink" href="#fitting" title="Permalink to this headline">¶</a></h4>
 <p>The next thing you will probably want to do is to estimate some
 parameters in the model. This is implemented in the <code class="docutils literal"><span class="pre">fit()</span></code> method.</p>
 <p>The <code class="docutils literal"><span class="pre">fit()</span></code> method takes the training data as arguments, which can be one
@@ -1355,14 +1381,21 @@ hyper-parameter <code class="docutils literal"><span class="pre">warm_start</spa
 support it. <code class="docutils literal"><span class="pre">warm_start=True</span></code> means that the previous state of the
 trainable parameters of the estimator are reused instead of using the
 default initialization strategy.</p>
+</div>
+<div class="section" id="estimated-attributes">
+<h4>Estimated Attributes<a class="headerlink" href="#estimated-attributes" title="Permalink to this headline">¶</a></h4>
 <p>Attributes that have been estimated from the data must always have a name
 ending with trailing underscore, for example the coefficients of
 some regression estimator would be stored in a <code class="docutils literal"><span class="pre">coef_</span></code> attribute after
 <code class="docutils literal"><span class="pre">fit</span></code> has been called.</p>
 <p>The estimated attributes are expected to be overridden when you call <code class="docutils literal"><span class="pre">fit</span></code>
 a second time.</p>
+</div>
+<div class="section" id="optional-arguments">
+<h4>Optional Arguments<a class="headerlink" href="#optional-arguments" title="Permalink to this headline">¶</a></h4>
 <p>In iterative algorithms, the number of iterations should be specified by
 an integer called <code class="docutils literal"><span class="pre">n_iter</span></code>.</p>
+</div>
 </div>
 </div>
 <div class="section" id="rolling-your-own-estimator">
