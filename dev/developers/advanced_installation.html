@@ -192,9 +192,6 @@
 <li><a class="reference internal" href="#installing-build-dependencies">Installing build dependencies</a><ul>
 <li><a class="reference internal" href="#linux">Linux</a></li>
 <li><a class="reference internal" href="#windows">Windows</a></li>
-<li><a class="reference internal" href="#python-3-5">Python &gt;= 3.5</a></li>
-<li><a class="reference internal" href="#bit-python-3-4">32-bit Python (&lt;= 3.4)</a></li>
-<li><a class="reference internal" href="#id1">64-bit Python (&lt;= 3.4)</a></li>
 <li><a class="reference internal" href="#building-binary-packages-and-installers">Building binary packages and installers</a></li>
 <li><a class="reference internal" href="#using-an-alternative-compiler">Using an alternative compiler</a></li>
 </ul>
@@ -251,8 +248,8 @@ brand-new code. This document describes how to build from source.</li>
 <p>Scikit-learn requires:</p>
 <ul class="simple">
 <li>Python (&gt;= 3.5),</li>
-<li>NumPy (&gt;= 1.8.2),</li>
-<li>SciPy (&gt;= 0.13.3).</li>
+<li>NumPy (&gt;= 1.11),</li>
+<li>SciPy (&gt;= 0.17).</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -261,7 +258,7 @@ are required. For PyPy, only installation instructions with pip apply.</p>
 </div>
 <p>Building Scikit-learn also requires</p>
 <ul class="simple">
-<li>Cython &gt;=0.23</li>
+<li>Cython &gt;=0.28.5</li>
 </ul>
 <p>Running tests requires</p>
 <ul class="simple">
@@ -368,23 +365,15 @@ of commands. ATLAS has to be removed, otherwise NumPy may not work:</p>
 <h3>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h3>
 <p>To build scikit-learn on Windows you need a working C/C++ compiler in
 addition to numpy, scipy and setuptools.</p>
-<p>Picking the right compiler depends on the version of Python (2 or 3)
-and the architecture of the Python interpreter, 32-bit or 64-bit.
-You can check the Python version by running the following in <code class="docutils literal"><span class="pre">cmd</span></code> or
-<code class="docutils literal"><span class="pre">powershell</span></code> console:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">--</span><span class="n">version</span>
-</pre></div>
-</div>
-<p>and the architecture with:</p>
+<p>The building command depends on the architecture of the Python interpreter,
+32-bit or 64-bit. You can check the architecture by running the following in
+<code class="docutils literal"><span class="pre">cmd</span></code> or <code class="docutils literal"><span class="pre">powershell</span></code> console:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;import struct; print(struct.calcsize(&#39;P&#39;) * 8)&quot;</span>
 </pre></div>
 </div>
 <p>The above commands assume that you have the Python installation folder in your
 PATH environment variable.</p>
-</div>
-<div class="section" id="python-3-5">
-<h3>Python &gt;= 3.5<a class="headerlink" href="#python-3-5" title="Permalink to this headline">¶</a></h3>
-<p>For Python versions as of 3.5, you need <a class="reference external" href="https://visualstudio.microsoft.com/de/downloads/">Build Tools for Visual Studio 2017</a>.</p>
+<p>You will need <a class="reference external" href="https://visualstudio.microsoft.com/de/downloads/">Build Tools for Visual Studio 2017</a>.</p>
 <p>For 64-bit Python, configure the build environment with:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">SET</span> <span class="n">DISTUTILS_USE_SDK</span><span class="o">=</span><span class="mi">1</span>
 <span class="s2">&quot;C:\Program Files (x86)\Microsoft Visual Studio</span><span class="se">\201</span><span class="s2">7\BuildTools\VC\Auxiliary\Build</span><span class="se">\v</span><span class="s2">cvarsall.bat&quot;</span> <span class="n">x64</span>
@@ -395,47 +384,6 @@ PATH environment variable.</p>
 </pre></div>
 </div>
 <p>Replace <code class="docutils literal"><span class="pre">x64</span></code> by <code class="docutils literal"><span class="pre">x86</span></code> to build for 32-bit Python.</p>
-</div>
-<div class="section" id="bit-python-3-4">
-<h3>32-bit Python (&lt;= 3.4)<a class="headerlink" href="#bit-python-3-4" title="Permalink to this headline">¶</a></h3>
-<p>For 32-bit Python versions up to 3.4 use Microsoft Visual C++ Express 2010.</p>
-<p>Once installed you should be able to build scikit-learn without any
-particular configuration by running the following command in the scikit-learn
-folder:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="id1">
-<h3>64-bit Python (&lt;= 3.4)<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<p>For 64-bit Python versions up to 3.4, you either need the full Visual Studio or
-the free Windows SDKs that can be downloaded from the links below.</p>
-<p>The Windows SDKs include the MSVC compilers both for 32 and 64-bit
-architectures. They come as a <code class="docutils literal"><span class="pre">GRMSDKX_EN_DVD.iso</span></code> file that can be mounted
-as a new drive with a <code class="docutils literal"><span class="pre">setup.exe</span></code> installer in it.</p>
-<ul class="simple">
-<li>For Python  you need SDK <strong>v7.1</strong>: <a class="reference external" href="https://www.microsoft.com/en-us/download/details.aspx?id=8442">MS Windows SDK for Windows 7 and .NET
-Framework 4</a></li>
-</ul>
-<p>Both SDKs can be installed in parallel on the same host. To use the Windows
-SDKs, you need to setup the environment of a <code class="docutils literal"><span class="pre">cmd</span></code> console launched with the
-following flags</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cmd</span> <span class="o">/</span><span class="n">E</span><span class="p">:</span><span class="n">ON</span> <span class="o">/</span><span class="n">V</span><span class="p">:</span><span class="n">ON</span> <span class="o">/</span><span class="n">K</span>
-</pre></div>
-</div>
-<p>Then configure the build environment with:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">SET</span> <span class="n">DISTUTILS_USE_SDK</span><span class="o">=</span><span class="mi">1</span>
-<span class="n">SET</span> <span class="n">MSSdk</span><span class="o">=</span><span class="mi">1</span>
-<span class="s2">&quot;C:\Program Files\Microsoft SDKs\Windows</span><span class="se">\v</span><span class="s2">7.1\Setup\WindowsSdkVer.exe&quot;</span> <span class="o">-</span><span class="n">q</span> <span class="o">-</span><span class="n">version</span><span class="p">:</span><span class="n">v7</span><span class="o">.</span><span class="mi">1</span>
-<span class="s2">&quot;C:\Program Files\Microsoft SDKs\Windows</span><span class="se">\v</span><span class="s2">7.1\Bin\SetEnv.cmd&quot;</span> <span class="o">/</span><span class="n">x64</span> <span class="o">/</span><span class="n">release</span>
-</pre></div>
-</div>
-<p>Finally you can build scikit-learn in the same <code class="docutils literal"><span class="pre">cmd</span></code> console:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
-</pre></div>
-</div>
-<p>Replace <code class="docutils literal"><span class="pre">/x64</span></code> by <code class="docutils literal"><span class="pre">/x86</span></code> to build for 32-bit Python instead of 64-bit
-Python.</p>
 </div>
 <div class="section" id="building-binary-packages-and-installers">
 <h3>Building binary packages and installers<a class="headerlink" href="#building-binary-packages-and-installers" title="Permalink to this headline">¶</a></h3>
@@ -461,7 +409,7 @@ build step:</p>
 </div>
 </div>
 <div class="section" id="testing">
-<span id="id2"></span><h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+<span id="id1"></span><h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="testing-scikit-learn-once-installed">
 <h3>Testing scikit-learn once installed<a class="headerlink" href="#testing-scikit-learn-once-installed" title="Permalink to this headline">¶</a></h3>
 <p>Testing requires having <a class="reference external" href="https://docs.pytest.org">pytest</a> &gt;=3.3.0.
