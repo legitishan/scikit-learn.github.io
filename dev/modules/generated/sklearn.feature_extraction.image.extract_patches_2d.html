@@ -209,7 +209,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.feature_extraction.image" title="sklearn.feature_extraction.image"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.feature_extraction.image</span></code></a>.extract_patches_2d<a class="headerlink" href="#sklearn-feature-extraction-image-extract-patches-2d" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.feature_extraction.image.extract_patches_2d">
-<code class="descclassname">sklearn.feature_extraction.image.</code><code class="descname">extract_patches_2d</code><span class="sig-paren">(</span><em>image</em>, <em>patch_size</em>, <em>max_patches=None</em>, <em>random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/fcec951/sklearn/feature_extraction/image.py#L302"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_extraction.image.extract_patches_2d" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sklearn.feature_extraction.image.</code><code class="descname">extract_patches_2d</code><span class="sig-paren">(</span><em>image</em>, <em>patch_size</em>, <em>max_patches=None</em>, <em>random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/3df0c19/sklearn/feature_extraction/image.py#L302"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.feature_extraction.image.extract_patches_2d" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reshape a 2D image into a collection of patches</p>
 <p>The resulting patches are allocated in a dedicated array.</p>
 <p>Read more in the <a class="reference internal" href="../feature_extraction.html#image-feature-extraction"><span class="std std-ref">User Guide</span></a>.</p>
@@ -254,26 +254,26 @@ extracted.</p>
 </tbody>
 </table>
 <p class="rubric">Examples</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">load_sample_images</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.feature_extraction</span> <span class="k">import</span> <span class="n">image</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">one_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">one_image</span>
-<span class="go">array([[ 0,  1,  2,  3],</span>
-<span class="go">       [ 4,  5,  6,  7],</span>
-<span class="go">       [ 8,  9, 10, 11],</span>
-<span class="go">       [12, 13, 14, 15]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Use the array data from the first image in this dataset:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">one_image</span> <span class="o">=</span> <span class="n">load_sample_images</span><span class="p">()</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Image shape: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">one_image</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+<span class="go">Image shape: (427, 640, 3)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">patches</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">extract_patches_2d</span><span class="p">(</span><span class="n">one_image</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">patches</span><span class="o">.</span><span class="n">shape</span>
-<span class="go">(9, 2, 2)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">patches</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="go">array([[0, 1],</span>
-<span class="go">       [4, 5]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">patches</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="go">array([[1, 2],</span>
-<span class="go">       [5, 6]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">patches</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span>
-<span class="go">array([[10, 11],</span>
-<span class="go">       [14, 15]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Patches shape: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">patches</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+<span class="go">Patches shape: (272214, 2, 2, 3)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Here are just two of these patches:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">patches</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> 
+<span class="go">[[[174 201 231]</span>
+<span class="go">  [174 201 231]]</span>
+<span class="go"> [[173 200 230]</span>
+<span class="go">  [173 200 230]]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">patches</span><span class="p">[</span><span class="mi">800</span><span class="p">])</span>
+<span class="go">[[[187 214 243]</span>
+<span class="go">  [188 215 244]]</span>
+<span class="go"> [[187 214 243]</span>
+<span class="go">  [188 215 244]]]</span>
 </pre></div>
 </div>
 </dd></dl>
