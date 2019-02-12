@@ -357,6 +357,28 @@ render these plots inline automatically:</p>
 <div class="figure align-center">
 <a class="reference external image-reference" href="../auto_examples/tree/plot_iris_dtc.html"><img alt="../_images/sphx_glr_plot_iris_dtc_0011.png" src="../_images/sphx_glr_plot_iris_dtc_0011.png" style="width: 480.0px; height: 360.0px;" /></a>
 </div>
+<p>Alternatively, the tree can also be exported in textual format with the
+function <a class="reference internal" href="generated/sklearn.tree.export_text.html#sklearn.tree.export_text" title="sklearn.tree.export_text"><code class="xref py py-func docutils literal"><span class="pre">export_text</span></code></a>. This method doesn’t require the installation
+of external libraries and is more compact:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">load_iris</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="k">import</span> <span class="n">DecisionTreeClassifier</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.tree.export</span> <span class="k">import</span> <span class="n">export_text</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">iris</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">iris</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decision_tree</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decision_tree</span> <span class="o">=</span> <span class="n">decision_tree</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">export_text</span><span class="p">(</span><span class="n">decision_tree</span><span class="p">,</span> <span class="n">feature_names</span><span class="o">=</span><span class="n">iris</span><span class="p">[</span><span class="s1">&#39;feature_names&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+<span class="go">|--- petal width (cm) &lt;= 0.80</span>
+<span class="go">|   |--- class: 0</span>
+<span class="go">|--- petal width (cm) &gt;  0.80</span>
+<span class="go">|   |--- petal width (cm) &lt;= 1.75</span>
+<span class="go">|   |   |--- class: 1</span>
+<span class="go">|   |--- petal width (cm) &gt;  1.75</span>
+<span class="go">|   |   |--- class: 2</span>
+</pre></div>
+</div>
 <div class="topic">
 <p class="topic-title first">Examples:</p>
 <ul class="simple">
