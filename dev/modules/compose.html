@@ -597,14 +597,16 @@ preprocessing or a specific feature extraction method:</p>
 </pre></div>
 </div>
 <p>For this data, we might want to encode the <code class="docutils literal"><span class="pre">'city'</span></code> column as a categorical
-variable, but apply a <a class="reference internal" href="generated/sklearn.feature_extraction.text.CountVectorizer.html#sklearn.feature_extraction.text.CountVectorizer" title="sklearn.feature_extraction.text.CountVectorizer"><code class="xref py py-class docutils literal"><span class="pre">feature_extraction.text.CountVectorizer</span></code></a> to the <code class="docutils literal"><span class="pre">'title'</span></code> column.
+variable using <a class="reference internal" href="generated/sklearn.preprocessing.OneHotEncoder.html#sklearn.preprocessing.OneHotEncoder" title="sklearn.preprocessing.OneHotEncoder"><code class="xref py py-class docutils literal"><span class="pre">preprocessing.OneHotEncoder</span></code></a> but apply a
+<a class="reference internal" href="generated/sklearn.feature_extraction.text.CountVectorizer.html#sklearn.feature_extraction.text.CountVectorizer" title="sklearn.feature_extraction.text.CountVectorizer"><code class="xref py py-class docutils literal"><span class="pre">feature_extraction.text.CountVectorizer</span></code></a> to the <code class="docutils literal"><span class="pre">'title'</span></code> column.
 As we might use multiple feature extraction methods on the same column, we give
 each transformer a unique name, say <code class="docutils literal"><span class="pre">'city_category'</span></code> and <code class="docutils literal"><span class="pre">'title_bow'</span></code>.
 By default, the remaining rating columns are ignored (<code class="docutils literal"><span class="pre">remainder='drop'</span></code>):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.compose</span> <span class="k">import</span> <span class="n">ColumnTransformer</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="k">import</span> <span class="n">CountVectorizer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">OneHotEncoder</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">column_trans</span> <span class="o">=</span> <span class="n">ColumnTransformer</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="p">[(</span><span class="s1">&#39;city_category&#39;</span><span class="p">,</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">analyzer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">]),</span> <span class="s1">&#39;city&#39;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="p">[(</span><span class="s1">&#39;city_category&#39;</span><span class="p">,</span> <span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int&#39;</span><span class="p">),[</span><span class="s1">&#39;city&#39;</span><span class="p">]),</span>
 <span class="gp">... </span>     <span class="p">(</span><span class="s1">&#39;title_bow&#39;</span><span class="p">,</span> <span class="n">CountVectorizer</span><span class="p">(),</span> <span class="s1">&#39;title&#39;</span><span class="p">)],</span>
 <span class="gp">... </span>    <span class="n">remainder</span><span class="o">=</span><span class="s1">&#39;drop&#39;</span><span class="p">)</span>
 
@@ -615,7 +617,7 @@ By default, the remaining rating columns are ignored (<code class="docutils lite
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">column_trans</span><span class="o">.</span><span class="n">get_feature_names</span><span class="p">()</span>
 <span class="gp">... </span>
-<span class="go">[&#39;city_category__London&#39;, &#39;city_category__Paris&#39;, &#39;city_category__Sallisaw&#39;,</span>
+<span class="go">[&#39;city_category__x0_London&#39;, &#39;city_category__x0_Paris&#39;, &#39;city_category__x0_Sallisaw&#39;,</span>
 <span class="go">&#39;title_bow__bow&#39;, &#39;title_bow__feast&#39;, &#39;title_bow__grapes&#39;, &#39;title_bow__his&#39;,</span>
 <span class="go">&#39;title_bow__how&#39;, &#39;title_bow__last&#39;, &#39;title_bow__learned&#39;, &#39;title_bow__moveable&#39;,</span>
 <span class="go">&#39;title_bow__of&#39;, &#39;title_bow__the&#39;, &#39;title_bow__trick&#39;, &#39;title_bow__watson&#39;,</span>
@@ -631,8 +633,9 @@ By default, the remaining rating columns are ignored (<code class="docutils lite
 </div>
 <p>In the above example, the
 <a class="reference internal" href="generated/sklearn.feature_extraction.text.CountVectorizer.html#sklearn.feature_extraction.text.CountVectorizer" title="sklearn.feature_extraction.text.CountVectorizer"><code class="xref py py-class docutils literal"><span class="pre">CountVectorizer</span></code></a> expects a 1D array as
-input and therefore the columns were specified as a string (<code class="docutils literal"><span class="pre">'city'</span></code>).
-However, other transformers generally expect 2D data, and in that case you need
+input and therefore the columns were specified as a string (<code class="docutils literal"><span class="pre">'title'</span></code>).
+However, <a class="reference internal" href="generated/sklearn.preprocessing.OneHotEncoder.html#sklearn.preprocessing.OneHotEncoder" title="sklearn.preprocessing.OneHotEncoder"><code class="xref py py-class docutils literal"><span class="pre">preprocessing.OneHotEncoder</span></code></a>
+as most of other transformers expects 2D data, therefore in that case you need
 to specify the column as a list of strings (<code class="docutils literal"><span class="pre">['city']</span></code>).</p>
 <p>Apart from a scalar or a single item list, the column selection can be specified
 as a list of multiple items, an integer array, a slice, or a boolean mask.
@@ -642,7 +645,7 @@ interpreted as the positional columns.</p>
 <code class="docutils literal"><span class="pre">remainder='passthrough'</span></code>. The values are appended to the end of the
 transformation:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">column_trans</span> <span class="o">=</span> <span class="n">ColumnTransformer</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="p">[(</span><span class="s1">&#39;city_category&#39;</span><span class="p">,</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">analyzer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">]),</span> <span class="s1">&#39;city&#39;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="p">[(</span><span class="s1">&#39;city_category&#39;</span><span class="p">,</span> <span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int&#39;</span><span class="p">),[</span><span class="s1">&#39;city&#39;</span><span class="p">]),</span>
 <span class="gp">... </span>     <span class="p">(</span><span class="s1">&#39;title_bow&#39;</span><span class="p">,</span> <span class="n">CountVectorizer</span><span class="p">(),</span> <span class="s1">&#39;title&#39;</span><span class="p">)],</span>
 <span class="gp">... </span>    <span class="n">remainder</span><span class="o">=</span><span class="s1">&#39;passthrough&#39;</span><span class="p">)</span>
 
@@ -659,7 +662,7 @@ remaining rating columns. The transformed values are appended to the end of
 the transformation:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">MinMaxScaler</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">column_trans</span> <span class="o">=</span> <span class="n">ColumnTransformer</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="p">[(</span><span class="s1">&#39;city_category&#39;</span><span class="p">,</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">analyzer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">]),</span> <span class="s1">&#39;city&#39;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="p">[(</span><span class="s1">&#39;city_category&#39;</span><span class="p">,</span> <span class="n">OneHotEncoder</span><span class="p">(),</span> <span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]),</span>
 <span class="gp">... </span>     <span class="p">(</span><span class="s1">&#39;title_bow&#39;</span><span class="p">,</span> <span class="n">CountVectorizer</span><span class="p">(),</span> <span class="s1">&#39;title&#39;</span><span class="p">)],</span>
 <span class="gp">... </span>    <span class="n">remainder</span><span class="o">=</span><span class="n">MinMaxScaler</span><span class="p">())</span>
 
@@ -677,14 +680,14 @@ Specifically, the names will be given automatically. The equivalent for the
 above example would be:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.compose</span> <span class="k">import</span> <span class="n">make_column_transformer</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">column_trans</span> <span class="o">=</span> <span class="n">make_column_transformer</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="p">(</span><span class="n">CountVectorizer</span><span class="p">(</span><span class="n">analyzer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">]),</span> <span class="s1">&#39;city&#39;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="n">OneHotEncoder</span><span class="p">(),</span> <span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]),</span>
 <span class="gp">... </span>    <span class="p">(</span><span class="n">CountVectorizer</span><span class="p">(),</span> <span class="s1">&#39;title&#39;</span><span class="p">),</span>
 <span class="gp">... </span>    <span class="n">remainder</span><span class="o">=</span><span class="n">MinMaxScaler</span><span class="p">())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">column_trans</span> 
 <span class="go">ColumnTransformer(n_jobs=None, remainder=MinMaxScaler(copy=True, ...),</span>
 <span class="go">         sparse_threshold=0.3,</span>
 <span class="go">         transformer_weights=None,</span>
-<span class="go">         transformers=[(&#39;countvectorizer-1&#39;, ...)</span>
+<span class="go">         transformers=[(&#39;onehotencoder&#39;, ...)</span>
 </pre></div>
 </div>
 <div class="topic">
