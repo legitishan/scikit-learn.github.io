@@ -238,6 +238,7 @@
 <li><a class="reference internal" href="#estimator-types">Estimator types</a></li>
 <li><a class="reference internal" href="#working-notes">Working notes</a></li>
 <li><a class="reference internal" href="#specific-models">Specific models</a></li>
+<li><a class="reference internal" href="#estimator-tags">Estimator Tags</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#reading-the-existing-code-base">Reading the existing code base</a></li>
@@ -1580,22 +1581,18 @@ advised to maintain notes on the <a class="reference external" href="https://git
 </div>
 <div class="section" id="specific-models">
 <h3>Specific models<a class="headerlink" href="#specific-models" title="Permalink to this headline">¶</a></h3>
-<p>Classifiers should accept <code class="docutils literal"><span class="pre">y</span></code> (target) arguments to <code class="docutils literal"><span class="pre">fit</span></code>
-that are sequences (lists, arrays) of either strings or integers.
-They should not assume that the class labels
-are a contiguous range of integers;
-instead, they should store a list of classes
-in a <code class="docutils literal"><span class="pre">classes_</span></code> attribute or property.
-The order of class labels in this attribute
-should match the order in which <code class="docutils literal"><span class="pre">predict_proba</span></code>, <code class="docutils literal"><span class="pre">predict_log_proba</span></code>
-and <code class="docutils literal"><span class="pre">decision_function</span></code> return their values.
-The easiest way to achieve this is to put:</p>
+<p>Classifiers should accept <code class="docutils literal"><span class="pre">y</span></code> (target) arguments to <code class="docutils literal"><span class="pre">fit</span></code> that are
+sequences (lists, arrays) of either strings or integers.  They should not
+assume that the class labels are a contiguous range of integers; instead, they
+should store a list of classes in a <code class="docutils literal"><span class="pre">classes_</span></code> attribute or property.  The
+order of class labels in this attribute should match the order in which
+<code class="docutils literal"><span class="pre">predict_proba</span></code>, <code class="docutils literal"><span class="pre">predict_log_proba</span></code> and <code class="docutils literal"><span class="pre">decision_function</span></code> return their
+values.  The easiest way to achieve this is to put:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">classes_</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">return_inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>in <code class="docutils literal"><span class="pre">fit</span></code>.
-This returns a new <code class="docutils literal"><span class="pre">y</span></code> that contains class indexes, rather than labels,
-in the range [0, <code class="docutils literal"><span class="pre">n_classes</span></code>).</p>
+<p>in <code class="docutils literal"><span class="pre">fit</span></code>.  This returns a new <code class="docutils literal"><span class="pre">y</span></code> that contains class indexes, rather than
+labels, in the range [0, <code class="docutils literal"><span class="pre">n_classes</span></code>).</p>
 <p>A classifier’s <code class="docutils literal"><span class="pre">predict</span></code> method should return
 arrays containing class labels from <code class="docutils literal"><span class="pre">classes_</span></code>.
 In a classifier that implements <code class="docutils literal"><span class="pre">decision_function</span></code>,
@@ -1605,12 +1602,74 @@ this can be achieved with:</p>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">classes_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)]</span>
 </pre></div>
 </div>
-<p>In linear models, coefficients are stored in an array called <code class="docutils literal"><span class="pre">coef_</span></code>,
-and the independent term is stored in <code class="docutils literal"><span class="pre">intercept_</span></code>.
-<code class="docutils literal"><span class="pre">sklearn.linear_model.base</span></code> contains a few base classes and mixins
-that implement common linear model patterns.</p>
+<p>In linear models, coefficients are stored in an array called <code class="docutils literal"><span class="pre">coef_</span></code>, and the
+independent term is stored in <code class="docutils literal"><span class="pre">intercept_</span></code>.  <code class="docutils literal"><span class="pre">sklearn.linear_model.base</span></code>
+contains a few base classes and mixins that implement common linear model
+patterns.</p>
 <p>The <code class="xref py py-mod docutils literal"><span class="pre">sklearn.utils.multiclass</span></code> module contains useful functions
 for working with multiclass and multilabel problems.</p>
+</div>
+<div class="section" id="estimator-tags">
+<h3>Estimator Tags<a class="headerlink" href="#estimator-tags" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The estimator tags are experimental and the API is subject to change.</p>
+</div>
+<p>Scikit-learn introduced estimator tags in version 0.21.  These are annotations
+of estimators that allow programmatic inspection of their capabilities, such as
+sparse matrix support, supported output types and supported methods.  The
+estimator tags are a dictionary returned by the method <code class="docutils literal"><span class="pre">_get_tags()</span></code>.  These
+tags are used by the common tests and the <code class="xref py py-func docutils literal"><span class="pre">sklearn.utils.estomator_checks.check_estimator</span></code> function to
+decide what tests to run and what input data is appropriate. Tags can depends on
+estimator parameters or even system architecture and can in general only be
+determined at runtime.</p>
+<p>The default value of all tags except for <code class="docutils literal"><span class="pre">X_types</span></code> is <code class="docutils literal"><span class="pre">False</span></code>.</p>
+<p>The current set of estimator tags are:</p>
+<dl class="docutils">
+<dt>non_deterministic</dt>
+<dd>whether the estimator is not deterministic given a fixed <code class="docutils literal"><span class="pre">random_state</span></code></dd>
+<dt>requires_positive_data - unused for now</dt>
+<dd>whether the estimator requires positive X.</dd>
+<dt>no_validation</dt>
+<dd>whether the estimator skips input-validation. This is only meant for stateless and dummy transformers!</dd>
+<dt>multioutput - unused for now</dt>
+<dd>whether a regressor supports multi-target outputs or a classifier supports multi-class multi-output.</dd>
+<dt>multilabel</dt>
+<dd>whether the estimator supports multilabel output</dd>
+<dt>stateless</dt>
+<dd>whether the estimator needs access to data for fitting. Even though
+an estimator is stateless, it might still need a call to <code class="docutils literal"><span class="pre">fit</span></code> for initialization.</dd>
+<dt>allow_nan</dt>
+<dd>whether the estimator supports data with missing values encoded as np.NaN</dd>
+<dt>poor_score</dt>
+<dd>whether the estimator fails to provide a “reasonable” test-set score, which
+currently for regression is an R2 of 0.5 on a subset of the boston housing
+dataset, and for classification an accuracy of 0.83 on
+<code class="docutils literal"><span class="pre">make_blobs(n_samples=300,</span> <span class="pre">random_state=0)</span></code>. These datasets and values
+are based on current estimators in sklearn and might be replaced by
+something more systematic.</dd>
+<dt>multioutput_only</dt>
+<dd>whether estimator supports only multi-output classification or regression.</dd>
+<dt>_skip_test</dt>
+<dd>whether to skip common tests entirely. Don’t use this unless you have a <em>very good</em> reason.</dd>
+<dt>X_types</dt>
+<dd>Supported input types for X as list of strings. Tests are currently only run if ‘2darray’ is contained
+in the list, signifying that the estimator takes continuous 2d numpy arrays as input. The default
+value is [‘2darray’]. Other possible types are <code class="docutils literal"><span class="pre">'string'</span></code>, <code class="docutils literal"><span class="pre">'sparse'</span></code>,
+<code class="docutils literal"><span class="pre">'categorical'</span></code>, <code class="docutils literal"><span class="pre">dict</span></code>, <code class="docutils literal"><span class="pre">'1dlabels'</span></code> and <code class="docutils literal"><span class="pre">'2dlabels'</span></code>.
+The goals is that in the future the supported input type will determine the
+data used during testsing, in particular for <code class="docutils literal"><span class="pre">'string'</span></code>, <code class="docutils literal"><span class="pre">'sparse'</span></code> and
+<code class="docutils literal"><span class="pre">'categorical'</span></code> data.  For now, the test for sparse data do not make use
+of the <code class="docutils literal"><span class="pre">'sparse'</span></code> tag.</dd>
+</dl>
+<p>In addition to the tags, estimators are also need to declare any non-optional
+parameters to <code class="docutils literal"><span class="pre">__init__</span></code> in the <code class="docutils literal"><span class="pre">_required_parameters</span></code> class attribute,
+which is a list or tuple.  If <code class="docutils literal"><span class="pre">_required_parameters</span></code> is only
+<code class="docutils literal"><span class="pre">[&quot;estimator&quot;]</span></code> or <code class="docutils literal"><span class="pre">[&quot;base_estimator&quot;]</span></code>, then the estimator will be
+instantiated with an instance of <code class="docutils literal"><span class="pre">LinearDiscriminantAnalysis</span></code> (or
+<code class="docutils literal"><span class="pre">RidgeRegression</span></code> if the estimator is a regressor) in the tests. The choice
+of these two models is somewhat idiosyncratic but both should provide robust
+closed-form solutions.</p>
 </div>
 </div>
 <div class="section" id="reading-the-existing-code-base">
