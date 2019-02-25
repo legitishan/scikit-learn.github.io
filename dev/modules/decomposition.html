@@ -238,12 +238,13 @@ orthogonal components that explain a maximum amount of the variance. In
 scikit-learn, <a class="reference internal" href="generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="sklearn.decomposition.PCA"><code class="xref py py-class docutils literal"><span class="pre">PCA</span></code></a> is implemented as a <em>transformer</em> object
 that learns <span class="math">\(n\)</span> components in its <code class="docutils literal"><span class="pre">fit</span></code> method, and can be used on new
 data to project it on these components.</p>
-<p>The optional parameter <code class="docutils literal"><span class="pre">whiten=True</span></code> makes it possible to
-project the data onto the singular space while scaling each component
-to unit variance. This is often useful if the models down-stream make
-strong assumptions on the isotropy of the signal: this is for example
-the case for Support Vector Machines with the RBF kernel and the K-Means
-clustering algorithm.</p>
+<p>PCA centers but does not scale the input data for each feature before
+applying the SVD. The optional parameter parameter <code class="docutils literal"><span class="pre">whiten=True</span></code> makes it
+possible to project the data onto the singular space while scaling each
+component to unit variance. This is often useful if the models down-stream make
+strong assumptions on the isotropy of the signal: this is for example the case
+for Support Vector Machines with the RBF kernel and the K-Means clustering
+algorithm.</p>
 <p>Below is an example of the iris dataset, which is comprised of 4
 features, projected on the 2 dimensions that explain most variance:</p>
 <div class="figure align-center">
@@ -285,6 +286,8 @@ from the local hard drive or a network database.</li>
 in order update <code class="docutils literal"><span class="pre">explained_variance_ratio_</span></code> incrementally. This is why
 memory usage depends on the number of samples per batch, rather than the
 number of samples to be processed in the dataset.</p>
+<p>As in <a class="reference internal" href="generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="sklearn.decomposition.PCA"><code class="xref py py-class docutils literal"><span class="pre">PCA</span></code></a>, <a class="reference internal" href="generated/sklearn.decomposition.IncrementalPCA.html#sklearn.decomposition.IncrementalPCA" title="sklearn.decomposition.IncrementalPCA"><code class="xref py py-class docutils literal"><span class="pre">IncrementalPCA</span></code></a> centers but does not scale the
+input data for each feature before applying the SVD.</p>
 <div class="figure align-center">
 <a class="reference external image-reference" href="../auto_examples/decomposition/plot_incremental_pca.html"><img alt="../_images/sphx_glr_plot_incremental_pca_0011.png" src="../_images/sphx_glr_plot_incremental_pca_0011.png" style="width: 600.0px; height: 600.0px;" /></a>
 </div>
