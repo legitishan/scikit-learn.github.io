@@ -645,7 +645,7 @@ one of them 1, and all others 0.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">OneHotEncoder</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;male&#39;</span><span class="p">,</span> <span class="s1">&#39;from US&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Safari&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="s1">&#39;from Europe&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Firefox&#39;</span><span class="p">]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>  
-<span class="go">OneHotEncoder(categorical_features=None, categories=None,</span>
+<span class="go">OneHotEncoder(categorical_features=None, categories=None, drop=None,</span>
 <span class="go">       dtype=&lt;... &#39;numpy.float64&#39;&gt;, handle_unknown=&#39;error&#39;,</span>
 <span class="go">       n_values=None, sparse=True)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">transform</span><span class="p">([[</span><span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="s1">&#39;from US&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Safari&#39;</span><span class="p">],</span>
@@ -672,7 +672,7 @@ dataset:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;male&#39;</span><span class="p">,</span> <span class="s1">&#39;from US&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Safari&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="s1">&#39;from Europe&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Firefox&#39;</span><span class="p">]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> 
 <span class="go">OneHotEncoder(categorical_features=None,</span>
-<span class="go">       categories=[...],</span>
+<span class="go">       categories=[...], drop=None,</span>
 <span class="go">       dtype=&lt;... &#39;numpy.float64&#39;&gt;, handle_unknown=&#39;error&#39;,</span>
 <span class="go">       n_values=None, sparse=True)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">transform</span><span class="p">([[</span><span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="s1">&#39;from Asia&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Chrome&#39;</span><span class="p">]])</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
@@ -689,11 +689,29 @@ columns for this feature will be all zeros
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">handle_unknown</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;male&#39;</span><span class="p">,</span> <span class="s1">&#39;from US&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Safari&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="s1">&#39;from Europe&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Firefox&#39;</span><span class="p">]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> 
-<span class="go">OneHotEncoder(categorical_features=None, categories=None,</span>
+<span class="go">OneHotEncoder(categorical_features=None, categories=None, drop=None,</span>
 <span class="go">       dtype=&lt;... &#39;numpy.float64&#39;&gt;, handle_unknown=&#39;ignore&#39;,</span>
 <span class="go">       n_values=None, sparse=True)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">transform</span><span class="p">([[</span><span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="s1">&#39;from Asia&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Chrome&#39;</span><span class="p">]])</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
 <span class="go">array([[1., 0., 0., 0., 0., 0.]])</span>
+</pre></div>
+</div>
+<p>It is also possible to encode each column into <code class="docutils literal"><span class="pre">n_categories</span> <span class="pre">-</span> <span class="pre">1</span></code> columns
+instead of <code class="docutils literal"><span class="pre">n_categories</span></code> columns by using the <code class="docutils literal"><span class="pre">drop</span></code> parameter. This
+parameter allows the user to specify a category for each feature to be dropped.
+This is useful to avoid co-linearity in the input matrix in some classifiers.
+Such functionality is useful, for example, when using non-regularized
+regression (<a class="reference internal" href="generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression" title="sklearn.linear_model.LinearRegression"><code class="xref py py-class docutils literal"><span class="pre">LinearRegression</span></code></a>),
+since co-linearity would cause the covariance matrix to be non-invertible.
+When this paramenter is not None, <code class="docutils literal"><span class="pre">handle_unknown</span></code> must be set to
+<code class="docutils literal"><span class="pre">error</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;male&#39;</span><span class="p">,</span> <span class="s1">&#39;from US&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Safari&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="s1">&#39;from Europe&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Firefox&#39;</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drop_enc</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="s1">&#39;first&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drop_enc</span><span class="o">.</span><span class="n">categories_</span>
+<span class="go">[array([&#39;female&#39;, &#39;male&#39;], dtype=object), array([&#39;from Europe&#39;, &#39;from US&#39;], dtype=object), array([&#39;uses Firefox&#39;, &#39;uses Safari&#39;], dtype=object)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drop_enc</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+<span class="go">array([[1., 1., 1.],</span>
+<span class="go">       [0., 0., 0.]])</span>
 </pre></div>
 </div>
 <p>See <a class="reference internal" href="feature_extraction.html#dict-feature-extraction"><span class="std std-ref">Loading features from dicts</span></a> for categorical features that are represented
