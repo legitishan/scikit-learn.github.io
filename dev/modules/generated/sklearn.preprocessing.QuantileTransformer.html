@@ -215,10 +215,12 @@
 distribution. Therefore, for a given feature, this transformation tends
 to spread out the most frequent values. It also reduces the impact of
 (marginal) outliers: this is therefore a robust preprocessing scheme.</p>
-<p>The transformation is applied on each feature independently.
-The cumulative distribution function of a feature is used to project the
-original values. Features values of new/unseen data that fall below
-or above the fitted range will be mapped to the bounds of the output
+<p>The transformation is applied on each feature independently. First an
+estimate of the cumulative distribution function of a feature is
+used to map the original values to a uniform distribution. The obtained
+values are then mapped to the desired output distribution using the
+associated quantile function. Features values of new/unseen data that fall
+below or above the fitted range will be mapped to the bounds of the output
 distribution. Note that this transform is non-linear. It may distort linear
 correlations between variables measured at the same scale but renders
 variables measured at different scales more directly comparable.</p>
@@ -329,12 +331,12 @@ see <a class="reference internal" href="../../auto_examples/preprocessing/plot_a
 </table>
 <dl class="method">
 <dt id="sklearn.preprocessing.QuantileTransformer.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>n_quantiles=1000</em>, <em>output_distribution=’uniform’</em>, <em>ignore_implicit_zeros=False</em>, <em>subsample=100000</em>, <em>random_state=None</em>, <em>copy=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2237b17/sklearn/preprocessing/data.py#L2109"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.QuantileTransformer.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>n_quantiles=1000</em>, <em>output_distribution=’uniform’</em>, <em>ignore_implicit_zeros=False</em>, <em>subsample=100000</em>, <em>random_state=None</em>, <em>copy=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2237b17/sklearn/preprocessing/data.py#L2111"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.QuantileTransformer.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="sklearn.preprocessing.QuantileTransformer.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2237b17/sklearn/preprocessing/data.py#L2187"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.QuantileTransformer.fit" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2237b17/sklearn/preprocessing/data.py#L2189"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.QuantileTransformer.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the quantiles used for transforming.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -420,7 +422,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.preprocessing.QuantileTransformer.inverse_transform">
-<code class="descname">inverse_transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2237b17/sklearn/preprocessing/data.py#L2380"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.QuantileTransformer.inverse_transform" title="Permalink to this definition">¶</a></dt>
+<code class="descname">inverse_transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2237b17/sklearn/preprocessing/data.py#L2387"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.QuantileTransformer.inverse_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Back-projection to the original space.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -471,7 +473,7 @@ component of a nested object.</p>
 
 <dl class="method">
 <dt id="sklearn.preprocessing.QuantileTransformer.transform">
-<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2237b17/sklearn/preprocessing/data.py#L2359"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.QuantileTransformer.transform" title="Permalink to this definition">¶</a></dt>
+<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2237b17/sklearn/preprocessing/data.py#L2366"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.QuantileTransformer.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Feature-wise transformation of the data.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

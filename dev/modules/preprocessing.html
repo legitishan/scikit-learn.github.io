@@ -443,16 +443,29 @@ defined by <span class="math">\(phi\)</span> followed by removal of the mean in 
 </div>
 <div class="section" id="non-linear-transformation">
 <span id="preprocessing-transformer"></span><h2>4.3.2. Non-linear transformation<a class="headerlink" href="#non-linear-transformation" title="Permalink to this headline">¶</a></h2>
+<p>Two types of transformations are available: quantile transforms and power
+transforms. Both quantile and power transforms are based on monotonic
+transformations of the features and thus preserve the rank of the values
+along each feature.</p>
+<p>Quantile transforms put all features into the same desired distribution based
+on the formula <span class="math">\(G^{-1}(F(X))\)</span> where <span class="math">\(F\)</span> is the cumulative
+distribution function of the feature and <span class="math">\(G^{-1}\)</span> the
+<a class="reference external" href="https://en.wikipedia.org/wiki/Quantile_function">quantile function</a> of the
+desired output distribution <span class="math">\(G\)</span>. This formula is using the two following
+facts: (i) if <span class="math">\(X\)</span> is a random variable with a continuous cumulative
+distribution function <span class="math">\(F\)</span> then <span class="math">\(F(X)\)</span> is uniformly distributed on
+<span class="math">\([0,1]\)</span>; (ii) if <span class="math">\(U\)</span> is a random variable with uniform distribution
+on <span class="math">\([0,1]\)</span> then <span class="math">\(G^{-1}(U)\)</span> has distribution <span class="math">\(G\)</span>. By performing
+a rank transformation, a quantile transform smooths out unusual distributions
+and is less influenced by outliers than scaling methods. It does, however,
+distort correlations and distances within and across features.</p>
+<p>Power transforms are a family of parametric transformations that aim to map
+data from any distribution to as close to a Gaussian distribution.</p>
 <div class="section" id="mapping-to-a-uniform-distribution">
 <h3>4.3.2.1. Mapping to a Uniform distribution<a class="headerlink" href="#mapping-to-a-uniform-distribution" title="Permalink to this headline">¶</a></h3>
-<p>Like scalers, <a class="reference internal" href="generated/sklearn.preprocessing.QuantileTransformer.html#sklearn.preprocessing.QuantileTransformer" title="sklearn.preprocessing.QuantileTransformer"><code class="xref py py-class docutils literal"><span class="pre">QuantileTransformer</span></code></a> puts all features into the same,
-known range or distribution. However, by performing a rank transformation, it
-smooths out unusual distributions and is less influenced by outliers than
-scaling methods. It does, however, distort correlations and distances within
-and across features.</p>
 <p><a class="reference internal" href="generated/sklearn.preprocessing.QuantileTransformer.html#sklearn.preprocessing.QuantileTransformer" title="sklearn.preprocessing.QuantileTransformer"><code class="xref py py-class docutils literal"><span class="pre">QuantileTransformer</span></code></a> and <a class="reference internal" href="generated/sklearn.preprocessing.quantile_transform.html#sklearn.preprocessing.quantile_transform" title="sklearn.preprocessing.quantile_transform"><code class="xref py py-func docutils literal"><span class="pre">quantile_transform</span></code></a> provide a
-non-parametric transformation based on the quantile function to map the data to
-a uniform distribution with values between 0 and 1:</p>
+non-parametric transformation to map the data to a uniform distribution
+with values between 0 and 1:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">load_iris</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
