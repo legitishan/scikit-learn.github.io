@@ -24,6 +24,11 @@ this example, which is not the default setting. It ensures global stability
 of the embedding, i.e., the embedding does not depend on random
 initialization.
 
+Linear Discriminant Analysis, from the :mod:`sklearn.discriminant_analysis`
+module, and Neighborhood Components Analysis, from the :mod:`sklearn.neighbors`
+module, are supervised dimensionality reduction method, i.e. they make use of
+the provided labels, contrary to other methods.
+
 
 
 
@@ -95,6 +100,11 @@ initialization.
       .. image:: /auto_examples/manifold/images/sphx_glr_plot_lle_digits_013.png
             :class: sphx-glr-multi-img
 
+    *
+
+      .. image:: /auto_examples/manifold/images/sphx_glr_plot_lle_digits_014.png
+            :class: sphx-glr-multi-img
+
 
 .. rst-class:: sphx-glr-script-out
 
@@ -105,7 +115,7 @@ initialization.
     Computing random projection
     Computing PCA projection
     Computing Linear Discriminant Analysis projection
-    Computing Isomap embedding
+    Computing Isomap projection
     Done.
     Computing LLE embedding
     Done. Reconstruction error: 1.63544e-06
@@ -120,6 +130,7 @@ initialization.
     Computing Totally Random Trees embedding
     Computing Spectral embedding
     Computing t-SNE embedding
+    Computing NCA projection
 
 
 
@@ -143,7 +154,7 @@ initialization.
     import matplotlib.pyplot as plt
     from matplotlib import offsetbox
     from sklearn import (manifold, datasets, decomposition, ensemble,
-                         discriminant_analysis, random_projection)
+                         discriminant_analysis, random_projection, neighbors)
 
     digits = datasets.load_digits(n_class=6)
     X = digits.data
@@ -152,7 +163,7 @@ initialization.
     n_neighbors = 30
 
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     # Scale and visualize the embedding vectors
     def plot_embedding(X, title=None):
         x_min, x_max = np.min(X, 0), np.max(X, 0)
@@ -183,7 +194,7 @@ initialization.
             plt.title(title)
 
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     # Plot images of the digits
     n_img_per_row = 20
     img = np.zeros((10 * n_img_per_row, 10 * n_img_per_row))
@@ -199,7 +210,7 @@ initialization.
     plt.title('A selection from the 64-dimensional digits dataset')
 
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     # Random 2D projection using a random unitary matrix
     print("Computing random projection")
     rp = random_projection.SparseRandomProjection(n_components=2, random_state=42)
@@ -217,7 +228,7 @@ initialization.
                    "Principal Components projection of the digits (time %.2fs)" %
                    (time() - t0))
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     # Projection on to the first 2 linear discriminant components
 
     print("Computing Linear Discriminant Analysis projection")
@@ -230,9 +241,9 @@ initialization.
                    (time() - t0))
 
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     # Isomap projection of the digits dataset
-    print("Computing Isomap embedding")
+    print("Computing Isomap projection")
     t0 = time()
     X_iso = manifold.Isomap(n_neighbors, n_components=2).fit_transform(X)
     print("Done.")
@@ -241,7 +252,7 @@ initialization.
                    (time() - t0))
 
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     # Locally linear embedding of the digits dataset
     print("Computing LLE embedding")
     clf = manifold.LocallyLinearEmbedding(n_neighbors, n_components=2,
@@ -254,7 +265,7 @@ initialization.
                    (time() - t0))
 
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     # Modified Locally linear embedding of the digits dataset
     print("Computing modified LLE embedding")
     clf = manifold.LocallyLinearEmbedding(n_neighbors, n_components=2,
@@ -267,7 +278,7 @@ initialization.
                    (time() - t0))
 
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     # HLLE embedding of the digits dataset
     print("Computing Hessian LLE embedding")
     clf = manifold.LocallyLinearEmbedding(n_neighbors, n_components=2,
@@ -280,7 +291,7 @@ initialization.
                    (time() - t0))
 
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     # LTSA embedding of the digits dataset
     print("Computing LTSA embedding")
     clf = manifold.LocallyLinearEmbedding(n_neighbors, n_components=2,
@@ -292,7 +303,7 @@ initialization.
                    "Local Tangent Space Alignment of the digits (time %.2fs)" %
                    (time() - t0))
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     # MDS  embedding of the digits dataset
     print("Computing MDS embedding")
     clf = manifold.MDS(n_components=2, n_init=1, max_iter=100)
@@ -303,7 +314,7 @@ initialization.
                    "MDS embedding of the digits (time %.2fs)" %
                    (time() - t0))
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     # Random Trees embedding of the digits dataset
     print("Computing Totally Random Trees embedding")
     hasher = ensemble.RandomTreesEmbedding(n_estimators=200, random_state=0,
@@ -317,7 +328,7 @@ initialization.
                    "Random forest embedding of the digits (time %.2fs)" %
                    (time() - t0))
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     # Spectral embedding of the digits dataset
     print("Computing Spectral embedding")
     embedder = manifold.SpectralEmbedding(n_components=2, random_state=0,
@@ -329,7 +340,7 @@ initialization.
                    "Spectral embedding of the digits (time %.2fs)" %
                    (time() - t0))
 
-    #----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
     # t-SNE embedding of the digits dataset
     print("Computing t-SNE embedding")
     tsne = manifold.TSNE(n_components=2, init='pca', random_state=0)
@@ -340,9 +351,20 @@ initialization.
                    "t-SNE embedding of the digits (time %.2fs)" %
                    (time() - t0))
 
+    # ----------------------------------------------------------------------
+    # NCA projection of the digits dataset
+    print("Computing NCA projection")
+    nca = neighbors.NeighborhoodComponentsAnalysis(n_components=2, random_state=0)
+    t0 = time()
+    X_nca = nca.fit_transform(X, y)
+
+    plot_embedding(X_nca,
+                   "NCA embedding of the digits (time %.2fs)" %
+                   (time() - t0))
+
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  15.461 seconds)
+**Total running time of the script:** ( 0 minutes  16.564 seconds)
 
 
 .. _sphx_glr_download_auto_examples_manifold_plot_lle_digits.py:
