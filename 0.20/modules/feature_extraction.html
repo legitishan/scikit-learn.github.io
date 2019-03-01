@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
   
-    <title>4.2. Feature extraction &#8212; scikit-learn 0.20.2 documentation</title>
+    <title>4.2. Feature extraction &#8212; scikit-learn 0.20.3 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../_static/css/bootstrap.min.css" media="screen" />
@@ -22,7 +22,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.20.2',
+        VERSION:     '0.20.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -94,7 +94,7 @@
             <li><a href="classes.html">API</a></li>
             <li><a href="../glossary.html">Glossary</a></li>
             <li><a href="../faq.html">FAQ</a></li>
-            <li><a href="../developers/contributing.html">Contributing</a></li>
+            <li><a href="../developers/index.html">Development</a></li>
             <li><a href="../roadmap.html">Roadmap</a></li>
             <li class="divider"></li>
                 <script>if (VERSION_SUBDIR != "stable") document.write('<li><a href="http://scikit-learn.org/stable/documentation.html">Stable version</a></li>')</script>
@@ -180,7 +180,7 @@
         </div>
     </div>
     
-      <p class="doc-version"><b>scikit-learn v0.20.2</b><br/>
+      <p class="doc-version"><b>scikit-learn v0.20.3</b><br/>
       <a href="http://scikit-learn.org/dev/versions.html">Other versions</a></p>
     <p class="citing">Please <b><a href="../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
@@ -610,10 +610,11 @@ transform.</p>
 <code class="docutils literal"><span class="pre">TfidfTransformer(norm='l2',</span> <span class="pre">use_idf=True,</span> <span class="pre">smooth_idf=True,</span> <span class="pre">sublinear_tf=False)</span></code>
 the term frequency, the number of times a term occurs in a given document,
 is multiplied with idf component, which is computed as</p>
-<p><span class="math">\(\text{idf}(t) = log{\frac{1 + n_d}{1+\text{df}(d,t)}} + 1\)</span>,</p>
-<p>where <span class="math">\(n_d\)</span> is the total number of documents, and <span class="math">\(\text{df}(d,t)\)</span>
-is the number of documents that contain term <span class="math">\(t\)</span>. The resulting tf-idf
-vectors are then normalized by the Euclidean norm:</p>
+<p><span class="math">\(\text{idf}(t) = \log{\frac{1 + n}{1+\text{df}(t)}} + 1\)</span>,</p>
+<p>where <span class="math">\(n\)</span> is the total number of documents in the document set, and
+<span class="math">\(\text{df}(t)\)</span> is the number of documents in the document set that
+contain term <span class="math">\(t\)</span>. The resulting tf-idf vectors are then normalized by the
+Euclidean norm:</p>
 <p><span class="math">\(v_{norm} = \frac{v}{||v||_2} = \frac{v}{\sqrt{v{_1}^2 +
 v{_2}^2 + \dots + v{_n}^2}}\)</span>.</p>
 <p>This was originally a term weighting scheme developed for information retrieval
@@ -624,11 +625,11 @@ illustrate how the tf-idfs are computed exactly and how the tf-idfs
 computed in scikit-learn’s <a class="reference internal" href="generated/sklearn.feature_extraction.text.TfidfTransformer.html#sklearn.feature_extraction.text.TfidfTransformer" title="sklearn.feature_extraction.text.TfidfTransformer"><code class="xref py py-class docutils literal"><span class="pre">TfidfTransformer</span></code></a>
 and <a class="reference internal" href="generated/sklearn.feature_extraction.text.TfidfVectorizer.html#sklearn.feature_extraction.text.TfidfVectorizer" title="sklearn.feature_extraction.text.TfidfVectorizer"><code class="xref py py-class docutils literal"><span class="pre">TfidfVectorizer</span></code></a> differ slightly from the standard textbook
 notation that defines the idf as</p>
-<p><span class="math">\(\text{idf}(t) = log{\frac{n_d}{1+\text{df}(d,t)}}.\)</span></p>
+<p><span class="math">\(\text{idf}(t) = \log{\frac{n}{1+\text{df}(t)}}.\)</span></p>
 <p>In the <a class="reference internal" href="generated/sklearn.feature_extraction.text.TfidfTransformer.html#sklearn.feature_extraction.text.TfidfTransformer" title="sklearn.feature_extraction.text.TfidfTransformer"><code class="xref py py-class docutils literal"><span class="pre">TfidfTransformer</span></code></a> and <a class="reference internal" href="generated/sklearn.feature_extraction.text.TfidfVectorizer.html#sklearn.feature_extraction.text.TfidfVectorizer" title="sklearn.feature_extraction.text.TfidfVectorizer"><code class="xref py py-class docutils literal"><span class="pre">TfidfVectorizer</span></code></a>
 with <code class="docutils literal"><span class="pre">smooth_idf=False</span></code>, the
 “1” count is added to the idf instead of the idf’s denominator:</p>
-<p><span class="math">\(\text{idf}(t) = log{\frac{n_d}{\text{df}(d,t)}} + 1\)</span></p>
+<p><span class="math">\(\text{idf}(t) = \log{\frac{n}{\text{df}(t)}} + 1\)</span></p>
 <p>This normalization is implemented by the <a class="reference internal" href="generated/sklearn.feature_extraction.text.TfidfTransformer.html#sklearn.feature_extraction.text.TfidfTransformer" title="sklearn.feature_extraction.text.TfidfTransformer"><code class="xref py py-class docutils literal"><span class="pre">TfidfTransformer</span></code></a>
 class:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="k">import</span> <span class="n">TfidfTransformer</span>
@@ -669,15 +670,15 @@ content of the documents:</p>
 v{_2}^2 + \dots + v{_n}^2}}\)</span></p>
 <p>For example, we can compute the tf-idf of the first term in the first
 document in the <cite>counts</cite> array as follows:</p>
-<p><span class="math">\(n_{d} = 6\)</span></p>
-<p><span class="math">\(\text{df}(d, t)_{\text{term1}} = 6\)</span></p>
-<p><span class="math">\(\text{idf}(d, t)_{\text{term1}} =
-log \frac{n_d}{\text{df}(d, t)} + 1 = log(1)+1 = 1\)</span></p>
+<p><span class="math">\(n = 6\)</span></p>
+<p><span class="math">\(\text{df}(t)_{\text{term1}} = 6\)</span></p>
+<p><span class="math">\(\text{idf}(t)_{\text{term1}} =
+\log \frac{n}{\text{df}(t)} + 1 = \log(1)+1 = 1\)</span></p>
 <p><span class="math">\(\text{tf-idf}_{\text{term1}} = \text{tf} \times \text{idf} = 3 \times 1 = 3\)</span></p>
 <p>Now, if we repeat this computation for the remaining 2 terms in the document,
 we get</p>
-<p><span class="math">\(\text{tf-idf}_{\text{term2}} = 0 \times (log(6/1)+1) = 0\)</span></p>
-<p><span class="math">\(\text{tf-idf}_{\text{term3}} = 1 \times (log(6/2)+1) \approx 2.0986\)</span></p>
+<p><span class="math">\(\text{tf-idf}_{\text{term2}} = 0 \times (\log(6/1)+1) = 0\)</span></p>
+<p><span class="math">\(\text{tf-idf}_{\text{term3}} = 1 \times (\log(6/2)+1) \approx 2.0986\)</span></p>
 <p>and the vector of raw tf-idfs:</p>
 <p><span class="math">\(\text{tf-idf}_{\text{raw}} = [3, 0, 2.0986].\)</span></p>
 <p>Then, applying the Euclidean (L2) norm, we obtain the following tf-idfs
@@ -687,10 +688,10 @@ for document 1:</p>
 <p>Furthermore, the default parameter <code class="docutils literal"><span class="pre">smooth_idf=True</span></code> adds “1” to the numerator
 and  denominator as if an extra document was seen containing every term in the
 collection exactly once, which prevents zero divisions:</p>
-<p><span class="math">\(\text{idf}(t) = log{\frac{1 + n_d}{1+\text{df}(d,t)}} + 1\)</span></p>
+<p><span class="math">\(\text{idf}(t) = \log{\frac{1 + n}{1+\text{df}(t)}} + 1\)</span></p>
 <p>Using this modification, the tf-idf of the third term in document 1 changes to
 1.8473:</p>
-<p><span class="math">\(\text{tf-idf}_{\text{term3}} = 1 \times log(7/3)+1 \approx 1.8473\)</span></p>
+<p><span class="math">\(\text{tf-idf}_{\text{term3}} = 1 \times \log(7/3)+1 \approx 1.8473\)</span></p>
 <p>And the L2-normalized tf-idf changes to</p>
 <p><span class="math">\(\frac{[3, 0, 1.8473]}{\sqrt{\big(3^2 + 0^2 + 1.8473^2\big)}}
 = [0.8515, 0, 0.5243]\)</span>:</p>

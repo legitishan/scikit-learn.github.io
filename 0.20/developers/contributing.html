@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
   
-    <title>Contributing &#8212; scikit-learn 0.20.2 documentation</title>
+    <title>Contributing &#8212; scikit-learn 0.20.3 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../_static/css/bootstrap.min.css" media="screen" />
@@ -22,7 +22,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.20.2',
+        VERSION:     '0.20.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -94,7 +94,7 @@
             <li><a href="../modules/classes.html">API</a></li>
             <li><a href="../glossary.html">Glossary</a></li>
             <li><a href="../faq.html">FAQ</a></li>
-            <li><a href="#">Contributing</a></li>
+            <li><a href="index.html">Development</a></li>
             <li><a href="../roadmap.html">Roadmap</a></li>
             <li class="divider"></li>
                 <script>if (VERSION_SUBDIR != "stable") document.write('<li><a href="http://scikit-learn.org/stable/documentation.html">Stable version</a></li>')</script>
@@ -180,19 +180,23 @@
         </div>
     </div>
     
-      <p class="doc-version"><b>scikit-learn v0.20.2</b><br/>
+      <p class="doc-version"><b>scikit-learn v0.20.3</b><br/>
       <a href="http://scikit-learn.org/dev/versions.html">Other versions</a></p>
     <p class="citing">Please <b><a href="../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
-<li><a class="reference internal" href="#">Contributing</a></li>
-<li><a class="reference internal" href="#ways-to-contribute">Ways to contribute</a><ul>
+<li><a class="reference internal" href="#">Contributing</a><ul>
+<li><a class="reference internal" href="#ways-to-contribute">Ways to contribute</a></li>
 <li><a class="reference internal" href="#submitting-a-bug-report-or-a-feature-request">Submitting a bug report or a feature request</a><ul>
 <li><a class="reference internal" href="#how-to-make-a-good-bug-report">How to make a good bug report</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#contributing-code">Contributing code</a><ul>
 <li><a class="reference internal" href="#how-to-contribute">How to contribute</a></li>
-<li><a class="reference internal" href="#contributing-pull-requests">Contributing pull requests</a></li>
+<li><a class="reference internal" href="#contributing-pull-requests">Contributing pull requests</a><ul>
+<li><a class="reference internal" href="#continuous-integration-ci">Continuous Integration (CI)</a></li>
+<li><a class="reference internal" href="#stalled-pull-requests">Stalled pull requests</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#issues-for-new-contributors">Issues for New Contributors</a></li>
 <li><a class="reference internal" href="#documentation">Documentation</a><ul>
 <li><a class="reference internal" href="#building-the-documentation">Building the documentation</a></li>
@@ -221,6 +225,7 @@
 <li><a class="reference internal" href="#fitting">Fitting</a></li>
 <li><a class="reference internal" href="#estimated-attributes">Estimated Attributes</a></li>
 <li><a class="reference internal" href="#optional-arguments">Optional Arguments</a></li>
+<li><a class="reference internal" href="#pairwise-attributes">Pairwise Attributes</a></li>
 </ul>
 </li>
 </ul>
@@ -235,6 +240,7 @@
 <li><a class="reference internal" href="#specific-models">Specific models</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#reading-the-existing-code-base">Reading the existing code base</a></li>
 </ul>
 </li>
 </ul>
@@ -284,9 +290,8 @@ others of the Python Software Foundation:
 ticket to the
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues">GitHub issue tracker</a>. You are
 also welcome to post feature requests or pull requests.</p>
-</div>
 <div class="section" id="ways-to-contribute">
-<h1>Ways to contribute<a class="headerlink" href="#ways-to-contribute" title="Permalink to this headline">¶</a></h1>
+<h2>Ways to contribute<a class="headerlink" href="#ways-to-contribute" title="Permalink to this headline">¶</a></h2>
 <p>There are many ways to contribute to scikit-learn, with the most common ones
 being contribution of code or documentation to the project. Improving the
 documentation is no less important than improving the library itself.  If you
@@ -326,8 +331,11 @@ may have relevant issues to work on, including smaller projects such as:</p>
 Helping these projects may help Scikit-learn too.
 See also <a class="reference internal" href="../related_projects.html#related-projects"><span class="std std-ref">Related Projects</span></a>.</p>
 </div>
+</div>
 <div class="section" id="submitting-a-bug-report-or-a-feature-request">
 <h2>Submitting a bug report or a feature request<a class="headerlink" href="#submitting-a-bug-report-or-a-feature-request" title="Permalink to this headline">¶</a></h2>
+<p>We use GitHub issues to track all bugs and feature requests; feel free to open
+an issue if you have found a bug or wish to see a feature implemented.</p>
 <p>In case you experience issues using this package, do not hesitate to submit a
 ticket to the
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues">Bug Tracker</a>. You are
@@ -390,9 +398,13 @@ for more details.</p>
 <h2>Contributing code<a class="headerlink" href="#contributing-code" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>To avoid duplicating work, it is highly advised that you contact the
-developers on the mailing list before starting work on a non-trivial feature.</p>
-<p class="last"><a class="reference external" href="https://mail.python.org/mailman/listinfo/scikit-learn">https://mail.python.org/mailman/listinfo/scikit-learn</a></p>
+<p class="last">To avoid duplicating work, it is highly advised that you search through the
+<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues">issue tracker</a> and
+the <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pulls">PR list</a>.
+If in doubt about duplicated work, or if you want to work on a non-trivial
+feature, it’s recommended to first open an issue in
+the <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues">issue tracker</a>
+to get some feedbacks from core developers.</p>
 </div>
 <div class="section" id="how-to-contribute">
 <h3>How to contribute<a class="headerlink" href="#how-to-contribute" title="Permalink to this headline">¶</a></h3>
@@ -406,37 +418,54 @@ GitHub if you do not already have one.</p>
 </li>
 <li><p class="first">Fork the <a class="reference external" href="https://github.com/scikit-learn/scikit-learn">project repository</a>: click on the ‘Fork’
 button near the top of the page. This creates a copy of the code under your
-account on the GitHub server. For more details on how to fork a
+account on the GitHub user account. For more details on how to fork a
 repository see <a class="reference external" href="https://help.github.com/articles/fork-a-repo/">this guide</a>.</p>
 </li>
-<li><p class="first">Clone this copy to your local disk:</p>
+<li><p class="first">Clone your fork of the scikit-learn repo from your GitHub account to your
+local disk:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>$ git clone git@github.com:YourLogin/scikit-learn.git
+$ cd scikit-learn
 </pre></div>
 </div>
 </li>
-<li><p class="first">Create a branch to hold your changes:</p>
+<li><p class="first">Install library in editable mode:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ pip install --editable .
+</pre></div>
+</div>
+<p>for more details about advanced installation, see the
+<a class="reference internal" href="advanced_installation.html#install-bleeding-edge"><span class="std std-ref">Building from source</span></a> section.</p>
+</li>
+<li><p class="first">Create a branch to hold your development changes:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>$ git checkout -b my-feature
 </pre></div>
 </div>
-<p>and start making changes. Never work in the <code class="docutils literal"><span class="pre">master</span></code> branch!</p>
+<p>and start making changes. Always use a <code class="docutils literal"><span class="pre">feature</span></code> branch. It’s good practice to
+never work on the <code class="docutils literal"><span class="pre">master</span></code> branch!</p>
 </li>
-<li><p class="first">Work on this copy, on your computer, using Git to do the version
-control. When you’re done editing, do:</p>
+<li><p class="first">Develop the feature on your feature branch on your computer, using Git to do the
+version control. When you’re done editing, add changed files using <code class="docutils literal"><span class="pre">git</span> <span class="pre">add</span></code>
+and then <code class="docutils literal"><span class="pre">git</span> <span class="pre">commit</span></code> files:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>$ git add modified_files
 $ git commit
 </pre></div>
 </div>
-<p>to record your changes in Git, then push them to GitHub with:</p>
+<p>to record your changes in Git, then push the changes to your GitHub account with:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>$ git push -u origin my-feature
 </pre></div>
 </div>
 </li>
-</ol>
-</div></blockquote>
-<p>Finally, follow <a class="reference external" href="https://help.github.com/articles/creating-a-pull-request-from-a-fork">these</a>
+<li><p class="first">Follow <a class="reference external" href="https://help.github.com/articles/creating-a-pull-request-from-a-fork">these</a>
 instructions to create a pull request from your fork. This will send an
 email to the committers. You may want to consider sending an email to the
 mailing list for more visibility.</p>
+</li>
+</ol>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you are modifying a Cython module, you have to re-run step 4 after modifications
+and before testing them.</p>
+</div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>In the above setup, your <code class="docutils literal"><span class="pre">origin</span></code> remote repository points to
@@ -448,8 +477,8 @@ command will be:</p>
 </pre></div>
 </div>
 </div>
-<p>If any of the above seems like magic to you, then look up the <a class="reference external" href="https://git-scm.com/documentation">Git documentation</a> and the <a class="reference external" href="https://docs.scipy.org/doc/numpy/dev/gitwash/development_workflow.html">Git development workflow</a> on the
-web.</p>
+<p>If any of the above seems like magic to you, then look up the <a class="reference external" href="https://git-scm.com/documentation">Git documentation</a> and the <a class="reference external" href="http://docs.scipy.org/doc/numpy/dev/gitwash/development_workflow.html">Git development workflow</a> on the
+web, or ask a friend or another contributor for help.</p>
 <p>If some conflicts arise between your branch and the <code class="docutils literal"><span class="pre">master</span></code> branch, you need
 to merge <code class="docutils literal"><span class="pre">master</span></code>. The command will be:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>$ git merge master
@@ -467,7 +496,7 @@ the past.</p>
 </div>
 <div class="section" id="contributing-pull-requests">
 <h3>Contributing pull requests<a class="headerlink" href="#contributing-pull-requests" title="Permalink to this headline">¶</a></h3>
-<p>It is recommended to check that your contribution complies with the following
+<p>We recommend that that your contribution complies with the following
 rules before submitting a pull request:</p>
 <ul>
 <li><p class="first">Follow the <a class="reference internal" href="#coding-guidelines">coding-guidelines</a> (see below). To make sure that
@@ -475,7 +504,7 @@ your PR does not add PEP8 violations you can run
 <cite>./build_tools/travis/flake8_diff.sh</cite> or <cite>make flake8-diff</cite> on a
 Unix-like system.</p>
 </li>
-<li><p class="first">When applicable, use the validation tools and other code in the
+<li><p class="first">When applicable, use the validation tools and scripts in the
 <code class="docutils literal"><span class="pre">sklearn.utils</span></code> submodule.  A list of utility routines available
 for developers can be found in the <a class="reference internal" href="utilities.html#developers-utils"><span class="std std-ref">Utilities for Developers</span></a> page.</p>
 </li>
@@ -523,7 +552,8 @@ scikit-learn.</p>
 <li><p class="first">Documentation and high-coverage tests are necessary for enhancements to be
 accepted. Bug-fixes or new features should be provided with
 <a class="reference external" href="https://en.wikipedia.org/wiki/Non-regression_testing">non-regression tests</a>. These tests
-verify the correct behavior of the fix or feature. In this manner, further
+verify the correct behavior of the fix or feature. These tests verify the
+correct behavior of the fix or feature. In this manner, further
 modifications on the code base are granted to be consistent with the
 desired behavior. For the case of bug fixes, at the time of the PR, the
 non-regression tests should fail for the code base in the master branch
@@ -534,10 +564,15 @@ references in the literature (with PDF links when possible) and
 the example. For more details on writing and building the
 documentation, see the <a class="reference internal" href="#contribute-documentation"><span class="std std-ref">Documentation</span></a> section.</p>
 </li>
+<li><p class="first">The documentation should also include expected time and space complexity
+of the algorithm and scalability, e.g. “this algorithm can scale to a
+large number of samples &gt; 100000, but does not scale in dimensionality:
+n_features is expected to be lower than 100”.</p>
+</li>
 </ul>
 <p>You can also check for common programming errors with the following tools:</p>
 <ul>
-<li><p class="first">Code with a good unittest coverage (at least 90%, better 100%), check
+<li><p class="first">Code with a good unittest coverage (at least 80%, better 100%), check
 with:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>$ pip install pytest pytest-cov
 $ pytest --cov sklearn path/to/tests_for_package
@@ -554,7 +589,7 @@ $ flake8 path/to/module.py
 </ul>
 <p>Bonus points for contributions that include a performance analysis with
 a benchmark script and profiling output (please report on the mailing
-list or on the GitHub wiki).</p>
+list or on the GitHub issue).</p>
 <p>Also check out the <a class="reference internal" href="performance.html#performance-howto"><span class="std std-ref">How to optimize for speed</span></a> guide for more details on profiling
 and Cython optimizations.</p>
 <div class="admonition note">
@@ -571,13 +606,16 @@ workflow, please pay a visit to the <a class="reference external" href="https://
 and the <a class="reference external" href="https://astropy.readthedocs.io/en/latest/development/workflow/development_workflow.html">Astropy Workflow for Developers</a>
 sections.</p>
 </div>
-<div class="topic">
-<p class="topic-title first">Continuous Integration (CI)</p>
+<div class="section" id="continuous-integration-ci">
+<h4>Continuous Integration (CI)<a class="headerlink" href="#continuous-integration-ci" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
 <li>Travis is used for testing on Linux platforms</li>
 <li>Appveyor is used for testing on Windows platforms</li>
-<li>CircleCI is used to build the docs for viewing, for linting with flake8, and
-for testing with PyPy on Linux</li>
+<li><dl class="first docutils">
+<dt>CircleCI is used to build the docs for viewing, for linting with flake8, and</dt>
+<dd>for testing with PyPy on Linux</dd>
+</dl>
+</li>
 </ul>
 <p>Please note that if one of the following markers appear in the latest commit
 message, the following actions are taken.</p>
@@ -610,6 +648,40 @@ message, the following actions are taken.</p>
 </table>
 </div></blockquote>
 </div>
+<div class="section" id="stalled-pull-requests">
+<h4>Stalled pull requests<a class="headerlink" href="#stalled-pull-requests" title="Permalink to this headline">¶</a></h4>
+<p>As contributing a feature can be a lengthy process, some
+pull requests appear inactive but unfinished. In such a case, taking
+them over is a great service for the project.</p>
+<p>A good etiquette to take over is:</p>
+<ul>
+<li><p class="first"><strong>Determine if a PR is stalled</strong></p>
+<ul>
+<li><p class="first">A pull request may have the label “stalled” or “help wanted” if we
+have already identified it as a candidate for other contributors.</p>
+</li>
+<li><p class="first">To decide whether an inactive PR is stalled, ask the contributor if
+she/he plans to continue working on the PR in the near future.
+Failure to respond within 2 weeks with an activity that moves the PR
+forward suggests that the PR is stalled and will result in tagging
+that PR with “help wanted”.</p>
+<p>Note that if a PR has received earlier comments on the contribution
+that have had no reply in a month, it is safe to assume that the PR
+is stalled and to shorten the wait time to one day.</p>
+<p>After a sprint, follow-up for un-merged PRs opened during sprint will
+be communicated to participants at the sprint, and those PRs will be
+tagged “sprint”. PRs tagged with “sprint” can be reassigned or
+declared stalled by sprint leaders.</p>
+</li>
+</ul>
+</li>
+<li><p class="first"><strong>Taking over a stalled PR</strong>: To take over a PR, it is important to
+comment on the stalled PR that you are taking over and to link from the
+new PR to the old one. The new PR should be created by pulling from the
+old one.</p>
+</li>
+</ul>
+</div>
 </div>
 <div class="section" id="issues-for-new-contributors">
 <span id="new-contributors"></span><h3>Issues for New Contributors<a class="headerlink" href="#issues-for-new-contributors" title="Permalink to this headline">¶</a></h3>
@@ -628,9 +700,9 @@ to scikit-learn, you should look at Easy issues instead.</p>
 </div>
 <div class="topic">
 <p class="topic-title first">Easy tag</p>
-<p>Another great way to contribute to scikit-learn is to pick an item from the
-list of <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/labels/Easy">Easy issues</a> in the issue
-tracker.  Your assistance in this area will be greatly appreciated by the
+<p>If you have already contributed to scikit-learn, another great way to contribute
+to scikit-learn is to pick an item from the list of <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/labels/Easy">Easy issues</a> in the issue
+tracker. Your assistance in this area will be greatly appreciated by the
 more experienced developers as it helps free up their time to concentrate on
 other issues.</p>
 </div>
@@ -648,9 +720,12 @@ contributor left off. The list of issues with the help wanted tag can be found
 <span id="contribute-documentation"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h3>
 <p>We are glad to accept any sort of documentation: function docstrings,
 reStructuredText documents (like this one), tutorials, etc. reStructuredText
-documents live in the source code repository under the <code class="docutils literal"><span class="pre">doc/</span></code> directory.
-You can edit the documentation using any text editor, and then generate the
-HTML output by building the documentation website.</p>
+documents live in the source code repository under the <code class="docutils literal"><span class="pre">doc/</span></code> directory.</p>
+<p>You can edit the documentation using any text editor, and then generate the
+HTML output by typing <code class="docutils literal"><span class="pre">make</span> <span class="pre">html</span></code> from the <code class="docutils literal"><span class="pre">doc/</span></code> directory. Alternatively,
+<code class="docutils literal"><span class="pre">make</span></code> can be used to quickly generate the documentation without the example
+gallery. The resulting HTML files will be placed in <code class="docutils literal"><span class="pre">_build/html/stable</span></code> and are viewable
+in a web browser. See the <code class="docutils literal"><span class="pre">README``file</span> <span class="pre">in</span> <span class="pre">the</span> <span class="pre">``doc/</span></code> directory for more information.</p>
 <div class="section" id="building-the-documentation">
 <h4>Building the documentation<a class="headerlink" href="#building-the-documentation" title="Permalink to this headline">¶</a></h4>
 <p>Building the documentation requires installing some additional packages:</p>
@@ -703,17 +778,13 @@ to know the exact version.</p>
 details, and give intuition to the reader on what the algorithm does.</p>
 <p>Basically, to elaborate on the above, it is best to always
 start with a small paragraph with a hand-waving explanation of what the
-method does to the data. Then, it is very helpful
-to point out why the feature is useful and when it should be used -
-the latter also including “big O”
-(<span class="math">\(O\left(g\left(n\right)\right)\)</span>)
-complexities of the algorithm, as opposed to just <em>rules of thumb</em>,
-as the latter can be very machine-dependent.
-If those complexities are not available, then rules of thumb
-may be provided instead.</p>
+method does to the data. Then, it is very helpful to point out why the feature is
+useful and when it should be used - the latter also including “big O”
+(<span class="math">\(O\left(g\left(n\right)\right)\)</span>) complexities of the algorithm, as opposed
+to just <em>rules of thumb</em>, as the latter can be very machine-dependent. If those
+complexities are not available, then rules of thumb may be provided instead.</p>
 <p>Secondly, a generated figure from an example (as mentioned in the previous
-paragraph) should then be included to further provide some
-intuition.</p>
+paragraph) should then be included to further provide some intuition.</p>
 <p>Next, one or two small code examples to show its use can be added.</p>
 <p>Next, any math and equations, followed by references,
 can be added to further the documentation. Not starting the
@@ -740,6 +811,9 @@ with a colon and an explanation, for example:</p>
 (<a class="reference internal" href="../modules/generated/sklearn.metrics.silhouette_score.html#sklearn.metrics.silhouette_score" title="sklearn.metrics.silhouette_score"><code class="xref py py-func docutils literal"><span class="pre">sklearn.metrics.silhouette_score</span></code></a>).</li>
 </ul>
 </div></blockquote>
+</li>
+<li><p class="first">When editing reStructuredText (<code class="docutils literal"><span class="pre">.rst</span></code>) files, try to keep line length under
+80 characters when possible (exceptions include links and tables).</p>
 </li>
 </ul>
 </div>
@@ -839,7 +913,7 @@ contributors will have this tag.</td>
 </div>
 </div>
 <div class="section" id="coding-guidelines">
-<span id="id3"></span><h2>Coding guidelines<a class="headerlink" href="#coding-guidelines" title="Permalink to this headline">¶</a></h2>
+<span id="id5"></span><h2>Coding guidelines<a class="headerlink" href="#coding-guidelines" title="Permalink to this headline">¶</a></h2>
 <p>The following are some guidelines on how new code should be written. Of
 course, there are special cases and there will be exceptions to these
 rules. However, following these rules when submitting new code makes
@@ -1005,10 +1079,10 @@ In the following example, k is deprecated and renamed to n_clusters:</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
 
     <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="s1">&#39;not_used&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">!=</span> <span class="s1">&#39;not_used&#39;</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;k&#39; was renamed to n_clusters in version 0.13 and &quot;</span>
                           <span class="s2">&quot;will be removed in 0.15.&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_n_clusters</span> <span class="o">=</span> <span class="n">k</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_n_clusters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_n_clusters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_clusters</span>
 </pre></div>
@@ -1333,6 +1407,14 @@ a second time.</p>
 <p>In iterative algorithms, the number of iterations should be specified by
 an integer called <code class="docutils literal"><span class="pre">n_iter</span></code>.</p>
 </div>
+<div class="section" id="pairwise-attributes">
+<h4>Pairwise Attributes<a class="headerlink" href="#pairwise-attributes" title="Permalink to this headline">¶</a></h4>
+<p>An estimator that accept <code class="docutils literal"><span class="pre">X</span></code> of shape <code class="docutils literal"><span class="pre">(n_samples,</span> <span class="pre">n_samples)</span></code> and defines
+a <a class="reference internal" href="../glossary.html#term-pairwise"><span class="xref std std-term">_pairwise</span></a> property equal to <code class="docutils literal"><span class="pre">True</span></code> allows for cross-validation of
+the dataset, e.g. when <code class="docutils literal"><span class="pre">X</span></code> is a precomputed kernel matrix. Specifically,
+the <a class="reference internal" href="../glossary.html#term-pairwise"><span class="xref std std-term">_pairwise</span></a> property is used by <code class="docutils literal"><span class="pre">utils.metaestimators._safe_split</span></code>
+to slice rows and columns.</p>
+</div>
 </div>
 </div>
 <div class="section" id="rolling-your-own-estimator">
@@ -1463,7 +1545,7 @@ fit have a trailing <code class="docutils literal"><span class="pre">_</span></c
 trailing <code class="docutils literal"><span class="pre">_</span></code> is used to check if the estimator has been fitted.</p>
 </div>
 <div class="section" id="cloning">
-<span id="id4"></span><h3>Cloning<a class="headerlink" href="#cloning" title="Permalink to this headline">¶</a></h3>
+<span id="id6"></span><h3>Cloning<a class="headerlink" href="#cloning" title="Permalink to this headline">¶</a></h3>
 <p>For use with the <code class="xref py py-mod docutils literal"><span class="pre">model_selection</span></code> module,
 an estimator must support the <code class="docutils literal"><span class="pre">base.clone</span></code> function to replicate an estimator.
 This can be done by providing a <code class="docutils literal"><span class="pre">get_params</span></code> method.
@@ -1541,6 +1623,61 @@ that implement common linear model patterns.</p>
 <p>The <code class="xref py py-mod docutils literal"><span class="pre">sklearn.utils.multiclass</span></code> module contains useful functions
 for working with multiclass and multilabel problems.</p>
 </div>
+</div>
+<div class="section" id="reading-the-existing-code-base">
+<span id="reading-code"></span><h2>Reading the existing code base<a class="headerlink" href="#reading-the-existing-code-base" title="Permalink to this headline">¶</a></h2>
+<p>Reading and digesting an existing code base is always a difficult exercise
+that takes time and experience to master. Even though we try to write simple
+code in general, understanding the code can seem overwhelming at first,
+given the sheer size of the project. Here is a list of tips that may help
+make this task easier and faster (in no particular order).</p>
+<ul class="simple">
+<li>Get acquainted with the <a class="reference internal" href="#api-overview"><span class="std std-ref">APIs of scikit-learn objects</span></a>: understand what <a class="reference internal" href="../glossary.html#term-fit"><span class="xref std std-term">fit</span></a>,
+<a class="reference internal" href="../glossary.html#term-predict"><span class="xref std std-term">predict</span></a>, <a class="reference internal" href="../glossary.html#term-transform"><span class="xref std std-term">transform</span></a>, etc. are used for.</li>
+<li>Before diving into reading the code of a function / class, go through the
+docstrings first and try to get an idea of what each parameter / attribute
+is doing. It may also help to stop a minute and think <em>how would I do this
+myself if I had to?</em></li>
+<li>The trickiest thing is often to identify which portions of the code are
+relevant, and which are not. In scikit-learn <strong>a lot</strong> of input checking
+is performed, especially at the beginning of the <a class="reference internal" href="../glossary.html#term-fit"><span class="xref std std-term">fit</span></a> methods.
+Sometimes, only a very small portion of the code is doing the actual job.
+For example looking at the <code class="docutils literal"><span class="pre">fit()</span></code> method of
+<a class="reference internal" href="../modules/generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression" title="sklearn.linear_model.LinearRegression"><code class="xref py py-class docutils literal"><span class="pre">sklearn.linear_model.LinearRegression</span></code></a>, what you’re looking for
+might just be the call the <code class="docutils literal"><span class="pre">scipy.linalg.lstsq</span></code>, but it is buried into
+multiple lines of input checking and the handling of different kinds of
+parameters.</li>
+<li>Due to the use of <a class="reference external" href="https://en.wikipedia.org/wiki/Inheritance_(object-oriented_programming)">Inheritance</a>,
+some methods may be implemented in parent classes. All estimators inherit
+at least from <a class="reference internal" href="../modules/generated/sklearn.base.BaseEstimator.html#sklearn.base.BaseEstimator" title="sklearn.base.BaseEstimator"><code class="xref py py-class docutils literal"><span class="pre">BaseEstimator</span></code></a>, and
+from a <code class="docutils literal"><span class="pre">Mixin</span></code> class (e.g. <a class="reference internal" href="../modules/generated/sklearn.base.ClassifierMixin.html#sklearn.base.ClassifierMixin" title="sklearn.base.ClassifierMixin"><code class="xref py py-class docutils literal"><span class="pre">ClassifierMixin</span></code></a>) that enables default behaviour depending
+on the nature of the estimator (classifier, regressor, transformer, etc.).</li>
+<li>Sometimes, reading the tests for a given function will give you an idea of
+what its intended purpose is. You can use <code class="docutils literal"><span class="pre">git</span> <span class="pre">grep</span></code> (see below) to find
+all the tests written for a function. Most tests for a specific
+function/class are placed under the <code class="docutils literal"><span class="pre">tests/</span></code> folder of the module</li>
+<li>You’ll often see code looking like this:
+<code class="docutils literal"><span class="pre">out</span> <span class="pre">=</span> <span class="pre">Parallel(...)(delayed(some_function)(param)</span> <span class="pre">for</span> <span class="pre">param</span> <span class="pre">in</span>
+<span class="pre">some_iterable)</span></code>. This runs <code class="docutils literal"><span class="pre">some_function</span></code> in parallel using <a class="reference external" href="https://joblib.readthedocs.io/">Joblib</a>. <code class="docutils literal"><span class="pre">out</span></code> is then an iterable containing
+the values returned by <code class="docutils literal"><span class="pre">some_function</span></code> for each call.</li>
+<li>We use <a class="reference external" href="https://cython.org/">Cython</a> to write fast code. Cython code is
+located in <code class="docutils literal"><span class="pre">.pyx</span></code> and <code class="docutils literal"><span class="pre">.pxd</span></code> files. Cython code has a more C-like
+flavor: we use pointers, perform manual memory allocation, etc. Having
+some minimal experience in C / C++ is pretty much mandatory here.</li>
+<li>Master your tools.<ul>
+<li>With such a big project, being efficient with your favorite editor or
+IDE goes a long way towards digesting the code base. Being able to quickly
+jump (or <em>peek</em>) to a function/class/attribute definition helps a lot.
+So does being able to quickly see where a given name is used in a file.</li>
+<li><a class="reference external" href="https://git-scm.com/book/en">git</a> also has some built-in killer
+features. It is often useful to understand how a file changed over time,
+using e.g. <code class="docutils literal"><span class="pre">git</span> <span class="pre">blame</span></code> (<a class="reference external" href="https://git-scm.com/docs/git-blame">manual</a>). This can also be done directly
+on GitHub. <code class="docutils literal"><span class="pre">git</span> <span class="pre">grep</span></code> (<a class="reference external" href="https://git-scm.com/docs/git-grep#_examples">examples</a>) is also extremely
+useful to see every occurrence of a pattern (e.g. a function call or a
+variable) in the code base.</li>
+</ul>
+</li>
+</ul>
 </div>
 </div>
 
