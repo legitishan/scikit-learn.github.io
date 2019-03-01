@@ -214,13 +214,13 @@
 <p>The standard score of a sample <a class="reference internal" href="../../glossary.html#term-x"><code class="xref any std std-term docutils literal"><span class="pre">x</span></code></a> is calculated as:</p>
 <blockquote>
 <div>z = (x - u) / s</div></blockquote>
-<p>where <code class="xref any docutils literal"><span class="pre">u</span></code> is the mean of the training samples or zero if <code class="xref any docutils literal"><span class="pre">with_mean=False</span></code>,
-and <code class="xref any docutils literal"><span class="pre">s</span></code> is the standard deviation of the training samples or one if
-<code class="xref any docutils literal"><span class="pre">with_std=False</span></code>.</p>
+<p>where <code class="docutils literal"><span class="pre">u</span></code> is the mean of the training samples or zero if <code class="docutils literal"><span class="pre">with_mean=False</span></code>,
+and <code class="docutils literal"><span class="pre">s</span></code> is the standard deviation of the training samples or one if
+<code class="docutils literal"><span class="pre">with_std=False</span></code>.</p>
 <p>Centering and scaling happen independently on each feature by computing
 the relevant statistics on the samples in the training set. Mean and
 standard deviation are then stored to be used on later data using the
-<a class="reference internal" href="../../glossary.html#term-transform"><code class="xref any std std-term docutils literal"><span class="pre">transform</span></code></a> method.</p>
+<a class="reference internal" href="#sklearn.preprocessing.StandardScaler.transform" title="sklearn.preprocessing.StandardScaler.transform"><code class="xref any py py-meth docutils literal"><span class="pre">transform</span></code></a> method.</p>
 <p>Standardization of a dataset is a common requirement for many
 machine learning estimators: they might behave badly if the
 individual features do not more or less look like standard normally
@@ -233,7 +233,7 @@ order. If a feature has a variance that is orders of magnitude larger
 that others, it might dominate the objective function and make the
 estimator unable to learn from other features correctly as expected.</p>
 <p>This scaler can also be applied to sparse CSR or CSC matrices by passing
-<code class="xref any docutils literal"><span class="pre">with_mean=False</span></code> to avoid breaking the sparsity structure of the data.</p>
+<code class="docutils literal"><span class="pre">with_mean=False</span></code> to avoid breaking the sparsity structure of the data.</p>
 <p>Read more in the <a class="reference internal" href="../preprocessing.html#preprocessing-scaler"><span class="std std-ref">User Guide</span></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -263,7 +263,7 @@ unit standard deviation).</p>
 <tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><strong>scale_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">ndarray or None, shape (n_features,)</span></dt>
 <dd><p class="first">Per feature relative scaling of the data. This is calculated using
-<code class="xref any docutils literal"><span class="pre">np.sqrt(var_)</span></code>. Equal to <code class="docutils literal"><span class="pre">None</span></code> when <code class="docutils literal"><span class="pre">with_std=False</span></code>.</p>
+<code class="docutils literal"><span class="pre">np.sqrt(var_)</span></code>. Equal to <code class="docutils literal"><span class="pre">None</span></code> when <code class="docutils literal"><span class="pre">with_std=False</span></code>.</p>
 <div class="last versionadded">
 <p><span class="versionmodified">New in version 0.17: </span><em>scale_</em></p>
 </div>
@@ -274,7 +274,7 @@ Equal to <code class="docutils literal"><span class="pre">None</span></code> whe
 </dd>
 <dt><strong>var_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">ndarray or None, shape (n_features,)</span></dt>
 <dd><p class="first last">The variance for each feature in the training set. Used to compute
-<code class="xref any docutils literal"><span class="pre">scale_</span></code>. Equal to <code class="docutils literal"><span class="pre">None</span></code> when <code class="docutils literal"><span class="pre">with_std=False</span></code>.</p>
+<code class="docutils literal"><span class="pre">scale_</span></code>. Equal to <code class="docutils literal"><span class="pre">None</span></code> when <code class="docutils literal"><span class="pre">with_std=False</span></code>.</p>
 </dd>
 <dt><strong>n_samples_seen_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int or array, shape (n_features,)</span></dt>
 <dd><p class="first last">The number of samples processed by the estimator for each feature.
@@ -301,7 +301,7 @@ Will be reset on new calls to fit, but increments across
 <p>NaNs are treated as missing values: disregarded in fit, and maintained in
 transform.</p>
 <p>We use a biased estimator for the standard deviation, equivalent to
-<code class="xref any docutils literal"><span class="pre">numpy.std(x,</span> <span class="pre">ddof=0)</span></code>. Note that the choice of <code class="xref any docutils literal"><span class="pre">ddof</span></code> is unlikely to
+<code class="docutils literal"><span class="pre">numpy.std(x,</span> <span class="pre">ddof=0)</span></code>. Note that the choice of <code class="docutils literal"><span class="pre">ddof</span></code> is unlikely to
 affect model performance.</p>
 <p>For a comparison of the different scalers, transformers, and normalizers,
 see <a class="reference internal" href="../../auto_examples/preprocessing/plot_all_scaling.html#sphx-glr-auto-examples-preprocessing-plot-all-scaling-py"><span class="std std-ref">examples/preprocessing/plot_all_scaling.py</span></a>.</p>
@@ -472,7 +472,7 @@ contained subobjects that are estimators.</p>
 <code class="descname">partial_fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7639886/sklearn/preprocessing/data.py#L641"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.StandardScaler.partial_fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Online computation of mean and std on X for later scaling.
 All of X is processed as a single batch. This is intended for cases
-when <a class="reference internal" href="../../glossary.html#term-fit"><code class="xref any std std-term docutils literal"><span class="pre">fit</span></code></a> is not feasible due to very large number of <a class="reference internal" href="../../glossary.html#term-n-samples"><code class="xref any std std-term docutils literal"><span class="pre">n_samples</span></code></a>
+when <a class="reference internal" href="#sklearn.preprocessing.StandardScaler.fit" title="sklearn.preprocessing.StandardScaler.fit"><code class="xref any py py-meth docutils literal"><span class="pre">fit</span></code></a> is not feasible due to very large number of <a class="reference internal" href="../../glossary.html#term-n-samples"><code class="xref any std std-term docutils literal"><span class="pre">n_samples</span></code></a>
 or because X is read from a continuous stream.</p>
 <p>The algorithm for incremental mean and std is given in Equation 1.5a,b
 in Chan, Tony F., Gene H. Golub, and Randall J. LeVeque. “Algorithms
