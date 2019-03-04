@@ -77,6 +77,10 @@ For this particular pattern of missing values we see that
     rng = np.random.RandomState(0)
 
     X_full, y_full = fetch_california_housing(return_X_y=True)
+    # ~2k samples is enough for the purpose of the example.
+    # Remove the following two lines for a slower run with different error bars.
+    X_full = X_full[::10]
+    y_full = y_full[::10]
     n_samples, n_features = X_full.shape
 
     # Estimate the score on the entire dataset, with no missing values
@@ -113,7 +117,7 @@ For this particular pattern of missing values we see that
     estimators = [
         BayesianRidge(),
         DecisionTreeRegressor(max_features='sqrt', random_state=0),
-        ExtraTreesRegressor(n_estimators=10, n_jobs=-1, random_state=0),
+        ExtraTreesRegressor(n_estimators=10, random_state=0),
         KNeighborsRegressor(n_neighbors=15)
     ]
     score_iterative_imputer = pd.DataFrame()
@@ -145,7 +149,7 @@ For this particular pattern of missing values we see that
     plt.tight_layout(pad=1)
     plt.show()
 
-**Total running time of the script:** ( 2 minutes  43.835 seconds)
+**Total running time of the script:** ( 0 minutes  19.664 seconds)
 
 
 .. _sphx_glr_download_auto_examples_impute_plot_iterative_imputer_variants_comparison.py:
