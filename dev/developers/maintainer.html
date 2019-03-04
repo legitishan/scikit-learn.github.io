@@ -169,7 +169,10 @@
     <p class="citing">Please <b><a href="../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
 <li><a class="reference internal" href="#">Maintainer / core-developer information</a><ul>
-<li><a class="reference internal" href="#before-a-release">Before a release</a></li>
+<li><a class="reference internal" href="#before-a-release">Before a release</a><ul>
+<li><a class="reference internal" href="#preparing-a-bug-fix-release">Preparing a bug-fix-release</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#making-a-release">Making a release</a></li>
 <li><a class="reference internal" href="#the-scikit-learn-org-web-site">The scikit-learn.org web site</a></li>
 <li><a class="reference internal" href="#travis-cron-jobs">Travis Cron jobs</a></li>
@@ -203,41 +206,72 @@
 </div>
 <p>and commit.</p>
 </li>
+<li><p class="first">Confirm any blockers tagged for the milestone are resolved, and that other
+issues tagged for the milestone can be postponed.</p>
+</li>
+<li><p class="first">Ensure the change log and commits correspond (within reason!), and that the
+change log is reasonably well curated. Some tools for these tasks include:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">maint_tools/sort_whats_new.py</span></code> can put what’s new entries into
+sections.</li>
+<li>The <code class="docutils literal"><span class="pre">maint_tools/whats_missing.sh</span></code> script may be used to identify pull
+requests that were merged but likely missing from What’s New.</li>
+</ul>
+</li>
 </ol>
+<div class="section" id="preparing-a-bug-fix-release">
+<h3>Preparing a bug-fix-release<a class="headerlink" href="#preparing-a-bug-fix-release" title="Permalink to this headline">¶</a></h3>
+<p>Since any commits to a released branch (e.g. 0.999.X) will automatically update
+the web site documentation, it is best to develop a bug-fix release with a pull
+request in which 0.999.X is the base. It also allows you to keep track of any
+tasks towards release with a TO DO list.</p>
+<p>Most development of the bug fix release, and its documentation, should
+happen in master to avoid asynchrony. To select commits from master for use in
+the bug fix (version 0.999.3), you can use:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ git checkout -b release-0.999.3 master
+$ git rebase -i 0.999.X
+</pre></div>
+</div>
+<p>Then pick the commits for release and resolve any issues, and create a pull
+request with 0.999.X as base. Add a commit updating <code class="docutils literal"><span class="pre">sklearn.__version__</span></code>.
+Additional commits can be cherry-picked into the <code class="docutils literal"><span class="pre">release-0.999.3</span></code> branch
+while preparing the release.</p>
+</div>
 </div>
 <div class="section" id="making-a-release">
 <h2>Making a release<a class="headerlink" href="#making-a-release" title="Permalink to this headline">¶</a></h2>
-<p>For more information see <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/wiki/How-to-make-a-release">https://github.com/scikit-learn/scikit-learn/wiki/How-to-make-a-release</a></p>
 <ol class="arabic">
 <li><p class="first">Update docs:</p>
 <ul>
-<li><p class="first"><code class="docutils literal"><span class="pre">maint_tools/sort_whats_new.py</span></code> can put what’s new entries into
-sections.</p>
-</li>
-<li><p class="first">The <code class="docutils literal"><span class="pre">maint_tools/whats_missing.sh</span></code> script may be used to identify pull
-requests that were merged but likely missing from What’s New.</p>
-</li>
 <li><p class="first">Edit the doc/whats_new.rst file to add release title and commit
 statistics. You can retrieve commit statistics with:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>$ git shortlog -ns 0.998..
 </pre></div>
 </div>
 </li>
+<li><p class="first">Update the release date in whats_new.rst</p>
+</li>
 <li><p class="first">Edit the doc/index.rst to change the ‘News’ entry of the front page.</p>
+</li>
+<li><p class="first">Note that these changes should be made in master and cherry-picked into
+the release branch.</p>
 </li>
 </ul>
 </li>
-<li><p class="first">Update the version number in sklearn/__init__.py, the __version__
-variable</p>
+<li><p class="first">On the branch for releasing, update the version number in
+sklearn/__init__.py, the <code class="docutils literal"><span class="pre">__version__</span></code> variable by removing <code class="docutils literal"><span class="pre">dev*</span></code> only
+when ready to release.
+On master, increment the verson in the same place (when branching for
+release).</p>
 </li>
 <li><p class="first">Create the tag and push it:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ git tag 0.999
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ git tag -a 0.999
 
-$ git push origin --tags
+$ git push git@github.com:scikit-learn/scikit-learn.git --tags
 </pre></div>
 </div>
 </li>
-<li><p class="first">create the source tarball:</p>
+<li><p class="first">Create the source tarball:</p>
 <ul>
 <li><p class="first">Wipe clean your repo:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>$ git clean -xfd
@@ -254,8 +288,8 @@ $ git push origin --tags
 with the wheels. Check that you can install it in a new virtualenv and
 that the tests pass.</p>
 </li>
-<li><p class="first">Build binaries using dedicated CI servers by updating the git submodule
-reference to the new scikit-learn tag of the release at:</p>
+<li><p class="first">Update the dependency versions and set <code class="docutils literal"><span class="pre">BUILD_COMMIT</span></code> variable to the
+release tag at:</p>
 <p><a class="reference external" href="https://github.com/MacPython/scikit-learn-wheels">https://github.com/MacPython/scikit-learn-wheels</a></p>
 <p>Once the CI has completed successfully, collect the generated binary wheel
 packages and upload them to PyPI by running the following commands in the
@@ -264,7 +298,8 @@ scikit-learn source folder (checked out at the release tag):</p>
 $ python setup.py fetch_artifacts
 </pre></div>
 </div>
-<p>Check the content of the <code class="docutils literal"><span class="pre">dist/</span></code> folder: it should contain all the wheels
+</li>
+<li><p class="first">Check the content of the <code class="docutils literal"><span class="pre">dist/</span></code> folder: it should contain all the wheels
 along with the source tarball (“scikit-learn-XXX.tar.gz”).</p>
 <p>Make sure that you do not have developer versions or older versions of
 the scikit-learn package in that folder.</p>
@@ -273,12 +308,31 @@ the scikit-learn package in that folder.</p>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Push the documentation to the website. Circle CI should do this
-automatically for master and &lt;N&gt;.&lt;N&gt;.X branches.</p>
-</li>
-<li><p class="first">FOR FINAL RELEASE: Update the release date in What’s New</p>
+<li><p class="first">For major/minor (not bug-fix release), update the symlink for <code class="docutils literal"><span class="pre">stable</span></code>
+in <a class="reference external" href="https://github.com/scikit-learn/scikit-learn.github.io">https://github.com/scikit-learn/scikit-learn.github.io</a>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ cd /tmp
+$ git clone --depth 1 --no-checkout git@github.com:scikit-learn/scikit-learn.github.io.git
+$ cd scikit-learn.github.io
+$ echo stable &gt; .git/info/sparse-checkout
+$ git checkout master
+$ ln -sf 0.999 stable
+$ git push origin master
+</pre></div>
+</div>
 </li>
 </ol>
+<p>The following GitHub checklist might be helpful in a release PR:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">*</span> <span class="p">[</span> <span class="p">]</span> <span class="n">update</span> <span class="n">news</span> <span class="ow">and</span> <span class="n">what</span><span class="s1">&#39;s new date in master and release branch</span>
+<span class="o">*</span> <span class="p">[</span> <span class="p">]</span> <span class="n">create</span> <span class="n">tag</span>
+<span class="o">*</span> <span class="p">[</span> <span class="p">]</span> <span class="n">update</span> <span class="n">dependencies</span> <span class="ow">and</span> <span class="n">release</span> <span class="n">tag</span> <span class="n">at</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">MacPython</span><span class="o">/</span><span class="n">scikit</span><span class="o">-</span><span class="n">learn</span><span class="o">-</span><span class="n">wheels</span>
+<span class="o">*</span> <span class="p">[</span> <span class="p">]</span> <span class="n">twine</span> <span class="n">the</span> <span class="n">wheels</span> <span class="n">to</span> <span class="n">PyPI</span> <span class="n">when</span> <span class="n">that</span><span class="s1">&#39;s green</span>
+<span class="o">*</span> <span class="p">[</span> <span class="p">]</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">scikit</span><span class="o">-</span><span class="n">learn</span><span class="o">/</span><span class="n">scikit</span><span class="o">-</span><span class="n">learn</span><span class="o">/</span><span class="n">releases</span> <span class="n">draft</span>
+<span class="o">*</span> <span class="p">[</span> <span class="p">]</span> <span class="n">confirm</span> <span class="n">bot</span> <span class="n">detected</span> <span class="n">at</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">conda</span><span class="o">-</span><span class="n">forge</span><span class="o">/</span><span class="n">scikit</span><span class="o">-</span><span class="n">learn</span><span class="o">-</span><span class="n">feedstock</span> <span class="ow">and</span> <span class="n">wait</span> <span class="k">for</span> <span class="n">merge</span>
+<span class="o">*</span> <span class="p">[</span> <span class="p">]</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">scikit</span><span class="o">-</span><span class="n">learn</span><span class="o">/</span><span class="n">scikit</span><span class="o">-</span><span class="n">learn</span><span class="o">/</span><span class="n">releases</span> <span class="n">publish</span>
+<span class="o">*</span> <span class="p">[</span> <span class="p">]</span> <span class="n">announce</span> <span class="n">on</span> <span class="n">mailing</span> <span class="nb">list</span>
+<span class="o">*</span> <span class="p">[</span> <span class="p">]</span> <span class="p">(</span><span class="n">regenerate</span> <span class="n">Dash</span> <span class="n">docs</span><span class="p">:</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">Kapeli</span><span class="o">/</span><span class="n">Dash</span><span class="o">-</span><span class="n">User</span><span class="o">-</span><span class="n">Contributions</span><span class="o">/</span><span class="n">tree</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">docsets</span><span class="o">/</span><span class="n">Scikit</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="the-scikit-learn-org-web-site">
 <h2>The scikit-learn.org web site<a class="headerlink" href="#the-scikit-learn-org-web-site" title="Permalink to this headline">¶</a></h2>
