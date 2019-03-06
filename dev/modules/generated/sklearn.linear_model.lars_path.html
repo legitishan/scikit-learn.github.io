@@ -38,7 +38,7 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="sklearn.linear_model.lasso_path" href="sklearn.linear_model.lasso_path.html" />
+    <link rel="next" title="sklearn.linear_model.lars_path_gram" href="sklearn.linear_model.lars_path_gram.html" />
     <link rel="prev" title="sklearn.linear_model.enet_path" href="sklearn.linear_model.enet_path.html" />
   
   
@@ -149,14 +149,14 @@
             &nbsp;
             </div>
         <div class="rellink">
-        <a href="sklearn.linear_model.lasso_path.html"
+        <a href="sklearn.linear_model.lars_path_gram.html"
         accesskey="N">Next
         <br/>
         <span class="smallrellink">
         sklearn.linea...
         </span>
             <span class="hiddenrellink">
-            sklearn.linear_model.lasso_path
+            sklearn.linear_model.lars_path_gram
             </span>
         </a>
         </div>
@@ -209,7 +209,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.linear_model" title="sklearn.linear_model"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.linear_model</span></code></a>.lars_path<a class="headerlink" href="#sklearn-linear-model-lars-path" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.linear_model.lars_path">
-<code class="descclassname">sklearn.linear_model.</code><code class="descname">lars_path</code><span class="sig-paren">(</span><em>X</em>, <em>y</em>, <em>Xy=None</em>, <em>Gram=None</em>, <em>max_iter=500</em>, <em>alpha_min=0</em>, <em>method=’lar’</em>, <em>copy_X=True</em>, <em>eps=2.220446049250313e-16</em>, <em>copy_Gram=True</em>, <em>verbose=0</em>, <em>return_path=True</em>, <em>return_n_iter=False</em>, <em>positive=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/fc6d906/sklearn/linear_model/least_angle.py#L29"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.lars_path" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sklearn.linear_model.</code><code class="descname">lars_path</code><span class="sig-paren">(</span><em>X</em>, <em>y</em>, <em>Xy=None</em>, <em>Gram=None</em>, <em>max_iter=500</em>, <em>alpha_min=0</em>, <em>method=’lar’</em>, <em>copy_X=True</em>, <em>eps=2.220446049250313e-16</em>, <em>copy_Gram=True</em>, <em>verbose=0</em>, <em>return_path=True</em>, <em>return_n_iter=False</em>, <em>positive=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/fec7670/sklearn/linear_model/least_angle.py#L29"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.lars_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute Least Angle Regression or Lasso path using LARS algorithm [1]</p>
 <p>The optimization objective for the case method=’lasso’ is:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n_samples</span><span class="p">))</span> <span class="o">*</span> <span class="o">||</span><span class="n">y</span> <span class="o">-</span> <span class="n">Xw</span><span class="o">||^</span><span class="mi">2_2</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="o">||</span><span class="n">w</span><span class="o">||</span><span class="n">_1</span>
@@ -223,20 +223,30 @@ the form of an implicit equation (see discussion in [1])</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array, shape: (n_samples, n_features)</span></dt>
-<dd><p class="first last">Input data.</p>
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None or array, shape (n_samples, n_features)</span></dt>
+<dd><p class="first">Input data. Note that if X is None then the Gram matrix must be
+specified, i.e., cannot be None or False.</p>
+<div class="last deprecated">
+<p><span class="versionmodified">Deprecated since version 0.21: </span>The use of <code class="docutils literal"><span class="pre">X</span></code> is <code class="docutils literal"><span class="pre">None</span></code> in combination with <code class="docutils literal"><span class="pre">Gram</span></code> is not
+<code class="docutils literal"><span class="pre">None</span></code> will be removed in v0.23. Use <a class="reference internal" href="sklearn.linear_model.lars_path_gram.html#sklearn.linear_model.lars_path_gram" title="sklearn.linear_model.lars_path_gram"><code class="xref py py-func docutils literal"><span class="pre">lars_path_gram</span></code></a>
+instead.</p>
+</div>
 </dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array, shape: (n_samples)</span></dt>
+<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None or array, shape (n_samples,)</span></dt>
 <dd><p class="first last">Input targets.</p>
 </dd>
-<dt><strong>Xy</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_samples,) or (n_samples, n_targets),             optional</span></dt>
+<dt><strong>Xy</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (n_samples,) or (n_samples, n_targets), optional</span></dt>
 <dd><p class="first last">Xy = np.dot(X.T, y) that can be precomputed. It is useful
 only when the Gram matrix is precomputed.</p>
 </dd>
-<dt><strong>Gram</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None, ‘auto’, array, shape: (n_features, n_features), optional</span></dt>
-<dd><p class="first last">Precomputed Gram matrix (X’ * X), if <code class="docutils literal"><span class="pre">'auto'</span></code>, the Gram
+<dt><strong>Gram</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None, ‘auto’, array, shape (n_features, n_features), optional</span></dt>
+<dd><p class="first">Precomputed Gram matrix (X’ * X), if <code class="docutils literal"><span class="pre">'auto'</span></code>, the Gram
 matrix is precomputed from the given X, if there are more samples
 than features.</p>
+<div class="last deprecated">
+<p><span class="versionmodified">Deprecated since version 0.21: </span>The use of <code class="docutils literal"><span class="pre">X</span></code> is <code class="docutils literal"><span class="pre">None</span></code> in combination with <code class="docutils literal"><span class="pre">Gram</span></code> is not
+None will be removed in v0.23. Use <a class="reference internal" href="sklearn.linear_model.lars_path_gram.html#sklearn.linear_model.lars_path_gram" title="sklearn.linear_model.lars_path_gram"><code class="xref py py-func docutils literal"><span class="pre">lars_path_gram</span></code></a> instead.</p>
+</div>
 </dd>
 <dt><strong>max_iter</strong> <span class="classifier-delimiter">:</span> <span class="classifier">integer, optional (default=500)</span></dt>
 <dd><p class="first last">Maximum number of iterations to perform, set to infinity for no limit.</p>
@@ -283,7 +293,7 @@ solution of the coordinate descent lasso_path function.</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>alphas</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array, shape: [n_alphas + 1]</span></dt>
+<dt><strong>alphas</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array, shape (n_alphas + 1,)</span></dt>
 <dd><p class="first last">Maximum of covariances (in absolute value) at each iteration.
 <code class="docutils literal"><span class="pre">n_alphas</span></code> is either <code class="docutils literal"><span class="pre">max_iter</span></code>, <code class="docutils literal"><span class="pre">n_features</span></code> or the
 number of nodes in the path with <code class="docutils literal"><span class="pre">alpha</span> <span class="pre">&gt;=</span> <span class="pre">alpha_min</span></code>, whichever
@@ -306,14 +316,14 @@ to True.</p>
 </table>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="sklearn.linear_model.lasso_path.html#sklearn.linear_model.lasso_path" title="sklearn.linear_model.lasso_path"><code class="xref py py-obj docutils literal"><span class="pre">lasso_path</span></code></a>, <a class="reference internal" href="sklearn.linear_model.LassoLars.html#sklearn.linear_model.LassoLars" title="sklearn.linear_model.LassoLars"><code class="xref py py-obj docutils literal"><span class="pre">LassoLars</span></code></a>, <a class="reference internal" href="sklearn.linear_model.Lars.html#sklearn.linear_model.Lars" title="sklearn.linear_model.Lars"><code class="xref py py-obj docutils literal"><span class="pre">Lars</span></code></a>, <a class="reference internal" href="sklearn.linear_model.LassoLarsCV.html#sklearn.linear_model.LassoLarsCV" title="sklearn.linear_model.LassoLarsCV"><code class="xref py py-obj docutils literal"><span class="pre">LassoLarsCV</span></code></a>, <a class="reference internal" href="sklearn.linear_model.LarsCV.html#sklearn.linear_model.LarsCV" title="sklearn.linear_model.LarsCV"><code class="xref py py-obj docutils literal"><span class="pre">LarsCV</span></code></a>, <a class="reference internal" href="sklearn.decomposition.sparse_encode.html#sklearn.decomposition.sparse_encode" title="sklearn.decomposition.sparse_encode"><code class="xref py py-obj docutils literal"><span class="pre">sklearn.decomposition.sparse_encode</span></code></a></p>
+<p class="last"><a class="reference internal" href="sklearn.linear_model.lars_path_gram.html#sklearn.linear_model.lars_path_gram" title="sklearn.linear_model.lars_path_gram"><code class="xref py py-obj docutils literal"><span class="pre">lars_path_gram</span></code></a>, <a class="reference internal" href="sklearn.linear_model.lasso_path.html#sklearn.linear_model.lasso_path" title="sklearn.linear_model.lasso_path"><code class="xref py py-obj docutils literal"><span class="pre">lasso_path</span></code></a>, <code class="xref py py-obj docutils literal"><span class="pre">lasso_path_gram</span></code>, <a class="reference internal" href="sklearn.linear_model.LassoLars.html#sklearn.linear_model.LassoLars" title="sklearn.linear_model.LassoLars"><code class="xref py py-obj docutils literal"><span class="pre">LassoLars</span></code></a>, <a class="reference internal" href="sklearn.linear_model.Lars.html#sklearn.linear_model.Lars" title="sklearn.linear_model.Lars"><code class="xref py py-obj docutils literal"><span class="pre">Lars</span></code></a>, <a class="reference internal" href="sklearn.linear_model.LassoLarsCV.html#sklearn.linear_model.LassoLarsCV" title="sklearn.linear_model.LassoLarsCV"><code class="xref py py-obj docutils literal"><span class="pre">LassoLarsCV</span></code></a>, <a class="reference internal" href="sklearn.linear_model.LarsCV.html#sklearn.linear_model.LarsCV" title="sklearn.linear_model.LarsCV"><code class="xref py py-obj docutils literal"><span class="pre">LarsCV</span></code></a>, <a class="reference internal" href="sklearn.decomposition.sparse_encode.html#sklearn.decomposition.sparse_encode" title="sklearn.decomposition.sparse_encode"><code class="xref py py-obj docutils literal"><span class="pre">sklearn.decomposition.sparse_encode</span></code></a></p>
 </div>
 <p class="rubric">References</p>
 <table class="docutils citation" frame="void" id="r2391cff0bbde-1" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>“Least Angle Regression”, Effron et al.
-<a class="reference external" href="https://statweb.stanford.edu/~tibs/ftp/lars.pdf">https://statweb.stanford.edu/~tibs/ftp/lars.pdf</a></td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>“Least Angle Regression”, Efron et al.
+<a class="reference external" href="http://statweb.stanford.edu/~tibs/ftp/lars.pdf">http://statweb.stanford.edu/~tibs/ftp/lars.pdf</a></td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="r2391cff0bbde-2" rules="none">
@@ -358,7 +368,7 @@ to True.</p>
       </a>
     </div>
     <div class="buttonNext">
-      <a href="sklearn.linear_model.lasso_path.html">Next
+      <a href="sklearn.linear_model.lars_path_gram.html">Next
       </a>
     </div>
     
