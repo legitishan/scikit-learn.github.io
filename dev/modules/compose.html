@@ -186,7 +186,12 @@
     <ul>
 <li><a class="reference internal" href="#">4.1. Pipelines and composite estimators</a><ul>
 <li><a class="reference internal" href="#pipeline-chaining-estimators">4.1.1. Pipeline: chaining estimators</a><ul>
-<li><a class="reference internal" href="#usage">4.1.1.1. Usage</a></li>
+<li><a class="reference internal" href="#usage">4.1.1.1. Usage</a><ul>
+<li><a class="reference internal" href="#construction">4.1.1.1.1. Construction</a></li>
+<li><a class="reference internal" href="#accessing-steps">4.1.1.1.2. Accessing steps</a></li>
+<li><a class="reference internal" href="#nested-parameters">4.1.1.1.3. Nested parameters</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#notes">4.1.1.2. Notes</a></li>
 <li><a class="reference internal" href="#caching-transformers-avoid-repeated-computation">4.1.1.3. Caching transformers: avoid repeated computation</a></li>
 </ul>
@@ -248,6 +253,8 @@ used to train the transformers and predictors.</dd>
 The last estimator may be any type (transformer, classifier, etc.).</p>
 <div class="section" id="usage">
 <h3>4.1.1.1. Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="construction">
+<h4>4.1.1.1.1. Construction<a class="headerlink" href="#construction" title="Permalink to this headline">¶</a></h4>
 <p>The <a class="reference internal" href="generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal"><span class="pre">Pipeline</span></code></a> is built using a list of <code class="docutils literal"><span class="pre">(key,</span> <span class="pre">value)</span></code> pairs, where
 the <code class="docutils literal"><span class="pre">key</span></code> is a string containing the name you want to give this step and <code class="docutils literal"><span class="pre">value</span></code>
 is an estimator object:</p>
@@ -277,29 +284,48 @@ filling in the names automatically:</p>
 <span class="go">                                                fit_prior=True))])</span>
 </pre></div>
 </div>
-<p>The estimators of a pipeline are stored as a list in the <code class="docutils literal"><span class="pre">steps</span></code> attribute:</p>
+</div>
+<div class="section" id="accessing-steps">
+<h4>4.1.1.1.2. Accessing steps<a class="headerlink" href="#accessing-steps" title="Permalink to this headline">¶</a></h4>
+<p>The estimators of a pipeline are stored as a list in the <code class="docutils literal"><span class="pre">steps</span></code> attribute,
+but can be accessed by index or name by indexing (with <code class="docutils literal"><span class="pre">[idx]</span></code>) the
+Pipeline:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pipe</span><span class="o">.</span><span class="n">steps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  
-<span class="go">(&#39;reduce_dim&#39;, PCA(copy=True, iterated_power=&#39;auto&#39;, n_components=None, random_state=None,</span>
-<span class="go">  svd_solver=&#39;auto&#39;, tol=0.0, whiten=False))</span>
-</pre></div>
-</div>
-<p>and as a <code class="docutils literal"><span class="pre">dict</span></code> in <code class="docutils literal"><span class="pre">named_steps</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pipe</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s1">&#39;reduce_dim&#39;</span><span class="p">]</span>  
+<span class="go">(&#39;reduce_dim&#39;, PCA(copy=True, iterated_power=&#39;auto&#39;, n_components=None,</span>
+<span class="go">                   random_state=None, svd_solver=&#39;auto&#39;, tol=0.0,</span>
+<span class="go">                   whiten=False))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pipe</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  
 <span class="go">PCA(copy=True, iterated_power=&#39;auto&#39;, n_components=None, random_state=None,</span>
-<span class="go">  svd_solver=&#39;auto&#39;, tol=0.0, whiten=False)</span>
+<span class="go">    svd_solver=&#39;auto&#39;, tol=0.0, whiten=False)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pipe</span><span class="p">[</span><span class="s1">&#39;reduce_dim&#39;</span><span class="p">]</span>  
+<span class="go">PCA(copy=True, ...)</span>
 </pre></div>
 </div>
+<p>Pipeline’s <code class="docutils literal"><span class="pre">named_steps</span></code> attribute allows accessing steps by name with tab
+completion in interactive environments:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pipe</span><span class="o">.</span><span class="n">named_steps</span><span class="o">.</span><span class="n">reduce_dim</span> <span class="ow">is</span> <span class="n">pipe</span><span class="p">[</span><span class="s1">&#39;reduce_dim&#39;</span><span class="p">]</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>A sub-pipeline can also be extracted using the slicing notation commonly used
+for Python Sequences such as lists or strings (although only a step of 1 is
+permitted). This is convenient for performing only some of the transformations
+(or their inverse):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pipe</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span> 
+<span class="go">Pipeline(memory=None, steps=[(&#39;reduce_dim&#39;, PCA(copy=True, ...))])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pipe</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span> 
+<span class="go">Pipeline(memory=None, steps=[(&#39;clf&#39;, SVC(C=1.0, ...))])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="nested-parameters">
+<h4>4.1.1.1.3. Nested parameters<a class="headerlink" href="#nested-parameters" title="Permalink to this headline">¶</a></h4>
 <p>Parameters of the estimators in the pipeline can be accessed using the
 <code class="docutils literal"><span class="pre">&lt;estimator&gt;__&lt;parameter&gt;</span></code> syntax:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pipe</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="n">clf__C</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> 
 <span class="go">Pipeline(memory=None,</span>
 <span class="go">         steps=[(&#39;reduce_dim&#39;, PCA(copy=True, iterated_power=&#39;auto&#39;,...)),</span>
 <span class="go">                (&#39;clf&#39;, SVC(C=10, cache_size=200, class_weight=None,...))])</span>
-</pre></div>
-</div>
-<p>Attributes of named_steps map to keys, enabling tab completion in interactive environments:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pipe</span><span class="o">.</span><span class="n">named_steps</span><span class="o">.</span><span class="n">reduce_dim</span> <span class="ow">is</span> <span class="n">pipe</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s1">&#39;reduce_dim&#39;</span><span class="p">]</span>
-<span class="go">True</span>
 </pre></div>
 </div>
 <p>This is particularly important for doing grid searches:</p>
@@ -318,6 +344,16 @@ ignored by setting them to <code class="docutils literal"><span class="pre">'pas
 <span class="gp">&gt;&gt;&gt; </span><span class="n">grid_search</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="n">param_grid</span><span class="o">=</span><span class="n">param_grid</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>The estimators of the pipeline can be retrieved by index:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pipe</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  
+<span class="go">PCA(copy=True, ...)</span>
+</pre></div>
+</div>
+<p>or by name:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pipe</span><span class="p">[</span><span class="s1">&#39;reduce_dim&#39;</span><span class="p">]</span>  
+<span class="go">PCA(copy=True, ...)</span>
+</pre></div>
+</div>
 <div class="topic">
 <p class="topic-title first">Examples:</p>
 <ul class="simple">
@@ -334,6 +370,7 @@ ignored by setting them to <code class="docutils literal"><span class="pre">'pas
 <ul class="simple">
 <li><a class="reference internal" href="grid_search.html#grid-search"><span class="std std-ref">Tuning the hyper-parameters of an estimator</span></a></li>
 </ul>
+</div>
 </div>
 </div>
 <div class="section" id="notes">

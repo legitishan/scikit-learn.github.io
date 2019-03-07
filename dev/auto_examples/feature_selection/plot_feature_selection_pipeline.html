@@ -209,18 +209,37 @@
 <div class="sphx-glr-example-title section" id="pipeline-anova-svm">
 <span id="sphx-glr-auto-examples-feature-selection-plot-feature-selection-pipeline-py"></span><h1>Pipeline Anova SVM<a class="headerlink" href="#pipeline-anova-svm" title="Permalink to this headline">¶</a></h1>
 <p>Simple usage of Pipeline that runs successively a univariate
-feature selection with anova and then a C-SVM of the selected features.</p>
+feature selection with anova and then a SVM of the selected features.</p>
+<p>Using a sub-pipeline, the fitted coefficients can be mapped back into
+the original feature space.</p>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>precision    recall  f1-score   support
 
            0       0.75      0.50      0.60         6
-           1       0.60      1.00      0.75         6
+           1       0.67      1.00      0.80         6
            2       0.67      0.80      0.73         5
-           3       1.00      0.62      0.77         8
+           3       1.00      0.75      0.86         8
 
-    accuracy                           0.72        25
-   macro avg       0.75      0.73      0.71        25
-weighted avg       0.78      0.72      0.72        25
+    accuracy                           0.76        25
+   macro avg       0.77      0.76      0.75        25
+weighted avg       0.79      0.76      0.76        25
+
+[[-0.23912131  0.          0.          0.         -0.3236911   0.
+   0.          0.          0.          0.          0.          0.
+   0.10836648  0.          0.          0.          0.          0.
+   0.          0.        ]
+ [ 0.43878747  0.          0.          0.         -0.51415652  0.
+   0.          0.          0.          0.          0.          0.
+   0.04845652  0.          0.          0.          0.          0.
+   0.          0.        ]
+ [-0.65382998  0.          0.          0.          0.57962856  0.
+   0.          0.          0.          0.          0.          0.
+  -0.04736524  0.          0.          0.          0.          0.
+   0.          0.        ]
+ [ 0.54403412  0.          0.          0.          0.58478491  0.
+   0.          0.          0.          0.          0.          0.
+  -0.11344659  0.          0.          0.          0.          0.
+   0.          0.        ]]
 </pre></div>
 </div>
 <div class="line-block">
@@ -246,15 +265,18 @@ weighted avg       0.78      0.72      0.72        25
 <span class="c1"># 1) anova filter, take 3 best ranked features</span>
 <span class="n">anova_filter</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.feature_selection.SelectKBest.html#sklearn.feature_selection.SelectKBest" title="View documentation for sklearn.feature_selection.SelectKBest"><span class="n">SelectKBest</span></a><span class="p">(</span><a href="../../modules/generated/sklearn.feature_selection.f_regression.html#sklearn.feature_selection.f_regression" title="View documentation for sklearn.feature_selection.f_regression"><span class="n">f_regression</span></a><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="c1"># 2) svm</span>
-<span class="n">clf</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC" title="View documentation for sklearn.svm.SVC"><span class="n">svm</span><span class="o">.</span><span class="n">SVC</span></a><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span>
+<span class="n">clf</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.svm.LinearSVC.html#sklearn.svm.LinearSVC" title="View documentation for sklearn.svm.LinearSVC"><span class="n">svm</span><span class="o">.</span><span class="n">LinearSVC</span></a><span class="p">()</span>
 
 <span class="n">anova_svm</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.pipeline.make_pipeline.html#sklearn.pipeline.make_pipeline" title="View documentation for sklearn.pipeline.make_pipeline"><span class="n">make_pipeline</span></a><span class="p">(</span><span class="n">anova_filter</span><span class="p">,</span> <span class="n">clf</span><span class="p">)</span>
 <span class="n">anova_svm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <span class="n">y_pred</span> <span class="o">=</span> <span class="n">anova_svm</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><a href="../../modules/generated/sklearn.metrics.classification_report.html#sklearn.metrics.classification_report" title="View documentation for sklearn.metrics.classification_report"><span class="n">classification_report</span></a><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+
+<span class="n">coef</span> <span class="o">=</span> <span class="n">anova_svm</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">anova_svm</span><span class="p">[</span><span class="s1">&#39;linearsvc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">coef</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.005 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.009 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-feature-selection-plot-feature-selection-pipeline-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/plot_feature_selection_pipeline.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_feature_selection_pipeline.py</span></code></a></div>
