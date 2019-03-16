@@ -38,8 +38,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Orthogonal Matching Pursuit" href="plot_omp.html" />
-    <link rel="prev" title="Comparing various online solvers" href="plot_sgd_comparison.html" />
+    <link rel="next" title="Theil-Sen Regression" href="plot_theilsen.html" />
+    <link rel="prev" title="Plot multi-class SGD on the iris dataset" href="plot_sgd_iris.html" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -134,14 +134,14 @@
         <div class="rel">
     
         <div class="rellink">
-        <a href="plot_sgd_comparison.html"
+        <a href="plot_sgd_iris.html"
         accesskey="P">Previous
         <br/>
         <span class="smallrellink">
-        Comparing var...
+        Plot multi-cl...
         </span>
             <span class="hiddenrellink">
-            Comparing various online solvers
+            Plot multi-class SGD on the iris dataset
             </span>
         </a>
         </div>
@@ -149,14 +149,14 @@
             &nbsp;
             </div>
         <div class="rellink">
-        <a href="plot_omp.html"
+        <a href="plot_theilsen.html"
         accesskey="N">Next
         <br/>
         <span class="smallrellink">
-        Orthogonal Ma...
+        Theil-Sen Regression
         </span>
             <span class="hiddenrellink">
-            Orthogonal Matching Pursuit
+            Theil-Sen Regression
             </span>
         </a>
         </div>
@@ -214,9 +214,9 @@ compared with the ground-truth.</p>
 <img alt="../../_images/sphx_glr_plot_lasso_and_elasticnet_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_lasso_and_elasticnet_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>Lasso(alpha=0.1)
-r^2 on test data : 0.385982
+r^2 on test data : 0.658064
 ElasticNet(alpha=0.1, l1_ratio=0.7)
-r^2 on test data : 0.240498
+r^2 on test data : 0.642515
 </pre></div>
 </div>
 <div class="line-block">
@@ -233,15 +233,16 @@ r^2 on test data : 0.240498
 <span class="c1"># Generate some sparse data to play with</span>
 <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.seed.html#numpy.random.seed" title="View documentation for numpy.random.seed"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span></a><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 
-<span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">200</span>
+<span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span>
 <span class="n">X</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.randn.html#numpy.random.randn" title="View documentation for numpy.random.randn"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span></a><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span>
-<span class="n">coef</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.randn.html#numpy.random.randn" title="View documentation for numpy.random.randn"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span></a><span class="p">(</span><span class="n">n_features</span><span class="p">)</span>
-<span class="n">inds</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="View documentation for numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="n">n_features</span><span class="p">)</span>
-<a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.shuffle.html#numpy.random.shuffle" title="View documentation for numpy.random.shuffle"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span></a><span class="p">(</span><span class="n">inds</span><span class="p">)</span>
-<span class="n">coef</span><span class="p">[</span><span class="n">inds</span><span class="p">[</span><span class="mi">10</span><span class="p">:]]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># sparsify coef</span>
+
+<span class="c1"># Decreasing coef w. alternated signs for visualization</span>
+<span class="n">idx</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="View documentation for numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="n">n_features</span><span class="p">)</span>
+<span class="n">coef</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="n">idx</span> <span class="o">*</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.exp.html#numpy.exp" title="View documentation for numpy.exp"><span class="n">np</span><span class="o">.</span><span class="n">exp</span></a><span class="p">(</span><span class="o">-</span><span class="n">idx</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">coef</span><span class="p">[</span><span class="mi">10</span><span class="p">:]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># sparsify coef</span>
 <span class="n">y</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.dot.html#numpy.dot" title="View documentation for numpy.dot"><span class="n">np</span><span class="o">.</span><span class="n">dot</span></a><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">coef</span><span class="p">)</span>
 
-<span class="c1"># add noise</span>
+<span class="c1"># Add noise</span>
 <span class="n">y</span> <span class="o">+=</span> <span class="mf">0.01</span> <span class="o">*</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.normal.html#numpy.random.normal" title="View documentation for numpy.random.normal"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span></a><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
 
 <span class="c1"># Split data in train set and test set</span>
@@ -272,18 +273,22 @@ r^2 on test data : 0.240498
 <span class="k">print</span><span class="p">(</span><span class="n">enet</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;r^2 on test data : </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">r2_score_enet</span><span class="p">)</span>
 
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">enet</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightgreen&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-         <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Elastic net coefficients&#39;</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">lasso</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gold&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-         <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Lasso coefficients&#39;</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">coef</span><span class="p">,</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;navy&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;original coefficients&#39;</span><span class="p">)</span>
+<span class="n">m</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.stem.html#matplotlib.pyplot.stem" title="View documentation for matplotlib.pyplot.stem"><span class="n">plt</span><span class="o">.</span><span class="n">stem</span></a><span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.where.html#numpy.where" title="View documentation for numpy.where"><span class="n">np</span><span class="o">.</span><span class="n">where</span></a><span class="p">(</span><span class="n">enet</span><span class="o">.</span><span class="n">coef_</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">enet</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="n">enet</span><span class="o">.</span><span class="n">coef_</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">],</span>
+                   <span class="n">markerfmt</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Elastic net coefficients&#39;</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.setp.html#matplotlib.pyplot.setp" title="View documentation for matplotlib.pyplot.setp"><span class="n">plt</span><span class="o">.</span><span class="n">setp</span></a><span class="p">([</span><span class="n">m</span><span class="p">,</span> <span class="n">s</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#2ca02c&quot;</span><span class="p">)</span>
+<span class="n">m</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.stem.html#matplotlib.pyplot.stem" title="View documentation for matplotlib.pyplot.stem"><span class="n">plt</span><span class="o">.</span><span class="n">stem</span></a><span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.where.html#numpy.where" title="View documentation for numpy.where"><span class="n">np</span><span class="o">.</span><span class="n">where</span></a><span class="p">(</span><span class="n">lasso</span><span class="o">.</span><span class="n">coef_</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lasso</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="n">lasso</span><span class="o">.</span><span class="n">coef_</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">],</span>
+                   <span class="n">markerfmt</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Lasso coefficients&#39;</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.setp.html#matplotlib.pyplot.setp" title="View documentation for matplotlib.pyplot.setp"><span class="n">plt</span><span class="o">.</span><span class="n">setp</span></a><span class="p">([</span><span class="n">m</span><span class="p">,</span> <span class="n">s</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#ff7f0e&#39;</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.stem.html#matplotlib.pyplot.stem" title="View documentation for matplotlib.pyplot.stem"><span class="n">plt</span><span class="o">.</span><span class="n">stem</span></a><span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.where.html#numpy.where" title="View documentation for numpy.where"><span class="n">np</span><span class="o">.</span><span class="n">where</span></a><span class="p">(</span><span class="n">coef</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">coef</span><span class="p">[</span><span class="n">coef</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;true coefficients&#39;</span><span class="p">,</span>
+         <span class="n">markerfmt</span><span class="o">=</span><span class="s1">&#39;bx&#39;</span><span class="p">)</span>
+
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.legend.html#matplotlib.pyplot.legend" title="View documentation for matplotlib.pyplot.legend"><span class="n">plt</span><span class="o">.</span><span class="n">legend</span></a><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="View documentation for matplotlib.pyplot.title"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s2">&quot;Lasso R^2: </span><span class="si">%f</span><span class="s2">, Elastic Net R^2: </span><span class="si">%f</span><span class="s2">&quot;</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="View documentation for matplotlib.pyplot.title"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s2">&quot;Lasso $R^2$: </span><span class="si">%.3f</span><span class="s2">, Elastic Net $R^2$: </span><span class="si">%.3f</span><span class="s2">&quot;</span>
           <span class="o">%</span> <span class="p">(</span><span class="n">r2_score_lasso</span><span class="p">,</span> <span class="n">r2_score_enet</span><span class="p">))</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.021 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.115 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-linear-model-plot-lasso-and-elasticnet-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/plot_lasso_and_elasticnet.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_lasso_and_elasticnet.py</span></code></a></div>
@@ -308,11 +313,11 @@ r^2 on test data : 0.240498
      <div class="rel">
     
     <div class="buttonPrevious">
-      <a href="plot_sgd_comparison.html">Previous
+      <a href="plot_sgd_iris.html">Previous
       </a>
     </div>
     <div class="buttonNext">
-      <a href="plot_omp.html">Next
+      <a href="plot_theilsen.html">Next
       </a>
     </div>
     
