@@ -242,20 +242,20 @@ best n_components by PCA MLE = 38
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Authors: Alexandre Gramfort</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Authors: Alexandre Gramfort</span>
 <span class="c1">#          Denis A. Engemann</span>
 <span class="c1"># License: BSD 3 clause</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">linalg</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">linalg</span>
 
-<span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="View documentation for sklearn.decomposition.PCA"><span class="n">PCA</span></a><span class="p">,</span> <a href="../../modules/generated/sklearn.decomposition.FactorAnalysis.html#sklearn.decomposition.FactorAnalysis" title="View documentation for sklearn.decomposition.FactorAnalysis"><span class="n">FactorAnalysis</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.covariance</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.covariance.ShrunkCovariance.html#sklearn.covariance.ShrunkCovariance" title="View documentation for sklearn.covariance.ShrunkCovariance"><span class="n">ShrunkCovariance</span></a><span class="p">,</span> <a href="../../modules/generated/sklearn.covariance.LedoitWolf.html#sklearn.covariance.LedoitWolf" title="View documentation for sklearn.covariance.LedoitWolf"><span class="n">LedoitWolf</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score" title="View documentation for sklearn.model_selection.cross_val_score"><span class="n">cross_val_score</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV" title="View documentation for sklearn.model_selection.GridSearchCV"><span class="n">GridSearchCV</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="View documentation for sklearn.decomposition.PCA"><span class="n">PCA</span></a><span class="p">,</span> <a href="../../modules/generated/sklearn.decomposition.FactorAnalysis.html#sklearn.decomposition.FactorAnalysis" title="View documentation for sklearn.decomposition.FactorAnalysis"><span class="n">FactorAnalysis</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.covariance</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.covariance.ShrunkCovariance.html#sklearn.covariance.ShrunkCovariance" title="View documentation for sklearn.covariance.ShrunkCovariance"><span class="n">ShrunkCovariance</span></a><span class="p">,</span> <a href="../../modules/generated/sklearn.covariance.LedoitWolf.html#sklearn.covariance.LedoitWolf" title="View documentation for sklearn.covariance.LedoitWolf"><span class="n">LedoitWolf</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score" title="View documentation for sklearn.model_selection.cross_val_score"><span class="n">cross_val_score</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV" title="View documentation for sklearn.model_selection.GridSearchCV"><span class="n">GridSearchCV</span></a>
 
-<span class="k">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
 
 <span class="c1"># #############################################################################</span>
 <span class="c1"># Create the data</span>
@@ -313,9 +313,9 @@ best n_components by PCA MLE = 38
     <span class="n">pca</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
     <span class="n">n_components_pca_mle</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">n_components_</span>
 
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;best n_components by PCA CV = </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">n_components_pca</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;best n_components by FactorAnalysis CV = </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">n_components_fa</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;best n_components by PCA MLE = </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">n_components_pca_mle</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;best n_components by PCA CV = </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">n_components_pca</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;best n_components by FactorAnalysis CV = </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">n_components_fa</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;best n_components by PCA MLE = </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">n_components_pca_mle</span><span class="p">)</span>
 
     <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">()</span>
     <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">pca_scores</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;PCA scores&#39;</span><span class="p">)</span>
@@ -343,7 +343,7 @@ best n_components by PCA MLE = 38
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  21.881 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  15.409 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-decomposition-plot-pca-vs-fa-model-selection-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/plot_pca_vs_fa_model_selection.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_pca_vs_fa_model_selection.py</span></code></a></div>

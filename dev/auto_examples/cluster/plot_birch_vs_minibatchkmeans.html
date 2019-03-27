@@ -217,30 +217,30 @@ step before the final (global) clustering step that further reduces these
 158 clusters to 100 clusters.</p>
 <img alt="../../_images/sphx_glr_plot_birch_vs_minibatchkmeans_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_birch_vs_minibatchkmeans_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>Birch without global clustering as the final step took 2.32 seconds
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>Birch without global clustering as the final step took 2.31 seconds
 n_clusters : 158
-Birch with global clustering as the final step took 2.38 seconds
+Birch with global clustering as the final step took 2.31 seconds
 n_clusters : 100
-Time taken to run MiniBatchKMeans 3.14 seconds
+Time taken to run MiniBatchKMeans 3.08 seconds
 </pre></div>
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Authors: Manoj Kumar &lt;manojkumarsivaraj334@gmail.com</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Authors: Manoj Kumar &lt;manojkumarsivaraj334@gmail.com</span>
 <span class="c1">#          Alexandre Gramfort &lt;alexandre.gramfort@telecom-paristech.fr&gt;</span>
 <span class="c1"># License: BSD 3 clause</span>
 
-<span class="k">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">cycle</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="kn">as</span> <span class="nn">colors</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">cycle</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="k">as</span> <span class="nn">colors</span>
 
-<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.cluster.Birch.html#sklearn.cluster.Birch" title="View documentation for sklearn.cluster.Birch"><span class="n">Birch</span></a><span class="p">,</span> <a href="../../modules/generated/sklearn.cluster.MiniBatchKMeans.html#sklearn.cluster.MiniBatchKMeans" title="View documentation for sklearn.cluster.MiniBatchKMeans"><span class="n">MiniBatchKMeans</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.datasets.samples_generator</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.datasets.make_blobs.html#sklearn.datasets.make_blobs" title="View documentation for sklearn.datasets.samples_generator.make_blobs"><span class="n">make_blobs</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.cluster.Birch.html#sklearn.cluster.Birch" title="View documentation for sklearn.cluster.Birch"><span class="n">Birch</span></a><span class="p">,</span> <a href="../../modules/generated/sklearn.cluster.MiniBatchKMeans.html#sklearn.cluster.MiniBatchKMeans" title="View documentation for sklearn.cluster.MiniBatchKMeans"><span class="n">MiniBatchKMeans</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.datasets.samples_generator</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.datasets.make_blobs.html#sklearn.datasets.make_blobs" title="View documentation for sklearn.datasets.samples_generator.make_blobs"><span class="n">make_blobs</span></a>
 
 
 <span class="c1"># Generate centers for the blobs so that it forms a 10 X 10 grid.</span>
@@ -261,7 +261,7 @@ Time taken to run MiniBatchKMeans 3.14 seconds
 
 <span class="c1"># Compute clustering with Birch with and without the final clustering step</span>
 <span class="c1"># and plot.</span>
-<span class="n">birch_models</span> <span class="o">=</span> <span class="p">[</span><a href="../../modules/generated/sklearn.cluster.Birch.html#sklearn.cluster.Birch" title="View documentation for sklearn.cluster.Birch"><span class="n">Birch</span></a><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mf">1.7</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="bp">None</span><span class="p">),</span>
+<span class="n">birch_models</span> <span class="o">=</span> <span class="p">[</span><a href="../../modules/generated/sklearn.cluster.Birch.html#sklearn.cluster.Birch" title="View documentation for sklearn.cluster.Birch"><span class="n">Birch</span></a><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mf">1.7</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
                 <a href="../../modules/generated/sklearn.cluster.Birch.html#sklearn.cluster.Birch" title="View documentation for sklearn.cluster.Birch"><span class="n">Birch</span></a><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mf">1.7</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="mi">100</span><span class="p">)]</span>
 <span class="n">final_step</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;without global clustering&#39;</span><span class="p">,</span> <span class="s1">&#39;with global clustering&#39;</span><span class="p">]</span>
 
@@ -269,26 +269,26 @@ Time taken to run MiniBatchKMeans 3.14 seconds
     <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
     <span class="n">birch_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
     <span class="n">time_</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Birch </span><span class="si">%s</span><span class="s2"> as the final step took </span><span class="si">%0.2f</span><span class="s2"> seconds&quot;</span> <span class="o">%</span> <span class="p">(</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Birch </span><span class="si">%s</span><span class="s2"> as the final step took </span><span class="si">%0.2f</span><span class="s2"> seconds&quot;</span> <span class="o">%</span> <span class="p">(</span>
           <span class="n">info</span><span class="p">,</span> <span class="p">(</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t</span><span class="p">)))</span>
 
     <span class="c1"># Plot result</span>
     <span class="n">labels</span> <span class="o">=</span> <span class="n">birch_model</span><span class="o">.</span><span class="n">labels_</span>
     <span class="n">centroids</span> <span class="o">=</span> <span class="n">birch_model</span><span class="o">.</span><span class="n">subcluster_centers_</span>
     <span class="n">n_clusters</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.unique.html#numpy.unique" title="View documentation for numpy.unique"><span class="n">np</span><span class="o">.</span><span class="n">unique</span></a><span class="p">(</span><span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">size</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;n_clusters : </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">n_clusters</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;n_clusters : </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">n_clusters</span><span class="p">)</span>
 
     <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">ind</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">this_centroid</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">centroids</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_clusters</span><span class="p">),</span> <span class="n">colors_</span><span class="p">):</span>
         <span class="n">mask</span> <span class="o">=</span> <span class="n">labels</span> <span class="o">==</span> <span class="n">k</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">mask</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">mask</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
                    <span class="n">c</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">birch_model</span><span class="o">.</span><span class="n">n_clusters</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">birch_model</span><span class="o">.</span><span class="n">n_clusters</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">this_centroid</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">this_centroid</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;+&#39;</span><span class="p">,</span>
                        <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">])</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="o">-</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">])</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_autoscaley_on</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_autoscaley_on</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Birch </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">info</span><span class="p">)</span>
 
 <span class="c1"># Compute clustering with MiniBatchKMeans.</span>
@@ -298,7 +298,7 @@ Time taken to run MiniBatchKMeans 3.14 seconds
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">mbk</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <span class="n">t_mini_batch</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Time taken to run MiniBatchKMeans </span><span class="si">%0.2f</span><span class="s2"> seconds&quot;</span> <span class="o">%</span> <span class="n">t_mini_batch</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Time taken to run MiniBatchKMeans </span><span class="si">%0.2f</span><span class="s2"> seconds&quot;</span> <span class="o">%</span> <span class="n">t_mini_batch</span><span class="p">)</span>
 <span class="n">mbk_means_labels_unique</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.unique.html#numpy.unique" title="View documentation for numpy.unique"><span class="n">np</span><span class="o">.</span><span class="n">unique</span></a><span class="p">(</span><span class="n">mbk</span><span class="o">.</span><span class="n">labels_</span><span class="p">)</span>
 
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
@@ -312,11 +312,11 @@ Time taken to run MiniBatchKMeans 3.14 seconds
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="o">-</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">])</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">])</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;MiniBatchKMeans&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_autoscaley_on</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_autoscaley_on</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  9.515 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  10.066 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-cluster-plot-birch-vs-minibatchkmeans-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/plot_birch_vs_minibatchkmeans.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_birch_vs_minibatchkmeans.py</span></code></a></div>

@@ -443,6 +443,27 @@ $ cd scikit-learn
 <p>and start making changes. Always use a <code class="docutils literal"><span class="pre">feature</span></code> branch. It’s good practice to
 never work on the <code class="docutils literal"><span class="pre">master</span></code> branch!</p>
 </li>
+</ol>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<blockquote>
+<div><p>In the above setup, your <code class="docutils literal"><span class="pre">origin</span></code> remote repository points to
+<code class="docutils literal"><span class="pre">YourLogin/scikit-learn.git</span></code>. If you wish to fetch/merge from the main
+repository instead of your forked one, you will need to add another remote
+to use instead of <code class="docutils literal"><span class="pre">origin</span></code>. If we choose the name <code class="docutils literal"><span class="pre">upstream</span></code> for it, the
+command will be:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ git remote add upstream https://github.com/scikit-learn/scikit-learn.git
+</pre></div>
+</div>
+<p>And in order to fetch the new remote and base your work on the latest changes
+of it you can:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ git fetch upstream
+$ git checkout -b my-feature upstream/master
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="last arabic" start="6">
 <li><p class="first">Develop the feature on your feature branch on your computer, using Git to do the
 version control. When you’re done editing, add changed files using <code class="docutils literal"><span class="pre">git</span> <span class="pre">add</span></code>
 and then <code class="docutils literal"><span class="pre">git</span> <span class="pre">commit</span></code> files:</p>
@@ -461,31 +482,21 @@ email to the committers. You may want to consider sending an email to the
 mailing list for more visibility.</p>
 </li>
 </ol>
-</div></blockquote>
+</div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If you are modifying a Cython module, you have to re-run step 4 after modifications
 and before testing them.</p>
 </div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>In the above setup, your <code class="docutils literal"><span class="pre">origin</span></code> remote repository points to
-YourLogin/scikit-learn.git. If you wish to fetch/merge from the main
-repository instead of your forked one, you will need to add another remote
-to use instead of <code class="docutils literal"><span class="pre">origin</span></code>. If we choose the name <code class="docutils literal"><span class="pre">upstream</span></code> for it, the
-command will be:</p>
-<div class="last highlight-default"><div class="highlight"><pre><span></span>$ git remote add upstream https://github.com/scikit-learn/scikit-learn.git
-</pre></div>
-</div>
-</div>
 <p>If any of the above seems like magic to you, then look up the <a class="reference external" href="https://git-scm.com/documentation">Git documentation</a> and the <a class="reference external" href="http://docs.scipy.org/doc/numpy/dev/gitwash/development_workflow.html">Git development workflow</a> on the
 web, or ask a friend or another contributor for help.</p>
 <p>If some conflicts arise between your branch and the <code class="docutils literal"><span class="pre">master</span></code> branch, you need
-to merge <code class="docutils literal"><span class="pre">master</span></code>. The command will be:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ git merge master
+to merge <code class="docutils literal"><span class="pre">master</span></code>. For that, you first need to fetch the <code class="docutils literal"><span class="pre">upstream</span></code>, and
+then merge its <code class="docutils literal"><span class="pre">master</span></code> into your branch:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ git fetch upstream
+$ git merge upstream/master
 </pre></div>
 </div>
-<p>with <code class="docutils literal"><span class="pre">master</span></code> being synchronized with the <code class="docutils literal"><span class="pre">upstream</span></code>.</p>
 <p>Subsequently, you need to solve the conflicts. You can refer to the <a class="reference external" href="https://help.github.com/articles/resolving-a-merge-conflict-using-the-command-line/">Git
 documentation related to resolving merge conflict using the command line</a>.</p>
 <div class="admonition note">

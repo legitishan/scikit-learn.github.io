@@ -295,39 +295,39 @@ from 56436 down to 10000 while reasonably preserving pairwise distances.</p>
 </ul>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>Embedding 500 samples with dim 64 using various random projections
-Projected 500 samples from 64 to 300 in 0.013s
-Random matrix with size: 0.029MB
-Mean distances rate: 1.01 (0.08)
+Projected 500 samples from 64 to 300 in 0.016s
+Random matrix with size: 0.028MB
+Mean distances rate: 0.98 (0.08)
 Projected 500 samples from 64 to 1000 in 0.040s
-Random matrix with size: 0.095MB
-Mean distances rate: 1.00 (0.05)
-Projected 500 samples from 64 to 10000 in 0.470s
-Random matrix with size: 0.964MB
-Mean distances rate: 1.00 (0.01)
+Random matrix with size: 0.096MB
+Mean distances rate: 0.99 (0.04)
+Projected 500 samples from 64 to 10000 in 0.433s
+Random matrix with size: 0.965MB
+Mean distances rate: 1.01 (0.01)
 </pre></div>
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
 
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">distutils.version</span> <span class="kn">import</span> <span class="n">LooseVersion</span>
-<span class="kn">from</span> <span class="nn">sklearn.random_projection</span> <span class="kn">import</span> <a href="../modules/generated/sklearn.random_projection.johnson_lindenstrauss_min_dim.html#sklearn.random_projection.johnson_lindenstrauss_min_dim" title="View documentation for sklearn.random_projection.johnson_lindenstrauss_min_dim"><span class="n">johnson_lindenstrauss_min_dim</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.random_projection</span> <span class="kn">import</span> <a href="../modules/generated/sklearn.random_projection.SparseRandomProjection.html#sklearn.random_projection.SparseRandomProjection" title="View documentation for sklearn.random_projection.SparseRandomProjection"><span class="n">SparseRandomProjection</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <a href="../modules/generated/sklearn.datasets.fetch_20newsgroups_vectorized.html#sklearn.datasets.fetch_20newsgroups_vectorized" title="View documentation for sklearn.datasets.fetch_20newsgroups_vectorized"><span class="n">fetch_20newsgroups_vectorized</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <a href="../modules/generated/sklearn.datasets.load_digits.html#sklearn.datasets.load_digits" title="View documentation for sklearn.datasets.load_digits"><span class="n">load_digits</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.metrics.pairwise</span> <span class="kn">import</span> <span class="n">euclidean_distances</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">distutils.version</span> <span class="k">import</span> <span class="n">LooseVersion</span>
+<span class="kn">from</span> <span class="nn">sklearn.random_projection</span> <span class="k">import</span> <a href="../modules/generated/sklearn.random_projection.johnson_lindenstrauss_min_dim.html#sklearn.random_projection.johnson_lindenstrauss_min_dim" title="View documentation for sklearn.random_projection.johnson_lindenstrauss_min_dim"><span class="n">johnson_lindenstrauss_min_dim</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.random_projection</span> <span class="k">import</span> <a href="../modules/generated/sklearn.random_projection.SparseRandomProjection.html#sklearn.random_projection.SparseRandomProjection" title="View documentation for sklearn.random_projection.SparseRandomProjection"><span class="n">SparseRandomProjection</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <a href="../modules/generated/sklearn.datasets.fetch_20newsgroups_vectorized.html#sklearn.datasets.fetch_20newsgroups_vectorized" title="View documentation for sklearn.datasets.fetch_20newsgroups_vectorized"><span class="n">fetch_20newsgroups_vectorized</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <a href="../modules/generated/sklearn.datasets.load_digits.html#sklearn.datasets.load_digits" title="View documentation for sklearn.datasets.load_digits"><span class="n">load_digits</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.metrics.pairwise</span> <span class="k">import</span> <span class="n">euclidean_distances</span>
 
 <span class="c1"># `normed` is being deprecated in favor of `density` in histograms</span>
 <span class="k">if</span> <span class="n">LooseVersion</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="s1">&#39;2.1&#39;</span><span class="p">:</span>
-    <span class="n">density_param</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;density&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
+    <span class="n">density_param</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;density&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="n">density_param</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;normed&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
+    <span class="n">density_param</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;normed&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
 
 <span class="c1"># Part 1: plot the theoretical dependency between n_components_min and</span>
 <span class="c1"># n_samples</span>
@@ -377,11 +377,11 @@ Mean distances rate: 1.00 (0.01)
     <span class="n">data</span> <span class="o">=</span> <a href="../modules/generated/sklearn.datasets.load_digits.html#sklearn.datasets.load_digits" title="View documentation for sklearn.datasets.load_digits"><span class="n">load_digits</span></a><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="p">[:</span><span class="mi">500</span><span class="p">]</span>
 
 <span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Embedding </span><span class="si">%d</span><span class="s2"> samples with dim </span><span class="si">%d</span><span class="s2"> using various random projections&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Embedding </span><span class="si">%d</span><span class="s2"> samples with dim </span><span class="si">%d</span><span class="s2"> using various random projections&quot;</span>
       <span class="o">%</span> <span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">))</span>
 
 <span class="n">n_components_range</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="mi">300</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">])</span>
-<span class="n">dists</span> <span class="o">=</span> <span class="n">euclidean_distances</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">squared</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+<span class="n">dists</span> <span class="o">=</span> <span class="n">euclidean_distances</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">squared</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
 
 <span class="c1"># select only non-identical samples pairs</span>
 <span class="n">nonzero</span> <span class="o">=</span> <span class="n">dists</span> <span class="o">!=</span> <span class="mi">0</span>
@@ -391,15 +391,15 @@ Mean distances rate: 1.00 (0.01)
     <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
     <span class="n">rp</span> <span class="o">=</span> <a href="../modules/generated/sklearn.random_projection.SparseRandomProjection.html#sklearn.random_projection.SparseRandomProjection" title="View documentation for sklearn.random_projection.SparseRandomProjection"><span class="n">SparseRandomProjection</span></a><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">)</span>
     <span class="n">projected_data</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Projected </span><span class="si">%d</span><span class="s2"> samples from </span><span class="si">%d</span><span class="s2"> to </span><span class="si">%d</span><span class="s2"> in </span><span class="si">%0.3f</span><span class="s2">s&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Projected </span><span class="si">%d</span><span class="s2"> samples from </span><span class="si">%d</span><span class="s2"> to </span><span class="si">%d</span><span class="s2"> in </span><span class="si">%0.3f</span><span class="s2">s&quot;</span>
           <span class="o">%</span> <span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">,</span> <span class="n">n_components</span><span class="p">,</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">))</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">rp</span><span class="p">,</span> <span class="s1">&#39;components_&#39;</span><span class="p">):</span>
         <span class="n">n_bytes</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">components_</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">nbytes</span>
         <span class="n">n_bytes</span> <span class="o">+=</span> <span class="n">rp</span><span class="o">.</span><span class="n">components_</span><span class="o">.</span><span class="n">indices</span><span class="o">.</span><span class="n">nbytes</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Random matrix with size: </span><span class="si">%0.3f</span><span class="s2">MB&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">n_bytes</span> <span class="o">/</span> <span class="mf">1e6</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Random matrix with size: </span><span class="si">%0.3f</span><span class="s2">MB&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">n_bytes</span> <span class="o">/</span> <span class="mf">1e6</span><span class="p">))</span>
 
     <span class="n">projected_dists</span> <span class="o">=</span> <span class="n">euclidean_distances</span><span class="p">(</span>
-        <span class="n">projected_data</span><span class="p">,</span> <span class="n">squared</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[</span><span class="n">nonzero</span><span class="p">]</span>
+        <span class="n">projected_data</span><span class="p">,</span> <span class="n">squared</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[</span><span class="n">nonzero</span><span class="p">]</span>
 
     <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">()</span>
     <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.hexbin.html#matplotlib.pyplot.hexbin" title="View documentation for matplotlib.pyplot.hexbin"><span class="n">plt</span><span class="o">.</span><span class="n">hexbin</span></a><span class="p">(</span><span class="n">dists</span><span class="p">,</span> <span class="n">projected_dists</span><span class="p">,</span> <span class="n">gridsize</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">PuBu</span><span class="p">)</span>
@@ -411,7 +411,7 @@ Mean distances rate: 1.00 (0.01)
     <span class="n">cb</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;Sample pairs counts&#39;</span><span class="p">)</span>
 
     <span class="n">rates</span> <span class="o">=</span> <span class="n">projected_dists</span> <span class="o">/</span> <span class="n">dists</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Mean distances rate: </span><span class="si">%0.2f</span><span class="s2"> (</span><span class="si">%0.2f</span><span class="s2">)&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mean distances rate: </span><span class="si">%0.2f</span><span class="s2"> (</span><span class="si">%0.2f</span><span class="s2">)&quot;</span>
           <span class="o">%</span> <span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.mean.html#numpy.mean" title="View documentation for numpy.mean"><span class="n">np</span><span class="o">.</span><span class="n">mean</span></a><span class="p">(</span><span class="n">rates</span><span class="p">),</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.std.html#numpy.std" title="View documentation for numpy.std"><span class="n">np</span><span class="o">.</span><span class="n">std</span></a><span class="p">(</span><span class="n">rates</span><span class="p">)))</span>
 
     <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">()</span>
@@ -427,7 +427,7 @@ Mean distances rate: 1.00 (0.01)
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  2.120 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.887 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-johnson-lindenstrauss-bound-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/plot_johnson_lindenstrauss_bound.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_johnson_lindenstrauss_bound.py</span></code></a></div>
