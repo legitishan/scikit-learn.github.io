@@ -1623,7 +1623,7 @@ patterns.</p>
 for working with multiclass and multilabel problems.</p>
 </div>
 <div class="section" id="estimator-tags">
-<h3>Estimator Tags<a class="headerlink" href="#estimator-tags" title="Permalink to this headline">¶</a></h3>
+<span id="id7"></span><h3>Estimator Tags<a class="headerlink" href="#estimator-tags" title="Permalink to this headline">¶</a></h3>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">The estimator tags are experimental and the API is subject to change.</p>
@@ -1636,7 +1636,8 @@ tags are used by the common tests and the <a class="reference internal" href="..
 decide what tests to run and what input data is appropriate. Tags can depend on
 estimator parameters or even system architecture and can in general only be
 determined at runtime.</p>
-<p>The default value of all tags except for <code class="docutils literal"><span class="pre">X_types</span></code> is <code class="docutils literal"><span class="pre">False</span></code>.</p>
+<p>The default value of all tags except for <code class="docutils literal"><span class="pre">X_types</span></code> is <code class="docutils literal"><span class="pre">False</span></code>. These are
+defined in the <code class="docutils literal"><span class="pre">BaseEstimator</span></code> class.</p>
 <p>The current set of estimator tags are:</p>
 <dl class="docutils">
 <dt>non_deterministic</dt>
@@ -1675,6 +1676,15 @@ data used during testing, in particular for <code class="docutils literal"><span
 <code class="docutils literal"><span class="pre">'categorical'</span></code> data.  For now, the test for sparse data do not make use
 of the <code class="docutils literal"><span class="pre">'sparse'</span></code> tag.</dd>
 </dl>
+<p>To override the tags of a child class, one must define the <code class="docutils literal"><span class="pre">_more_tags()</span></code>
+method and return a dict with the desired tags, e.g:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyMultiOutputEstimator</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">_more_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;multioutput_only&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s1">&#39;non_deterministic&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+</pre></div>
+</div>
 <p>In addition to the tags, estimators also need to declare any non-optional
 parameters to <code class="docutils literal"><span class="pre">__init__</span></code> in the <code class="docutils literal"><span class="pre">_required_parameters</span></code> class attribute,
 which is a list or tuple.  If <code class="docutils literal"><span class="pre">_required_parameters</span></code> is only
