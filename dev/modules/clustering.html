@@ -896,6 +896,17 @@ are on the fringes of a cluster.</p>
 <p>Any core sample is part of a cluster, by definition. Any sample that is not a
 core sample, and is at least <code class="docutils literal"><span class="pre">eps</span></code> in distance from any core sample, is
 considered an outlier by the algorithm.</p>
+<p>While the parameter <code class="docutils literal"><span class="pre">min_samples</span></code> primarily controls how tolerant the
+algorithm is towards noise (on noisy and large data sets it may be desiable
+to increase this parameter), the parameter <code class="docutils literal"><span class="pre">eps</span></code> is <em>crucial to choose
+appropriately</em> for the data set and distance function and usually cannot be
+left at the default value. It controls the local neighborhood of the points.
+When chosen too small, most data will not be clustered at all (and labeled
+as <code class="docutils literal"><span class="pre">-1</span></code> for “noise”). When chosen too large, it causes close clusters to
+be merged into one cluster, and eventually the entire data set to be returned
+as a single cluster. Some heuristics for choosing this parameter have been
+discussed in literature, for example based on a knee in the nearest neighbor
+distances plot (as discussed in the references below).</p>
 <p>In the figure below, the color indicates cluster membership, with large circles
 indicating core samples found by the algorithm. Smaller circles are non-core
 samples that are still part of a cluster. Moreover, the outliers are indicated
@@ -932,7 +943,7 @@ for details, see <code class="xref py py-class docutils literal"><span class="pr
 <p class="topic-title first">Memory consumption for large sample sizes</p>
 <p>This implementation is by default not memory efficient because it constructs
 a full pairwise similarity matrix in the case where kd-trees or ball-trees cannot
-be used (e.g. with sparse matrices). This matrix will consume n^2 floats.
+be used (e.g., with sparse matrices). This matrix will consume n^2 floats.
 A couple of mechanisms for getting around this are:</p>
 <ul class="simple">
 <li>A sparse radius neighborhood graph (where missing entries are presumed to
@@ -953,6 +964,9 @@ with Noise”
 Ester, M., H. P. Kriegel, J. Sander, and X. Xu,
 In Proceedings of the 2nd International Conference on Knowledge Discovery
 and Data Mining, Portland, OR, AAAI Press, pp. 226–231. 1996</li>
+<li>“DBSCAN revisited, revisited: why and how you should (still) use DBSCAN.
+Schubert, E., Sander, J., Ester, M., Kriegel, H. P., &amp; Xu, X. (2017).
+In ACM Transactions on Database Systems (TODS), 42(3), 19.</li>
 </ul>
 </div>
 </div>
