@@ -241,29 +241,29 @@ on the parameters epsilon and C of the SVR.</p>
 </li>
 </ul>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>SVR complexity and bandwidth selected and model fitted in 0.386 s
-KRR complexity and bandwidth selected and model fitted in 0.136 s
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>SVR complexity and bandwidth selected and model fitted in 0.392 s
+KRR complexity and bandwidth selected and model fitted in 0.139 s
 Support vector ratio: 0.320
-SVR prediction for 100000 inputs in 0.070 s
-KRR prediction for 100000 inputs in 0.089 s
+SVR prediction for 100000 inputs in 0.071 s
+KRR prediction for 100000 inputs in 0.111 s
 </pre></div>
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Authors: Jan Hendrik Metzen &lt;jhm@informatik.uni-bremen.de&gt;</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Authors: Jan Hendrik Metzen &lt;jhm@informatik.uni-bremen.de&gt;</span>
 <span class="c1"># License: BSD 3 clause</span>
 
 
 <span class="kn">import</span> <span class="nn">time</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="k">import</span> <a href="../modules/generated/sklearn.svm.SVR.html#sklearn.svm.SVR" title="View documentation for sklearn.svm.SVR"><span class="n">SVR</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <a href="../modules/generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV" title="View documentation for sklearn.model_selection.GridSearchCV"><span class="n">GridSearchCV</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <a href="../modules/generated/sklearn.model_selection.learning_curve.html#sklearn.model_selection.learning_curve" title="View documentation for sklearn.model_selection.learning_curve"><span class="n">learning_curve</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.kernel_ridge</span> <span class="k">import</span> <a href="../modules/generated/sklearn.kernel_ridge.KernelRidge.html#sklearn.kernel_ridge.KernelRidge" title="View documentation for sklearn.kernel_ridge.KernelRidge"><span class="n">KernelRidge</span></a>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <a href="../modules/generated/sklearn.svm.SVR.html#sklearn.svm.SVR" title="View documentation for sklearn.svm.SVR"><span class="n">SVR</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <a href="../modules/generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV" title="View documentation for sklearn.model_selection.GridSearchCV"><span class="n">GridSearchCV</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <a href="../modules/generated/sklearn.model_selection.learning_curve.html#sklearn.model_selection.learning_curve" title="View documentation for sklearn.model_selection.learning_curve"><span class="n">learning_curve</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.kernel_ridge</span> <span class="kn">import</span> <a href="../modules/generated/sklearn.kernel_ridge.KernelRidge.html#sklearn.kernel_ridge.KernelRidge" title="View documentation for sklearn.kernel_ridge.KernelRidge"><span class="n">KernelRidge</span></a>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 
 <span class="n">rng</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.RandomState.html#numpy.random.RandomState" title="View documentation for numpy.random.RandomState"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span></a><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
@@ -275,7 +275,7 @@ KRR prediction for 100000 inputs in 0.089 s
 <span class="c1"># Add noise to targets</span>
 <span class="n">y</span><span class="p">[::</span><span class="mi">5</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">3</span> <span class="o">*</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">-</span> <span class="n">rng</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="mi">5</span><span class="p">))</span>
 
-<span class="n">X_plot</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.linspace.html#numpy.linspace" title="View documentation for numpy.linspace"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">100000</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
+<span class="n">X_plot</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.linspace.html#numpy.linspace" title="View documentation for numpy.linspace"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">100000</span><span class="p">)[:,</span> <span class="bp">None</span><span class="p">]</span>
 
 <span class="c1"># #############################################################################</span>
 <span class="c1"># Fit regression model</span>
@@ -291,28 +291,28 @@ KRR prediction for 100000 inputs in 0.089 s
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="n">svr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="n">train_size</span><span class="p">],</span> <span class="n">y</span><span class="p">[:</span><span class="n">train_size</span><span class="p">])</span>
 <span class="n">svr_fit</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SVR complexity and bandwidth selected and model fitted in </span><span class="si">%.3f</span><span class="s2"> s&quot;</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;SVR complexity and bandwidth selected and model fitted in </span><span class="si">%.3f</span><span class="s2"> s&quot;</span>
       <span class="o">%</span> <span class="n">svr_fit</span><span class="p">)</span>
 
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="n">kr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="n">train_size</span><span class="p">],</span> <span class="n">y</span><span class="p">[:</span><span class="n">train_size</span><span class="p">])</span>
 <span class="n">kr_fit</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;KRR complexity and bandwidth selected and model fitted in </span><span class="si">%.3f</span><span class="s2"> s&quot;</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;KRR complexity and bandwidth selected and model fitted in </span><span class="si">%.3f</span><span class="s2"> s&quot;</span>
       <span class="o">%</span> <span class="n">kr_fit</span><span class="p">)</span>
 
 <span class="n">sv_ratio</span> <span class="o">=</span> <span class="n">svr</span><span class="o">.</span><span class="n">best_estimator_</span><span class="o">.</span><span class="n">support_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">train_size</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Support vector ratio: </span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">sv_ratio</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Support vector ratio: </span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">sv_ratio</span><span class="p">)</span>
 
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="n">y_svr</span> <span class="o">=</span> <span class="n">svr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_plot</span><span class="p">)</span>
 <span class="n">svr_predict</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SVR prediction for </span><span class="si">%d</span><span class="s2"> inputs in </span><span class="si">%.3f</span><span class="s2"> s&quot;</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;SVR prediction for </span><span class="si">%d</span><span class="s2"> inputs in </span><span class="si">%.3f</span><span class="s2"> s&quot;</span>
       <span class="o">%</span> <span class="p">(</span><span class="n">X_plot</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">svr_predict</span><span class="p">))</span>
 
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="n">y_kr</span> <span class="o">=</span> <span class="n">kr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_plot</span><span class="p">)</span>
 <span class="n">kr_predict</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;KRR prediction for </span><span class="si">%d</span><span class="s2"> inputs in </span><span class="si">%.3f</span><span class="s2"> s&quot;</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;KRR prediction for </span><span class="si">%d</span><span class="s2"> inputs in </span><span class="si">%.3f</span><span class="s2"> s&quot;</span>
       <span class="o">%</span> <span class="p">(</span><span class="n">X_plot</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">kr_predict</span><span class="p">))</span>
 
 
@@ -390,7 +390,7 @@ KRR prediction for 100000 inputs in 0.089 s
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  12.442 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  12.956 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-kernel-ridge-regression-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/plot_kernel_ridge_regression.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_kernel_ridge_regression.py</span></code></a></div>

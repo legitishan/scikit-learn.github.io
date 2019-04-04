@@ -245,50 +245,50 @@ matrix decomposition (dimension reduction) methods from the module
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>Dataset consists of 400 faces
 Extracting the top 6 Eigenfaces - PCA using randomized SVD...
-done in 0.040s
+done in 0.056s
 Extracting the top 6 Non-negative components - NMF...
-done in 0.267s
+done in 0.090s
 Extracting the top 6 Independent components - FastICA...
-done in 0.337s
+done in 0.161s
 Extracting the top 6 Sparse comp. - MiniBatchSparsePCA...
-done in 1.009s
+done in 0.867s
 Extracting the top 6 MiniBatchDictionaryLearning...
-done in 2.714s
+done in 0.778s
 Extracting the top 6 Cluster centers - MiniBatchKMeans...
-done in 1.024s
+done in 0.187s
 Extracting the top 6 Factor Analysis components - FA...
-done in 1.286s
+done in 0.192s
 Extracting the top 6 Dictionary learning...
-done in 1.373s
+done in 0.953s
 Extracting the top 6 Dictionary learning - positive dictionary...
-done in 1.891s
+done in 0.788s
 Extracting the top 6 Dictionary learning - positive code...
-done in 0.996s
+done in 0.497s
 Extracting the top 6 Dictionary learning - positive dictionary &amp; code...
-done in 0.495s
+done in 0.404s
 </pre></div>
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
 
 <span class="c1"># Authors: Vlad Niculae, Alexandre Gramfort</span>
 <span class="c1"># License: BSD 3 clause</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
 
-<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="k">import</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.RandomState.html#numpy.random.RandomState" title="View documentation for numpy.random.RandomState"><span class="n">RandomState</span></a>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.RandomState.html#numpy.random.RandomState" title="View documentation for numpy.random.RandomState"><span class="n">RandomState</span></a>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 
-<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.datasets.fetch_olivetti_faces.html#sklearn.datasets.fetch_olivetti_faces" title="View documentation for sklearn.datasets.fetch_olivetti_faces"><span class="n">fetch_olivetti_faces</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.cluster.MiniBatchKMeans.html#sklearn.cluster.MiniBatchKMeans" title="View documentation for sklearn.cluster.MiniBatchKMeans"><span class="n">MiniBatchKMeans</span></a>
-<span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">decomposition</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.datasets.fetch_olivetti_faces.html#sklearn.datasets.fetch_olivetti_faces" title="View documentation for sklearn.datasets.fetch_olivetti_faces"><span class="n">fetch_olivetti_faces</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.cluster.MiniBatchKMeans.html#sklearn.cluster.MiniBatchKMeans" title="View documentation for sklearn.cluster.MiniBatchKMeans"><span class="n">MiniBatchKMeans</span></a>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">decomposition</span>
 
 <span class="c1"># Display progress logs on stdout</span>
 <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
-                    <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)s</span><span class="s1"> </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="n">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)s</span><span class="s1"> </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="n">n_row</span><span class="p">,</span> <span class="n">n_col</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span>
 <span class="n">n_components</span> <span class="o">=</span> <span class="n">n_row</span> <span class="o">*</span> <span class="n">n_col</span>
 <span class="n">image_shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
@@ -296,7 +296,7 @@ done in 0.495s
 
 <span class="c1"># #############################################################################</span>
 <span class="c1"># Load faces data</span>
-<span class="n">dataset</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.fetch_olivetti_faces.html#sklearn.datasets.fetch_olivetti_faces" title="View documentation for sklearn.datasets.fetch_olivetti_faces"><span class="n">fetch_olivetti_faces</span></a><span class="p">(</span><span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.fetch_olivetti_faces.html#sklearn.datasets.fetch_olivetti_faces" title="View documentation for sklearn.datasets.fetch_olivetti_faces"><span class="n">fetch_olivetti_faces</span></a><span class="p">(</span><span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
 <span class="n">faces</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">data</span>
 
 <span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span> <span class="o">=</span> <span class="n">faces</span><span class="o">.</span><span class="n">shape</span>
@@ -307,7 +307,7 @@ done in 0.495s
 <span class="c1"># local centering</span>
 <span class="n">faces_centered</span> <span class="o">-=</span> <span class="n">faces_centered</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Dataset consists of </span><span class="si">%d</span><span class="s2"> faces&quot;</span> <span class="o">%</span> <span class="n">n_samples</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Dataset consists of </span><span class="si">%d</span><span class="s2"> faces&quot;</span> <span class="o">%</span> <span class="n">n_samples</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">plot_gallery</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">images</span><span class="p">,</span> <span class="n">n_col</span><span class="o">=</span><span class="n">n_col</span><span class="p">,</span> <span class="n">n_row</span><span class="o">=</span><span class="n">n_row</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">):</span>
@@ -329,38 +329,38 @@ done in 0.495s
 <span class="n">estimators</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">(</span><span class="s1">&#39;Eigenfaces - PCA using randomized SVD&#39;</span><span class="p">,</span>
      <a href="../../modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="View documentation for sklearn.decomposition.PCA"><span class="n">decomposition</span><span class="o">.</span><span class="n">PCA</span></a><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">,</span> <span class="n">svd_solver</span><span class="o">=</span><span class="s1">&#39;randomized&#39;</span><span class="p">,</span>
-                       <span class="n">whiten</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-     <span class="kc">True</span><span class="p">),</span>
+                       <span class="n">whiten</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+     <span class="bp">True</span><span class="p">),</span>
 
     <span class="p">(</span><span class="s1">&#39;Non-negative components - NMF&#39;</span><span class="p">,</span>
      <a href="../../modules/generated/sklearn.decomposition.NMF.html#sklearn.decomposition.NMF" title="View documentation for sklearn.decomposition.NMF"><span class="n">decomposition</span><span class="o">.</span><span class="n">NMF</span></a><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;nndsvda&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">5e-3</span><span class="p">),</span>
-     <span class="kc">False</span><span class="p">),</span>
+     <span class="bp">False</span><span class="p">),</span>
 
     <span class="p">(</span><span class="s1">&#39;Independent components - FastICA&#39;</span><span class="p">,</span>
-     <a href="../../modules/generated/sklearn.decomposition.FastICA.html#sklearn.decomposition.FastICA" title="View documentation for sklearn.decomposition.FastICA"><span class="n">decomposition</span><span class="o">.</span><span class="n">FastICA</span></a><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">,</span> <span class="n">whiten</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-     <span class="kc">True</span><span class="p">),</span>
+     <a href="../../modules/generated/sklearn.decomposition.FastICA.html#sklearn.decomposition.FastICA" title="View documentation for sklearn.decomposition.FastICA"><span class="n">decomposition</span><span class="o">.</span><span class="n">FastICA</span></a><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">,</span> <span class="n">whiten</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+     <span class="bp">True</span><span class="p">),</span>
 
     <span class="p">(</span><span class="s1">&#39;Sparse comp. - MiniBatchSparsePCA&#39;</span><span class="p">,</span>
      <a href="../../modules/generated/sklearn.decomposition.MiniBatchSparsePCA.html#sklearn.decomposition.MiniBatchSparsePCA" title="View documentation for sklearn.decomposition.MiniBatchSparsePCA"><span class="n">decomposition</span><span class="o">.</span><span class="n">MiniBatchSparsePCA</span></a><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
                                       <span class="n">n_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
                                       <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">,</span>
-                                      <span class="n">normalize_components</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-     <span class="kc">True</span><span class="p">),</span>
+                                      <span class="n">normalize_components</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+     <span class="bp">True</span><span class="p">),</span>
 
     <span class="p">(</span><span class="s1">&#39;MiniBatchDictionaryLearning&#39;</span><span class="p">,</span>
         <a href="../../modules/generated/sklearn.decomposition.MiniBatchDictionaryLearning.html#sklearn.decomposition.MiniBatchDictionaryLearning" title="View documentation for sklearn.decomposition.MiniBatchDictionaryLearning"><span class="n">decomposition</span><span class="o">.</span><span class="n">MiniBatchDictionaryLearning</span></a><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
                                                   <span class="n">n_iter</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
                                                   <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">),</span>
-     <span class="kc">True</span><span class="p">),</span>
+     <span class="bp">True</span><span class="p">),</span>
 
     <span class="p">(</span><span class="s1">&#39;Cluster centers - MiniBatchKMeans&#39;</span><span class="p">,</span>
         <a href="../../modules/generated/sklearn.cluster.MiniBatchKMeans.html#sklearn.cluster.MiniBatchKMeans" title="View documentation for sklearn.cluster.MiniBatchKMeans"><span class="n">MiniBatchKMeans</span></a><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">n_components</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
                         <span class="n">max_iter</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">),</span>
-     <span class="kc">True</span><span class="p">),</span>
+     <span class="bp">True</span><span class="p">),</span>
 
     <span class="p">(</span><span class="s1">&#39;Factor Analysis components - FA&#39;</span><span class="p">,</span>
      <a href="../../modules/generated/sklearn.decomposition.FactorAnalysis.html#sklearn.decomposition.FactorAnalysis" title="View documentation for sklearn.decomposition.FactorAnalysis"><span class="n">decomposition</span><span class="o">.</span><span class="n">FactorAnalysis</span></a><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">20</span><span class="p">),</span>
-     <span class="kc">True</span><span class="p">),</span>
+     <span class="bp">True</span><span class="p">),</span>
 <span class="p">]</span>
 
 
@@ -373,14 +373,14 @@ done in 0.495s
 <span class="c1"># Do the estimation and plot it</span>
 
 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span> <span class="n">center</span> <span class="ow">in</span> <span class="n">estimators</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Extracting the top </span><span class="si">%d</span><span class="s2"> </span><span class="si">%s</span><span class="s2">...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Extracting the top </span><span class="si">%d</span><span class="s2"> </span><span class="si">%s</span><span class="s2">...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
     <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">faces</span>
     <span class="k">if</span> <span class="n">center</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">faces_centered</span>
     <span class="n">estimator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
     <span class="n">train_time</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;done in </span><span class="si">%0.3f</span><span class="s2">s&quot;</span> <span class="o">%</span> <span class="n">train_time</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;done in </span><span class="si">%0.3f</span><span class="s2">s&quot;</span> <span class="o">%</span> <span class="n">train_time</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="s1">&#39;cluster_centers_&#39;</span><span class="p">):</span>
         <span class="n">components_</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">cluster_centers_</span>
     <span class="k">else</span><span class="p">:</span>
@@ -408,26 +408,26 @@ done in 0.495s
         <a href="../../modules/generated/sklearn.decomposition.MiniBatchDictionaryLearning.html#sklearn.decomposition.MiniBatchDictionaryLearning" title="View documentation for sklearn.decomposition.MiniBatchDictionaryLearning"><span class="n">decomposition</span><span class="o">.</span><span class="n">MiniBatchDictionaryLearning</span></a><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
                                                   <span class="n">n_iter</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
                                                   <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">),</span>
-     <span class="kc">True</span><span class="p">),</span>
+     <span class="bp">True</span><span class="p">),</span>
     <span class="p">(</span><span class="s1">&#39;Dictionary learning - positive dictionary&#39;</span><span class="p">,</span>
         <a href="../../modules/generated/sklearn.decomposition.MiniBatchDictionaryLearning.html#sklearn.decomposition.MiniBatchDictionaryLearning" title="View documentation for sklearn.decomposition.MiniBatchDictionaryLearning"><span class="n">decomposition</span><span class="o">.</span><span class="n">MiniBatchDictionaryLearning</span></a><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
                                                   <span class="n">n_iter</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
                                                   <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">,</span>
-                                                  <span class="n">positive_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-     <span class="kc">True</span><span class="p">),</span>
+                                                  <span class="n">positive_dict</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+     <span class="bp">True</span><span class="p">),</span>
     <span class="p">(</span><span class="s1">&#39;Dictionary learning - positive code&#39;</span><span class="p">,</span>
         <a href="../../modules/generated/sklearn.decomposition.MiniBatchDictionaryLearning.html#sklearn.decomposition.MiniBatchDictionaryLearning" title="View documentation for sklearn.decomposition.MiniBatchDictionaryLearning"><span class="n">decomposition</span><span class="o">.</span><span class="n">MiniBatchDictionaryLearning</span></a><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
                                                   <span class="n">n_iter</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
                                                   <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">,</span>
-                                                  <span class="n">positive_code</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-     <span class="kc">True</span><span class="p">),</span>
+                                                  <span class="n">positive_code</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+     <span class="bp">True</span><span class="p">),</span>
     <span class="p">(</span><span class="s1">&#39;Dictionary learning - positive dictionary &amp; code&#39;</span><span class="p">,</span>
         <a href="../../modules/generated/sklearn.decomposition.MiniBatchDictionaryLearning.html#sklearn.decomposition.MiniBatchDictionaryLearning" title="View documentation for sklearn.decomposition.MiniBatchDictionaryLearning"><span class="n">decomposition</span><span class="o">.</span><span class="n">MiniBatchDictionaryLearning</span></a><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
                                                   <span class="n">n_iter</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
                                                   <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">,</span>
-                                                  <span class="n">positive_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                                  <span class="n">positive_code</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-     <span class="kc">True</span><span class="p">),</span>
+                                                  <span class="n">positive_dict</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                                                  <span class="n">positive_code</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+     <span class="bp">True</span><span class="p">),</span>
 <span class="p">]</span>
 
 
@@ -441,21 +441,21 @@ done in 0.495s
 <span class="c1"># Do the estimation and plot it</span>
 
 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span> <span class="n">center</span> <span class="ow">in</span> <span class="n">estimators</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Extracting the top </span><span class="si">%d</span><span class="s2"> </span><span class="si">%s</span><span class="s2">...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Extracting the top </span><span class="si">%d</span><span class="s2"> </span><span class="si">%s</span><span class="s2">...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">n_components</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
     <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">faces</span>
     <span class="k">if</span> <span class="n">center</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">faces_centered</span>
     <span class="n">estimator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
     <span class="n">train_time</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;done in </span><span class="si">%0.3f</span><span class="s2">s&quot;</span> <span class="o">%</span> <span class="n">train_time</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;done in </span><span class="si">%0.3f</span><span class="s2">s&quot;</span> <span class="o">%</span> <span class="n">train_time</span><span class="p">)</span>
     <span class="n">components_</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">components_</span>
     <span class="n">plot_gallery</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">components_</span><span class="p">[:</span><span class="n">n_components</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdBu</span><span class="p">)</span>
 
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  13.831 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  6.144 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-decomposition-plot-faces-decomposition-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/plot_faces_decomposition.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_faces_decomposition.py</span></code></a></div>
