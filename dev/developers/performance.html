@@ -188,7 +188,10 @@
 <li><a class="reference internal" href="#python-cython-or-c-c">Python, Cython or C/C++?</a></li>
 <li><a class="reference internal" href="#profiling-python-code">Profiling Python code</a></li>
 <li><a class="reference internal" href="#memory-usage-profiling">Memory usage profiling</a></li>
-<li><a class="reference internal" href="#performance-tips-for-the-cython-developer">Performance tips for the Cython developer</a></li>
+<li><a class="reference internal" href="#performance-tips-for-the-cython-developer">Performance tips for the Cython developer</a><ul>
+<li><a class="reference internal" href="#using-openmp">Using OpenMP</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#profiling-compiled-extensions">Profiling compiled extensions</a><ul>
 <li><a class="reference internal" href="#using-yep-and-google-perftools">Using yep and google-perftools</a></li>
 <li><a class="reference internal" href="#using-gprof">Using gprof</a></li>
@@ -518,6 +521,27 @@ memory alignment, direct blas calls…</p>
 <li><a class="reference external" href="http://conference.scipy.org/proceedings/SciPy2009/paper_1/">http://conference.scipy.org/proceedings/SciPy2009/paper_1/</a></li>
 <li><a class="reference external" href="http://conference.scipy.org/proceedings/SciPy2009/paper_2/">http://conference.scipy.org/proceedings/SciPy2009/paper_2/</a></li>
 </ul>
+<div class="section" id="using-openmp">
+<h3>Using OpenMP<a class="headerlink" href="#using-openmp" title="Permalink to this headline">¶</a></h3>
+<p>Since scikit-learn can be built without OpenMP support, it’s necessary to
+protect each direct call to OpenMP. This can be done using the following
+syntax:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># importing OpenMP</span>
+<span class="n">IF</span> <span class="n">SKLEARN_OPENMP_SUPPORTED</span><span class="p">:</span>
+    <span class="n">cimport</span> <span class="n">openmp</span>
+
+<span class="c1"># calling OpenMP</span>
+<span class="n">IF</span> <span class="n">SKLEARN_OPENMP_SUPPORTED</span><span class="p">:</span>
+    <span class="n">max_threads</span> <span class="o">=</span> <span class="n">openmp</span><span class="o">.</span><span class="n">omp_get_max_threads</span><span class="p">()</span>
+<span class="n">ELSE</span><span class="p">:</span>
+    <span class="n">max_threads</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Protecting the parallel loop, <code class="docutils literal"><span class="pre">prange</span></code>, is already done by cython.</p>
+</div>
+</div>
 </div>
 <div class="section" id="profiling-compiled-extensions">
 <span id="profiling-compiled-extension"></span><h2>Profiling compiled extensions<a class="headerlink" href="#profiling-compiled-extensions" title="Permalink to this headline">¶</a></h2>
