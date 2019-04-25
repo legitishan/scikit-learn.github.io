@@ -215,19 +215,18 @@
 </li>
 <li><a class="reference internal" href="#interpretation">1.11.4.7. Interpretation</a><ul>
 <li><a class="reference internal" href="#feature-importance">1.11.4.7.1. Feature importance</a></li>
-<li><a class="reference internal" href="#partial-dependence">1.11.4.7.2. Partial dependence</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li><a class="reference internal" href="#voting-classifier">1.11.5. Voting Classifier</a><ul>
 <li><a class="reference internal" href="#majority-class-labels-majority-hard-voting">1.11.5.1. Majority Class Labels (Majority/Hard Voting)</a><ul>
-<li><a class="reference internal" href="#id26">1.11.5.1.1. Usage</a></li>
+<li><a class="reference internal" href="#id21">1.11.5.1.1. Usage</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#weighted-average-probabilities-soft-voting">1.11.5.2. Weighted Average Probabilities (Soft Voting)</a></li>
 <li><a class="reference internal" href="#using-the-votingclassifier-with-gridsearchcv">1.11.5.3. Using the <code class="docutils literal"><span class="pre">VotingClassifier</span></code> with <code class="docutils literal"><span class="pre">GridSearchCV</span></code></a><ul>
-<li><a class="reference internal" href="#id27">1.11.5.3.1. Usage</a></li>
+<li><a class="reference internal" href="#id22">1.11.5.3.1. Usage</a></li>
 </ul>
 </li>
 </ul>
@@ -832,7 +831,7 @@ model interactions of up to order <code class="docutils literal"><span class="pr
 but is significantly faster to train at the expense of a slightly higher
 training error.
 The parameter <code class="docutils literal"><span class="pre">max_leaf_nodes</span></code> corresponds to the variable <code class="docutils literal"><span class="pre">J</span></code> in the
-chapter on gradient boosting in <a class="reference internal" href="#f2001" id="id14">[F2001]</a> and is related to the parameter
+chapter on gradient boosting in [F2001] and is related to the parameter
 <code class="docutils literal"><span class="pre">interaction.depth</span></code> in R’s gbm package where <code class="docutils literal"><span class="pre">max_leaf_nodes</span> <span class="pre">==</span> <span class="pre">interaction.depth</span> <span class="pre">+</span> <span class="pre">1</span></code> .</p>
 </div>
 <div class="section" id="mathematical-formulation">
@@ -901,7 +900,7 @@ regression. The initial model is given by the median of the
 target values.</li>
 <li>Huber (<code class="docutils literal"><span class="pre">'huber'</span></code>): Another robust loss function that combines
 least squares and least absolute deviation; use <code class="docutils literal"><span class="pre">alpha</span></code> to
-control the sensitivity with regards to outliers (see <a class="reference internal" href="#f2001" id="id15">[F2001]</a> for
+control the sensitivity with regards to outliers (see [F2001] for
 more details).</li>
 <li>Quantile (<code class="docutils literal"><span class="pre">'quantile'</span></code>): A loss function for quantile regression.
 Use <code class="docutils literal"><span class="pre">0</span> <span class="pre">&lt;</span> <span class="pre">alpha</span> <span class="pre">&lt;</span> <span class="pre">1</span></code> to specify the quantile. This loss function
@@ -935,7 +934,7 @@ classification.</li>
 <h3>1.11.4.6. Regularization<a class="headerlink" href="#regularization" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="shrinkage">
 <span id="gradient-boosting-shrinkage"></span><h4>1.11.4.6.1. Shrinkage<a class="headerlink" href="#shrinkage" title="Permalink to this headline">¶</a></h4>
-<p><a class="reference internal" href="#f2001" id="id16">[F2001]</a> proposed a simple regularization strategy that scales
+<p>[F2001] proposed a simple regularization strategy that scales
 the contribution of each weak learner by a factor <span class="math">\(\nu\)</span>:</p>
 <div class="math">
 \[F_m(x) = F_{m-1}(x) + \nu \gamma_m h_m(x)\]</div>
@@ -946,15 +945,15 @@ be set via the <code class="docutils literal"><span class="pre">learning_rate</s
 <code class="docutils literal"><span class="pre">n_estimators</span></code>, the number of weak learners to fit. Smaller values
 of <code class="docutils literal"><span class="pre">learning_rate</span></code> require larger numbers of weak learners to maintain
 a constant training error. Empirical evidence suggests that small
-values of <code class="docutils literal"><span class="pre">learning_rate</span></code> favor better test error. <a class="reference internal" href="#htf2009" id="id17">[HTF2009]</a>
+values of <code class="docutils literal"><span class="pre">learning_rate</span></code> favor better test error. <a class="reference internal" href="partial_dependence.html#htf2009" id="id17">[HTF2009]</a>
 recommend to set the learning rate to a small constant
 (e.g. <code class="docutils literal"><span class="pre">learning_rate</span> <span class="pre">&lt;=</span> <span class="pre">0.1</span></code>) and choose <code class="docutils literal"><span class="pre">n_estimators</span></code> by early
 stopping. For a more detailed discussion of the interaction between
-<code class="docutils literal"><span class="pre">learning_rate</span></code> and <code class="docutils literal"><span class="pre">n_estimators</span></code> see <a class="reference internal" href="#r2007" id="id18">[R2007]</a>.</p>
+<code class="docutils literal"><span class="pre">learning_rate</span></code> and <code class="docutils literal"><span class="pre">n_estimators</span></code> see [R2007].</p>
 </div>
 <div class="section" id="subsampling">
 <h4>1.11.4.6.2. Subsampling<a class="headerlink" href="#subsampling" title="Permalink to this headline">¶</a></h4>
-<p><a class="reference internal" href="#f1999" id="id19">[F1999]</a> proposed stochastic gradient boosting, which combines gradient
+<p>[F1999] proposed stochastic gradient boosting, which combines gradient
 boosting with bootstrap averaging (bagging). At each iteration
 the base classifier is trained on a fraction <code class="docutils literal"><span class="pre">subsample</span></code> of
 the available training data. The subsample is drawn without replacement.
@@ -1038,155 +1037,10 @@ accessed via the <code class="docutils literal"><span class="pre">feature_import
 </ul>
 </div>
 </div>
-<div class="section" id="partial-dependence">
-<span id="id20"></span><h4>1.11.4.7.2. Partial dependence<a class="headerlink" href="#partial-dependence" title="Permalink to this headline">¶</a></h4>
-<p>Partial dependence plots (PDP) show the dependence between the target response
-and a set of ‘target’ features, marginalizing over the
-values of all other features (the ‘complement’ features).
-Intuitively, we can interpret the partial dependence as the expected
-target response <a class="footnote-reference" href="#id23" id="id21">[1]</a> as a function of the ‘target’ features <a class="footnote-reference" href="#id24" id="id22">[2]</a>.</p>
-<p>Due to the limits of human perception the size of the target feature
-set must be small (usually, one or two) thus the target features are
-usually chosen among the most important features.</p>
-<p>The Figure below shows four one-way and one two-way partial dependence plots
-for the California housing dataset:</p>
-<div class="figure align-center">
-<a class="reference external image-reference" href="../auto_examples/ensemble/plot_partial_dependence.html"><img alt="../_images/sphx_glr_plot_partial_dependence_0011.png" src="../_images/sphx_glr_plot_partial_dependence_0011.png" style="width: 448.0px; height: 336.0px;" /></a>
-</div>
-<p>One-way PDPs tell us about the interaction between the target
-response and the target feature (e.g. linear, non-linear).
-The upper left plot in the above Figure shows the effect of the
-median income in a district on the median house price; we can
-clearly see a linear relationship among them.</p>
-<p>PDPs with two target features show the
-interactions among the two features. For example, the two-variable PDP in the
-above Figure shows the dependence of median house price on joint
-values of house age and avg. occupants per household. We can clearly
-see an interaction between the two features:
-For an avg. occupancy greater than two, the house price is nearly independent
-of the house age, whereas for values less than two there is a strong dependence
-on age.</p>
-<p>The module <code class="xref py py-mod docutils literal"><span class="pre">partial_dependence</span></code> provides a convenience function
-<a class="reference internal" href="generated/sklearn.ensemble.partial_dependence.plot_partial_dependence.html#sklearn.ensemble.partial_dependence.plot_partial_dependence" title="sklearn.ensemble.partial_dependence.plot_partial_dependence"><code class="xref py py-func docutils literal"><span class="pre">plot_partial_dependence</span></code></a>
-to create one-way and two-way partial dependence plots. In the below example
-we show how to create a grid of partial dependence plots: two one-way
-PDPs for the features <code class="docutils literal"><span class="pre">0</span></code> and <code class="docutils literal"><span class="pre">1</span></code> and a two-way PDP between the two
-features:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">make_hastie_10_2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">GradientBoostingClassifier</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.ensemble.partial_dependence</span> <span class="k">import</span> <span class="n">plot_partial_dependence</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_hastie_10_2</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">GradientBoostingClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">max_depth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plot_partial_dependence</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">features</span><span class="p">)</span> 
-</pre></div>
-</div>
-<p>For multi-class models, you need to set the class label for which the
-PDPs should be created via the <code class="docutils literal"><span class="pre">label</span></code> argument:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">load_iris</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mc_clf</span> <span class="o">=</span> <span class="n">GradientBoostingClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">max_depth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plot_partial_dependence</span><span class="p">(</span><span class="n">mc_clf</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> 
-</pre></div>
-</div>
-<p>If you need the raw values of the partial dependence function rather
-than the plots you can use the
-<a class="reference internal" href="generated/sklearn.ensemble.partial_dependence.partial_dependence.html#sklearn.ensemble.partial_dependence.partial_dependence" title="sklearn.ensemble.partial_dependence.partial_dependence"><code class="xref py py-func docutils literal"><span class="pre">partial_dependence</span></code></a> function:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.ensemble.partial_dependence</span> <span class="k">import</span> <span class="n">partial_dependence</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pdp</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">partial_dependence</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pdp</span>  
-<span class="go">array([[ 2.46643157,  2.46643157, ...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">axes</span>  
-<span class="go">[array([-1.62497054, -1.59201391, ...</span>
-</pre></div>
-</div>
-<p>The function requires either the argument <code class="docutils literal"><span class="pre">grid</span></code> which specifies the
-values of the target features on which the partial dependence function
-should be evaluated or the argument <code class="docutils literal"><span class="pre">X</span></code> which is a convenience mode
-for automatically creating <code class="docutils literal"><span class="pre">grid</span></code> from the training data. If <code class="docutils literal"><span class="pre">X</span></code>
-is given, the <code class="docutils literal"><span class="pre">axes</span></code> value returned by the function gives the axis
-for each target feature.</p>
-<p>For each value of the ‘target’ features in the <code class="docutils literal"><span class="pre">grid</span></code> the partial
-dependence function need to marginalize the predictions of a tree over
-all possible values of the ‘complement’ features. In decision trees
-this function can be evaluated efficiently without reference to the
-training data. For each grid point a weighted tree traversal is
-performed: if a split node involves a ‘target’ feature, the
-corresponding left or right branch is followed, otherwise both
-branches are followed, each branch is weighted by the fraction of
-training samples that entered that branch. Finally, the partial
-dependence is given by a weighted average of all visited leaves. For
-tree ensembles the results of each individual tree are again
-averaged.</p>
-<p class="rubric">Footnotes</p>
-<table class="docutils footnote" frame="void" id="id23" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id21">[1]</a></td><td>For classification with <code class="docutils literal"><span class="pre">loss='deviance'</span></code>  the target
-response is logit(p).</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id24" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id22">[2]</a></td><td>More precisely its the expectation of the target response after
-accounting for the initial model; partial dependence plots
-do not include the <code class="docutils literal"><span class="pre">init</span></code> model.</td></tr>
-</tbody>
-</table>
-<div class="topic">
-<p class="topic-title first">Examples:</p>
-<ul class="simple">
-<li><a class="reference internal" href="../auto_examples/ensemble/plot_partial_dependence.html#sphx-glr-auto-examples-ensemble-plot-partial-dependence-py"><span class="std std-ref">Partial Dependence Plots</span></a></li>
-</ul>
-</div>
-<div class="topic">
-<p class="topic-title first">References</p>
-<table class="docutils citation" frame="void" id="f2001" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label">[F2001]</td><td><em>(<a class="fn-backref" href="#id14">1</a>, <a class="fn-backref" href="#id15">2</a>, <a class="fn-backref" href="#id16">3</a>)</em> J. Friedman, “Greedy Function Approximation: A Gradient Boosting Machine”,
-The Annals of Statistics, Vol. 29, No. 5, 2001.</td></tr>
-</tbody>
-</table>
-<table class="docutils citation" frame="void" id="f1999" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id19">[F1999]</a></td><td><ol class="first last upperalpha simple" start="10">
-<li>Friedman, “Stochastic Gradient Boosting”, 1999</li>
-</ol>
-</td></tr>
-</tbody>
-</table>
-<table class="docutils citation" frame="void" id="htf2009" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id17">[HTF2009]</a></td><td><ol class="first last upperalpha simple" start="20">
-<li>Hastie, R. Tibshirani and J. Friedman, “Elements of Statistical Learning Ed. 2”, Springer, 2009.</li>
-</ol>
-</td></tr>
-</tbody>
-</table>
-<table class="docutils citation" frame="void" id="r2007" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id18">[R2007]</a></td><td><ol class="first last upperalpha simple" start="7">
-<li>Ridgeway, “Generalized Boosted Models: A guide to the gbm package”, 2007</li>
-</ol>
-</td></tr>
-</tbody>
-</table>
-</div>
-</div>
 </div>
 </div>
 <div class="section" id="voting-classifier">
-<span id="id25"></span><h2>1.11.5. Voting Classifier<a class="headerlink" href="#voting-classifier" title="Permalink to this headline">¶</a></h2>
+<span id="id20"></span><h2>1.11.5. Voting Classifier<a class="headerlink" href="#voting-classifier" title="Permalink to this headline">¶</a></h2>
 <p>The idea behind the <a class="reference internal" href="generated/sklearn.ensemble.VotingClassifier.html#sklearn.ensemble.VotingClassifier" title="sklearn.ensemble.VotingClassifier"><code class="xref any py py-class docutils literal"><span class="pre">VotingClassifier</span></code></a> is to combine
 conceptually different machine learning classifiers and use a majority vote
 or the average predicted probabilities (soft vote) to predict the class labels.
@@ -1212,8 +1066,8 @@ on the ascending sort order. E.g., in the following scenario</p>
 <li>classifier 2 -&gt; class 1</li>
 </ul>
 <p>the class label 1 will be assigned to the sample.</p>
-<div class="section" id="id26">
-<h4>1.11.5.1.1. Usage<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id21">
+<h4>1.11.5.1.1. Usage<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h4>
 <p>The following example shows how to fit the majority rule classifier:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">datasets</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">cross_val_score</span>
@@ -1345,8 +1199,8 @@ to tune the hyperparameters of the individual estimators:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="section" id="id27">
-<h4>1.11.5.3.1. Usage<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id22">
+<h4>1.11.5.3.1. Usage<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h4>
 <p>In order to predict the class labels based on the predicted
 class-probabilities (scikit-learn estimators in the VotingClassifier
 must support <code class="docutils literal"><span class="pre">predict_proba</span></code> method):</p>
@@ -1362,7 +1216,7 @@ must support <code class="docutils literal"><span class="pre">predict_proba</spa
 </div>
 </div>
 <div class="section" id="voting-regressor">
-<span id="id28"></span><h2>1.11.6. Voting Regressor<a class="headerlink" href="#voting-regressor" title="Permalink to this headline">¶</a></h2>
+<span id="id23"></span><h2>1.11.6. Voting Regressor<a class="headerlink" href="#voting-regressor" title="Permalink to this headline">¶</a></h2>
 <p>The idea behind the <a class="reference internal" href="generated/sklearn.ensemble.VotingRegressor.html#sklearn.ensemble.VotingRegressor" title="sklearn.ensemble.VotingRegressor"><code class="xref any py py-class docutils literal"><span class="pre">VotingRegressor</span></code></a> is to combine conceptually
 different machine learning regressors and return the average predicted values.
 Such a regressor can be useful for a set of equally well performing models

@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
   
-    <title>4.1. Pipelines and composite estimators &#8212; scikit-learn 0.21.dev0 documentation</title>
+    <title>5.1. Pipelines and composite estimators &#8212; scikit-learn 0.21.dev0 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../_static/css/bootstrap.min.css" media="screen" />
@@ -38,8 +38,8 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="4.2. Feature extraction" href="feature_extraction.html" />
-    <link rel="prev" title="4. Dataset transformations" href="../data_transforms.html" />
+    <link rel="next" title="5.2. Feature extraction" href="feature_extraction.html" />
+    <link rel="prev" title="5. Dataset transformations" href="../data_transforms.html" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -138,10 +138,10 @@
         accesskey="P">Previous
         <br/>
         <span class="smallrellink">
-        4. Dataset tr...
+        5. Dataset tr...
         </span>
             <span class="hiddenrellink">
-            4. Dataset transformations
+            5. Dataset transformations
             </span>
         </a>
         </div>
@@ -153,10 +153,10 @@
         accesskey="N">Next
         <br/>
         <span class="smallrellink">
-        4.2. Feature ...
+        5.2. Feature ...
         </span>
             <span class="hiddenrellink">
-            4.2. Feature extraction
+            5.2. Feature extraction
             </span>
         </a>
         </div>
@@ -170,10 +170,10 @@
         Up
         <br/>
         <span class="smallrellink">
-        4. Dataset tr...
+        5. Dataset tr...
         </span>
             <span class="hiddenrellink">
-            4. Dataset transformations
+            5. Dataset transformations
             </span>
             
         </a>
@@ -184,24 +184,24 @@
       <a href="http://scikit-learn.org/dev/versions.html">Other versions</a></p>
     <p class="citing">Please <b><a href="../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
-<li><a class="reference internal" href="#">4.1. Pipelines and composite estimators</a><ul>
-<li><a class="reference internal" href="#pipeline-chaining-estimators">4.1.1. Pipeline: chaining estimators</a><ul>
-<li><a class="reference internal" href="#usage">4.1.1.1. Usage</a><ul>
-<li><a class="reference internal" href="#construction">4.1.1.1.1. Construction</a></li>
-<li><a class="reference internal" href="#accessing-steps">4.1.1.1.2. Accessing steps</a></li>
-<li><a class="reference internal" href="#nested-parameters">4.1.1.1.3. Nested parameters</a></li>
+<li><a class="reference internal" href="#">5.1. Pipelines and composite estimators</a><ul>
+<li><a class="reference internal" href="#pipeline-chaining-estimators">5.1.1. Pipeline: chaining estimators</a><ul>
+<li><a class="reference internal" href="#usage">5.1.1.1. Usage</a><ul>
+<li><a class="reference internal" href="#construction">5.1.1.1.1. Construction</a></li>
+<li><a class="reference internal" href="#accessing-steps">5.1.1.1.2. Accessing steps</a></li>
+<li><a class="reference internal" href="#nested-parameters">5.1.1.1.3. Nested parameters</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#notes">4.1.1.2. Notes</a></li>
-<li><a class="reference internal" href="#caching-transformers-avoid-repeated-computation">4.1.1.3. Caching transformers: avoid repeated computation</a></li>
+<li><a class="reference internal" href="#notes">5.1.1.2. Notes</a></li>
+<li><a class="reference internal" href="#caching-transformers-avoid-repeated-computation">5.1.1.3. Caching transformers: avoid repeated computation</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#transforming-target-in-regression">4.1.2. Transforming target in regression</a></li>
-<li><a class="reference internal" href="#featureunion-composite-feature-spaces">4.1.3. FeatureUnion: composite feature spaces</a><ul>
-<li><a class="reference internal" href="#id1">4.1.3.1. Usage</a></li>
+<li><a class="reference internal" href="#transforming-target-in-regression">5.1.2. Transforming target in regression</a></li>
+<li><a class="reference internal" href="#featureunion-composite-feature-spaces">5.1.3. FeatureUnion: composite feature spaces</a><ul>
+<li><a class="reference internal" href="#id1">5.1.3.1. Usage</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#columntransformer-for-heterogeneous-data">4.1.4. ColumnTransformer for heterogeneous data</a></li>
+<li><a class="reference internal" href="#columntransformer-for-heterogeneous-data">5.1.4. ColumnTransformer for heterogeneous data</a></li>
 </ul>
 </li>
 </ul>
@@ -222,7 +222,7 @@
           <div class="body" role="main">
             
   <div class="section" id="pipelines-and-composite-estimators">
-<span id="combining-estimators"></span><h1>4.1. Pipelines and composite estimators<a class="headerlink" href="#pipelines-and-composite-estimators" title="Permalink to this headline">¶</a></h1>
+<span id="combining-estimators"></span><h1>5.1. Pipelines and composite estimators<a class="headerlink" href="#pipelines-and-composite-estimators" title="Permalink to this headline">¶</a></h1>
 <p>Transformers are usually combined with classifiers, regressors or other
 estimators to build a composite estimator.  The most common tool is a
 <a class="reference internal" href="#pipeline"><span class="std std-ref">Pipeline</span></a>. Pipeline is often used in combination with
@@ -231,7 +231,7 @@ transformers into a composite feature space.  <a class="reference internal" href
 (i.e. log-transform <a class="reference internal" href="../glossary.html#term-175"><span class="xref std std-term">y</span></a>). In contrast, Pipelines only transform the
 observed data (<a class="reference internal" href="../glossary.html#term-x"><span class="xref std std-term">X</span></a>).</p>
 <div class="section" id="pipeline-chaining-estimators">
-<span id="pipeline"></span><h2>4.1.1. Pipeline: chaining estimators<a class="headerlink" href="#pipeline-chaining-estimators" title="Permalink to this headline">¶</a></h2>
+<span id="pipeline"></span><h2>5.1.1. Pipeline: chaining estimators<a class="headerlink" href="#pipeline-chaining-estimators" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference internal" href="generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal"><span class="pre">Pipeline</span></code></a> can be used to chain multiple estimators
 into one. This is useful as there is often a fixed sequence
 of steps in processing the data, for example feature selection, normalization
@@ -252,9 +252,9 @@ used to train the transformers and predictors.</dd>
 (i.e. must have a <code class="docutils literal"><span class="pre">transform</span></code> method).
 The last estimator may be any type (transformer, classifier, etc.).</p>
 <div class="section" id="usage">
-<h3>4.1.1.1. Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
+<h3>5.1.1.1. Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="construction">
-<h4>4.1.1.1.1. Construction<a class="headerlink" href="#construction" title="Permalink to this headline">¶</a></h4>
+<h4>5.1.1.1.1. Construction<a class="headerlink" href="#construction" title="Permalink to this headline">¶</a></h4>
 <p>The <a class="reference internal" href="generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal"><span class="pre">Pipeline</span></code></a> is built using a list of <code class="docutils literal"><span class="pre">(key,</span> <span class="pre">value)</span></code> pairs, where
 the <code class="docutils literal"><span class="pre">key</span></code> is a string containing the name you want to give this step and <code class="docutils literal"><span class="pre">value</span></code>
 is an estimator object:</p>
@@ -287,7 +287,7 @@ filling in the names automatically:</p>
 </div>
 </div>
 <div class="section" id="accessing-steps">
-<h4>4.1.1.1.2. Accessing steps<a class="headerlink" href="#accessing-steps" title="Permalink to this headline">¶</a></h4>
+<h4>5.1.1.1.2. Accessing steps<a class="headerlink" href="#accessing-steps" title="Permalink to this headline">¶</a></h4>
 <p>The estimators of a pipeline are stored as a list in the <code class="docutils literal"><span class="pre">steps</span></code> attribute,
 but can be accessed by index or name by indexing (with <code class="docutils literal"><span class="pre">[idx]</span></code>) the
 Pipeline:</p>
@@ -320,7 +320,7 @@ permitted). This is convenient for performing only some of the transformations
 </div>
 </div>
 <div class="section" id="nested-parameters">
-<h4>4.1.1.1.3. Nested parameters<a class="headerlink" href="#nested-parameters" title="Permalink to this headline">¶</a></h4>
+<h4>5.1.1.1.3. Nested parameters<a class="headerlink" href="#nested-parameters" title="Permalink to this headline">¶</a></h4>
 <p>Parameters of the estimators in the pipeline can be accessed using the
 <code class="docutils literal"><span class="pre">&lt;estimator&gt;__&lt;parameter&gt;</span></code> syntax:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pipe</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="n">clf__C</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> 
@@ -376,7 +376,7 @@ ignored by setting them to <code class="docutils literal"><span class="pre">'pas
 </div>
 </div>
 <div class="section" id="notes">
-<h3>4.1.1.2. Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h3>
+<h3>5.1.1.2. Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h3>
 <p>Calling <code class="docutils literal"><span class="pre">fit</span></code> on the pipeline is the same as calling <code class="docutils literal"><span class="pre">fit</span></code> on
 each estimator in turn, <code class="docutils literal"><span class="pre">transform</span></code> the input and pass it on to the next step.
 The pipeline has all the methods that the last estimator in the pipeline has,
@@ -385,7 +385,7 @@ as a classifier. If the last estimator is a transformer, again, so is the
 pipeline.</p>
 </div>
 <div class="section" id="caching-transformers-avoid-repeated-computation">
-<span id="pipeline-cache"></span><h3>4.1.1.3. Caching transformers: avoid repeated computation<a class="headerlink" href="#caching-transformers-avoid-repeated-computation" title="Permalink to this headline">¶</a></h3>
+<span id="pipeline-cache"></span><h3>5.1.1.3. Caching transformers: avoid repeated computation<a class="headerlink" href="#caching-transformers-avoid-repeated-computation" title="Permalink to this headline">¶</a></h3>
 <p>Fitting transformers may be computationally expensive. With its
 <code class="docutils literal"><span class="pre">memory</span></code> parameter set, <a class="reference internal" href="generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal"><span class="pre">Pipeline</span></code></a> will cache each transformer
 after calling <code class="docutils literal"><span class="pre">fit</span></code>.
@@ -468,7 +468,7 @@ the pipeline:</p>
 </div>
 </div>
 <div class="section" id="transforming-target-in-regression">
-<span id="transformed-target-regressor"></span><h2>4.1.2. Transforming target in regression<a class="headerlink" href="#transforming-target-in-regression" title="Permalink to this headline">¶</a></h2>
+<span id="transformed-target-regressor"></span><h2>5.1.2. Transforming target in regression<a class="headerlink" href="#transforming-target-in-regression" title="Permalink to this headline">¶</a></h2>
 <p><code class="xref py py-class docutils literal"><span class="pre">TransformedTargetRegressor</span></code> transforms the targets <code class="docutils literal"><span class="pre">y</span></code> before fitting
 a regression model. The predictions are mapped back to the original space via
 an inverse transform. It takes as an argument the regressor that will be used
@@ -544,7 +544,7 @@ options will raise an error.</p>
 </div>
 </div>
 <div class="section" id="featureunion-composite-feature-spaces">
-<span id="feature-union"></span><h2>4.1.3. FeatureUnion: composite feature spaces<a class="headerlink" href="#featureunion-composite-feature-spaces" title="Permalink to this headline">¶</a></h2>
+<span id="feature-union"></span><h2>5.1.3. FeatureUnion: composite feature spaces<a class="headerlink" href="#featureunion-composite-feature-spaces" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference internal" href="generated/sklearn.pipeline.FeatureUnion.html#sklearn.pipeline.FeatureUnion" title="sklearn.pipeline.FeatureUnion"><code class="xref py py-class docutils literal"><span class="pre">FeatureUnion</span></code></a> combines several transformer objects into a new
 transformer that combines their output. A <a class="reference internal" href="generated/sklearn.pipeline.FeatureUnion.html#sklearn.pipeline.FeatureUnion" title="sklearn.pipeline.FeatureUnion"><code class="xref py py-class docutils literal"><span class="pre">FeatureUnion</span></code></a> takes
 a list of transformer objects. During fitting, each of these
@@ -563,7 +563,7 @@ might produce identical features. It only produces a union when the
 feature sets are disjoint, and making sure they are the caller’s
 responsibility.)</p>
 <div class="section" id="id1">
-<h3>4.1.3.1. Usage<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<h3>5.1.3.1. Usage<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>A <a class="reference internal" href="generated/sklearn.pipeline.FeatureUnion.html#sklearn.pipeline.FeatureUnion" title="sklearn.pipeline.FeatureUnion"><code class="xref py py-class docutils literal"><span class="pre">FeatureUnion</span></code></a> is built using a list of <code class="docutils literal"><span class="pre">(key,</span> <span class="pre">value)</span></code> pairs,
 where the <code class="docutils literal"><span class="pre">key</span></code> is the name you want to give to a given transformation
 (an arbitrary string; it only serves as an identifier)
@@ -601,7 +601,7 @@ and ignored by setting to <code class="docutils literal"><span class="pre">'drop
 </div>
 </div>
 <div class="section" id="columntransformer-for-heterogeneous-data">
-<span id="column-transformer"></span><h2>4.1.4. ColumnTransformer for heterogeneous data<a class="headerlink" href="#columntransformer-for-heterogeneous-data" title="Permalink to this headline">¶</a></h2>
+<span id="column-transformer"></span><h2>5.1.4. ColumnTransformer for heterogeneous data<a class="headerlink" href="#columntransformer-for-heterogeneous-data" title="Permalink to this headline">¶</a></h2>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">The <a class="reference internal" href="generated/sklearn.compose.ColumnTransformer.html#sklearn.compose.ColumnTransformer" title="sklearn.compose.ColumnTransformer"><code class="xref py py-class docutils literal"><span class="pre">compose.ColumnTransformer</span></code></a>
