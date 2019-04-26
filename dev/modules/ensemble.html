@@ -726,6 +726,35 @@ hardly be parallelized.</li>
 <p>The module <a class="reference internal" href="classes.html#module-sklearn.ensemble" title="sklearn.ensemble"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.ensemble</span></code></a> provides methods
 for both classification and regression via gradient boosted regression
 trees.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Scikit-learn 0.21 introduces two new experimental implementation of
+gradient boosting trees, namely <a class="reference internal" href="generated/sklearn.ensemble.HistGradientBoostingClassifier.html#sklearn.ensemble.HistGradientBoostingClassifier" title="sklearn.ensemble.HistGradientBoostingClassifier"><code class="xref py py-class docutils literal"><span class="pre">HistGradientBoostingClassifier</span></code></a>
+and <a class="reference internal" href="generated/sklearn.ensemble.HistGradientBoostingRegressor.html#sklearn.ensemble.HistGradientBoostingRegressor" title="sklearn.ensemble.HistGradientBoostingRegressor"><code class="xref py py-class docutils literal"><span class="pre">HistGradientBoostingRegressor</span></code></a>, inspired by
+<a class="reference external" href="https://github.com/Microsoft/LightGBM">LightGBM</a>. These fast estimators
+first bin the input samples <code class="docutils literal"><span class="pre">X</span></code> into integer-valued bins (typically 256
+bins) which tremendously reduces the number of splitting points to
+consider, and allow the algorithm to leverage integer-based data
+structures (histograms) instead of relying on sorted continuous values.</p>
+<p>The new histogram-based estimators can be orders of magnitude faster than
+their continuous counterparts when the number of samples is larger than
+tens of thousands of samples. The API of these new estimators is slightly
+different, and some of the features from <a class="reference internal" href="generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier" title="sklearn.ensemble.GradientBoostingClassifier"><code class="xref py py-class docutils literal"><span class="pre">GradientBoostingClassifier</span></code></a>
+and <a class="reference internal" href="generated/sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor" title="sklearn.ensemble.GradientBoostingRegressor"><code class="xref py py-class docutils literal"><span class="pre">GradientBoostingRegressor</span></code></a> are not yet supported.</p>
+<p>These new estimators are still <strong>experimental</strong> for now: their predictions
+and their API might change without any deprecation cycle. To use them, you
+need to explicitly import <code class="docutils literal"><span class="pre">enable_hist_gradient_boosting</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># explicitly require this experimental feature</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.experimental</span> <span class="k">import</span> <span class="n">enable_hist_gradient_boosting</span>  <span class="c1"># noqa</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># now you can import normally from ensemble</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">HistGradientBoostingClassifier</span>
+</pre></div>
+</div>
+<p class="last">The following guide focuses on <a class="reference internal" href="generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier" title="sklearn.ensemble.GradientBoostingClassifier"><code class="xref py py-class docutils literal"><span class="pre">GradientBoostingClassifier</span></code></a> and
+<a class="reference internal" href="generated/sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor" title="sklearn.ensemble.GradientBoostingRegressor"><code class="xref py py-class docutils literal"><span class="pre">GradientBoostingRegressor</span></code></a> only, which might be preferred for small
+sample sizes since binning may lead to split points that are too approximate
+in this setting.</p>
+</div>
 <div class="section" id="classification">
 <h3>1.11.4.1. Classification<a class="headerlink" href="#classification" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference internal" href="generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier" title="sklearn.ensemble.GradientBoostingClassifier"><code class="xref py py-class docutils literal"><span class="pre">GradientBoostingClassifier</span></code></a> supports both binary and multi-class
