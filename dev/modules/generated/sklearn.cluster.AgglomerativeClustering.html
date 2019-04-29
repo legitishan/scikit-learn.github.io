@@ -209,7 +209,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.cluster" title="sklearn.cluster"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.cluster</span></code></a>.AgglomerativeClustering<a class="headerlink" href="#sklearn-cluster-agglomerativeclustering" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="sklearn.cluster.AgglomerativeClustering">
-<em class="property">class </em><code class="descclassname">sklearn.cluster.</code><code class="descname">AgglomerativeClustering</code><span class="sig-paren">(</span><em>n_clusters=2</em>, <em>affinity=’euclidean’</em>, <em>memory=None</em>, <em>connectivity=None</em>, <em>compute_full_tree=’auto’</em>, <em>linkage=’ward’</em>, <em>pooling_func=’deprecated’</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/10249939e/sklearn/cluster/hierarchical.py#L651"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.AgglomerativeClustering" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">sklearn.cluster.</code><code class="descname">AgglomerativeClustering</code><span class="sig-paren">(</span><em>n_clusters=2</em>, <em>affinity=’euclidean’</em>, <em>memory=None</em>, <em>connectivity=None</em>, <em>compute_full_tree=’auto’</em>, <em>linkage=’ward’</em>, <em>pooling_func=’deprecated’</em>, <em>distance_threshold=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/602f3d68d/sklearn/cluster/hierarchical.py#L651"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.AgglomerativeClustering" title="Permalink to this definition">¶</a></dt>
 <dd><p>Agglomerative Clustering</p>
 <p>Recursively merges the pair of clusters that minimally increases
 a given linkage distance.</p>
@@ -219,8 +219,9 @@ a given linkage distance.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>n_clusters</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, default=2</span></dt>
-<dd><p class="first last">The number of clusters to find.</p>
+<dt><strong>n_clusters</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int or None, optional (default=2)</span></dt>
+<dd><p class="first last">The number of clusters to find. It must be <code class="docutils literal"><span class="pre">None</span></code> if
+<code class="docutils literal"><span class="pre">distance_threshold</span></code> is not <code class="docutils literal"><span class="pre">None</span></code>.</p>
 </dd>
 <dt><strong>affinity</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string or callable, default: “euclidean”</span></dt>
 <dd><p class="first last">Metric used to compute the linkage. Can be “euclidean”, “l1”, “l2”,
@@ -248,7 +249,8 @@ useful to decrease computation time if the number of clusters is
 not small compared to the number of samples. This option is
 useful only when specifying a connectivity matrix. Note also that
 when varying the number of clusters and using caching, it may
-be advantageous to compute the full tree.</p>
+be advantageous to compute the full tree. It must be <code class="docutils literal"><span class="pre">True</span></code> if
+<code class="docutils literal"><span class="pre">distance_threshold</span></code> is not <code class="docutils literal"><span class="pre">None</span></code>.</p>
 </dd>
 <dt><strong>linkage</strong> <span class="classifier-delimiter">:</span> <span class="classifier">{“ward”, “complete”, “average”, “single”}, optional             (default=”ward”)</span></dt>
 <dd><p class="first">Which linkage criterion to use. The linkage criterion determines which
@@ -271,10 +273,23 @@ of the two sets.</li>
 in 0.22.</p>
 </div>
 </dd>
+<dt><strong>distance_threshold</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional (default=None)</span></dt>
+<dd><p class="first">The linkage distance threshold above which, clusters will not be
+merged. If not <code class="docutils literal"><span class="pre">None</span></code>, <code class="docutils literal"><span class="pre">n_clusters</span></code> must be <code class="docutils literal"><span class="pre">None</span></code> and
+<code class="docutils literal"><span class="pre">compute_full_tree</span></code> must be <code class="docutils literal"><span class="pre">True</span></code>.</p>
+<div class="last versionadded">
+<p><span class="versionmodified">New in version 0.21.</span></p>
+</div>
+</dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>n_clusters_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">The number of clusters found by the algorithm. If
+<code class="docutils literal"><span class="pre">distance_threshold=None</span></code>, it will be equal to the given
+<code class="docutils literal"><span class="pre">n_clusters</span></code>.</p>
+</dd>
 <dt><strong>labels_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array [n_samples]</span></dt>
 <dd><p class="first last">cluster labels for each point</p>
 </dd>
@@ -305,8 +320,9 @@ are merged to form node <code class="docutils literal"><span class="pre">n_sampl
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clustering</span> <span class="o">=</span> <span class="n">AgglomerativeClustering</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clustering</span> 
 <span class="go">AgglomerativeClustering(affinity=&#39;euclidean&#39;, compute_full_tree=&#39;auto&#39;,</span>
-<span class="go">            connectivity=None, linkage=&#39;ward&#39;, memory=None, n_clusters=2,</span>
-<span class="go">            pooling_func=&#39;deprecated&#39;)</span>
+<span class="go">                        connectivity=None, distance_threshold=None,</span>
+<span class="go">                        linkage=&#39;ward&#39;, memory=None, n_clusters=2,</span>
+<span class="go">                        pooling_func=&#39;deprecated&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clustering</span><span class="o">.</span><span class="n">labels_</span>
 <span class="go">array([1, 1, 1, 0, 0, 0])</span>
 </pre></div>
@@ -334,12 +350,12 @@ are merged to form node <code class="docutils literal"><span class="pre">n_sampl
 </table>
 <dl class="method">
 <dt id="sklearn.cluster.AgglomerativeClustering.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>self</em>, <em>n_clusters=2</em>, <em>affinity=’euclidean’</em>, <em>memory=None</em>, <em>connectivity=None</em>, <em>compute_full_tree=’auto’</em>, <em>linkage=’ward’</em>, <em>pooling_func=’deprecated’</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/10249939e/sklearn/cluster/hierarchical.py#L749"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.AgglomerativeClustering.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>self</em>, <em>n_clusters=2</em>, <em>affinity=’euclidean’</em>, <em>memory=None</em>, <em>connectivity=None</em>, <em>compute_full_tree=’auto’</em>, <em>linkage=’ward’</em>, <em>pooling_func=’deprecated’</em>, <em>distance_threshold=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/602f3d68d/sklearn/cluster/hierarchical.py#L764"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.AgglomerativeClustering.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="sklearn.cluster.AgglomerativeClustering.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>self</em>, <em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/10249939e/sklearn/cluster/hierarchical.py#L768"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.AgglomerativeClustering.fit" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit</code><span class="sig-paren">(</span><em>self</em>, <em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/602f3d68d/sklearn/cluster/hierarchical.py#L785"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.AgglomerativeClustering.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the hierarchical clustering on the data</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -367,7 +383,7 @@ n_samples] if affinity==’precomputed’.</p>
 
 <dl class="method">
 <dt id="sklearn.cluster.AgglomerativeClustering.fit_predict">
-<code class="descname">fit_predict</code><span class="sig-paren">(</span><em>self</em>, <em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/10249939e/sklearn/base.py#L429"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.AgglomerativeClustering.fit_predict" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit_predict</code><span class="sig-paren">(</span><em>self</em>, <em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/602f3d68d/sklearn/base.py#L429"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.AgglomerativeClustering.fit_predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs clustering on X and returns cluster labels.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -396,7 +412,7 @@ n_samples] if affinity==’precomputed’.</p>
 
 <dl class="method">
 <dt id="sklearn.cluster.AgglomerativeClustering.get_params">
-<code class="descname">get_params</code><span class="sig-paren">(</span><em>self</em>, <em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/10249939e/sklearn/base.py#L177"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.AgglomerativeClustering.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_params</code><span class="sig-paren">(</span><em>self</em>, <em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/602f3d68d/sklearn/base.py#L177"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.AgglomerativeClustering.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -423,7 +439,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.cluster.AgglomerativeClustering.set_params">
-<code class="descname">set_params</code><span class="sig-paren">(</span><em>self</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/10249939e/sklearn/base.py#L200"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.AgglomerativeClustering.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_params</code><span class="sig-paren">(</span><em>self</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/602f3d68d/sklearn/base.py#L200"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.AgglomerativeClustering.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
