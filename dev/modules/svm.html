@@ -289,10 +289,10 @@ assumed to be linear. It also lacks some of the members of
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">gamma</span><span class="o">=</span><span class="s1">&#39;scale&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>  
-<span class="go">SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,</span>
+<span class="go">SVC(C=1.0, break_ties=False, cache_size=200, class_weight=None, coef0=0.0,</span>
 <span class="go">    decision_function_shape=&#39;ovr&#39;, degree=3, gamma=&#39;scale&#39;, kernel=&#39;rbf&#39;,</span>
-<span class="go">    max_iter=-1, probability=False, random_state=None, shrinking=True,</span>
-<span class="go">    tol=0.001, verbose=False)</span>
+<span class="go">    max_iter=-1, probability=False,</span>
+<span class="go">    random_state=None, shrinking=True, tol=0.001, verbose=False)</span>
 </pre></div>
 </div>
 <p>After being fitted, the model can then be used to predict new values:</p>
@@ -330,10 +330,10 @@ To provide a consistent interface with other classifiers, the
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">gamma</span><span class="o">=</span><span class="s1">&#39;scale&#39;</span><span class="p">,</span> <span class="n">decision_function_shape</span><span class="o">=</span><span class="s1">&#39;ovo&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span> 
-<span class="go">SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,</span>
+<span class="go">SVC(C=1.0, break_ties=False, cache_size=200, class_weight=None, coef0=0.0,</span>
 <span class="go">    decision_function_shape=&#39;ovo&#39;, degree=3, gamma=&#39;scale&#39;, kernel=&#39;rbf&#39;,</span>
-<span class="go">    max_iter=-1, probability=False, random_state=None, shrinking=True,</span>
-<span class="go">    tol=0.001, verbose=False)</span>
+<span class="go">    max_iter=-1, probability=False,</span>
+<span class="go">    random_state=None, shrinking=True, tol=0.001, verbose=False)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dec</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">decision_function</span><span class="p">([[</span><span class="mi">1</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dec</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># 4 classes: 4*3/2 = 6</span>
 <span class="go">6</span>
@@ -453,6 +453,15 @@ Platt’s method is also known to have theoretical issues.
 If confidence scores are required, but these do not have to be probabilities,
 then it is advisable to set <code class="docutils literal"><span class="pre">probability=False</span></code>
 and use <code class="docutils literal"><span class="pre">decision_function</span></code> instead of <code class="docutils literal"><span class="pre">predict_proba</span></code>.</p>
+<p>Please note that when <code class="docutils literal"><span class="pre">decision_function_shape='ovr'</span></code> and <code class="docutils literal"><span class="pre">n_classes</span> <span class="pre">&gt;</span> <span class="pre">2</span></code>,
+unlike <code class="docutils literal"><span class="pre">decision_function</span></code>, the <code class="docutils literal"><span class="pre">predict</span></code> method does not try to break ties
+by default. You can set <code class="docutils literal"><span class="pre">break_ties=True</span></code> for the output of <code class="docutils literal"><span class="pre">predict</span></code> to be
+the same as <code class="docutils literal"><span class="pre">np.argmax(clf.decision_function(...),</span> <span class="pre">axis=1)</span></code>, otherwise the
+first class among the tied classes will always be returned; but have in mind
+that it comes with a computational cost.</p>
+<div class="figure align-center">
+<a class="reference external image-reference" href="../auto_examples/svm/plot_svm_tie_breaking.html"><img alt="../_images/sphx_glr_plot_svm_tie_breaking_0011.png" src="../_images/sphx_glr_plot_svm_tie_breaking_0011.png" /></a>
+</div>
 <div class="topic">
 <p class="topic-title first">References:</p>
 <ul class="simple">
@@ -715,10 +724,11 @@ test vectors must be provided.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># linear kernel computation</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">gram</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">gram</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> 
-<span class="go">SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,</span>
+<span class="go">SVC(C=1.0, break_ties=False, cache_size=200, class_weight=None, coef0=0.0,</span>
 <span class="go">    decision_function_shape=&#39;ovr&#39;, degree=3, gamma=&#39;auto_deprecated&#39;,</span>
-<span class="go">    kernel=&#39;precomputed&#39;, max_iter=-1, probability=False,</span>
-<span class="go">    random_state=None, shrinking=True, tol=0.001, verbose=False)</span>
+<span class="go">    kernel=&#39;precomputed&#39;, max_iter=-1,</span>
+<span class="go">    probability=False, random_state=None, shrinking=True, tol=0.001,</span>
+<span class="go">    verbose=False)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># predict on training examples</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">gram</span><span class="p">)</span>
 <span class="go">array([0, 1])</span>
