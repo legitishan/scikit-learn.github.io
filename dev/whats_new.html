@@ -192,6 +192,7 @@
 <li><a class="reference internal" href="#changed-models">Changed models</a></li>
 <li><a class="reference internal" href="#changelog">Changelog</a><ul>
 <li><a class="reference internal" href="#sklearn-svm"><code class="docutils literal"><span class="pre">sklearn.svm</span></code></a></li>
+<li><a class="reference internal" href="#miscellaneous">Miscellaneous</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#changes-to-estimator-checks">Changes to estimator checks</a></li>
@@ -229,10 +230,10 @@
 <li><a class="reference internal" href="#sklearn-tree"><code class="docutils literal"><span class="pre">sklearn.tree</span></code></a></li>
 <li><a class="reference internal" href="#sklearn-utils"><code class="docutils literal"><span class="pre">sklearn.utils</span></code></a></li>
 <li><a class="reference internal" href="#multiple-modules">Multiple modules</a></li>
-<li><a class="reference internal" href="#miscellaneous">Miscellaneous</a></li>
+<li><a class="reference internal" href="#id8">Miscellaneous</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id8">Changes to estimator checks</a></li>
+<li><a class="reference internal" href="#id9">Changes to estimator checks</a></li>
 <li><a class="reference internal" href="#code-and-documentation-contributors">Code and Documentation Contributors</a></li>
 </ul>
 </li>
@@ -334,10 +335,24 @@ the ties according to the confidence values of <a class="reference internal" hre
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/12557">#12557</a> by <a class="reference external" href="https://github.com/adrinjalali">Adrin Jalali</a>.</li>
 </ul>
 </div>
+<div class="section" id="miscellaneous">
+<h3>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><span class="raw-html"><span class="label label-warning">API Change</span></span>  Replace manual checks with <code class="docutils literal"><span class="pre">check_is_fitted</span></code>. Errors thrown when
+using a non-fitted estimators are now more uniform.
+<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/13013">#13013</a> by <a class="reference external" href="https://github.com/agamemnonc">Agamemnon Krasoulis</a>.</li>
+</ul>
+</div>
 </div>
 <div class="section" id="changes-to-estimator-checks">
 <h2>Changes to estimator checks<a class="headerlink" href="#changes-to-estimator-checks" title="Permalink to this headline">¶</a></h2>
 <p>These changes mostly affect library developers.</p>
+<ul class="simple">
+<li>Estimators are now expected to raise a <code class="docutils literal"><span class="pre">NotFittedError</span></code> if <code class="docutils literal"><span class="pre">predict</span></code> or
+<code class="docutils literal"><span class="pre">transform</span></code> is called before <code class="docutils literal"><span class="pre">fit</span></code>; previously an <code class="docutils literal"><span class="pre">AttributeError</span></code> or
+<code class="docutils literal"><span class="pre">ValueError</span></code> was acceptable.
+<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/13013">#13013</a> by by <a class="reference external" href="https://github.com/agamemnonc">Agamemnon Krasoulis</a>.</li>
+</ul>
 </div>
 </div>
 <div class="section" id="version-0-21-0">
@@ -1083,8 +1098,8 @@ helper function that was not behaving consistently across platforms.
 <a class="reference external" href="https://github.com/ClemDoum">Clément Doumouro</a>.</li>
 </ul>
 </div>
-<div class="section" id="miscellaneous">
-<h3>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id8">
+<h3>Miscellaneous<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><span class="raw-html"><span class="label label-info">Enhancement</span></span>  Joblib is no longer vendored in scikit-learn, and becomes a
 dependency. Minimal supported version is joblib 0.11, however using
@@ -1093,8 +1108,8 @@ version &gt;= 0.13 is strongly recommended.
 </ul>
 </div>
 </div>
-<div class="section" id="id8">
-<h2>Changes to estimator checks<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id9">
+<h2>Changes to estimator checks<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
 <p>These changes mostly affect library developers.</p>
 <ul class="simple">
 <li>Add <code class="docutils literal"><span class="pre">check_fit_idempotent</span></code> to
