@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
   
-    <title>Contributing &#8212; scikit-learn 0.21rc2 documentation</title>
+    <title>Contributing &#8212; scikit-learn 0.21.0 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../_static/css/bootstrap.min.css" media="screen" />
@@ -22,7 +22,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.21rc2',
+        VERSION:     '0.21.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -180,7 +180,7 @@
         </div>
     </div>
     
-      <p class="doc-version"><b>scikit-learn v0.21rc2</b><br/>
+      <p class="doc-version"><b>scikit-learn v0.21.0</b><br/>
       <a href="http://scikit-learn.org/dev/versions.html">Other versions</a></p>
     <p class="citing">Please <b><a href="../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
@@ -411,8 +411,7 @@ to get some feedbacks from core developers.</p>
 <p>The preferred way to contribute to scikit-learn is to fork the <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/">main
 repository</a> on GitHub,
 then submit a “pull request” (PR):</p>
-<blockquote>
-<div><ol class="arabic">
+<ol class="arabic">
 <li><p class="first"><a class="reference external" href="https://github.com/join">Create an account</a> on
 GitHub if you do not already have one.</p>
 </li>
@@ -441,13 +440,9 @@ $ cd scikit-learn
 </div>
 <p>and start making changes. Always use a <code class="docutils literal"><span class="pre">feature</span></code> branch. It’s good practice to
 never work on the <code class="docutils literal"><span class="pre">master</span></code> branch!</p>
-</li>
-</ol>
-</div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<blockquote>
-<div><p>In the above setup, your <code class="docutils literal"><span class="pre">origin</span></code> remote repository points to
+<p>In the above setup, your <code class="docutils literal"><span class="pre">origin</span></code> remote repository points to
 <code class="docutils literal"><span class="pre">YourLogin/scikit-learn.git</span></code>. If you wish to fetch/merge from the main
 repository instead of your forked one, you will need to add another remote
 to use instead of <code class="docutils literal"><span class="pre">origin</span></code>. If we choose the name <code class="docutils literal"><span class="pre">upstream</span></code> for it, the
@@ -457,12 +452,12 @@ command will be:</p>
 </div>
 <p>And in order to fetch the new remote and base your work on the latest changes
 of it you can:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ git fetch upstream
+<div class="last highlight-default"><div class="highlight"><pre><span></span>$ git fetch upstream
 $ git checkout -b my-feature upstream/master
 </pre></div>
 </div>
-</div></blockquote>
-<ol class="last arabic" start="6">
+</div>
+</li>
 <li><p class="first">Develop the feature on your feature branch on your computer, using Git to do the
 version control. When you’re done editing, add changed files using <code class="docutils literal"><span class="pre">git</span> <span class="pre">add</span></code>
 and then <code class="docutils literal"><span class="pre">git</span> <span class="pre">commit</span></code> files:</p>
@@ -481,7 +476,6 @@ email to the committers. You may want to consider sending an email to the
 mailing list for more visibility.</p>
 </li>
 </ol>
-</div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If you are modifying a Cython module, you have to re-run step 4 after modifications
@@ -844,20 +838,39 @@ different options of the code.</p>
 Alternatively, running ‘pytest’ in a folder will run all the tests of
 the corresponding subpackages.</p>
 <p>We expect code coverage of new features to be at least around 90%.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p><strong>Workflow to improve test coverage</strong></p>
-<p>To test code coverage, you need to install the <a class="reference external" href="https://pypi.org/project/coverage/">coverage</a> package in addition to pytest.</p>
-<ol class="last arabic simple">
-<li>Run ‘make test-coverage’. The output lists for each file the line
-numbers that are not tested.</li>
-<li>Find a low hanging fruit, looking at which lines are not tested,
-write or adapt a test specifically for these lines.</li>
-<li>Loop.</li>
-</ol>
-</div>
 <p>For guidelines on how to use <code class="docutils literal"><span class="pre">pytest</span></code> efficiently, see the
 <a class="reference internal" href="tips.html#pytest-tips"><span class="std std-ref">Useful pytest aliases and flags</span></a>.</p>
+<p>Test fixtures ensure that a set of tests will be executing with the appropriate
+initialization and cleanup. The scikit-learn test suite implements a fixture
+which can be used with <code class="docutils literal"><span class="pre">matplotlib</span></code>.</p>
+<dl class="docutils">
+<dt><code class="docutils literal"><span class="pre">pyplot</span></code></dt>
+<dd>The <code class="docutils literal"><span class="pre">pyplot</span></code> fixture should be used when a test function is dealing with
+<code class="docutils literal"><span class="pre">matplotlib</span></code>. <code class="docutils literal"><span class="pre">matplotlib</span></code> is a soft dependency and is not required.
+This fixture is in charge of skipping the tests if <code class="docutils literal"><span class="pre">matplotlib</span></code> is not
+installed. In addition, figures created during the tests will be
+automatically closed once the test function has been executed.</dd>
+</dl>
+<p>To use this fixture in a test function, one needs to pass it as an
+argument:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_requiring_mpl_fixture</span><span class="p">(</span><span class="n">pyplot</span><span class="p">):</span>
+    <span class="c1"># you can now safely use matplotlib</span>
+</pre></div>
+</div>
+<p>To test code coverage, you need to install the <a class="reference external" href="https://pypi.org/project/coverage/">coverage</a> package in addition to pytest.</p>
+<ol class="arabic simple">
+<li><dl class="first docutils">
+<dt>Run ‘make test-coverage’. The output lists for each file the line</dt>
+<dd>numbers that are not tested.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Find a low hanging fruit, looking at which lines are not tested,</dt>
+<dd>write or adapt a test specifically for these lines.</dd>
+</dl>
+</li>
+<li>Loop.</li>
+</ol>
 </div>
 <div class="section" id="developers-web-site">
 <h2>Developers web site<a class="headerlink" href="#developers-web-site" title="Permalink to this headline">¶</a></h2>
