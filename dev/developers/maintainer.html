@@ -294,7 +294,8 @@ release tag at:</p>
 <p>Once the CI has completed successfully, collect the generated binary wheel
 packages and upload them to PyPI by running the following commands in the
 scikit-learn source folder (checked out at the release tag):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ pip install -U wheelhouse_uploader twine
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ rm -r dist
+$ pip install -U wheelhouse_uploader twine
 $ python setup.py fetch_artifacts
 </pre></div>
 </div>
@@ -304,7 +305,7 @@ along with the source tarball (“scikit-learn-XXX.tar.gz”).</p>
 <p>Make sure that you do not have developer versions or older versions of
 the scikit-learn package in that folder.</p>
 <p>Upload everything at once to <a class="reference external" href="https://pypi.org">https://pypi.org</a>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ twine upload dist/
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ twine upload dist/*
 </pre></div>
 </div>
 </li>
@@ -315,7 +316,9 @@ $ git clone --depth 1 --no-checkout git@github.com:scikit-learn/scikit-learn.git
 $ cd scikit-learn.github.io
 $ echo stable &gt; .git/info/sparse-checkout
 $ git checkout master
-$ ln -sf 0.999 stable
+$ rm stable
+$ ln -s 0.999 stable
+$ git commit -m &quot;Update stable to point to 0.999&quot; stable
 $ git push origin master
 </pre></div>
 </div>
