@@ -206,7 +206,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.cluster" title="sklearn.cluster"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.cluster</span></code></a>.compute_optics_graph<a class="headerlink" href="#sklearn-cluster-compute-optics-graph" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.cluster.compute_optics_graph">
-<code class="descclassname">sklearn.cluster.</code><code class="descname">compute_optics_graph</code><span class="sig-paren">(</span><em>X</em>, <em>min_samples</em>, <em>max_eps</em>, <em>metric</em>, <em>p</em>, <em>metric_params</em>, <em>algorithm</em>, <em>leaf_size</em>, <em>n_jobs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/17eb3c9ca/sklearn/cluster/optics_.py#L327"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.compute_optics_graph" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sklearn.cluster.</code><code class="descname">compute_optics_graph</code><span class="sig-paren">(</span><em>X</em>, <em>min_samples</em>, <em>max_eps</em>, <em>metric</em>, <em>p</em>, <em>metric_params</em>, <em>algorithm</em>, <em>leaf_size</em>, <em>n_jobs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/fb8721a0c/sklearn/cluster/optics_.py#L331"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.compute_optics_graph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the OPTICS reachability graph.</p>
 <p>Read more in the <a class="reference internal" href="../clustering.html#optics"><span class="std std-ref">User Guide</span></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -214,8 +214,9 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array, shape (n_samples, n_features)</span></dt>
-<dd><p class="first last">The data.</p>
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array, shape (n_samples, n_features), or (n_samples, n_samples)  if metric=’precomputed’.</span></dt>
+<dd><p class="first last">A feature array, or array of distances between samples if
+metric=’precomputed’</p>
 </dd>
 <dt><strong>min_samples</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int (default=5)</span></dt>
 <dd><p class="first last">The number of samples in a neighborhood for a point to be considered
@@ -223,20 +224,20 @@ as a core point. Expressed as an absolute number or a fraction of the
 number of samples (rounded to be at least 2).</p>
 </dd>
 <dt><strong>max_eps</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional (default=np.inf)</span></dt>
-<dd><p class="first last">The maximum distance between two samples for them to be considered
-as in the same neighborhood. Default value of “np.inf” will identify
-clusters across all scales; reducing <code class="docutils literal"><span class="pre">max_eps</span></code> will result in
-shorter run times.</p>
+<dd><p class="first last">The maximum distance between two samples for one to be considered as
+in the neighborhood of the other. Default value of <code class="docutils literal"><span class="pre">np.inf</span></code> will
+identify clusters across all scales; reducing <code class="docutils literal"><span class="pre">max_eps</span></code> will result
+in shorter run times.</p>
 </dd>
 <dt><strong>metric</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string or callable, optional (default=’minkowski’)</span></dt>
-<dd><p class="first">metric to use for distance computation. Any metric from scikit-learn
+<dd><p class="first">Metric to use for distance computation. Any metric from scikit-learn
 or scipy.spatial.distance can be used.</p>
 <p>If metric is a callable function, it is called on each
 pair of instances (rows) and the resulting value recorded. The callable
 should take two arrays as input and return one value indicating the
 distance between them. This works for Scipy’s metrics, but is less
-efficient than passing the metric name as a string.</p>
-<p>Distance matrices are not supported.</p>
+efficient than passing the metric name as a string. If metric is
+“precomputed”, X is assumed to be a distance matrix and must be square.</p>
 <p>Valid values for metric are:</p>
 <ul class="simple">
 <li>from scikit-learn: [‘cityblock’, ‘cosine’, ‘euclidean’, ‘l1’, ‘l2’,
