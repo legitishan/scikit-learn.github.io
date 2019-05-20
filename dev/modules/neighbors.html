@@ -602,13 +602,11 @@ a significant fraction of the total cost.  If very few query points
 will be required, brute force is better than a tree-based method.</p>
 </li>
 </ul>
-<p>Currently, <code class="docutils literal"><span class="pre">algorithm</span> <span class="pre">=</span> <span class="pre">'auto'</span></code> selects <code class="docutils literal"><span class="pre">'kd_tree'</span></code> if <span class="math">\(k &lt; N/2\)</span>
-and the <code class="docutils literal"><span class="pre">'effective_metric_'</span></code> is in the <code class="docutils literal"><span class="pre">'VALID_METRICS'</span></code> list of
-<code class="docutils literal"><span class="pre">'kd_tree'</span></code>. It selects <code class="docutils literal"><span class="pre">'ball_tree'</span></code> if <span class="math">\(k &lt; N/2\)</span> and the
-<code class="docutils literal"><span class="pre">'effective_metric_'</span></code> is in the <code class="docutils literal"><span class="pre">'VALID_METRICS'</span></code> list of
-<code class="docutils literal"><span class="pre">'ball_tree'</span></code>. It selects <code class="docutils literal"><span class="pre">'brute'</span></code> if <span class="math">\(k &lt; N/2\)</span> and the
-<code class="docutils literal"><span class="pre">'effective_metric_'</span></code> is not in the <code class="docutils literal"><span class="pre">'VALID_METRICS'</span></code> list of
-<code class="docutils literal"><span class="pre">'kd_tree'</span></code> or <code class="docutils literal"><span class="pre">'ball_tree'</span></code>. It selects <code class="docutils literal"><span class="pre">'brute'</span></code> if <span class="math">\(k &gt;= N/2\)</span>.
+<p>Currently, <code class="docutils literal"><span class="pre">algorithm</span> <span class="pre">=</span> <span class="pre">'auto'</span></code> selects <code class="docutils literal"><span class="pre">'brute'</span></code> if <span class="math">\(k &gt;= N/2\)</span>,
+the input data is sparse, or <code class="docutils literal"><span class="pre">effective_metric_</span></code> isn’t in
+the <code class="docutils literal"><span class="pre">VALID_METRICS</span></code> list for either <code class="docutils literal"><span class="pre">'kd_tree'</span></code> or <code class="docutils literal"><span class="pre">'ball_tree'</span></code>.
+Otherwise, it selects the first out of <code class="docutils literal"><span class="pre">'kd_tree'</span></code> and <code class="docutils literal"><span class="pre">'ball_tree'</span></code>
+that has <code class="docutils literal"><span class="pre">effective_metric_</span></code> in its <code class="docutils literal"><span class="pre">VALID_METRICS</span></code> list.
 This choice is based on the assumption that the number of query points is at
 least the same order as the number of training points, and that <code class="docutils literal"><span class="pre">leaf_size</span></code>
 is close to its default value of <code class="docutils literal"><span class="pre">30</span></code>.</p>
