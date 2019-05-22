@@ -770,10 +770,11 @@ jointly during the fit of the model, the regularization parameters
 <em>log marginal likelihood</em>. The scikit-learn implementation
 is based on the algorithm described in Appendix A of (Tipping, 2001)
 where the update of the parameters <span class="math">\(\alpha\)</span> and <span class="math">\(\lambda\)</span> is done
-as suggested in (MacKay, 1992).</p>
-<p>The remaining hyperparameters are the parameters <span class="math">\(\alpha_1\)</span>,
-<span class="math">\(\alpha_2\)</span>, <span class="math">\(\lambda_1\)</span> and <span class="math">\(\lambda_2\)</span> of the gamma priors
-over <span class="math">\(\alpha\)</span> and <span class="math">\(\lambda\)</span>. These are usually chosen to be
+as suggested in (MacKay, 1992). The initial value of the maximization procedure
+can be set with the hyperparameters <code class="docutils literal"><span class="pre">alpha_init</span></code> and <code class="docutils literal"><span class="pre">lambda_init</span></code>.</p>
+<p>There are four more hyperparameters, <span class="math">\(\alpha_1\)</span>, <span class="math">\(\alpha_2\)</span>,
+<span class="math">\(\lambda_1\)</span> and <span class="math">\(\lambda_2\)</span> of the gamma prior distributions over
+<span class="math">\(\alpha\)</span> and <span class="math">\(\lambda\)</span>. These are usually chosen to be
 <em>non-informative</em>. By default <span class="math">\(\alpha_1 = \alpha_2 =  \lambda_1 = \lambda_2 = 10^{-6}\)</span>.</p>
 <div class="figure align-center">
 <a class="reference external image-reference" href="../auto_examples/linear_model/plot_bayesian_ridge.html"><img alt="../_images/sphx_glr_plot_bayesian_ridge_0011.png" src="../_images/sphx_glr_plot_bayesian_ridge_0011.png" style="width: 300.0px; height: 250.0px;" /></a>
@@ -784,9 +785,10 @@ over <span class="math">\(\alpha\)</span> and <span class="math">\(\lambda\)</sp
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Y</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">reg</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">BayesianRidge</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>  
-<span class="go">BayesianRidge(alpha_1=1e-06, alpha_2=1e-06, compute_score=False, copy_X=True,</span>
-<span class="go">       fit_intercept=True, lambda_1=1e-06, lambda_2=1e-06, n_iter=300,</span>
-<span class="go">       normalize=False, tol=0.001, verbose=False)</span>
+<span class="go">BayesianRidge(alpha_1=1e-06, alpha_2=1e-06, alpha_init=None,</span>
+<span class="go">              compute_score=False, copy_X=True, fit_intercept=True,</span>
+<span class="go">              lambda_1=1e-06, lambda_2=1e-06, lambda_init=None, n_iter=300,</span>
+<span class="go">              normalize=False, tol=0.001, verbose=False)</span>
 </pre></div>
 </div>
 <p>After being fitted, the model can then be used to predict new values:</p>
@@ -806,6 +808,7 @@ is more robust to ill-posed problems.</p>
 <p class="topic-title first">Examples:</p>
 <ul class="simple">
 <li><a class="reference internal" href="../auto_examples/linear_model/plot_bayesian_ridge.html#sphx-glr-auto-examples-linear-model-plot-bayesian-ridge-py"><span class="std std-ref">Bayesian Ridge Regression</span></a></li>
+<li><a class="reference internal" href="../auto_examples/linear_model/plot_bayesian_ridge_curvefit.html#sphx-glr-auto-examples-linear-model-plot-bayesian-ridge-curvefit-py"><span class="std std-ref">Curve Fitting with Bayesian Ridge Regression</span></a></li>
 </ul>
 </div>
 <div class="topic">

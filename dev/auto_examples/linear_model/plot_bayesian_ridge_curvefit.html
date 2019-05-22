@@ -1,0 +1,342 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+  
+    <title>Curve Fitting with Bayesian Ridge Regression &#8212; scikit-learn 0.22.dev0 documentation</title>
+  <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../../_static/css/bootstrap.min.css" media="screen" />
+  <link rel="stylesheet" href="../../_static/css/bootstrap-responsive.css"/>
+
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.22.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/js/copybutton.js"></script>
+    <script type="text/javascript" src="../../_static/js/extra.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_SVG"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Theil-Sen Regression" href="plot_theilsen.html" />
+    <link rel="prev" title="Lasso and Elastic Net for Sparse Signals" href="plot_lasso_and_elasticnet.html" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../../_static/js/bootstrap.min.js" type="text/javascript"></script>
+  <script>
+     VERSION_SUBDIR = (function(groups) {
+         return groups ? groups[1] : null;
+     })(location.href.match(/^https?:\/\/scikit-learn.org\/([^\/]+)/));
+  </script>
+  <link rel="canonical" href="http://scikit-learn.org/stable/auto_examples/linear_model/plot_bayesian_ridge_curvefit.html" />
+
+  <script type="text/javascript">
+    $("div.buttonNext, div.buttonPrevious").hover(
+       function () {
+           $(this).css('background-color', '#FF9C34');
+       },
+       function () {
+           $(this).css('background-color', '#A7D6E2');
+       }
+    );
+    function showMenu() {
+      var topNav = document.getElementById("scikit-navbar");
+      if (topNav.className === "navbar") {
+          topNav.className += " responsive";
+      } else {
+          topNav.className = "navbar";
+      }
+    };
+  </script>
+
+  </head>
+  <body>
+
+<div class="header-wrapper">
+    <div class="header">
+        <p class="logo"><a href="../../index.html">
+            <img src="../../_static/scikit-learn-logo-small.png" alt="Logo"/>
+        </a>
+        </p><div class="navbar" id="scikit-navbar">
+            <ul>
+                <li><a href="../../index.html">Home</a></li>
+                <li><a href="../../install.html">Installation</a></li>
+                <li class="btn-li"><div class="btn-group">
+              <a href="../../documentation.html">Documentation</a>
+              <a class="btn dropdown-toggle" data-toggle="dropdown">
+                 <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+            <li class="link-title">Scikit-learn <script>document.write(DOCUMENTATION_OPTIONS.VERSION + (VERSION_SUBDIR ? " (" + VERSION_SUBDIR + ")" : ""));</script></li>
+            <li><a href="../../tutorial/index.html">Tutorials</a></li>
+            <li><a href="../../user_guide.html">User guide</a></li>
+            <li><a href="../../modules/classes.html">API</a></li>
+            <li><a href="../../glossary.html">Glossary</a></li>
+            <li><a href="../../faq.html">FAQ</a></li>
+            <li><a href="../../developers/index.html">Development</a></li>
+            <li><a href="../../roadmap.html">Roadmap</a></li>
+            <li class="divider"></li>
+                <script>if (VERSION_SUBDIR != "stable") document.write('<li><a href="http://scikit-learn.org/stable/documentation.html">Stable version</a></li>')</script>
+                <script>if (VERSION_SUBDIR != "dev") document.write('<li><a href="http://scikit-learn.org/dev/documentation.html">Development version</a></li>')</script>
+                <li><a href="http://scikit-learn.org/dev/versions.html">All available versions</a></li>
+                <li><a href="../../_downloads/scikit-learn-docs.pdf">PDF documentation</a></li>
+              </ul>
+            </div>
+        </li>
+            <li><a href="../index.html">Examples</a></li>
+            </ul>
+            <a href="javascript:void(0);" onclick="showMenu()">
+                <div class="nav-icon">
+                    <div class="hamburger-line"></div>
+                    <div class="hamburger-line"></div>
+                    <div class="hamburger-line"></div>
+                </div>
+            </a>
+            <div class="search_form">
+                <div class="gcse-search" id="cse" style="width: 100%;"></div>
+            </div>
+        </div> <!-- end navbar --></div>
+</div>
+
+
+<!-- GitHub "fork me" ribbon -->
+<a href="https://github.com/scikit-learn/scikit-learn">
+  <img class="fork-me"
+       style="position: absolute; top: 0; right: 0; border: 0;"
+       src="../../_static/img/forkme.png"
+       alt="Fork me on GitHub" />
+</a>
+
+<div class="content-wrapper">
+    <div class="sphinxsidebar">
+    <div class="sphinxsidebarwrapper">
+        <div class="rel">
+    
+        <div class="rellink">
+        <a href="plot_lasso_and_elasticnet.html"
+        accesskey="P">Previous
+        <br/>
+        <span class="smallrellink">
+        Lasso and Ela...
+        </span>
+            <span class="hiddenrellink">
+            Lasso and Elastic Net for Sparse Signals
+            </span>
+        </a>
+        </div>
+            <div class="spacer">
+            &nbsp;
+            </div>
+        <div class="rellink">
+        <a href="plot_theilsen.html"
+        accesskey="N">Next
+        <br/>
+        <span class="smallrellink">
+        Theil-Sen Regression
+        </span>
+            <span class="hiddenrellink">
+            Theil-Sen Regression
+            </span>
+        </a>
+        </div>
+
+    <!-- Ad a link to the 'up' page -->
+        <div class="spacer">
+        &nbsp;
+        </div>
+        <div class="rellink">
+        <a href="../index.html">
+        Up
+        <br/>
+        <span class="smallrellink">
+        Examples
+        </span>
+            <span class="hiddenrellink">
+            Examples
+            </span>
+            
+        </a>
+        </div>
+    </div>
+    
+      <p class="doc-version"><b>scikit-learn v0.22.dev0</b><br/>
+      <a href="http://scikit-learn.org/dev/versions.html">Other versions</a></p>
+    <p class="citing">Please <b><a href="../../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
+    <ul>
+<li><a class="reference internal" href="#">Curve Fitting with Bayesian Ridge Regression</a></li>
+</ul>
+
+    </div>
+</div>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" checked />
+<label for="nav-trigger"></label>
+
+
+
+
+      <div class="content">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-linear-model-plot-bayesian-ridge-curvefit-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="curve-fitting-with-bayesian-ridge-regression">
+<span id="sphx-glr-auto-examples-linear-model-plot-bayesian-ridge-curvefit-py"></span><h1>Curve Fitting with Bayesian Ridge Regression<a class="headerlink" href="#curve-fitting-with-bayesian-ridge-regression" title="Permalink to this headline">¶</a></h1>
+<p>Computes a Bayesian Ridge Regression of Sinusoids.</p>
+<p>See <a class="reference internal" href="../../modules/linear_model.html#bayesian-ridge-regression"><span class="std std-ref">Bayesian Ridge Regression</span></a> for more information on the regressor.</p>
+<p>In general, when fitting a curve with a polynomial by Bayesian ridge
+regression, the selection of initial values of
+the regularization parameters (alpha, lambda) may be important.
+This is because the regularization parameters are determined by an iterative
+procedure that depends on initial values.</p>
+<p>In this example, the sinusoid is approximated by a polynomial using different
+pairs of initial values.</p>
+<p>When starting from the default values (alpha_init = 1.90, lambda_init = 1.),
+the bias of the resulting curve is large, and the variance is small.
+So, lambda_init should be relatively small (1.e-3) so as to reduce the bias.</p>
+<p>Also, by evaluating log marginal likelihood (L) of
+these models, we can determine which one is better.
+It can be concluded that the model with larger L is more likely.</p>
+<img alt="../../_images/sphx_glr_plot_bayesian_ridge_curvefit_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_bayesian_ridge_curvefit_001.png" />
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
+
+<span class="c1"># Author: Yoshihiro Uchida &lt;nimbus1after2a1sun7shower@gmail.com&gt;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.linear_model.BayesianRidge.html#sklearn.linear_model.BayesianRidge" title="View documentation for sklearn.linear_model.BayesianRidge"><span class="n">BayesianRidge</span></a>
+
+
+<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.sin.html#numpy.sin" title="View documentation for numpy.sin"><span class="n">np</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><span class="mi">2</span><span class="o">*</span><a href="https://docs.scipy.org/doc/numpy/reference/constants.html#numpy.pi" title="View documentation for numpy.pi"><span class="n">np</span><span class="o">.</span><span class="n">pi</span></a><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+
+
+<span class="c1"># #############################################################################</span>
+<span class="c1"># Generate sinusoidal data with noise</span>
+<span class="n">size</span> <span class="o">=</span> <span class="mi">25</span>
+<span class="n">rng</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.RandomState.html#numpy.random.RandomState" title="View documentation for numpy.random.RandomState"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span></a><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
+<span class="n">x_train</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+<span class="n">y_train</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+<span class="n">x_test</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.linspace.html#numpy.linspace" title="View documentation for numpy.linspace"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+
+<span class="c1"># #############################################################################</span>
+<span class="c1"># Fit by cubic polynomial</span>
+<span class="n">n_order</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">X_train</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.vander.html#numpy.vander" title="View documentation for numpy.vander"><span class="n">np</span><span class="o">.</span><span class="n">vander</span></a><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">n_order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">increasing</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">X_test</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.vander.html#numpy.vander" title="View documentation for numpy.vander"><span class="n">np</span><span class="o">.</span><span class="n">vander</span></a><span class="p">(</span><span class="n">x_test</span><span class="p">,</span> <span class="n">n_order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">increasing</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c1"># #############################################################################</span>
+<span class="c1"># Plot the true and predicted curves with log marginal likelihood (L)</span>
+<span class="n">reg</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.linear_model.BayesianRidge.html#sklearn.linear_model.BayesianRidge" title="View documentation for sklearn.linear_model.BayesianRidge"><span class="n">BayesianRidge</span></a><span class="p">(</span><span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">fit_intercept</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">compute_score</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="View documentation for matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axes</span><span class="p">):</span>
+    <span class="c1"># Bayesian ridge regression with different initial value pairs</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">init</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="o">/</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.var.html#numpy.var" title="View documentation for numpy.var"><span class="n">np</span><span class="o">.</span><span class="n">var</span></a><span class="p">(</span><span class="n">y_train</span><span class="p">),</span> <span class="mf">1.</span><span class="p">]</span>  <span class="c1"># Default values</span>
+    <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">init</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">]</span>
+        <span class="n">reg</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="n">alpha_init</span><span class="o">=</span><span class="n">init</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lambda_init</span><span class="o">=</span><span class="n">init</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="n">ymean</span><span class="p">,</span> <span class="n">ystd</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">return_std</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_test</span><span class="p">,</span> <span class="n">func</span><span class="p">(</span><span class="n">x_test</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;sin($2</span><span class="se">\\</span><span class="s2">pi x$)&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;observation&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_test</span><span class="p">,</span> <span class="n">ymean</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;predict mean&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">x_test</span><span class="p">,</span> <span class="n">ymean</span><span class="o">-</span><span class="n">ystd</span><span class="p">,</span> <span class="n">ymean</span><span class="o">+</span><span class="n">ystd</span><span class="p">,</span>
+                    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;pink&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;predict std&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.3</span><span class="p">,</span> <span class="mf">1.3</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="se">\\</span><span class="s2">alpha$_init$={:.2f},</span><span class="se">\\</span><span class="s2"> </span><span class="se">\\</span><span class="s2">lambda$_init$={}$&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">init</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">init</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">title</span> <span class="o">+=</span> <span class="s2">&quot; (Default)&quot;</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="se">\\</span><span class="s2">alpha={:.1f}$</span><span class="se">\n</span><span class="s2">$</span><span class="se">\\</span><span class="s2">lambda={:.3f}$</span><span class="se">\n</span><span class="s2">$L={:.1f}$&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+           <span class="n">reg</span><span class="o">.</span><span class="n">alpha_</span><span class="p">,</span> <span class="n">reg</span><span class="o">.</span><span class="n">lambda_</span><span class="p">,</span> <span class="n">reg</span><span class="o">.</span><span class="n">scores_</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="View documentation for matplotlib.pyplot.tight_layout"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.130 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-linear-model-plot-bayesian-ridge-curvefit-py">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../_downloads/plot_bayesian_ridge_curvefit.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_bayesian_ridge_curvefit.py</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../_downloads/plot_bayesian_ridge_curvefit.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_bayesian_ridge_curvefit.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer">
+        &copy; 2007 - 2019, scikit-learn developers (BSD License).
+      <a href="../../_sources/auto_examples/linear_model/plot_bayesian_ridge_curvefit.rst.txt" rel="nofollow">Show this page source</a>
+    </div>
+     <div class="rel">
+    
+    <div class="buttonPrevious">
+      <a href="plot_lasso_and_elasticnet.html">Previous
+      </a>
+    </div>
+    <div class="buttonNext">
+      <a href="plot_theilsen.html">Next
+      </a>
+    </div>
+    
+     </div>
+
+    
+    <script>
+        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+        ga('create', 'UA-22606712-2', 'auto');
+        ga('set', 'anonymizeIp', true);
+        ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    
+    <script>
+      (function() {
+        var cx = '016639176250731907682:tjtqbvtvij0';
+        var gcse = document.createElement('script'); gcse.type = 'text/javascript'; gcse.async = true;
+        gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gcse, s);
+      })();
+    </script>
+  </body>
+</html>
