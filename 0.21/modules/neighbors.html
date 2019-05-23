@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
   
-    <title>1.6. Nearest Neighbors &#8212; scikit-learn 0.21.1 documentation</title>
+    <title>1.6. Nearest Neighbors &#8212; scikit-learn 0.21.2 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../_static/css/bootstrap.min.css" media="screen" />
@@ -22,7 +22,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.21.1',
+        VERSION:     '0.21.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -180,7 +180,7 @@
         </div>
     </div>
     
-      <p class="doc-version"><b>scikit-learn v0.21.1</b><br/>
+      <p class="doc-version"><b>scikit-learn v0.21.2</b><br/>
       <a href="http://scikit-learn.org/dev/versions.html">Other versions</a></p>
     <p class="citing">Please <b><a href="../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
@@ -602,13 +602,11 @@ a significant fraction of the total cost.  If very few query points
 will be required, brute force is better than a tree-based method.</p>
 </li>
 </ul>
-<p>Currently, <code class="docutils literal"><span class="pre">algorithm</span> <span class="pre">=</span> <span class="pre">'auto'</span></code> selects <code class="docutils literal"><span class="pre">'kd_tree'</span></code> if <span class="math">\(k &lt; N/2\)</span>
-and the <code class="docutils literal"><span class="pre">'effective_metric_'</span></code> is in the <code class="docutils literal"><span class="pre">'VALID_METRICS'</span></code> list of
-<code class="docutils literal"><span class="pre">'kd_tree'</span></code>. It selects <code class="docutils literal"><span class="pre">'ball_tree'</span></code> if <span class="math">\(k &lt; N/2\)</span> and the
-<code class="docutils literal"><span class="pre">'effective_metric_'</span></code> is in the <code class="docutils literal"><span class="pre">'VALID_METRICS'</span></code> list of
-<code class="docutils literal"><span class="pre">'ball_tree'</span></code>. It selects <code class="docutils literal"><span class="pre">'brute'</span></code> if <span class="math">\(k &lt; N/2\)</span> and the
-<code class="docutils literal"><span class="pre">'effective_metric_'</span></code> is not in the <code class="docutils literal"><span class="pre">'VALID_METRICS'</span></code> list of
-<code class="docutils literal"><span class="pre">'kd_tree'</span></code> or <code class="docutils literal"><span class="pre">'ball_tree'</span></code>. It selects <code class="docutils literal"><span class="pre">'brute'</span></code> if <span class="math">\(k &gt;= N/2\)</span>.
+<p>Currently, <code class="docutils literal"><span class="pre">algorithm</span> <span class="pre">=</span> <span class="pre">'auto'</span></code> selects <code class="docutils literal"><span class="pre">'brute'</span></code> if <span class="math">\(k &gt;= N/2\)</span>,
+the input data is sparse, or <code class="docutils literal"><span class="pre">effective_metric_</span></code> isn’t in
+the <code class="docutils literal"><span class="pre">VALID_METRICS</span></code> list for either <code class="docutils literal"><span class="pre">'kd_tree'</span></code> or <code class="docutils literal"><span class="pre">'ball_tree'</span></code>.
+Otherwise, it selects the first out of <code class="docutils literal"><span class="pre">'kd_tree'</span></code> and <code class="docutils literal"><span class="pre">'ball_tree'</span></code>
+that has <code class="docutils literal"><span class="pre">effective_metric_</span></code> in its <code class="docutils literal"><span class="pre">VALID_METRICS</span></code> list.
 This choice is based on the assumption that the number of query points is at
 least the same order as the number of training points, and that <code class="docutils literal"><span class="pre">leaf_size</span></code>
 is close to its default value of <code class="docutils literal"><span class="pre">30</span></code>.</p>
