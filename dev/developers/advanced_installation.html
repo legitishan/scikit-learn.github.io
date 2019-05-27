@@ -189,6 +189,7 @@
 <li><a class="reference internal" href="#building-from-source">Building from source</a><ul>
 <li><a class="reference internal" href="#retrieving-the-latest-code">Retrieving the latest code</a></li>
 <li><a class="reference internal" href="#mac-osx">Mac OSX</a></li>
+<li><a class="reference internal" href="#freebsd">FreeBSD</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#installing-build-dependencies">Installing build dependencies</a><ul>
@@ -346,6 +347,27 @@ configure this second option.</p>
 </pre></div>
 </div>
 <p>Finally you can build the package using the standard command.</p>
+</div>
+<div class="section" id="freebsd">
+<h3>FreeBSD<a class="headerlink" href="#freebsd" title="Permalink to this headline">¶</a></h3>
+<p>The clang compiler included in FreeBSD 12.0 and 11.2 base systems does not
+include OpenMP support. You need to install the <code class="docutils literal"><span class="pre">openmp</span></code> library from packages
+(or ports):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">pkg</span> <span class="n">install</span> <span class="n">openmp</span>
+</pre></div>
+</div>
+<p>This will install header files in <code class="docutils literal"><span class="pre">/usr/local/include</span></code> and libs in
+<code class="docutils literal"><span class="pre">/usr/local/lib</span></code>. Since these directories are not searched by default, you
+can set the environment variables to these locations:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">CFLAGS</span><span class="o">=</span><span class="s2">&quot;$CFLAGS -I/usr/local/include&quot;</span>
+<span class="n">export</span> <span class="n">CXXFLAGS</span><span class="o">=</span><span class="s2">&quot;$CXXFLAGS -I/usr/local/include&quot;</span>
+<span class="n">export</span> <span class="n">LDFLAGS</span><span class="o">=</span><span class="s2">&quot;$LDFLAGS -L/usr/local/lib -lomp&quot;</span>
+<span class="n">export</span> <span class="n">DYLD_LIBRARY_PATH</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span>
+</pre></div>
+</div>
+<p>Finally you can build the package using the standard command.</p>
+<p>For the upcomming FreeBSD 12.1 and 11.3 versions, OpenMP will be included in
+the base system and these steps will not be necessary.</p>
 </div>
 </div>
 <div class="section" id="installing-build-dependencies">
