@@ -209,7 +209,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.preprocessing" title="sklearn.preprocessing"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.preprocessing</span></code></a>.OneHotEncoder<a class="headerlink" href="#sklearn-preprocessing-onehotencoder" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="sklearn.preprocessing.OneHotEncoder">
-<em class="property">class </em><code class="descclassname">sklearn.preprocessing.</code><code class="descname">OneHotEncoder</code><span class="sig-paren">(</span><em>n_values=None</em>, <em>categorical_features=None</em>, <em>categories=None</em>, <em>drop=None</em>, <em>sparse=True</em>, <em>dtype=&lt;class ‘numpy.float64’&gt;</em>, <em>handle_unknown=’error’</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7ea7284f2/sklearn/preprocessing/_encoders.py#L146"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.OneHotEncoder" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">sklearn.preprocessing.</code><code class="descname">OneHotEncoder</code><span class="sig-paren">(</span><em>categories=’auto’</em>, <em>drop=None</em>, <em>sparse=True</em>, <em>dtype=&lt;class ‘numpy.float64’&gt;</em>, <em>handle_unknown=’error’</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9328581ec/sklearn/preprocessing/_encoders.py#L154"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.OneHotEncoder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Encode categorical integer features as a one-hot numeric array.</p>
 <p>The input to this transformer should be an array-like of integers or
 strings, denoting the values taken on by categorical (discrete) features.
@@ -218,9 +218,7 @@ encoding scheme. This creates a binary column for each category and
 returns a sparse matrix or dense array.</p>
 <p>By default, the encoder derives the categories based on the unique values
 in each feature. Alternatively, you can also specify the <code class="docutils literal"><span class="pre">categories</span></code>
-manually.
-The OneHotEncoder previously assumed that the input features take on
-values in the range [0, max(values)). This behaviour is deprecated.</p>
+manually.</p>
 <p>This encoding is needed for feeding categorical data to many scikit-learn
 estimators, notably linear models and SVMs with the standard kernels.</p>
 <p>Note: a one-hot encoding of y labels should use a LabelBinarizer
@@ -269,44 +267,6 @@ transform, the resulting one-hot encoded columns for this feature
 will be all zeros. In the inverse transform, an unknown category
 will be denoted as None.</p>
 </dd>
-<dt><strong>n_values</strong> <span class="classifier-delimiter">:</span> <span class="classifier">‘auto’, int or array of ints, default=’auto’</span></dt>
-<dd><p class="first">Number of values per feature.</p>
-<ul>
-<li><p class="first">‘auto’ : determine value range from training data.</p>
-</li>
-<li><dl class="first docutils">
-<dt>int <span class="classifier-delimiter">:</span> <span class="classifier">number of categorical values per feature.</span></dt>
-<dd><p class="first last">Each feature value should be in <code class="docutils literal"><span class="pre">range(n_values)</span></code></p>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>array <span class="classifier-delimiter">:</span> <span class="classifier"><code class="docutils literal"><span class="pre">n_values[i]</span></code> is the number of categorical values in</span></dt>
-<dd><p class="first last"><code class="docutils literal"><span class="pre">X[:,</span> <span class="pre">i]</span></code>. Each feature value should be
-in <code class="docutils literal"><span class="pre">range(n_values[i])</span></code></p>
-</dd>
-</dl>
-</li>
-</ul>
-<div class="last deprecated">
-<p><span class="versionmodified">Deprecated since version 0.20: </span>The <code class="docutils literal"><span class="pre">n_values</span></code> keyword was deprecated in version 0.20 and will
-be removed in 0.22. Use <code class="docutils literal"><span class="pre">categories</span></code> instead.</p>
-</div>
-</dd>
-<dt><strong>categorical_features</strong> <span class="classifier-delimiter">:</span> <span class="classifier">‘all’ or array of indices or mask, default=’all’</span></dt>
-<dd><p class="first">Specify what features are treated as categorical.</p>
-<ul class="simple">
-<li>‘all’: All features are treated as categorical.</li>
-<li>array of indices: Array of categorical feature indices.</li>
-<li>mask: Array of length n_features and with dtype=bool.</li>
-</ul>
-<p>Non-categorical features are always stacked to the right of the matrix.</p>
-<div class="last deprecated">
-<p><span class="versionmodified">Deprecated since version 0.20: </span>The <code class="docutils literal"><span class="pre">categorical_features</span></code> keyword was deprecated in version
-0.20 and will be removed in 0.22.
-You can use the <code class="docutils literal"><span class="pre">ColumnTransformer</span></code> instead.</p>
-</div>
-</dd>
 </dl>
 </td>
 </tr>
@@ -321,31 +281,6 @@ of <code class="docutils literal"><span class="pre">transform</span></code>). Th
 <dd><p class="first last"><code class="docutils literal"><span class="pre">drop_idx_[i]</span></code> is&nbsp;the index in <code class="docutils literal"><span class="pre">categories_[i]</span></code> of the category to
 be dropped for each feature. None if all the transformed features will
 be retained.</p>
-</dd>
-<dt><strong>active_features_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array</span></dt>
-<dd><p class="first">Indices for active features, meaning values that actually occur
-in the training set. Only available when n_values is <code class="docutils literal"><span class="pre">'auto'</span></code>.</p>
-<div class="last deprecated">
-<p><span class="versionmodified">Deprecated since version 0.20: </span>The <code class="docutils literal"><span class="pre">active_features_</span></code> attribute was deprecated in version
-0.20 and will be removed in 0.22.</p>
-</div>
-</dd>
-<dt><strong>feature_indices_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of shape (n_features,)</span></dt>
-<dd><p class="first">Indices to feature ranges.
-Feature <code class="docutils literal"><span class="pre">i</span></code> in the original data is mapped to features
-from <code class="docutils literal"><span class="pre">feature_indices_[i]</span></code> to <code class="docutils literal"><span class="pre">feature_indices_[i+1]</span></code>
-(and then potentially masked by <code class="docutils literal"><span class="pre">active_features_</span></code> afterwards)</p>
-<div class="last deprecated">
-<p><span class="versionmodified">Deprecated since version 0.20: </span>The <code class="docutils literal"><span class="pre">feature_indices_</span></code> attribute was deprecated in version
-0.20 and will be removed in 0.22.</p>
-</div>
-</dd>
-<dt><strong>n_values_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of shape (n_features,)</span></dt>
-<dd><p class="first">Maximum number of values per feature.</p>
-<div class="last deprecated">
-<p><span class="versionmodified">Deprecated since version 0.20: </span>The <code class="docutils literal"><span class="pre">n_values_</span></code> attribute was deprecated in version
-0.20 and will be removed in 0.22.</p>
-</div>
 </dd>
 </dl>
 </td>
@@ -376,9 +311,8 @@ values per feature and transform the data to a binary one-hot encoding.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <span class="gp">... </span>
 <span class="gp">... </span>
-<span class="go">OneHotEncoder(categorical_features=None, categories=None, drop=None,</span>
-<span class="go">   dtype=&lt;... &#39;numpy.float64&#39;&gt;, handle_unknown=&#39;ignore&#39;,</span>
-<span class="go">   n_values=None, sparse=True)</span>
+<span class="go">OneHotEncoder(categories=&#39;auto&#39;, drop=None, dtype=&lt;... &#39;numpy.float64&#39;&gt;,</span>
+<span class="go">              handle_unknown=&#39;ignore&#39;, sparse=True)</span>
 </pre></div>
 </div>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">categories_</span>
@@ -431,12 +365,12 @@ values per feature and transform the data to a binary one-hot encoding.</p>
 </table>
 <dl class="method">
 <dt id="sklearn.preprocessing.OneHotEncoder.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>self</em>, <em>n_values=None</em>, <em>categorical_features=None</em>, <em>categories=None</em>, <em>drop=None</em>, <em>sparse=True</em>, <em>dtype=&lt;class ‘numpy.float64’&gt;</em>, <em>handle_unknown=’error’</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7ea7284f2/sklearn/preprocessing/_encoders.py#L321"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.OneHotEncoder.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>self</em>, <em>categories=’auto’</em>, <em>drop=None</em>, <em>sparse=True</em>, <em>dtype=&lt;class ‘numpy.float64’&gt;</em>, <em>handle_unknown=’error’</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9328581ec/sklearn/preprocessing/_encoders.py#L273"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.OneHotEncoder.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="sklearn.preprocessing.OneHotEncoder.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>self</em>, <em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7ea7284f2/sklearn/preprocessing/_encoders.py#L473"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.OneHotEncoder.fit" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit</code><span class="sig-paren">(</span><em>self</em>, <em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9328581ec/sklearn/preprocessing/_encoders.py#L331"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.OneHotEncoder.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit OneHotEncoder to X.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -461,7 +395,7 @@ values per feature and transform the data to a binary one-hot encoding.</p>
 
 <dl class="method">
 <dt id="sklearn.preprocessing.OneHotEncoder.fit_transform">
-<code class="descname">fit_transform</code><span class="sig-paren">(</span><em>self</em>, <em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7ea7284f2/sklearn/preprocessing/_encoders.py#L609"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.OneHotEncoder.fit_transform" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit_transform</code><span class="sig-paren">(</span><em>self</em>, <em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9328581ec/sklearn/preprocessing/_encoders.py#L348"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.OneHotEncoder.fit_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit OneHotEncoder to X, then transform X.</p>
 <p>Equivalent to fit(X).transform(X) but more convenient.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -488,7 +422,7 @@ values per feature and transform the data to a binary one-hot encoding.</p>
 
 <dl class="method">
 <dt id="sklearn.preprocessing.OneHotEncoder.get_feature_names">
-<code class="descname">get_feature_names</code><span class="sig-paren">(</span><em>self</em>, <em>input_features=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7ea7284f2/sklearn/preprocessing/_encoders.py#L826"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.OneHotEncoder.get_feature_names" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_feature_names</code><span class="sig-paren">(</span><em>self</em>, <em>input_features=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9328581ec/sklearn/preprocessing/_encoders.py#L500"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.OneHotEncoder.get_feature_names" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return feature names for output features.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -514,7 +448,7 @@ values per feature and transform the data to a binary one-hot encoding.</p>
 
 <dl class="method">
 <dt id="sklearn.preprocessing.OneHotEncoder.get_params">
-<code class="descname">get_params</code><span class="sig-paren">(</span><em>self</em>, <em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7ea7284f2/sklearn/base.py#L178"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.OneHotEncoder.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_params</code><span class="sig-paren">(</span><em>self</em>, <em>deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9328581ec/sklearn/base.py#L178"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.OneHotEncoder.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -541,7 +475,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.preprocessing.OneHotEncoder.inverse_transform">
-<code class="descname">inverse_transform</code><span class="sig-paren">(</span><em>self</em>, <em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7ea7284f2/sklearn/preprocessing/_encoders.py#L737"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.OneHotEncoder.inverse_transform" title="Permalink to this definition">¶</a></dt>
+<code class="descname">inverse_transform</code><span class="sig-paren">(</span><em>self</em>, <em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9328581ec/sklearn/preprocessing/_encoders.py#L414"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.OneHotEncoder.inverse_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert the back data to the original representation.</p>
 <p>In case unknown categories are encountered (all zeros in the
 one-hot encoding), <code class="docutils literal"><span class="pre">None</span></code> is used to represent this category.</p>
@@ -569,7 +503,7 @@ one-hot encoding), <code class="docutils literal"><span class="pre">None</span><
 
 <dl class="method">
 <dt id="sklearn.preprocessing.OneHotEncoder.set_params">
-<code class="descname">set_params</code><span class="sig-paren">(</span><em>self</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7ea7284f2/sklearn/base.py#L201"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.OneHotEncoder.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_params</code><span class="sig-paren">(</span><em>self</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9328581ec/sklearn/base.py#L201"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.OneHotEncoder.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
@@ -591,7 +525,7 @@ component of a nested object.</p>
 
 <dl class="method">
 <dt id="sklearn.preprocessing.OneHotEncoder.transform">
-<code class="descname">transform</code><span class="sig-paren">(</span><em>self</em>, <em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7ea7284f2/sklearn/preprocessing/_encoders.py#L716"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.OneHotEncoder.transform" title="Permalink to this definition">¶</a></dt>
+<code class="descname">transform</code><span class="sig-paren">(</span><em>self</em>, <em>X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9328581ec/sklearn/preprocessing/_encoders.py#L366"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.OneHotEncoder.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform X using one-hot encoding.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

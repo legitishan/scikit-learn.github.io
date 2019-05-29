@@ -102,27 +102,27 @@ matrix decomposition (dimension reduction) methods from the module
 
     Dataset consists of 400 faces
     Extracting the top 6 Eigenfaces - PCA using randomized SVD...
-    done in 0.015s
+    done in 0.018s
     Extracting the top 6 Non-negative components - NMF...
-    done in 0.107s
+    done in 0.113s
     Extracting the top 6 Independent components - FastICA...
-    done in 0.200s
+    done in 0.193s
     Extracting the top 6 Sparse comp. - MiniBatchSparsePCA...
-    done in 0.855s
+    done in 0.893s
     Extracting the top 6 MiniBatchDictionaryLearning...
-    done in 0.923s
+    done in 0.914s
     Extracting the top 6 Cluster centers - MiniBatchKMeans...
-    done in 0.267s
+    done in 0.220s
     Extracting the top 6 Factor Analysis components - FA...
-    done in 0.203s
+    done in 0.198s
     Extracting the top 6 Dictionary learning...
-    done in 0.870s
+    done in 0.893s
     Extracting the top 6 Dictionary learning - positive dictionary...
-    done in 1.129s
+    done in 1.023s
     Extracting the top 6 Dictionary learning - positive code...
-    done in 0.481s
+    done in 0.192s
     Extracting the top 6 Dictionary learning - positive dictionary & code...
-    done in 0.422s
+    done in 0.359s
 
 
 
@@ -159,7 +159,6 @@ matrix decomposition (dimension reduction) methods from the module
     # Load faces data
     dataset = fetch_olivetti_faces(shuffle=True, random_state=rng)
     faces = dataset.data
-
     n_samples, n_features = faces.shape
 
     # global centering
@@ -204,8 +203,7 @@ matrix decomposition (dimension reduction) methods from the module
         ('Sparse comp. - MiniBatchSparsePCA',
          decomposition.MiniBatchSparsePCA(n_components=n_components, alpha=0.8,
                                           n_iter=100, batch_size=3,
-                                          random_state=rng,
-                                          normalize_components=True),
+                                          random_state=rng),
          True),
 
         ('MiniBatchDictionaryLearning',
@@ -279,12 +277,14 @@ matrix decomposition (dimension reduction) methods from the module
         ('Dictionary learning - positive code',
             decomposition.MiniBatchDictionaryLearning(n_components=15, alpha=0.1,
                                                       n_iter=50, batch_size=3,
+                                                      fit_algorithm='cd',
                                                       random_state=rng,
                                                       positive_code=True),
          True),
         ('Dictionary learning - positive dictionary & code',
             decomposition.MiniBatchDictionaryLearning(n_components=15, alpha=0.1,
                                                       n_iter=50, batch_size=3,
+                                                      fit_algorithm='cd',
                                                       random_state=rng,
                                                       positive_dict=True,
                                                       positive_code=True),
@@ -315,7 +315,7 @@ matrix decomposition (dimension reduction) methods from the module
 
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  7.118 seconds)
+**Total running time of the script:** ( 0 minutes  6.621 seconds)
 
 
 .. _sphx_glr_download_auto_examples_decomposition_plot_faces_decomposition.py:
