@@ -241,8 +241,8 @@ algorithms. The simplest clustering algorithm is
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y_iris</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">k_means</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">k_means</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_iris</span><span class="p">)</span> 
-<span class="go">KMeans(algorithm=&#39;auto&#39;, copy_x=True, init=&#39;k-means++&#39;, ...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">k_means</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_iris</span><span class="p">)</span>
+<span class="go">KMeans(n_clusters=3)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">k_means</span><span class="o">.</span><span class="n">labels_</span><span class="p">[::</span><span class="mi">10</span><span class="p">])</span>
 <span class="go">[1 1 1 1 1 0 0 0 0 0 2 2 2 2 2]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">y_iris</span><span class="p">[::</span><span class="mi">10</span><span class="p">])</span>
@@ -289,8 +289,8 @@ For instance, this can be used to posterize an image:</p>
 <span class="gp">... </span>   <span class="n">face</span> <span class="o">=</span> <span class="n">misc</span><span class="o">.</span><span class="n">face</span><span class="p">(</span><span class="n">gray</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">face</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="c1"># We need an (n_sample, n_feature) array</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">k_means</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_init</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">k_means</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> 
-<span class="go">KMeans(algorithm=&#39;auto&#39;, copy_x=True, init=&#39;k-means++&#39;, ...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">k_means</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="go">KMeans(n_clusters=5, n_init=1)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">values</span> <span class="o">=</span> <span class="n">k_means</span><span class="o">.</span><span class="n">cluster_centers_</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">labels</span> <span class="o">=</span> <span class="n">k_means</span><span class="o">.</span><span class="n">labels_</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">face_compressed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">choose</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
@@ -392,8 +392,8 @@ transposed data.</p>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">agglo</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">FeatureAgglomeration</span><span class="p">(</span><span class="n">connectivity</span><span class="o">=</span><span class="n">connectivity</span><span class="p">,</span>
 <span class="gp">... </span>                                     <span class="n">n_clusters</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">agglo</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> 
-<span class="go">FeatureAgglomeration(affinity=&#39;euclidean&#39;, compute_full_tree=&#39;auto&#39;,...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">agglo</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="go">FeatureAgglomeration(connectivity=..., n_clusters=32)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X_reduced</span> <span class="o">=</span> <span class="n">agglo</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X_approx</span> <span class="o">=</span> <span class="n">agglo</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">X_reduced</span><span class="p">)</span>
@@ -436,9 +436,8 @@ data by projecting on a principal subspace.</p>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">decomposition</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pca</span> <span class="o">=</span> <span class="n">decomposition</span><span class="o">.</span><span class="n">PCA</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pca</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>  
-<span class="go">PCA(copy=True, iterated_power=&#39;auto&#39;, n_components=None, random_state=None,</span>
-<span class="go">  svd_solver=&#39;auto&#39;, tol=0.0, whiten=False)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pca</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="go">PCA()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_</span><span class="p">)</span>  
 <span class="go">[  2.18565811e+00   1.19346747e+00   8.43026679e-32]</span>
 

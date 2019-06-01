@@ -305,7 +305,7 @@ details on the different datasets can be found in the <a class="reference intern
 section</span></a>.</p>
 <p>For instance, in the case of the digits dataset, <code class="docutils literal"><span class="pre">digits.data</span></code> gives
 access to the features that can be used to classify the digits samples:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>  
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 <span class="go">[[ 0.   0.   5. ...   0.   0.   0.]</span>
 <span class="go"> [ 0.   0.   0. ...  10.   0.   0.]</span>
 <span class="go"> [ 0.   0.   0. ...  16.   9.   0.]</span>
@@ -328,7 +328,7 @@ learn:</p>
 the original data may have had a different shape. In the case of the
 digits, each original sample is an image of shape <code class="docutils literal"><span class="pre">(8,</span> <span class="pre">8)</span></code> and can be
 accessed using:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">digits</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">digits</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="go">array([[  0.,   0.,   5.,  13.,   9.,   1.,   0.,   0.],</span>
 <span class="go">       [  0.,   0.,  13.,  15.,  10.,  15.,   5.,   0.],</span>
 <span class="go">       [  0.,   3.,  15.,   2.,   0.,  11.,   8.,   0.],</span>
@@ -378,11 +378,8 @@ set, we’ll use all the images from our dataset, except for the last
 image, which we’ll reserve for our predicting. We select the training set with
 the <code class="docutils literal"><span class="pre">[:-1]</span></code> Python syntax, which produces a new array that contains all but
 the last item from <code class="docutils literal"><span class="pre">digits.data</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">digits</span><span class="o">.</span><span class="n">target</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>  
-<span class="go">SVC(C=100.0, break_ties=False, cache_size=200, class_weight=None, coef0=0.0,</span>
-<span class="go">  decision_function_shape=&#39;ovr&#39;, degree=3, gamma=0.001, kernel=&#39;rbf&#39;,</span>
-<span class="go">  max_iter=-1, probability=False,</span>
-<span class="go">  random_state=None, shrinking=True, tol=0.001, verbose=False)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">digits</span><span class="o">.</span><span class="n">target</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="go">SVC(C=100.0, gamma=0.001)</span>
 </pre></div>
 </div>
 <p>Now you can <em>predict</em> new values. In this case, you’ll predict using the last
@@ -409,11 +406,8 @@ persistence model, <a class="reference external" href="https://docs.python.org/2
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">iris</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>  
-<span class="go">SVC(C=1.0, break_ties=False, cache_size=200, class_weight=None, coef0=0.0,</span>
-<span class="go">  decision_function_shape=&#39;ovr&#39;, degree=3, gamma=&#39;scale&#39;, kernel=&#39;rbf&#39;,</span>
-<span class="go">  max_iter=-1, probability=False,</span>
-<span class="go">  random_state=None, shrinking=True, tol=0.001, verbose=False)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="go">SVC()</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pickle</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">clf</span><span class="p">)</span>
@@ -477,22 +471,16 @@ maintained:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="k">import</span> <span class="n">SVC</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">iris</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>  
-<span class="go">SVC(C=1.0, break_ties=False, cache_size=200, class_weight=None, coef0=0.0,</span>
-<span class="go">  decision_function_shape=&#39;ovr&#39;, degree=3, gamma=&#39;scale&#39;, kernel=&#39;rbf&#39;,</span>
-<span class="go">  max_iter=-1, probability=False,</span>
-<span class="go">  random_state=None, shrinking=True, tol=0.001, verbose=False)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+<span class="go">SVC()</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:</span><span class="mi">3</span><span class="p">]))</span>
 <span class="go">[0, 0, 0]</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">target_names</span><span class="p">[</span><span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">])</span>  
-<span class="go">SVC(C=1.0, break_ties=False, cache_size=200, class_weight=None, coef0=0.0,</span>
-<span class="go">  decision_function_shape=&#39;ovr&#39;, degree=3, gamma=&#39;scale&#39;, kernel=&#39;rbf&#39;,</span>
-<span class="go">  max_iter=-1, probability=False,</span>
-<span class="go">  random_state=None, shrinking=True, tol=0.001, verbose=False)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">target_names</span><span class="p">[</span><span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">])</span>
+<span class="go">SVC()</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:</span><span class="mi">3</span><span class="p">]))</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">[:</span><span class="mi">3</span><span class="p">]))</span>
 <span class="go">[&#39;setosa&#39;, &#39;setosa&#39;, &#39;setosa&#39;]</span>
 </pre></div>
 </div>
@@ -511,20 +499,13 @@ once will overwrite what was learned by any previous <code class="docutils liter
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>  
-<span class="go">SVC(C=1.0, break_ties=False, cache_size=200, class_weight=None, coef0=0.0,</span>
-<span class="go">  decision_function_shape=&#39;ovr&#39;, degree=3, gamma=&#39;scale&#39;,</span>
-<span class="go">  kernel=&#39;linear&#39;, max_iter=-1,</span>
-<span class="go">  probability=False, random_state=None, shrinking=True, tol=0.001,</span>
-<span class="go">  verbose=False)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="go">SVC(kernel=&#39;linear&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span>
 <span class="go">array([0, 0, 0, 0, 0])</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;rbf&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>  
-<span class="go">SVC(C=1.0, break_ties=False, cache_size=200, class_weight=None, coef0=0.0,</span>
-<span class="go">  decision_function_shape=&#39;ovr&#39;, degree=3, gamma=&#39;scale&#39;, kernel=&#39;rbf&#39;,</span>
-<span class="go">  max_iter=-1, probability=False,</span>
-<span class="go">  random_state=None, shrinking=True, tol=0.001, verbose=False)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;rbf&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="go">SVC()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span>
 <span class="go">array([0, 0, 0, 0, 0])</span>
 </pre></div>

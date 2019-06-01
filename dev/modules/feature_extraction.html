@@ -302,7 +302,7 @@ suitable for feeding into a classifier (maybe after being piped into a
 <a class="reference internal" href="generated/sklearn.feature_extraction.text.TfidfTransformer.html#sklearn.feature_extraction.text.TfidfTransformer" title="sklearn.feature_extraction.text.TfidfTransformer"><code class="xref py py-class docutils literal"><span class="pre">text.TfidfTransformer</span></code></a> for normalization):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vec</span> <span class="o">=</span> <span class="n">DictVectorizer</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pos_vectorized</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">pos_window</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pos_vectorized</span>                
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pos_vectorized</span>
 <span class="go">&lt;1x6 sparse matrix of type &#39;&lt;... &#39;numpy.float64&#39;&gt;&#39;</span>
 <span class="go">    with 6 stored elements in Compressed Sparse ... format&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pos_vectorized</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
@@ -471,13 +471,8 @@ counting in a single class:</p>
 <p>This model has many parameters, however the default values are quite
 reasonable (please see  the <a class="reference internal" href="classes.html#text-feature-extraction-ref"><span class="std std-ref">reference documentation</span></a> for the details):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vectorizer</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">vectorizer</span>                     
-<span class="go">CountVectorizer(analyzer=...&#39;word&#39;, binary=False, decode_error=...&#39;strict&#39;,</span>
-<span class="go">        dtype=&lt;... &#39;numpy.int64&#39;&gt;, encoding=...&#39;utf-8&#39;, input=...&#39;content&#39;,</span>
-<span class="go">        lowercase=True, max_df=1.0, max_features=None, min_df=1,</span>
-<span class="go">        ngram_range=(1, 1), preprocessor=None, stop_words=None,</span>
-<span class="go">        strip_accents=None, token_pattern=...&#39;(?u)\\b\\w\\w+\\b&#39;,</span>
-<span class="go">        tokenizer=None, vocabulary=None)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vectorizer</span>
+<span class="go">CountVectorizer()</span>
 </pre></div>
 </div>
 <p>Let’s use it to tokenize and count the word occurrences of a minimalistic
@@ -489,7 +484,7 @@ corpus of text documents:</p>
 <span class="gp">... </span>    <span class="s1">&#39;Is this the first document?&#39;</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span>                              
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span>
 <span class="go">&lt;4x9 sparse matrix of type &#39;&lt;... &#39;numpy.int64&#39;&gt;&#39;</span>
 <span class="go">    with 19 stored elements in Compressed Sparse ... format&gt;</span>
 </pre></div>
@@ -511,7 +506,7 @@ interpretation of the columns can be retrieved as follows:</p>
 <span class="gp">... </span>     <span class="s1">&#39;second&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">,</span> <span class="s1">&#39;third&#39;</span><span class="p">,</span> <span class="s1">&#39;this&#39;</span><span class="p">])</span>
 <span class="go">True</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>           
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
 <span class="go">array([[0, 1, 1, 1, 0, 0, 1, 0, 1],</span>
 <span class="go">       [0, 1, 0, 1, 0, 2, 1, 0, 1],</span>
 <span class="go">       [1, 0, 0, 0, 1, 0, 1, 1, 0],</span>
@@ -527,7 +522,6 @@ interpretation of the columns can be retrieved as follows:</p>
 <p>Hence words that were not seen in the training corpus will be completely
 ignored in future calls to the transform method:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vectorizer</span><span class="o">.</span><span class="n">transform</span><span class="p">([</span><span class="s1">&#39;Something completely new.&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
-<span class="gp">... </span>                          
 <span class="go">array([[0, 0, 0, 0, 0, 0, 0, 0, 0]]...)</span>
 </pre></div>
 </div>
@@ -548,7 +542,6 @@ of words in addition to the 1-grams (individual words):</p>
 can now resolve ambiguities encoded in local positioning patterns:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X_2</span> <span class="o">=</span> <span class="n">bigram_vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X_2</span>
-<span class="gp">... </span>                          
 <span class="go">array([[0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0],</span>
 <span class="go">       [0, 0, 1, 0, 0, 1, 1, 0, 0, 2, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0],</span>
 <span class="go">       [1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0],</span>
@@ -558,7 +551,7 @@ can now resolve ambiguities encoded in local positioning patterns:</p>
 <p>In particular the interrogative form “Is this” is only present in the
 last document:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">feature_index</span> <span class="o">=</span> <span class="n">bigram_vectorizer</span><span class="o">.</span><span class="n">vocabulary_</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;is this&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X_2</span><span class="p">[:,</span> <span class="n">feature_index</span><span class="p">]</span>     
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_2</span><span class="p">[:,</span> <span class="n">feature_index</span><span class="p">]</span>
 <span class="go">array([0, 0, 0, 1]...)</span>
 </pre></div>
 </div>
@@ -634,9 +627,8 @@ with <code class="docutils literal"><span class="pre">smooth_idf=False</span></c
 class:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="k">import</span> <span class="n">TfidfTransformer</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">transformer</span> <span class="o">=</span> <span class="n">TfidfTransformer</span><span class="p">(</span><span class="n">smooth_idf</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">transformer</span>   
-<span class="go">TfidfTransformer(norm=...&#39;l2&#39;, smooth_idf=False, sublinear_tf=False,</span>
-<span class="go">                 use_idf=True)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transformer</span>
+<span class="go">TfidfTransformer(smooth_idf=False)</span>
 </pre></div>
 </div>
 <p>Again please see the <a class="reference internal" href="classes.html#text-feature-extraction-ref"><span class="std std-ref">reference documentation</span></a> for the details on all the parameters.</p>
@@ -652,11 +644,11 @@ content of the documents:</p>
 <span class="gp">... </span>          <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tfidf</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tfidf</span>                         
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tfidf</span>
 <span class="go">&lt;6x3 sparse matrix of type &#39;&lt;... &#39;numpy.float64&#39;&gt;&#39;</span>
 <span class="go">    with 9 stored elements in Compressed Sparse ... format&gt;</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tfidf</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>                        
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tfidf</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
 <span class="go">array([[0.81940995, 0.        , 0.57320793],</span>
 <span class="go">       [1.        , 0.        , 0.        ],</span>
 <span class="go">       [1.        , 0.        , 0.        ],</span>
@@ -708,7 +700,7 @@ collection exactly once, which prevents zero divisions:</p>
 <p>The weights of each
 feature computed by the <code class="docutils literal"><span class="pre">fit</span></code> method call are stored in a model
 attribute:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transformer</span><span class="o">.</span><span class="n">idf_</span>                       
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transformer</span><span class="o">.</span><span class="n">idf_</span>
 <span class="go">array([1. ..., 2.25..., 1.84...])</span>
 </pre></div>
 </div>
@@ -718,7 +710,6 @@ class called <a class="reference internal" href="generated/sklearn.feature_extra
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="k">import</span> <span class="n">TfidfVectorizer</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">vectorizer</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
-<span class="gp">... </span>                               
 <span class="go">&lt;4x9 sparse matrix of type &#39;&lt;... &#39;numpy.float64&#39;&gt;&#39;</span>
 <span class="go">    with 19 stored elements in Compressed Sparse ... format&gt;</span>
 </pre></div>
@@ -873,7 +864,6 @@ side). The <code class="docutils literal"><span class="pre">char</span></code> a
 span across words:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ngram_vectorizer</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">analyzer</span><span class="o">=</span><span class="s1">&#39;char_wb&#39;</span><span class="p">,</span> <span class="n">ngram_range</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ngram_vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">([</span><span class="s1">&#39;jumpy fox&#39;</span><span class="p">])</span>
-<span class="gp">... </span>                               
 <span class="go">&lt;1x4 sparse matrix of type &#39;&lt;... &#39;numpy.int64&#39;&gt;&#39;</span>
 <span class="go">   with 4 stored elements in Compressed Sparse ... format&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ngram_vectorizer</span><span class="o">.</span><span class="n">get_feature_names</span><span class="p">()</span> <span class="o">==</span> <span class="p">(</span>
@@ -882,7 +872,6 @@ span across words:</p>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ngram_vectorizer</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">analyzer</span><span class="o">=</span><span class="s1">&#39;char&#39;</span><span class="p">,</span> <span class="n">ngram_range</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ngram_vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">([</span><span class="s1">&#39;jumpy fox&#39;</span><span class="p">])</span>
-<span class="gp">... </span>                               
 <span class="go">&lt;1x5 sparse matrix of type &#39;&lt;... &#39;numpy.int64&#39;&gt;&#39;</span>
 <span class="go">    with 5 stored elements in Compressed Sparse ... format&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ngram_vectorizer</span><span class="o">.</span><span class="n">get_feature_names</span><span class="p">()</span> <span class="o">==</span> <span class="p">(</span>
@@ -940,7 +929,6 @@ meaning that you don’t have to call <code class="docutils literal"><span class
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="k">import</span> <span class="n">HashingVectorizer</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hv</span> <span class="o">=</span> <span class="n">HashingVectorizer</span><span class="p">(</span><span class="n">n_features</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hv</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
-<span class="gp">... </span>                               
 <span class="go">&lt;4x10 sparse matrix of type &#39;&lt;... &#39;numpy.float64&#39;&gt;&#39;</span>
 <span class="go">    with 16 stored elements in Compressed Sparse ... format&gt;</span>
 </pre></div>
@@ -962,7 +950,6 @@ etc).</p>
 <p>Let’s try again with the default setting:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">hv</span> <span class="o">=</span> <span class="n">HashingVectorizer</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hv</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
-<span class="gp">... </span>                              
 <span class="go">&lt;4x1048576 sparse matrix of type &#39;&lt;... &#39;numpy.float64&#39;&gt;&#39;</span>
 <span class="go">    with 19 stored elements in Compressed Sparse ... format&gt;</span>
 </pre></div>
@@ -1072,7 +1059,7 @@ to American spelling:</p>
 <span class="gp">... </span>        <span class="n">tokenize</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">build_tokenizer</span><span class="p">()</span>
 <span class="gp">... </span>        <span class="k">return</span> <span class="k">lambda</span> <span class="n">doc</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">to_british</span><span class="p">(</span><span class="n">tokenize</span><span class="p">(</span><span class="n">doc</span><span class="p">)))</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">CustomVectorizer</span><span class="p">()</span><span class="o">.</span><span class="n">build_analyzer</span><span class="p">()(</span><span class="sa">u</span><span class="s2">&quot;color colour&quot;</span><span class="p">))</span> 
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">CustomVectorizer</span><span class="p">()</span><span class="o">.</span><span class="n">build_analyzer</span><span class="p">()(</span><span class="sa">u</span><span class="s2">&quot;color colour&quot;</span><span class="p">))</span>
 <span class="go">[...&#39;color&#39;, ...&#39;color&#39;]</span>
 </pre></div>
 </div>

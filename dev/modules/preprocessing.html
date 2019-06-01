@@ -262,7 +262,7 @@ operation on a single array-like dataset:</p>
 <span class="gp">... </span>                    <span class="p">[</span> <span class="mf">0.</span><span class="p">,</span>  <span class="mf">1.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X_scaled</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X_scaled</span>                                          
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_scaled</span>
 <span class="go">array([[ 0.  ..., -1.22...,  1.33...],</span>
 <span class="go">       [ 1.22...,  0.  ..., -0.26...],</span>
 <span class="go">       [-1.22...,  1.22..., -1.06...]])</span>
@@ -284,15 +284,15 @@ This class is hence suitable for use in the early steps of a
 <a class="reference internal" href="generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal"><span class="pre">sklearn.pipeline.Pipeline</span></code></a>:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">scaler</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">scaler</span>
-<span class="go">StandardScaler(copy=True, with_mean=True, with_std=True)</span>
+<span class="go">StandardScaler()</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">scaler</span><span class="o">.</span><span class="n">mean_</span>                                      
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scaler</span><span class="o">.</span><span class="n">mean_</span>
 <span class="go">array([1. ..., 0. ..., 0.33...])</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">scaler</span><span class="o">.</span><span class="n">scale_</span>                                       
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scaler</span><span class="o">.</span><span class="n">scale_</span>
 <span class="go">array([0.81..., 0.81..., 1.24...])</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>                           
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
 <span class="go">array([[ 0.  ..., -1.22...,  1.33...],</span>
 <span class="go">       [ 1.22...,  0.  ..., -0.26...],</span>
 <span class="go">       [-1.22...,  1.22..., -1.06...]])</span>
@@ -301,7 +301,7 @@ This class is hence suitable for use in the early steps of a
 <p>The scaler instance can then be used on new data to transform it the
 same way it did on the training set:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X_test</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>                
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
 <span class="go">array([[-2.44...,  1.22..., -0.26...]])</span>
 </pre></div>
 </div>
@@ -341,10 +341,10 @@ applied to be consistent with the transformation performed on the train data:</p
 </div>
 <p>It is possible to introspect the scaler attributes to find about the exact
 nature of the transformation learned on the training data:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">min_max_scaler</span><span class="o">.</span><span class="n">scale_</span>                             
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">min_max_scaler</span><span class="o">.</span><span class="n">scale_</span>
 <span class="go">array([0.5       , 0.5       , 0.33...])</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">min_max_scaler</span><span class="o">.</span><span class="n">min_</span>                               
+<span class="gp">&gt;&gt;&gt; </span><span class="n">min_max_scaler</span><span class="o">.</span><span class="n">min_</span>
 <span class="go">array([0.        , 0.5       , 0.33...])</span>
 </pre></div>
 </div>
@@ -366,15 +366,15 @@ that is already centered at zero or sparse data.</p>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">max_abs_scaler</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">MaxAbsScaler</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X_train_maxabs</span> <span class="o">=</span> <span class="n">max_abs_scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X_train_maxabs</span>                <span class="c1"># doctest +NORMALIZE_WHITESPACE^</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_train_maxabs</span>
 <span class="go">array([[ 0.5, -1. ,  1. ],</span>
 <span class="go">       [ 1. ,  0. ,  0. ],</span>
 <span class="go">       [ 0. ,  1. , -0.5]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="o">-</span><span class="mf">3.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span>  <span class="mf">4.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X_test_maxabs</span> <span class="o">=</span> <span class="n">max_abs_scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X_test_maxabs</span>                 
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_test_maxabs</span>
 <span class="go">array([[-1.5, -1. ,  2. ]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">max_abs_scaler</span><span class="o">.</span><span class="n">scale_</span>         
+<span class="gp">&gt;&gt;&gt; </span><span class="n">max_abs_scaler</span><span class="o">.</span><span class="n">scale_</span>
 <span class="go">array([2.,  1.,  2.])</span>
 </pre></div>
 </div>
@@ -526,11 +526,11 @@ maximum likelihood estimation. Here is an example of using Box-Cox to map
 samples drawn from a lognormal distribution to a normal distribution:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pt</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">PowerTransformer</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;box-cox&#39;</span><span class="p">,</span> <span class="n">standardize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X_lognormal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">616</span><span class="p">)</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X_lognormal</span>                                         
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_lognormal</span>
 <span class="go">array([[1.28..., 1.18..., 0.84...],</span>
 <span class="go">       [0.94..., 1.60..., 0.38...],</span>
 <span class="go">       [1.35..., 0.21..., 1.09...]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pt</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_lognormal</span><span class="p">)</span>                   
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pt</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_lognormal</span><span class="p">)</span>
 <span class="go">array([[ 0.49...,  0.17..., -0.15...],</span>
 <span class="go">       [-0.05...,  0.58..., -0.57...],</span>
 <span class="go">       [ 0.69..., -0.84...,  0.10...]])</span>
@@ -553,7 +553,7 @@ Using the earlier example with the iris dataset:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">quantile_transformer</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">QuantileTransformer</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">output_distribution</span><span class="o">=</span><span class="s1">&#39;normal&#39;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X_trans</span> <span class="o">=</span> <span class="n">quantile_transformer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">quantile_transformer</span><span class="o">.</span><span class="n">quantiles_</span> 
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quantile_transformer</span><span class="o">.</span><span class="n">quantiles_</span>
 <span class="go">array([[4.3, 2. , 1. , 0.1],</span>
 <span class="go">       [4.4, 2.2, 1.1, 0.1],</span>
 <span class="go">       [4.4, 2.2, 1.2, 0.1],</span>
@@ -585,7 +585,7 @@ norms:</p>
 <span class="gp">... </span>     <span class="p">[</span> <span class="mf">0.</span><span class="p">,</span>  <span class="mf">1.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X_normalized</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="s1">&#39;l2&#39;</span><span class="p">)</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X_normalized</span>                                      
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_normalized</span>
 <span class="go">array([[ 0.40..., -0.40...,  0.81...],</span>
 <span class="go">       [ 1.  ...,  0.  ...,  0.  ...],</span>
 <span class="go">       [ 0.  ...,  0.70..., -0.70...]])</span>
@@ -599,16 +599,16 @@ the class is stateless as this operation treats samples independently).</p>
 <a class="reference internal" href="generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal"><span class="pre">sklearn.pipeline.Pipeline</span></code></a>:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">normalizer</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">Normalizer</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>  <span class="c1"># fit does nothing</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">normalizer</span>
-<span class="go">Normalizer(copy=True, norm=&#39;l2&#39;)</span>
+<span class="go">Normalizer()</span>
 </pre></div>
 </div>
 <p>The normalizer instance can then be used on sample vectors as any transformer:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">normalizer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>                            
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">normalizer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <span class="go">array([[ 0.40..., -0.40...,  0.81...],</span>
 <span class="go">       [ 1.  ...,  0.  ...,  0.  ...],</span>
 <span class="go">       [ 0.  ...,  0.70..., -0.70...]])</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">normalizer</span><span class="o">.</span><span class="n">transform</span><span class="p">([[</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span>  <span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]])</span>             
+<span class="gp">&gt;&gt;&gt; </span><span class="n">normalizer</span><span class="o">.</span><span class="n">transform</span><span class="p">([[</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span>  <span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]])</span>
 <span class="go">array([[-0.70...,  0.70...,  0.  ...]])</span>
 </pre></div>
 </div>
@@ -637,8 +637,8 @@ Such features can be efficiently coded as integers, for instance
 new feature of integers (0 to n_categories - 1):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">OrdinalEncoder</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;male&#39;</span><span class="p">,</span> <span class="s1">&#39;from US&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Safari&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="s1">&#39;from Europe&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Firefox&#39;</span><span class="p">]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>  
-<span class="go">OrdinalEncoder(categories=&#39;auto&#39;, dtype=&lt;... &#39;numpy.float64&#39;&gt;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="go">OrdinalEncoder()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">transform</span><span class="p">([[</span><span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="s1">&#39;from US&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Safari&#39;</span><span class="p">]])</span>
 <span class="go">array([[0., 1., 1.]])</span>
 </pre></div>
@@ -657,9 +657,8 @@ one of them 1, and all others 0.</p>
 <p>Continuing the example above:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">OneHotEncoder</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;male&#39;</span><span class="p">,</span> <span class="s1">&#39;from US&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Safari&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="s1">&#39;from Europe&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Firefox&#39;</span><span class="p">]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>  
-<span class="go">OneHotEncoder(categories=&#39;auto&#39;, drop=None, dtype=&lt;... &#39;numpy.float64&#39;&gt;,</span>
-<span class="go">              handle_unknown=&#39;error&#39;, sparse=True)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="go">OneHotEncoder()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">transform</span><span class="p">([[</span><span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="s1">&#39;from US&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Safari&#39;</span><span class="p">],</span>
 <span class="gp">... </span>               <span class="p">[</span><span class="s1">&#39;male&#39;</span><span class="p">,</span> <span class="s1">&#39;from Europe&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Safari&#39;</span><span class="p">]])</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
 <span class="go">array([[1., 0., 0., 1., 0., 1.],</span>
@@ -682,9 +681,12 @@ dataset:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Note that for there are missing categorical values for the 2nd and 3rd</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># feature</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;male&#39;</span><span class="p">,</span> <span class="s1">&#39;from US&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Safari&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="s1">&#39;from Europe&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Firefox&#39;</span><span class="p">]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> 
-<span class="go">OneHotEncoder(categories=[...], drop=None, dtype=&lt;... &#39;numpy.float64&#39;&gt;,</span>
-<span class="go">              handle_unknown=&#39;error&#39;, sparse=True)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="go">OneHotEncoder(categories=[[&#39;female&#39;, &#39;male&#39;],</span>
+<span class="go">                          [&#39;from Africa&#39;, &#39;from Asia&#39;, &#39;from Europe&#39;,</span>
+<span class="go">                           &#39;from US&#39;],</span>
+<span class="go">                          [&#39;uses Chrome&#39;, &#39;uses Firefox&#39;, &#39;uses IE&#39;,</span>
+<span class="go">                           &#39;uses Safari&#39;]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">transform</span><span class="p">([[</span><span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="s1">&#39;from Asia&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Chrome&#39;</span><span class="p">]])</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
 <span class="go">array([[1., 0., 0., 1., 0., 0., 1., 0., 0., 0.]])</span>
 </pre></div>
@@ -698,9 +700,8 @@ columns for this feature will be all zeros
 (<code class="docutils literal"><span class="pre">handle_unknown='ignore'</span></code> is only supported for one-hot encoding):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">handle_unknown</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;male&#39;</span><span class="p">,</span> <span class="s1">&#39;from US&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Safari&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="s1">&#39;from Europe&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Firefox&#39;</span><span class="p">]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> 
-<span class="go">OneHotEncoder(categories=&#39;auto&#39;, drop=None, dtype=&lt;... &#39;numpy.float64&#39;&gt;,</span>
-<span class="go">              handle_unknown=&#39;ignore&#39;, sparse=True)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="go">OneHotEncoder(handle_unknown=&#39;ignore&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span><span class="o">.</span><span class="n">transform</span><span class="p">([[</span><span class="s1">&#39;female&#39;</span><span class="p">,</span> <span class="s1">&#39;from Asia&#39;</span><span class="p">,</span> <span class="s1">&#39;uses Chrome&#39;</span><span class="p">]])</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
 <span class="go">array([[1., 0., 0., 0., 0., 0.]])</span>
 </pre></div>
@@ -805,7 +806,7 @@ as each sample is treated independently of others:</p>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">binarizer</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">Binarizer</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>  <span class="c1"># fit does nothing</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">binarizer</span>
-<span class="go">Binarizer(copy=True, threshold=0.0)</span>
+<span class="go">Binarizer()</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">binarizer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <span class="go">array([[1., 0., 1.],</span>
@@ -847,12 +848,12 @@ representation upstream.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">PolynomialFeatures</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span>                                                 
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span>
 <span class="go">array([[0, 1],</span>
 <span class="go">       [2, 3],</span>
 <span class="go">       [4, 5]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span> <span class="o">=</span> <span class="n">PolynomialFeatures</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>                             
+<span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <span class="go">array([[ 1.,  0.,  1.,  0.,  0.,  1.],</span>
 <span class="go">       [ 1.,  2.,  3.,  4.,  6.,  9.],</span>
 <span class="go">       [ 1.,  4.,  5., 16., 20., 25.]])</span>
@@ -861,12 +862,12 @@ representation upstream.</p>
 <p>The features of X have been transformed from <span class="math">\((X_1, X_2)\)</span> to <span class="math">\((1, X_1, X_2, X_1^2, X_1X_2, X_2^2)\)</span>.</p>
 <p>In some cases, only interaction terms among features are required, and it can be gotten with the setting <code class="docutils literal"><span class="pre">interaction_only=True</span></code>:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span>                                                 
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span>
 <span class="go">array([[0, 1, 2],</span>
 <span class="go">       [3, 4, 5],</span>
 <span class="go">       [6, 7, 8]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span> <span class="o">=</span> <span class="n">PolynomialFeatures</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">interaction_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>                             
+<span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <span class="go">array([[  1.,   0.,   1.,   2.,   0.,   0.,   2.,   0.],</span>
 <span class="go">       [  1.,   3.,   4.,   5.,  12.,  15.,  20.,  60.],</span>
 <span class="go">       [  1.,   6.,   7.,   8.,  42.,  48.,  56., 336.]])</span>

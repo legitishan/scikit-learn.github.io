@@ -265,13 +265,8 @@ for the training samples:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">SGDClassifier</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s2">&quot;hinge&quot;</span><span class="p">,</span> <span class="n">penalty</span><span class="o">=</span><span class="s2">&quot;l2&quot;</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>   
-<span class="go">SGDClassifier(alpha=0.0001, average=False, class_weight=None,</span>
-<span class="go">           early_stopping=False, epsilon=0.1, eta0=0.0, fit_intercept=True,</span>
-<span class="go">           l1_ratio=0.15, learning_rate=&#39;optimal&#39;, loss=&#39;hinge&#39;, max_iter=5,</span>
-<span class="go">           n_iter_no_change=5, n_jobs=None, penalty=&#39;l2&#39;, power_t=0.5,</span>
-<span class="go">           random_state=None, shuffle=True, tol=0.001,</span>
-<span class="go">           validation_fraction=0.1, verbose=0, warm_start=False)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="go">SGDClassifier(max_iter=5)</span>
 </pre></div>
 </div>
 <p>After being fitted, the model can then be used to predict new values:</p>
@@ -281,19 +276,19 @@ for the training samples:</p>
 </div>
 <p>SGD fits a linear model to the training data. The member <code class="docutils literal"><span class="pre">coef_</span></code> holds
 the model parameters:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">coef_</span>                                         
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">coef_</span>
 <span class="go">array([[9.9..., 9.9...]])</span>
 </pre></div>
 </div>
 <p>Member <code class="docutils literal"><span class="pre">intercept_</span></code> holds the intercept (aka offset or bias):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">intercept_</span>                                    
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">intercept_</span>
 <span class="go">array([-9.9...])</span>
 </pre></div>
 </div>
 <p>Whether or not the model should use an intercept, i.e. a biased
 hyperplane, is controlled by the parameter <code class="docutils literal"><span class="pre">fit_intercept</span></code>.</p>
 <p>To get the signed distance to the hyperplane use <a class="reference internal" href="generated/sklearn.linear_model.SGDClassifier.html#sklearn.linear_model.SGDClassifier.decision_function" title="sklearn.linear_model.SGDClassifier.decision_function"><code class="xref py py-meth docutils literal"><span class="pre">SGDClassifier.decision_function</span></code></a>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">decision_function</span><span class="p">([[</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">]])</span>                 
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">decision_function</span><span class="p">([[</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">]])</span>
 <span class="go">array([29.6...])</span>
 </pre></div>
 </div>
@@ -315,7 +310,7 @@ is used.</p>
 <code class="docutils literal"><span class="pre">predict_proba</span></code> method, which gives a vector of probability estimates
 <span class="math">\(P(y|x)\)</span> per sample <span class="math">\(x\)</span>:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">SGDClassifier</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]])</span>                      
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]])</span>
 <span class="go">array([[0.00..., 0.99...]])</span>
 </pre></div>
 </div>
