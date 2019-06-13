@@ -193,9 +193,12 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#profiling-compiled-extensions">Profiling compiled extensions</a><ul>
-<li><a class="reference internal" href="#using-yep-and-google-perftools">Using yep and google-perftools</a></li>
+<li><a class="reference internal" href="#using-yep-and-gperftools">Using yep and gperftools</a></li>
 <li><a class="reference internal" href="#using-gprof">Using gprof</a></li>
-<li><a class="reference internal" href="#using-valgrind-callgrind-kcachegrind">Using valgrind / callgrind / kcachegrind</a></li>
+<li><a class="reference internal" href="#using-valgrind-callgrind-kcachegrind">Using valgrind / callgrind / kcachegrind</a><ul>
+<li><a class="reference internal" href="#kcachegrind">kcachegrind</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#multi-core-parallelism-using-joblib-parallel">Multi-core parallelism using <code class="docutils literal"><span class="pre">joblib.Parallel</span></code></a></li>
@@ -549,20 +552,13 @@ syntax:</p>
 directly as Cython extension), the default Python profiler is useless:
 we need a dedicated tool to introspect what’s happening inside the
 compiled extension it-self.</p>
-<div class="section" id="using-yep-and-google-perftools">
-<h3>Using yep and google-perftools<a class="headerlink" href="#using-yep-and-google-perftools" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="using-yep-and-gperftools">
+<h3>Using yep and gperftools<a class="headerlink" href="#using-yep-and-gperftools" title="Permalink to this headline">¶</a></h3>
 <p>Easy profiling without special compilation options use yep:</p>
 <ul class="simple">
 <li><a class="reference external" href="https://pypi.org/project/yep/">https://pypi.org/project/yep/</a></li>
 <li><a class="reference external" href="http://fa.bianp.net/blog/2011/a-profiler-for-python-extensions">http://fa.bianp.net/blog/2011/a-profiler-for-python-extensions</a></li>
 </ul>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">google-perftools provides a nice ‘line by line’ report mode that
-can be triggered with the <code class="docutils literal"><span class="pre">--lines</span></code> option. However this
-does not seem to work correctly at the time of writing. This
-issue can be tracked on the <a class="reference external" href="https://github.com/gperftools/gperftools">project issue tracker</a>.</p>
-</div>
 </div>
 <div class="section" id="using-gprof">
 <h3>Using gprof<a class="headerlink" href="#using-gprof" title="Permalink to this headline">¶</a></h3>
@@ -576,7 +572,23 @@ recompile everything.</p>
 </div>
 <div class="section" id="using-valgrind-callgrind-kcachegrind">
 <h3>Using valgrind / callgrind / kcachegrind<a class="headerlink" href="#using-valgrind-callgrind-kcachegrind" title="Permalink to this headline">¶</a></h3>
-<p>TODO</p>
+<div class="section" id="kcachegrind">
+<h4>kcachegrind<a class="headerlink" href="#kcachegrind" title="Permalink to this headline">¶</a></h4>
+<p><code class="docutils literal"><span class="pre">yep</span></code> can be used to create a profiling report.
+<code class="docutils literal"><span class="pre">kcachegrind</span></code> provides a graphical environment to visualize this report:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Run yep to profile some python script</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">yep</span> <span class="o">-</span><span class="n">c</span> <span class="n">my_file</span><span class="o">.</span><span class="n">py</span>
+
+<span class="c1"># open my_file.py.callgrin with kcachegrind</span>
+<span class="n">kcachegrind</span> <span class="n">my_file</span><span class="o">.</span><span class="n">py</span><span class="o">.</span><span class="n">prof</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><code class="docutils literal"><span class="pre">yep</span></code> can be executed with the argument <code class="docutils literal"><span class="pre">--lines</span></code> or <code class="docutils literal"><span class="pre">-l</span></code> to compile
+a profiling report ‘line by line’.</p>
+</div>
+</div>
 </div>
 </div>
 <div class="section" id="multi-core-parallelism-using-joblib-parallel">
