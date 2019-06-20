@@ -96,6 +96,7 @@
             <li><a href="../faq.html">FAQ</a></li>
             <li><a href="index.html">Development</a></li>
             <li><a href="../roadmap.html">Roadmap</a></li>
+            <li><a href="../about.html">About us</a></li>
             <li class="divider"></li>
                 <script>if (VERSION_SUBDIR != "stable") document.write('<li><a href="http://scikit-learn.org/stable/documentation.html">Stable version</a></li>')</script>
                 <script>if (VERSION_SUBDIR != "dev") document.write('<li><a href="http://scikit-learn.org/dev/documentation.html">Development version</a></li>')</script>
@@ -185,7 +186,6 @@
     <p class="citing">Please <b><a href="../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
 <li><a class="reference internal" href="#">Contributing</a><ul>
-<li><a class="reference internal" href="#governance">Governance</a></li>
 <li><a class="reference internal" href="#ways-to-contribute">Ways to contribute</a></li>
 <li><a class="reference internal" href="#submitting-a-bug-report-or-a-feature-request">Submitting a bug report or a feature request</a><ul>
 <li><a class="reference internal" href="#how-to-make-a-good-bug-report">How to make a good bug report</a></li>
@@ -193,20 +193,23 @@
 </li>
 <li><a class="reference internal" href="#contributing-code">Contributing code</a><ul>
 <li><a class="reference internal" href="#how-to-contribute">How to contribute</a></li>
-<li><a class="reference internal" href="#contributing-pull-requests">Contributing pull requests</a><ul>
+<li><a class="reference internal" href="#pull-request-checklist">Pull request checklist</a><ul>
 <li><a class="reference internal" href="#continuous-integration-ci">Continuous Integration (CI)</a></li>
 <li><a class="reference internal" href="#stalled-pull-requests">Stalled pull requests</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#issues-for-new-contributors">Issues for New Contributors</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#documentation">Documentation</a><ul>
 <li><a class="reference internal" href="#building-the-documentation">Building the documentation</a></li>
 <li><a class="reference internal" href="#guidelines-for-writing-documentation">Guidelines for writing documentation</a></li>
 <li><a class="reference internal" href="#generated-documentation-on-circleci">Generated documentation on CircleCI</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#testing-and-improving-test-coverage">Testing and improving test coverage</a></li>
-<li><a class="reference internal" href="#developers-web-site">Developers web site</a></li>
+<li><a class="reference internal" href="#testing-and-improving-test-coverage">Testing and improving test coverage</a><ul>
+<li><a class="reference internal" href="#writing-matplotlib-related-tests">Writing matplotlib related tests</a></li>
+<li><a class="reference internal" href="#workflow-to-improve-test-coverage">Workflow to improve test coverage</a></li>
 <li><a class="reference internal" href="#issue-tracker-tags">Issue Tracker Tags</a></li>
 </ul>
 </li>
@@ -237,7 +240,6 @@
 <li><a class="reference internal" href="#cloning">Cloning</a></li>
 <li><a class="reference internal" href="#pipeline-compatibility">Pipeline compatibility</a></li>
 <li><a class="reference internal" href="#estimator-types">Estimator types</a></li>
-<li><a class="reference internal" href="#working-notes">Working notes</a></li>
 <li><a class="reference internal" href="#specific-models">Specific models</a></li>
 <li><a class="reference internal" href="#estimator-tags">Estimator Tags</a></li>
 </ul>
@@ -267,6 +269,8 @@
 <p>This project is a community effort, and everyone is welcome to
 contribute.</p>
 <p>The project is hosted on <a class="reference external" href="https://github.com/scikit-learn/scikit-learn">https://github.com/scikit-learn/scikit-learn</a></p>
+<p>The decision making process and governance structure of scikit-learn is laid
+out in the governance document: <a class="reference internal" href="../governance.html#governance"><span class="std std-ref">Scikit-learn governance and decision-making</span></a>.</p>
 <p>Scikit-learn is somewhat <a class="reference internal" href="../faq.html#selectiveness"><span class="std std-ref">selective</span></a> when it comes to
 adding new algorithms, and the best way to contribute and to help the project
 is to start working on known issues.
@@ -285,18 +289,10 @@ improving the documentation, are all priceless contributions.</p>
 others of the Python Software Foundation:
 <a class="reference external" href="https://www.python.org/psf/codeofconduct/">https://www.python.org/psf/codeofconduct/</a></p>
 </div>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
 <p>In case you experience issues using this package, do not hesitate to submit a
 ticket to the
-<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues">GitHub issue tracker</a>. You are
-also welcome to post feature requests or pull requests.</p>
-<div class="section" id="governance">
-<h2>Governance<a class="headerlink" href="#governance" title="Permalink to this headline">¶</a></h2>
-<p>The decision making process and governance structure of scikit-learn is laid
-out in the governance document: <a class="reference internal" href="../governance.html#governance"><span class="std std-ref">Scikit-learn governance and decision-making</span></a>.</p>
-</div>
+<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues">GitHub issue tracker</a>. You are also
+welcome to post feature requests or pull requests.</p>
 <div class="section" id="ways-to-contribute">
 <h2>Ways to contribute<a class="headerlink" href="#ways-to-contribute" title="Permalink to this headline">¶</a></h2>
 <p>There are many ways to contribute to scikit-learn, with the most common ones
@@ -440,36 +436,31 @@ $ cd scikit-learn
 </pre></div>
 </div>
 </li>
-<li><p class="first">Install library in editable mode:</p>
+<li><p class="first">Install the development dependencies:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ pip install cython pytest flake8
+</pre></div>
+</div>
+</li>
+<li><p class="first">Install scikit-learn in editable mode:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>$ pip install --editable .
 </pre></div>
 </div>
 <p>for more details about advanced installation, see the
 <a class="reference internal" href="advanced_installation.html#install-bleeding-edge"><span class="std std-ref">Building from source</span></a> section.</p>
 </li>
-<li><p class="first">Create a branch to hold your development changes:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ git checkout -b my-feature
-</pre></div>
-</div>
-<p>and start making changes. Always use a <code class="docutils literal"><span class="pre">feature</span></code> branch. It’s good practice to
-never work on the <code class="docutils literal"><span class="pre">master</span></code> branch!</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>In the above setup, your <code class="docutils literal"><span class="pre">origin</span></code> remote repository points to
-<code class="docutils literal"><span class="pre">YourLogin/scikit-learn.git</span></code>. If you wish to fetch/merge from the main
-repository instead of your forked one, you will need to add another remote
-to use instead of <code class="docutils literal"><span class="pre">origin</span></code>. If we choose the name <code class="docutils literal"><span class="pre">upstream</span></code> for it, the
-command will be:</p>
+<li><p class="first">Add the <code class="docutils literal"><span class="pre">upstream</span></code> remote. This saves a reference to the main
+scikit-learn repository, which you can use to keep your repository
+synchronized with the latest changes:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>$ git remote add upstream https://github.com/scikit-learn/scikit-learn.git
 </pre></div>
 </div>
-<p>And in order to fetch the new remote and base your work on the latest changes
-of it you can:</p>
-<div class="last highlight-default"><div class="highlight"><pre><span></span>$ git fetch upstream
-$ git checkout -b my-feature upstream/master
+</li>
+<li><p class="first">Create a branch to hold your development changes:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ git checkout -b my-feature upstream/master
 </pre></div>
 </div>
-</div>
+<p>and start making changes. Always use a <code class="docutils literal"><span class="pre">feature</span></code> branch. It’s good
+practice to never work on the <code class="docutils literal"><span class="pre">master</span></code> branch!</p>
 </li>
 <li><p class="first">Develop the feature on your feature branch on your computer, using Git to do the
 version control. When you’re done editing, add changed files using <code class="docutils literal"><span class="pre">git</span> <span class="pre">add</span></code>
@@ -491,44 +482,93 @@ mailing list for more visibility.</p>
 </ol>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If you are modifying a Cython module, you have to re-run step 4 after modifications
+<p class="last">If you are modifying a Cython module, you have to re-run step 5 after modifications
 and before testing them.</p>
 </div>
-<p>If any of the above seems like magic to you, then look up the <a class="reference external" href="https://git-scm.com/documentation">Git documentation</a> and the <a class="reference external" href="http://docs.scipy.org/doc/numpy/dev/gitwash/development_workflow.html">Git development workflow</a> on the
-web, or ask a friend or another contributor for help.</p>
-<p>If some conflicts arise between your branch and the <code class="docutils literal"><span class="pre">master</span></code> branch, you need
-to merge <code class="docutils literal"><span class="pre">master</span></code>. For that, you first need to fetch the <code class="docutils literal"><span class="pre">upstream</span></code>, and
-then merge its <code class="docutils literal"><span class="pre">master</span></code> into your branch:</p>
+<p>It is often helpful to keep your local branch synchronized with the latest
+changes of the main scikit-learn repository:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>$ git fetch upstream
 $ git merge upstream/master
 </pre></div>
 </div>
-<p>Subsequently, you need to solve the conflicts. You can refer to the <a class="reference external" href="https://help.github.com/articles/resolving-a-merge-conflict-using-the-command-line/">Git
-documentation related to resolving merge conflict using the command line</a>.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">In the past, the policy to resolve conflicts was to rebase your branch on
-<code class="docutils literal"><span class="pre">master</span></code>. GitHub interface deals with merging <code class="docutils literal"><span class="pre">master</span></code> better than in
-the past.</p>
+<p>Subsequently, you might need to solve the conflicts. You can refer to the
+<a class="reference external" href="https://help.github.com/articles/resolving-a-merge-conflict-using-the-command-line/">Git documentation related to resolving merge conflict using the command
+line</a>.</p>
+<div class="topic">
+<p class="topic-title first">Learning git:</p>
+<p>The <a class="reference external" href="https://git-scm.com/documentation">Git documentation</a> and
+<a class="reference external" href="http://try.github.io">http://try.github.io</a> are excellent resources to get started with git,
+and understanding all of the commands shown here.</p>
 </div>
 </div>
-<div class="section" id="contributing-pull-requests">
-<h3>Contributing pull requests<a class="headerlink" href="#contributing-pull-requests" title="Permalink to this headline">¶</a></h3>
-<p>We recommend that your contribution complies with the following
-rules before submitting a pull request:</p>
-<ul>
-<li><p class="first">Follow the <a class="reference internal" href="#coding-guidelines">coding-guidelines</a> (see below). To make sure that
-your PR does not add PEP8 violations you can run
-<code class="docutils literal"><span class="pre">./build_tools/circle/flake8_diff.sh</span></code> or <code class="docutils literal"><span class="pre">make</span> <span class="pre">flake8-diff</span></code> on a
-Unix-like system.</p>
+<div class="section" id="pull-request-checklist">
+<h3>Pull request checklist<a class="headerlink" href="#pull-request-checklist" title="Permalink to this headline">¶</a></h3>
+<p>Before a PR can be merged, it needs to be approved by two core developers.
+Please prefix the title of your pull request with <code class="docutils literal"><span class="pre">[MRG]</span></code> if the
+contribution is complete and should be subjected to a detailed review. An
+incomplete contribution – where you expect to do more work before receiving
+a full review – should be prefixed <code class="docutils literal"><span class="pre">[WIP]</span></code> (to indicate a work in
+progress) and changed to <code class="docutils literal"><span class="pre">[MRG]</span></code> when it matures. WIPs may be useful to:
+indicate you are working on something to avoid duplicated work, request
+broad review of functionality or API, or seek collaborators. WIPs often
+benefit from the inclusion of a <a class="reference external" href="https://github.com/blog/1375-task-lists-in-gfm-issues-pulls-comments">task list</a> in
+the PR description.</p>
+<p>In order to ease the reviewing process, we recommend that your contribution
+complies with the following rules before marking a PR as <code class="docutils literal"><span class="pre">[MRG]</span></code>. The
+<strong>bolded</strong> ones are especially important:</p>
+<ol class="arabic">
+<li><p class="first"><strong>Give your pull request a helpful title</strong> that summarises what your
+contribution does. This title will often become the commit message once
+merged so it should summarise your contribution for posterity. In some
+cases “Fix &lt;ISSUE TITLE&gt;” is enough. “Fix #&lt;ISSUE NUMBER&gt;” is never a
+good title.</p>
+</li>
+<li><p class="first"><strong>Make sure your code passes the tests</strong>. The whole test suite can be run
+with <code class="docutils literal"><span class="pre">pytest</span></code>, but it is usually not recommended since it takes a long
+time. It is often enough to only run the test related to your changes:
+for example, if you changed something in
+<code class="docutils literal"><span class="pre">sklearn/linear_model/logistic.py</span></code>, running the following commands will
+usually be enough:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">pytest</span> <span class="pre">sklearn/linear_model/logistic.py</span></code> to make sure the doctest
+examples are correct</li>
+<li><code class="docutils literal"><span class="pre">pytest</span> <span class="pre">sklearn/linear_model/tests/test_logistic.py</span></code> to run the tests
+specific to the file</li>
+<li><code class="docutils literal"><span class="pre">pytest</span> <span class="pre">sklearn/linear_model</span></code> to test the whole <a class="reference internal" href="../modules/linear_model.html#linear-model"><span class="std std-ref">Generalized Linear Models</span></a> module</li>
+<li><code class="docutils literal"><span class="pre">pytest</span> <span class="pre">sklearn/doc/linear_model.rst</span></code> to make sure the user guide
+examples are correct.</li>
+<li><code class="docutils literal"><span class="pre">pytest</span> <span class="pre">sklearn/tests/test_common.py</span> <span class="pre">-k</span> <span class="pre">LogisticRegression</span></code> to run all our
+estimator checks (specifically for <a class="reference internal" href="../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="sklearn.linear_model.LogisticRegression"><code class="xref any py py-class docutils literal"><span class="pre">LogisticRegression</span></code></a>, if that’s the
+estimator you changed).</li>
+</ul>
+<p>There may be other failing tests, but they will be caught by the CI so
+you don’t need to run the whole test suite locally. You can read more in
+<a class="reference internal" href="#testing-coverage"><span class="std std-ref">Testing and improving test coverage</span></a>.</p>
+</li>
+<li><p class="first"><strong>Make sure your code is properly commented and documented</strong>, and <strong>make
+sure the documentation renders properly</strong>. To build the documentation, please
+refer to our <a class="reference internal" href="#contribute-documentation"><span class="std std-ref">Documentation</span></a> guidelines. The CI will also
+build the docs: please refer to <a class="reference internal" href="#generated-doc-ci"><span class="std std-ref">Generated documentation on CircleCI</span></a>.</p>
+</li>
+<li><p class="first"><strong>Tests are necessary for enhancements to be
+accepted</strong>. Bug-fixes or new features should be provided with
+<a class="reference external" href="https://en.wikipedia.org/wiki/Non-regression_testing">non-regression tests</a>. These tests
+verify the correct behavior of the fix or feature. In this manner, further
+modifications on the code base are granted to be consistent with the
+desired behavior. In the case of bug fixes, at the time of the PR, the
+non-regression tests should fail for the code base in the master branch
+and pass for the PR code.</p>
+</li>
+<li><p class="first"><strong>Make sure that your PR does not add PEP8 violations</strong>. On a Unix-like
+system, you can run <code class="docutils literal"><span class="pre">make</span> <span class="pre">flake8-diff</span></code>. <code class="docutils literal"><span class="pre">flake8</span> <span class="pre">path_to_file</span></code>, would work
+for any system, but please avoid reformatting parts of the file that your
+pull request doesn’t change, as it distracts from code review.</p>
+</li>
+<li><p class="first">Follow the <a class="reference internal" href="#coding-guidelines">coding-guidelines</a> (see below).</p>
 </li>
 <li><p class="first">When applicable, use the validation tools and scripts in the
 <code class="docutils literal"><span class="pre">sklearn.utils</span></code> submodule.  A list of utility routines available
 for developers can be found in the <a class="reference internal" href="utilities.html#developers-utils"><span class="std std-ref">Utilities for Developers</span></a> page.</p>
-</li>
-<li><p class="first">Give your pull request a helpful title that summarises what your
-contribution does. In some cases “Fix &lt;ISSUE TITLE&gt;” is enough.
-“Fix #&lt;ISSUE NUMBER&gt;” is not enough.</p>
 </li>
 <li><p class="first">Often pull requests resolve one or more other issues (or pull requests).
 If merging your pull request means that some other issues/PRs should
@@ -539,55 +579,27 @@ automatically be closed by GitHub. If your pull request is simply
 related to some other issues/PRs, create a link to them without using
 the keywords (e.g., <code class="docutils literal"><span class="pre">See</span> <span class="pre">also</span> <span class="pre">#1234</span></code>).</p>
 </li>
-<li><p class="first">All public methods should have informative docstrings with sample
-usage presented as doctests when appropriate.</p>
+<li><p class="first">PRs should often substantiate the change, through benchmarks of
+performance and efficiency or through examples of usage. Examples also
+illustrate the features and intricacies of the library to users. Have a
+look at other examples in the <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/tree/master/examples">examples/</a>
+directory for reference. Examples should demonstrate why the new
+functionality is useful in practice and, if possible, compare it to other
+methods available in scikit-learn.</p>
 </li>
-<li><p class="first">Please prefix the title of your pull request with <code class="docutils literal"><span class="pre">[MRG]</span></code> if the
-contribution is complete and should be subjected to a detailed review.
-Two core developers will review your code and change the prefix of the pull
-request to <code class="docutils literal"><span class="pre">[MRG</span> <span class="pre">+</span> <span class="pre">1]</span></code> and <code class="docutils literal"><span class="pre">[MRG</span> <span class="pre">+</span> <span class="pre">2]</span></code> on approval, making it eligible
-for merging. An incomplete contribution – where you expect to do more
-work before receiving a full review – should be prefixed <code class="docutils literal"><span class="pre">[WIP]</span></code> (to
-indicate a work in progress) and changed to <code class="docutils literal"><span class="pre">[MRG]</span></code> when it matures.
-WIPs may be useful to: indicate you are working on something to avoid
-duplicated work, request broad review of functionality or API, or seek
-collaborators. WIPs often benefit from the inclusion of a
-<a class="reference external" href="https://github.com/blog/1375-task-lists-in-gfm-issues-pulls-comments">task list</a>
-in the PR description.</p>
+<li><p class="first">New features often need to be illustrated with narrative documentation in
+the user guide, with small code snipets. If relevant, please also add
+references in the literature, with PDF links when possible.</p>
 </li>
-<li><p class="first">All other tests pass when everything is rebuilt from scratch. On
-Unix-like systems, check with (from the toplevel source folder):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ make
-</pre></div>
-</div>
-</li>
-<li><p class="first">When adding additional functionality, provide at least one example script
-in the <code class="docutils literal"><span class="pre">examples/</span></code> folder. Have a look at other examples for reference.
-Examples should demonstrate why the new functionality is useful in
-practice and, if possible, compare it to other methods available in
-scikit-learn.</p>
-</li>
-<li><p class="first">Documentation and high-coverage tests are necessary for enhancements to be
-accepted. Bug-fixes or new features should be provided with
-<a class="reference external" href="https://en.wikipedia.org/wiki/Non-regression_testing">non-regression tests</a>. These tests
-verify the correct behavior of the fix or feature. In this manner, further
-modifications on the code base are granted to be consistent with the
-desired behavior. For the case of bug fixes, at the time of the PR, the
-non-regression tests should fail for the code base in the master branch
-and pass for the PR code.</p>
-</li>
-<li><p class="first">At least one paragraph of narrative documentation with links to
-references in the literature (with PDF links when possible) and
-the example. For more details on writing and building the
-documentation, see the <a class="reference internal" href="#contribute-documentation"><span class="std std-ref">Documentation</span></a> section.</p>
-</li>
-<li><p class="first">The documentation should also include expected time and space complexity
+<li><p class="first">The user guide should also include expected time and space complexity
 of the algorithm and scalability, e.g. “this algorithm can scale to a
 large number of samples &gt; 100000, but does not scale in dimensionality:
 n_features is expected to be lower than 100”.</p>
 </li>
-</ul>
-<p>You can also check for common programming errors with the following tools:</p>
+</ol>
+<p>You can also check our <a class="reference internal" href="#code-review"><span class="std std-ref">Code Review Guidelines</span></a> to get an idea of what reviewers
+will expect.</p>
+<p>You can check for common programming errors with the following tools:</p>
 <ul>
 <li><p class="first">Code with a good unittest coverage (at least 80%, better 100%), check
 with:</p>
@@ -597,18 +609,12 @@ $ pytest --cov sklearn path/to/tests_for_package
 </div>
 <p>see also <a class="reference internal" href="#testing-coverage"><span class="std std-ref">Testing and improving test coverage</span></a></p>
 </li>
-<li><p class="first">No flake8 warnings, check with:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ pip install flake8
-$ flake8 path/to/module.py
-</pre></div>
-</div>
-</li>
 </ul>
 <p>Bonus points for contributions that include a performance analysis with
 a benchmark script and profiling output (please report on the mailing
 list or on the GitHub issue).</p>
-<p>Also check out the <a class="reference internal" href="performance.html#performance-howto"><span class="std std-ref">How to optimize for speed</span></a> guide for more details on profiling
-and Cython optimizations.</p>
+<p>Also check out the <a class="reference internal" href="performance.html#performance-howto"><span class="std std-ref">How to optimize for speed</span></a> guide for more details on
+profiling and Cython optimizations.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The current state of the scikit-learn code base is not compliant with
@@ -626,13 +632,10 @@ sections.</p>
 <div class="section" id="continuous-integration-ci">
 <h4>Continuous Integration (CI)<a class="headerlink" href="#continuous-integration-ci" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
-<li>Travis is used for testing on Linux platforms</li>
-<li>Appveyor is used for testing on Windows platforms</li>
-<li><dl class="first docutils">
-<dt>CircleCI is used to build the docs for viewing, for linting with flake8, and</dt>
-<dd>for testing with PyPy on Linux</dd>
-</dl>
-</li>
+<li>Azure pipelines are used for testing scikit-learn on Linux, Mac and Windows,
+with different dependencies and settings.</li>
+<li>CircleCI is used to build the docs for viewing, for linting with flake8, and
+for testing with PyPy on Linux</li>
 </ul>
 <p>Please note that if one of the following markers appear in the latest commit
 message, the following actions are taken.</p>
@@ -733,46 +736,46 @@ contributor left off. The list of issues with the help wanted tag can be found
 <p>Note that not all issues which need contributors will have this tag.</p>
 </div>
 </div>
+</div>
 <div class="section" id="documentation">
-<span id="contribute-documentation"></span><h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h3>
+<span id="contribute-documentation"></span><h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
 <p>We are glad to accept any sort of documentation: function docstrings,
 reStructuredText documents (like this one), tutorials, etc. reStructuredText
 documents live in the source code repository under the <code class="docutils literal"><span class="pre">doc/</span></code> directory.</p>
 <p>You can edit the documentation using any text editor, and then generate the
-HTML output by typing <code class="docutils literal"><span class="pre">make</span> <span class="pre">html</span></code> from the <code class="docutils literal"><span class="pre">doc/</span></code> directory. Alternatively,
-<code class="docutils literal"><span class="pre">make</span></code> can be used to quickly generate the documentation without the example
-gallery. The resulting HTML files will be placed in <code class="docutils literal"><span class="pre">_build/html/stable</span></code> and are viewable
-in a web browser. See the <code class="docutils literal"><span class="pre">README</span></code> file in the <code class="docutils literal"><span class="pre">doc/</span></code> directory for more information.</p>
+HTML output by typing <code class="docutils literal"><span class="pre">make</span></code> from the <code class="docutils literal"><span class="pre">doc/</span></code> directory. Alternatively,
+<code class="docutils literal"><span class="pre">make</span> <span class="pre">html</span></code> may be used to generate the documentation <strong>with</strong> the example
+gallery (which takes quite some time). The resulting HTML files will be
+placed in <code class="docutils literal"><span class="pre">_build/html/stable</span></code> and are viewable in a web browser.</p>
 <div class="section" id="building-the-documentation">
-<h4>Building the documentation<a class="headerlink" href="#building-the-documentation" title="Permalink to this headline">¶</a></h4>
+<h3>Building the documentation<a class="headerlink" href="#building-the-documentation" title="Permalink to this headline">¶</a></h3>
+<p>First, make sure you have <a class="reference internal" href="advanced_installation.html#install-bleeding-edge"><span class="std std-ref">properly installed</span></a>
+the development version.</p>
 <p>Building the documentation requires installing some additional packages:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">sphinx</span> <span class="n">sphinx</span><span class="o">-</span><span class="n">gallery</span> <span class="n">numpydoc</span> <span class="n">matplotlib</span> <span class="n">Pillow</span> <span class="n">pandas</span> <span class="n">scikit</span><span class="o">-</span><span class="n">image</span> <span class="n">joblib</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">sphinx</span> <span class="n">sphinx</span><span class="o">-</span><span class="n">gallery</span> <span class="n">numpydoc</span> <span class="n">matplotlib</span> <span class="n">Pillow</span> <span class="n">pandas</span> <span class="n">scikit</span><span class="o">-</span><span class="n">image</span>
 </pre></div>
 </div>
 <p>To build the documentation, you need to be in the <code class="docutils literal"><span class="pre">doc</span></code> folder:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">doc</span>
 </pre></div>
 </div>
-<p>It also requires having the version of scikit-learn installed that corresponds
-to the documentation, e.g.:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">editable</span> <span class="o">..</span>
+<p>In the vast majority of cases, you only need to generate the full web site,
+without the example gallery:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span>
 </pre></div>
 </div>
-<p>To generate the full web site, including the example gallery:</p>
+<p>The documentation will be generated in the <code class="docutils literal"><span class="pre">_build/html/stable</span></code> directory.
+To also generate the example gallery you can use:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">html</span>
 </pre></div>
 </div>
-<p>Generating the example gallery will run all our examples which takes a
-while. To save some time, you can use:</p>
-<ul class="simple">
-<li><code class="docutils literal"><span class="pre">make</span> <span class="pre">html-noplot</span></code>: this will generate the documentation without the
-example gallery. This is useful when changing a docstring for example.</li>
-<li><code class="docutils literal"><span class="pre">EXAMPLES_PATTERN=your_regex_goes_here</span> <span class="pre">make</span> <span class="pre">html</span></code>: only the examples
-matching <code class="docutils literal"><span class="pre">your_regex_goes_here</span></code> will be run. This is particularly
-useful if you are modifying a few examples.</li>
-</ul>
-<p>That should create all the documentation in the <code class="docutils literal"><span class="pre">_build/html/stable</span></code>
-directory.  Set the environment variable <code class="docutils literal"><span class="pre">NO_MATHJAX=1</span></code> if you intend to view
+<p>This will run all the examples, which takes a while. If you only want to
+generate a few examples, you can use:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">EXAMPLES_PATTERN</span><span class="o">=</span><span class="n">your_regex_goes_here</span> <span class="n">make</span> <span class="n">html</span>
+</pre></div>
+</div>
+<p>This is particularly useful if you are modifying a few examples.</p>
+<p>Set the environment variable <code class="docutils literal"><span class="pre">NO_MATHJAX=1</span></code> if you intend to view
 the documentation in an offline setting.</p>
 <p>To build the PDF manual, run:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">latexpdf</span>
@@ -790,7 +793,7 @@ to know the exact version.</p>
 </div>
 </div>
 <div class="section" id="guidelines-for-writing-documentation">
-<h4>Guidelines for writing documentation<a class="headerlink" href="#guidelines-for-writing-documentation" title="Permalink to this headline">¶</a></h4>
+<h3>Guidelines for writing documentation<a class="headerlink" href="#guidelines-for-writing-documentation" title="Permalink to this headline">¶</a></h3>
 <p>It is important to keep a good compromise between mathematical and algorithmic
 details, and give intuition to the reader on what the algorithm does.</p>
 <p>Basically, to elaborate on the above, it is best to always
@@ -835,7 +838,7 @@ with a colon and an explanation, for example:</p>
 </ul>
 </div>
 <div class="section" id="generated-documentation-on-circleci">
-<h4>Generated documentation on CircleCI<a class="headerlink" href="#generated-documentation-on-circleci" title="Permalink to this headline">¶</a></h4>
+<span id="generated-doc-ci"></span><h3>Generated documentation on CircleCI<a class="headerlink" href="#generated-documentation-on-circleci" title="Permalink to this headline">¶</a></h3>
 <p>When you change the documentation in a pull request, CircleCI automatically
 builds it. To view the documentation generated by CircleCI:</p>
 <ul class="simple">
@@ -855,7 +858,7 @@ reviewing pull requests, you may find <a class="reference internal" href="tips.h
 </div>
 </div>
 <div class="section" id="testing-and-improving-test-coverage">
-<span id="testing-coverage"></span><h3>Testing and improving test coverage<a class="headerlink" href="#testing-and-improving-test-coverage" title="Permalink to this headline">¶</a></h3>
+<span id="testing-coverage"></span><h2>Testing and improving test coverage<a class="headerlink" href="#testing-and-improving-test-coverage" title="Permalink to this headline">¶</a></h2>
 <p>High-quality <a class="reference external" href="https://en.wikipedia.org/wiki/Unit_testing">unit testing</a>
 is a corner-stone of the scikit-learn development process. For this
 purpose, we use the <a class="reference external" href="https://docs.pytest.org">pytest</a>
@@ -868,6 +871,8 @@ the corresponding subpackages.</p>
 <p>We expect code coverage of new features to be at least around 90%.</p>
 <p>For guidelines on how to use <code class="docutils literal"><span class="pre">pytest</span></code> efficiently, see the
 <a class="reference internal" href="tips.html#pytest-tips"><span class="std std-ref">Useful pytest aliases and flags</span></a>.</p>
+<div class="section" id="writing-matplotlib-related-tests">
+<h3>Writing matplotlib related tests<a class="headerlink" href="#writing-matplotlib-related-tests" title="Permalink to this headline">¶</a></h3>
 <p>Test fixtures ensure that a set of tests will be executing with the appropriate
 initialization and cleanup. The scikit-learn test suite implements a fixture
 which can be used with <code class="docutils literal"><span class="pre">matplotlib</span></code>.</p>
@@ -885,6 +890,9 @@ argument:</p>
     <span class="c1"># you can now safely use matplotlib</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="workflow-to-improve-test-coverage">
+<h3>Workflow to improve test coverage<a class="headerlink" href="#workflow-to-improve-test-coverage" title="Permalink to this headline">¶</a></h3>
 <p>To test code coverage, you need to install the <a class="reference external" href="https://pypi.org/project/coverage/">coverage</a> package in addition to pytest.</p>
 <ol class="arabic simple">
 <li><dl class="first docutils">
@@ -899,10 +907,6 @@ argument:</p>
 </li>
 <li>Loop.</li>
 </ol>
-</div>
-<div class="section" id="developers-web-site">
-<h3>Developers web site<a class="headerlink" href="#developers-web-site" title="Permalink to this headline">¶</a></h3>
-<p>More information can be found on the <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/wiki">developer’s wiki</a>.</p>
 </div>
 <div class="section" id="issue-tracker-tags">
 <h3>Issue Tracker Tags<a class="headerlink" href="#issue-tracker-tags" title="Permalink to this headline">¶</a></h3>
@@ -1613,11 +1617,6 @@ Inheriting from <code class="docutils literal"><span class="pre">ClassifierMixin
 will set the attribute automatically.  When a meta-estimator needs to distinguish
 among estimator types, instead of checking <code class="docutils literal"><span class="pre">_estimator_type</span></code> directly, helpers
 like <a class="reference internal" href="../modules/generated/sklearn.base.is_classifier.html#sklearn.base.is_classifier" title="sklearn.base.is_classifier"><code class="xref py py-func docutils literal"><span class="pre">base.is_classifier</span></code></a> should be used.</p>
-</div>
-<div class="section" id="working-notes">
-<h3>Working notes<a class="headerlink" href="#working-notes" title="Permalink to this headline">¶</a></h3>
-<p>For unresolved issues, TODOs, and remarks on ongoing work, developers are
-advised to maintain notes on the <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/wiki">GitHub wiki</a>.</p>
 </div>
 <div class="section" id="specific-models">
 <h3>Specific models<a class="headerlink" href="#specific-models" title="Permalink to this headline">¶</a></h3>
