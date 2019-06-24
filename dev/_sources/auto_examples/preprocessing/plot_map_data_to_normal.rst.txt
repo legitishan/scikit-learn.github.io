@@ -73,7 +73,10 @@ is prone to overfitting. The use of the power transform is then recommended.
     rng = np.random.RandomState(304)
     bc = PowerTransformer(method='box-cox')
     yj = PowerTransformer(method='yeo-johnson')
-    qt = QuantileTransformer(output_distribution='normal', random_state=rng)
+    # n_quantiles is set to the training set size rather than the default value
+    # to avoid a warning being raised by this example
+    qt = QuantileTransformer(n_quantiles=500, output_distribution='normal',
+                             random_state=rng)
     size = (N_SAMPLES, 1)
 
 
@@ -156,7 +159,7 @@ is prone to overfitting. The use of the power transform is then recommended.
     plt.tight_layout()
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  1.447 seconds)
+**Total running time of the script:** ( 0 minutes  1.368 seconds)
 
 
 .. _sphx_glr_download_auto_examples_preprocessing_plot_map_data_to_normal.py:
