@@ -207,26 +207,60 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.utils" title="sklearn.utils"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.utils</span></code></a>.safe_indexing<a class="headerlink" href="#sklearn-utils-safe-indexing" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.utils.safe_indexing">
-<code class="descclassname">sklearn.utils.</code><code class="descname">safe_indexing</code><span class="sig-paren">(</span><em>X</em>, <em>indices</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/29b9bb8bd/sklearn/utils/__init__.py#L181"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.utils.safe_indexing" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return items or rows from X using indices.</p>
-<p>Allows simple indexing of lists or arrays.</p>
+<code class="descclassname">sklearn.utils.</code><code class="descname">safe_indexing</code><span class="sig-paren">(</span><em>X</em>, <em>indices</em>, <em>axis=0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/5f37ec1a9/sklearn/utils/__init__.py#L181"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.utils.safe_indexing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return rows, items or columns of X using indices.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, sparse-matrix, list, pandas.DataFrame, pandas.Series.</span></dt>
-<dd><p class="first last">Data from which to sample rows or items.</p>
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, sparse-matrix, list, pandas.DataFrame, pandas.Series</span></dt>
+<dd><p class="first last">Data from which to sample rows, items or columns.</p>
 </dd>
-<dt><strong>indices</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like of int</span></dt>
-<dd><p class="first last">Indices according to which X will be subsampled.</p>
+<dt><strong>indices</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like</span></dt>
+<dd><ul class="first last">
+<li><p class="first">When <code class="docutils literal"><span class="pre">axis=0</span></code>, indices need to be an array of integer.</p>
+</li>
+<li><dl class="first docutils">
+<dt>When <code class="docutils literal"><span class="pre">axis=1</span></code>, indices can be one of:</dt>
+<dd><ul class="first last">
+<li><p class="first">scalar: output is 1D, unless <a class="reference internal" href="../../glossary.html#term-x"><code class="xref any std std-term docutils literal"><span class="pre">X</span></code></a> is sparse.
+Supported data types for scalars:</p>
+<blockquote>
+<div><ul class="simple">
+<li>integer: supported for arrays, sparse matrices and
+dataframes.</li>
+<li>string (key-based): only supported for dataframes.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">container: lists, slices, boolean masks: output is 2D.
+Supported data types for containers:</p>
+<blockquote>
+<div><ul class="simple">
+<li>integer or boolean (positional): supported for
+arrays, sparse matrices and dataframes</li>
+<li>string (key-based): only supported for dataframes. No keys
+other than strings are allowed.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt><strong>axis</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, default=0</span></dt>
+<dd><p class="first last">The axis along which <a class="reference internal" href="../../glossary.html#term-x"><code class="xref any std std-term docutils literal"><span class="pre">X</span></code></a> will be subsampled. <code class="docutils literal"><span class="pre">axis=0</span></code> will select
+rows while <code class="docutils literal"><span class="pre">axis=1</span></code> will select columns.</p>
 </dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
 <dt>subset</dt>
-<dd><p class="first last">Subset of X on first axis</p>
+<dd><p class="first last">Subset of X on axis 0 or 1.</p>
 </dd>
 </dl>
 </td>
