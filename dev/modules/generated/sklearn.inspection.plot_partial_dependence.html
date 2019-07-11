@@ -210,7 +210,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.inspection" title="sklearn.inspection"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.inspection</span></code></a>.plot_partial_dependence<a class="headerlink" href="#sklearn-inspection-plot-partial-dependence" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.inspection.plot_partial_dependence">
-<code class="descclassname">sklearn.inspection.</code><code class="descname">plot_partial_dependence</code><span class="sig-paren">(</span><em>estimator</em>, <em>X</em>, <em>features</em>, <em>feature_names=None</em>, <em>target=None</em>, <em>response_method=’auto’</em>, <em>n_cols=3</em>, <em>grid_resolution=100</em>, <em>percentiles=(0.05</em>, <em>0.95)</em>, <em>method=’auto’</em>, <em>n_jobs=None</em>, <em>verbose=0</em>, <em>fig=None</em>, <em>line_kw=None</em>, <em>contour_kw=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7b8cbc875/sklearn/inspection/partial_dependence.py#L365"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.inspection.plot_partial_dependence" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sklearn.inspection.</code><code class="descname">plot_partial_dependence</code><span class="sig-paren">(</span><em>estimator</em>, <em>X</em>, <em>features</em>, <em>feature_names=None</em>, <em>target=None</em>, <em>response_method=’auto’</em>, <em>n_cols=3</em>, <em>grid_resolution=100</em>, <em>percentiles=(0.05</em>, <em>0.95)</em>, <em>method=’auto’</em>, <em>n_jobs=None</em>, <em>verbose=0</em>, <em>fig=None</em>, <em>line_kw=None</em>, <em>contour_kw=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/0eaaeafd1/sklearn/inspection/partial_dependence.py#L367"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.inspection.plot_partial_dependence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Partial dependence plots.</p>
 <p>The <code class="docutils literal"><span class="pre">len(features)</span></code> plots are arranged in a grid with <code class="docutils literal"><span class="pre">n_cols</span></code>
 columns. Two-way partial dependence plots are plotted as contour plots.</p>
@@ -273,9 +273,13 @@ for the PDP axes. Must be in [0, 1].</p>
 </dd>
 <dt><strong>method</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str, optional (default=’auto’)</span></dt>
 <dd><p class="first">The method to use to calculate the partial dependence predictions:</p>
-<ul class="simple">
-<li>‘recursion’ is only supported for objects inheriting from
-<code class="docutils literal"><span class="pre">BaseGradientBoosting</span></code>, but is more efficient in terms of speed.
+<ul class="last simple">
+<li>‘recursion’ is only supported for gradient boosting estimator (namely
+<a class="reference internal" href="sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier" title="sklearn.ensemble.GradientBoostingClassifier"><code class="xref py py-class docutils literal"><span class="pre">GradientBoostingClassifier</span></code></a>,
+<a class="reference internal" href="sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor" title="sklearn.ensemble.GradientBoostingRegressor"><code class="xref py py-class docutils literal"><span class="pre">GradientBoostingRegressor</span></code></a>,
+<a class="reference internal" href="sklearn.ensemble.HistGradientBoostingClassifier.html#sklearn.ensemble.HistGradientBoostingClassifier" title="sklearn.ensemble.HistGradientBoostingClassifier"><code class="xref py py-class docutils literal"><span class="pre">HistGradientBoostingClassifier</span></code></a>,
+<a class="reference internal" href="sklearn.ensemble.HistGradientBoostingRegressor.html#sklearn.ensemble.HistGradientBoostingRegressor" title="sklearn.ensemble.HistGradientBoostingRegressor"><code class="xref py py-class docutils literal"><span class="pre">HistGradientBoostingRegressor</span></code></a>)
+but is more efficient in terms of speed.
 With this method, <code class="docutils literal"><span class="pre">X</span></code> is optional and is only used to build the
 grid and the partial dependences are computed using the training
 data. This method does not account for the <code class="docutils literal"><span class="pre">init</span></code> predicor of
@@ -285,14 +289,10 @@ classifier is always the decision function, not the predicted
 probabilities.</li>
 <li>‘brute’ is supported for any estimator, but is more
 computationally intensive.</li>
-<li>If ‘auto’, then ‘recursion’ will be used for
-<code class="docutils literal"><span class="pre">BaseGradientBoosting</span></code> estimators with <code class="docutils literal"><span class="pre">init=None</span></code>, and
-‘brute’ for all other.</li>
+<li>‘auto’:
+- ‘recursion’ is used for estimators that supports it.
+- ‘brute’ is used for all other estimators.</li>
 </ul>
-<p class="last">Unlike the ‘brute’ method, ‘recursion’ does not account for the
-<code class="docutils literal"><span class="pre">init</span></code> predictor of the boosting process. In practice this still
-produces the same plots, up to a constant offset in the target
-response.</p>
 </dd>
 <dt><strong>n_jobs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, optional (default=None)</span></dt>
 <dd><p class="first last">The number of CPUs to use to compute the partial dependences.
@@ -328,7 +328,10 @@ predictor of the boosting process. In practice this will produce the
 same values as ‘brute’ up to a constant offset in the target response,
 provided that <code class="docutils literal"><span class="pre">init</span></code> is a consant estimator (which is the default).
 However, as soon as <code class="docutils literal"><span class="pre">init</span></code> is not a constant estimator, the partial
-dependence values are incorrect for ‘recursion’.</p>
+dependence values are incorrect for ‘recursion’. This is not relevant for
+<a class="reference internal" href="sklearn.ensemble.HistGradientBoostingClassifier.html#sklearn.ensemble.HistGradientBoostingClassifier" title="sklearn.ensemble.HistGradientBoostingClassifier"><code class="xref py py-class docutils literal"><span class="pre">HistGradientBoostingClassifier</span></code></a> and
+<a class="reference internal" href="sklearn.ensemble.HistGradientBoostingRegressor.html#sklearn.ensemble.HistGradientBoostingRegressor" title="sklearn.ensemble.HistGradientBoostingRegressor"><code class="xref py py-class docutils literal"><span class="pre">HistGradientBoostingRegressor</span></code></a>, which do not have an
+<code class="docutils literal"><span class="pre">init</span></code> parameter.</p>
 </div>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
