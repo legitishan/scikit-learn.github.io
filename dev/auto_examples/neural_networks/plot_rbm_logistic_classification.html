@@ -226,16 +226,16 @@ example shows that the features extracted by the BernoulliRBM help improve the
 classification accuracy.</p>
 <img alt="../../_images/sphx_glr_plot_rbm_logistic_classification_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_rbm_logistic_classification_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>[BernoulliRBM] Iteration 1, pseudo-likelihood = -25.39, time = 0.15s
-[BernoulliRBM] Iteration 2, pseudo-likelihood = -23.72, time = 0.22s
-[BernoulliRBM] Iteration 3, pseudo-likelihood = -22.72, time = 0.21s
-[BernoulliRBM] Iteration 4, pseudo-likelihood = -21.86, time = 0.21s
-[BernoulliRBM] Iteration 5, pseudo-likelihood = -21.66, time = 0.20s
-[BernoulliRBM] Iteration 6, pseudo-likelihood = -21.00, time = 0.21s
-[BernoulliRBM] Iteration 7, pseudo-likelihood = -20.75, time = 0.20s
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>[BernoulliRBM] Iteration 1, pseudo-likelihood = -25.39, time = 0.14s
+[BernoulliRBM] Iteration 2, pseudo-likelihood = -23.72, time = 0.20s
+[BernoulliRBM] Iteration 3, pseudo-likelihood = -22.72, time = 0.20s
+[BernoulliRBM] Iteration 4, pseudo-likelihood = -21.86, time = 0.20s
+[BernoulliRBM] Iteration 5, pseudo-likelihood = -21.66, time = 0.19s
+[BernoulliRBM] Iteration 6, pseudo-likelihood = -21.00, time = 0.19s
+[BernoulliRBM] Iteration 7, pseudo-likelihood = -20.75, time = 0.19s
 [BernoulliRBM] Iteration 8, pseudo-likelihood = -20.52, time = 0.20s
-[BernoulliRBM] Iteration 9, pseudo-likelihood = -20.38, time = 0.20s
-[BernoulliRBM] Iteration 10, pseudo-likelihood = -20.23, time = 0.20s
+[BernoulliRBM] Iteration 9, pseudo-likelihood = -20.38, time = 0.19s
+[BernoulliRBM] Iteration 10, pseudo-likelihood = -20.23, time = 0.19s
 Logistic regression using RBM features:
               precision    recall  f1-score   support
 
@@ -329,9 +329,9 @@ weighted avg       0.78      0.78      0.78      1797
 
 
 <span class="c1"># Load Data</span>
-<span class="n">digits</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.load_digits.html#sklearn.datasets.load_digits" title="View documentation for sklearn.datasets.load_digits"><span class="n">datasets</span><span class="o">.</span><span class="n">load_digits</span></a><span class="p">()</span>
-<span class="n">X</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.asarray.html#numpy.asarray" title="View documentation for numpy.asarray"><span class="n">np</span><span class="o">.</span><span class="n">asarray</span></a><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="s1">&#39;float32&#39;</span><span class="p">)</span>
-<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">nudge_dataset</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">digits</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.load_digits.html#sklearn.datasets.load_digits" title="View documentation for sklearn.datasets.load_digits"><span class="n">datasets</span><span class="o">.</span><span class="n">load_digits</span></a><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.asarray.html#numpy.asarray" title="View documentation for numpy.asarray"><span class="n">np</span><span class="o">.</span><span class="n">asarray</span></a><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="s1">&#39;float32&#39;</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">nudge_dataset</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 <span class="n">X</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.0001</span><span class="p">)</span>  <span class="c1"># 0-1 scaling</span>
 
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">,</span> <span class="n">Y_test</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="View documentation for sklearn.model_selection.train_test_split"><span class="n">train_test_split</span></a><span class="p">(</span>
@@ -392,7 +392,7 @@ weighted avg       0.78      0.78      0.78      1797
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  5.526 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  4.981 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-neural-networks-plot-rbm-logistic-classification-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/plot_rbm_logistic_classification.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_rbm_logistic_classification.py</span></code></a></div>
