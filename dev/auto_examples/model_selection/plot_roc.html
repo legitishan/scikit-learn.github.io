@@ -186,7 +186,8 @@
     <p class="citing">Please <b><a href="../../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
 <li><a class="reference internal" href="#">Receiver Operating Characteristic (ROC)</a><ul>
-<li><a class="reference internal" href="#multiclass-settings">Multiclass settings</a></li>
+<li><a class="reference internal" href="#plot-roc-curves-for-the-multilabel-problem">Plot ROC curves for the multilabel problem</a></li>
+<li><a class="reference internal" href="#area-under-roc-for-the-multiclass-problem">Area under ROC for the multiclass problem</a></li>
 </ul>
 </li>
 </ul>
@@ -221,22 +222,20 @@ one. This is not very realistic, but it does mean that a larger area under the
 curve (AUC) is usually better.</p>
 <p>The “steepness” of ROC curves is also important, since it is ideal to maximize
 the true positive rate while minimizing the false positive rate.</p>
-<div class="section" id="multiclass-settings">
-<h2>Multiclass settings<a class="headerlink" href="#multiclass-settings" title="Permalink to this headline">¶</a></h2>
 <p>ROC curves are typically used in binary classification to study the output of
-a classifier. In order to extend ROC curve and ROC area to multi-class
-or multi-label classification, it is necessary to binarize the output. One ROC
+a classifier. In order to extend ROC curve and ROC area to multi-label
+classification, it is necessary to binarize the output. One ROC
 curve can be drawn per label, but one can also draw a ROC curve by considering
 each element of the label indicator matrix as a binary prediction
 (micro-averaging).</p>
-<p>Another evaluation measure for multi-class classification is
+<p>Another evaluation measure for multi-label classification is
 macro-averaging, which gives equal weight to the classification of each
 label.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <dl class="last docutils">
 <dt>See also <a class="reference internal" href="../../modules/generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score" title="sklearn.metrics.roc_auc_score"><code class="xref py py-func docutils literal"><span class="pre">sklearn.metrics.roc_auc_score</span></code></a>,</dt>
-<dd><a class="reference internal" href="plot_roc_crossval.html#sphx-glr-auto-examples-model-selection-plot-roc-crossval-py"><span class="std std-ref">Receiver Operating Characteristic (ROC) with cross validation</span></a>.</dd>
+<dd><a class="reference internal" href="plot_roc_crossval.html#sphx-glr-auto-examples-model-selection-plot-roc-crossval-py"><span class="std std-ref">Receiver Operating Characteristic (ROC) with cross validation</span></a></dd>
 </dl>
 </div>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
@@ -251,6 +250,7 @@ label.</p>
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.preprocessing.label_binarize.html#sklearn.preprocessing.label_binarize" title="View documentation for sklearn.preprocessing.label_binarize"><span class="n">label_binarize</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.multiclass</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.multiclass.OneVsRestClassifier.html#sklearn.multiclass.OneVsRestClassifier" title="View documentation for sklearn.multiclass.OneVsRestClassifier"><span class="n">OneVsRestClassifier</span></a>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">interp</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score" title="View documentation for sklearn.metrics.roc_auc_score"><span class="n">roc_auc_score</span></a>
 
 <span class="c1"># Import some data to play with</span>
 <span class="n">iris</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.load_iris.html#sklearn.datasets.load_iris" title="View documentation for sklearn.datasets.load_iris"><span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span></a><span class="p">()</span>
@@ -304,10 +304,10 @@ label.</p>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_roc_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_roc_001.png" />
-<p>Plot ROC curves for the multiclass problem</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Compute macro-average ROC curve and ROC area</span>
-
-<span class="c1"># First aggregate all false positive rates</span>
+<div class="section" id="plot-roc-curves-for-the-multilabel-problem">
+<h2>Plot ROC curves for the multilabel problem<a class="headerlink" href="#plot-roc-curves-for-the-multilabel-problem" title="Permalink to this headline">¶</a></h2>
+<p>Compute macro-average ROC curve and ROC area</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># First aggregate all false positive rates</span>
 <span class="n">all_fpr</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.unique.html#numpy.unique" title="View documentation for numpy.unique"><span class="n">np</span><span class="o">.</span><span class="n">unique</span></a><span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.concatenate.html#numpy.concatenate" title="View documentation for numpy.concatenate"><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span></a><span class="p">([</span><span class="n">fpr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_classes</span><span class="p">)]))</span>
 
 <span class="c1"># Then interpolate all ROC curves at this points</span>
@@ -351,7 +351,42 @@ label.</p>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_roc_002.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_roc_002.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.142 seconds)</p>
+</div>
+<div class="section" id="area-under-roc-for-the-multiclass-problem">
+<h2>Area under ROC for the multiclass problem<a class="headerlink" href="#area-under-roc-for-the-multiclass-problem" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="../../modules/generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score" title="sklearn.metrics.roc_auc_score"><code class="xref py py-func docutils literal"><span class="pre">sklearn.metrics.roc_auc_score</span></code></a> function can be used for
+multi-class classification. The mutliclass One-vs-One scheme compares every
+unique pairwise combination of classes. In this section, we calcuate the AUC
+using the OvR and OvO schemes. We report a macro average, and a
+prevalence-weighted average.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">y_prob</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="n">macro_roc_auc_ovo</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score" title="View documentation for sklearn.metrics.roc_auc_score"><span class="n">roc_auc_score</span></a><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_prob</span><span class="p">,</span> <span class="n">multi_class</span><span class="o">=</span><span class="s2">&quot;ovo&quot;</span><span class="p">,</span>
+                                  <span class="n">average</span><span class="o">=</span><span class="s2">&quot;macro&quot;</span><span class="p">)</span>
+<span class="n">weighted_roc_auc_ovo</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score" title="View documentation for sklearn.metrics.roc_auc_score"><span class="n">roc_auc_score</span></a><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_prob</span><span class="p">,</span> <span class="n">multi_class</span><span class="o">=</span><span class="s2">&quot;ovo&quot;</span><span class="p">,</span>
+                                     <span class="n">average</span><span class="o">=</span><span class="s2">&quot;weighted&quot;</span><span class="p">)</span>
+<span class="n">macro_roc_auc_ovr</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score" title="View documentation for sklearn.metrics.roc_auc_score"><span class="n">roc_auc_score</span></a><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_prob</span><span class="p">,</span> <span class="n">multi_class</span><span class="o">=</span><span class="s2">&quot;ovr&quot;</span><span class="p">,</span>
+                                  <span class="n">average</span><span class="o">=</span><span class="s2">&quot;macro&quot;</span><span class="p">)</span>
+<span class="n">weighted_roc_auc_ovr</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score" title="View documentation for sklearn.metrics.roc_auc_score"><span class="n">roc_auc_score</span></a><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_prob</span><span class="p">,</span> <span class="n">multi_class</span><span class="o">=</span><span class="s2">&quot;ovr&quot;</span><span class="p">,</span>
+                                     <span class="n">average</span><span class="o">=</span><span class="s2">&quot;weighted&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;One-vs-One ROC AUC scores:</span><span class="se">\n</span><span class="s2">{:.6f} (macro),</span><span class="se">\n</span><span class="s2">{:.6f} &quot;</span>
+      <span class="s2">&quot;(weighted by prevalence)&quot;</span>
+      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">macro_roc_auc_ovo</span><span class="p">,</span> <span class="n">weighted_roc_auc_ovo</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;One-vs-Rest ROC AUC scores:</span><span class="se">\n</span><span class="s2">{:.6f} (macro),</span><span class="se">\n</span><span class="s2">{:.6f} &quot;</span>
+      <span class="s2">&quot;(weighted by prevalence)&quot;</span>
+      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">macro_roc_auc_ovr</span><span class="p">,</span> <span class="n">weighted_roc_auc_ovr</span><span class="p">))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>One-vs-One ROC AUC scores:
+0.767722 (macro),
+0.748802 (weighted by prevalence)
+One-vs-Rest ROC AUC scores:
+0.767722 (macro),
+0.748802 (weighted by prevalence)
+</pre></div>
+</div>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.163 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-model-selection-plot-roc-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/plot_roc.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_roc.py</span></code></a></div>

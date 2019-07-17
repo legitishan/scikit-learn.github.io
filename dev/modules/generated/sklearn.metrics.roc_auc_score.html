@@ -185,7 +185,10 @@
       <a href="http://scikit-learn.org/dev/versions.html">Other versions</a></p>
     <p class="citing">Please <b><a href="../../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
-<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">sklearn.metrics</span></code>.roc_auc_score</a></li>
+<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">sklearn.metrics</span></code>.roc_auc_score</a><ul>
+<li><a class="reference internal" href="#examples-using-sklearn-metrics-roc-auc-score">Examples using <code class="docutils literal"><span class="pre">sklearn.metrics.roc_auc_score</span></code></a></li>
+</ul>
+</li>
 </ul>
 
     </div>
@@ -207,7 +210,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.metrics" title="sklearn.metrics"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.metrics</span></code></a>.roc_auc_score<a class="headerlink" href="#sklearn-metrics-roc-auc-score" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.metrics.roc_auc_score">
-<code class="descclassname">sklearn.metrics.</code><code class="descname">roc_auc_score</code><span class="sig-paren">(</span><em>y_true</em>, <em>y_score</em>, <em>average=’macro’</em>, <em>sample_weight=None</em>, <em>max_fpr=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/d1c52f402/sklearn/metrics/ranking.py#L217"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.metrics.roc_auc_score" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sklearn.metrics.</code><code class="descname">roc_auc_score</code><span class="sig-paren">(</span><em>y_true</em>, <em>y_score</em>, <em>average=’macro’</em>, <em>sample_weight=None</em>, <em>max_fpr=None</em>, <em>multi_class=’raise’</em>, <em>labels=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/dc9955b5d/sklearn/metrics/ranking.py#L246"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.metrics.roc_auc_score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute Area Under the Receiver Operating Characteristic Curve (ROC AUC)
 from prediction scores.</p>
 <p>Note: this implementation is restricted to the binary classification task
@@ -219,18 +222,23 @@ or multilabel classification task in label indicator format.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
 <dt><strong>y_true</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array, shape = [n_samples] or [n_samples, n_classes]</span></dt>
-<dd><p class="first last">True binary labels or binary label indicators.</p>
+<dd><p class="first last">True binary labels or binary label indicators.
+The multiclass case expects shape = [n_samples] and labels
+with values in <code class="docutils literal"><span class="pre">range(n_classes)</span></code>.</p>
 </dd>
 <dt><strong>y_score</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array, shape = [n_samples] or [n_samples, n_classes]</span></dt>
 <dd><p class="first last">Target scores, can either be probability estimates of the positive
 class, confidence values, or non-thresholded measure of decisions
 (as returned by “decision_function” on some classifiers). For binary
 y_true, y_score is supposed to be the score of the class with greater
-label.</p>
+label. The multiclass case expects shape = [n_samples, n_classes]
+where the scores correspond to probability estimates.</p>
 </dd>
 <dt><strong>average</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string, [None, ‘micro’, ‘macro’ (default), ‘samples’, ‘weighted’]</span></dt>
 <dd><p class="first">If <code class="docutils literal"><span class="pre">None</span></code>, the scores for each class are returned. Otherwise,
-this determines the type of averaging performed on the data:</p>
+this determines the type of averaging performed on the data:
+Note: multiclass ROC AUC currently only handles the ‘macro’ and
+‘weighted’ averages.</p>
 <dl class="docutils">
 <dt><code class="docutils literal"><span class="pre">'micro'</span></code>:</dt>
 <dd><p class="first last">Calculate metrics globally by considering each element of the label
@@ -255,7 +263,28 @@ by support (the number of true instances for each label).</p>
 </dd>
 <dt><strong>max_fpr</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float &gt; 0 and &lt;= 1, optional</span></dt>
 <dd><p class="first last">If not <code class="docutils literal"><span class="pre">None</span></code>, the standardized partial AUC <a class="reference internal" href="#r4bb7c4558997-3" id="id1">[3]</a> over the range
-[0, max_fpr] is returned.</p>
+[0, max_fpr] is returned. For the multiclass case, <code class="docutils literal"><span class="pre">max_fpr</span></code>,
+should be either equal to <code class="docutils literal"><span class="pre">None</span></code> or <code class="docutils literal"><span class="pre">1.0</span></code> as AUC ROC partial
+computation currently is not supported for multiclass.</p>
+</dd>
+<dt><strong>multi_class</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string, ‘ovr’ or ‘ovo’, optional(default=’raise’)</span></dt>
+<dd><p class="first">Determines the type of multiclass configuration to use.
+<code class="docutils literal"><span class="pre">multi_class</span></code> must be provided when <code class="docutils literal"><span class="pre">y_true</span></code> is multiclass.
+<code class="docutils literal"><span class="pre">'ovr'</span></code>:</p>
+<blockquote>
+<div><p>Calculate metrics for the multiclass case using the one-vs-rest
+approach.</p>
+</div></blockquote>
+<dl class="last docutils">
+<dt><code class="docutils literal"><span class="pre">'ovo'</span></code>:</dt>
+<dd><p class="first last">Calculate metrics for the multiclass case using the one-vs-one
+approach.</p>
+</dd>
+</dl>
+</dd>
+<dt><strong>labels</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array, shape = [n_classes] or None, optional (default=None)</span></dt>
+<dd><p class="first last">List of labels to index <code class="docutils literal"><span class="pre">y_score</span></code> used for multiclass. If <code class="docutils literal"><span class="pre">None</span></code>,
+the lexicon order of <code class="docutils literal"><span class="pre">y_true</span></code> is used to index <code class="docutils literal"><span class="pre">y_score</span></code>.</p>
 </dd>
 </dl>
 </td>
@@ -308,7 +337,14 @@ Letters, 2006, 27(8):861-874.</td></tr>
 </div>
 </dd></dl>
 
-<div class="clearer"></div></div>
+<div class="section" id="examples-using-sklearn-metrics-roc-auc-score">
+<h2>Examples using <code class="docutils literal"><span class="pre">sklearn.metrics.roc_auc_score</span></code><a class="headerlink" href="#examples-using-sklearn-metrics-roc-auc-score" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="Example of Receiver Operating Characteristic (ROC) metric to evaluate classifier output quality..."><div class="figure" id="id5">
+<img alt="../../_images/sphx_glr_plot_roc_thumb.png" src="../../_images/sphx_glr_plot_roc_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/model_selection/plot_roc.html#sphx-glr-auto-examples-model-selection-plot-roc-py"><span class="std std-ref">Receiver Operating Characteristic (ROC)</span></a></span></p>
+</div>
+</div><div class="clearer"></div></div>
+</div>
 
 
           </div>
