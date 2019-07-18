@@ -385,55 +385,38 @@ the base system and these steps will not be necessary.</p>
 <h2>Installing build dependencies<a class="headerlink" href="#installing-build-dependencies" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="linux">
 <h3>Linux<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h3>
-<p>Installing from source requires you to have installed the scikit-learn runtime
-dependencies, Python development headers and a working C/C++ compiler.
-Under Debian-based operating systems, which include Ubuntu:</p>
+<p>Installing from source without conda requires you to have installed the
+scikit-learn runtime dependencies, Python development headers and a working
+C/C++ compiler. Under Debian-based operating systems, which include Ubuntu:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">build</span><span class="o">-</span><span class="n">essential</span> <span class="n">python3</span><span class="o">-</span><span class="n">dev</span> <span class="n">python3</span><span class="o">-</span><span class="n">setuptools</span> \
-                 <span class="n">python3</span><span class="o">-</span><span class="n">numpy</span> <span class="n">python3</span><span class="o">-</span><span class="n">scipy</span> \
-                 <span class="n">libatlas</span><span class="o">-</span><span class="n">dev</span> <span class="n">libatlas3</span><span class="o">-</span><span class="n">base</span>
+                 <span class="n">python3</span><span class="o">-</span><span class="n">pip</span>
 </pre></div>
 </div>
-<p>On recent Debian and Ubuntu (e.g. Ubuntu 14.04 or later) make sure that ATLAS
-is used to provide the implementation of the BLAS and LAPACK linear algebra
-routines:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">update</span><span class="o">-</span><span class="n">alternatives</span> <span class="o">--</span><span class="nb">set</span> <span class="n">libblas</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">3</span> \
-    <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">atlas</span><span class="o">-</span><span class="n">base</span><span class="o">/</span><span class="n">atlas</span><span class="o">/</span><span class="n">libblas</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">3</span>
-<span class="n">sudo</span> <span class="n">update</span><span class="o">-</span><span class="n">alternatives</span> <span class="o">--</span><span class="nb">set</span> <span class="n">liblapack</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">3</span> \
-    <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">atlas</span><span class="o">-</span><span class="n">base</span><span class="o">/</span><span class="n">atlas</span><span class="o">/</span><span class="n">liblapack</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">3</span>
+<p>and then:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip3</span> <span class="n">install</span> <span class="n">numpy</span> <span class="n">scipy</span> <span class="n">cython</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>In order to build the documentation and run the example code contains in
 this documentation you will need matplotlib:</p>
-<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">matplotlib</span>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="n">pip3</span> <span class="n">install</span> <span class="n">matplotlib</span>
 </pre></div>
 </div>
+</div>
+<p>When precompiled wheels are not avalaible for your architecture, you can
+install the system versions:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">cython3</span> <span class="n">python3</span><span class="o">-</span><span class="n">numpy</span> <span class="n">python3</span><span class="o">-</span><span class="n">scipy</span> <span class="n">python3</span><span class="o">-</span><span class="n">matplotlib</span>
+</pre></div>
+</div>
+<p>On Red Hat and clones (e.g. CentOS), install the dependencies using:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">yum</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">gcc</span> <span class="n">gcc</span><span class="o">-</span><span class="n">c</span><span class="o">++</span> <span class="n">python</span><span class="o">-</span><span class="n">devel</span> <span class="n">numpy</span> <span class="n">scipy</span>
+</pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>The above installs the ATLAS implementation of BLAS
-(the Basic Linear Algebra Subprograms library).
-Ubuntu 11.10 and later, and recent (testing) versions of Debian,
-offer an alternative implementation called OpenBLAS.</p>
-<p>Using OpenBLAS can give speedups in some scikit-learn modules,
-but can freeze joblib/multiprocessing prior to OpenBLAS version 0.2.8-4,
-so using it is not recommended unless you know what you’re doing.</p>
-<p>If you do want to use OpenBLAS, then replacing ATLAS only requires a couple
-of commands. ATLAS has to be removed, otherwise NumPy may not work:</p>
-<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">remove</span> <span class="n">libatlas3gf</span><span class="o">-</span><span class="n">base</span> <span class="n">libatlas</span><span class="o">-</span><span class="n">dev</span>
-<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">libopenblas</span><span class="o">-</span><span class="n">dev</span>
-
-<span class="n">sudo</span> <span class="n">update</span><span class="o">-</span><span class="n">alternatives</span>  <span class="o">--</span><span class="nb">set</span> <span class="n">libblas</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">3</span> \
-    <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">openblas</span><span class="o">-</span><span class="n">base</span><span class="o">/</span><span class="n">libopenblas</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">0</span>
-<span class="n">sudo</span> <span class="n">update</span><span class="o">-</span><span class="n">alternatives</span> <span class="o">--</span><span class="nb">set</span> <span class="n">liblapack</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">3</span> \
-    <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">lapack</span><span class="o">/</span><span class="n">liblapack</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">3</span>
-</pre></div>
-</div>
-</div>
-<p>On Red Hat and clones (e.g. CentOS), install the dependencies using:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">yum</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">gcc</span> <span class="n">gcc</span><span class="o">-</span><span class="n">c</span><span class="o">++</span> <span class="n">numpy</span> <span class="n">python</span><span class="o">-</span><span class="n">devel</span> <span class="n">scipy</span>
-</pre></div>
+<p class="last">To use a high performance BLAS library (e.g. OpenBlas) see
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/building/linux.html">scipy installation instructions</a>.</p>
 </div>
 </div>
 <div class="section" id="windows">
