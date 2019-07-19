@@ -210,7 +210,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.metrics" title="sklearn.metrics"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.metrics</span></code></a>.make_scorer<a class="headerlink" href="#sklearn-metrics-make-scorer" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.metrics.make_scorer">
-<code class="descclassname">sklearn.metrics.</code><code class="descname">make_scorer</code><span class="sig-paren">(</span><em>score_func</em>, <em>greater_is_better=True</em>, <em>needs_proba=False</em>, <em>needs_threshold=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9310d5ea2/sklearn/metrics/scorer.py#L400"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.metrics.make_scorer" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sklearn.metrics.</code><code class="descname">make_scorer</code><span class="sig-paren">(</span><em>score_func</em>, <em>greater_is_better=True</em>, <em>needs_proba=False</em>, <em>needs_threshold=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/948a825f6/sklearn/metrics/scorer.py#L400"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.metrics.make_scorer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a scorer from a performance metric or loss function.</p>
 <p>This factory function wraps scoring functions for use in GridSearchCV
 and cross_val_score. It takes a score function, such as <code class="docutils literal"><span class="pre">accuracy_score</span></code>,
@@ -232,13 +232,19 @@ or a loss function, meaning low is good. In the latter case, the
 scorer object will sign-flip the outcome of the score_func.</p>
 </dd>
 <dt><strong>needs_proba</strong> <span class="classifier-delimiter">:</span> <span class="classifier">boolean, default=False</span></dt>
-<dd><p class="first last">Whether score_func requires predict_proba to get probability estimates
+<dd><p class="first">Whether score_func requires predict_proba to get probability estimates
 out of a classifier.</p>
+<p class="last">If True, for binary <code class="docutils literal"><span class="pre">y_true</span></code>, the score function is supposed to accept
+a 1D <code class="docutils literal"><span class="pre">y_pred</span></code> (i.e., probability of the positive class, shape
+<code class="docutils literal"><span class="pre">(n_samples,)</span></code>).</p>
 </dd>
 <dt><strong>needs_threshold</strong> <span class="classifier-delimiter">:</span> <span class="classifier">boolean, default=False</span></dt>
 <dd><p class="first">Whether score_func takes a continuous decision certainty.
 This only works for binary classification using estimators that
 have either a decision_function or predict_proba method.</p>
+<p>If True, for binary <code class="docutils literal"><span class="pre">y_true</span></code>, the score function is supposed to accept
+a 1D <code class="docutils literal"><span class="pre">y_pred</span></code> (i.e., probability of the positive class or the decision
+function, shape <code class="docutils literal"><span class="pre">(n_samples,)</span></code>).</p>
 <p class="last">For example <code class="docutils literal"><span class="pre">average_precision</span></code> or the area under the roc curve
 can not be computed using discrete predictions alone.</p>
 </dd>
