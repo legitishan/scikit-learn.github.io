@@ -190,6 +190,7 @@ random sampling procedures.</p>
 <li><a class="reference internal" href="../modules/generated/sklearn.decomposition.SparseCoder.html#sklearn.decomposition.SparseCoder" title="sklearn.decomposition.SparseCoder"><code class="xref py py-class docutils literal"><span class="pre">decomposition.SparseCoder</span></code></a> with <code class="docutils literal"><span class="pre">algorithm='lasso_lars'</span></code> <span class="raw-html"><span class="label label-danger">Fix</span></span> </li>
 <li><a class="reference internal" href="../modules/generated/sklearn.decomposition.SparsePCA.html#sklearn.decomposition.SparsePCA" title="sklearn.decomposition.SparsePCA"><code class="xref py py-class docutils literal"><span class="pre">decomposition.SparsePCA</span></code></a> where <code class="docutils literal"><span class="pre">normalize_components</span></code> has no effect
 due to deprecation.</li>
+<li><a class="reference internal" href="../modules/generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge" title="sklearn.linear_model.Ridge"><code class="xref py py-class docutils literal"><span class="pre">linear_model.Ridge</span></code></a> when <a class="reference internal" href="../glossary.html#term-x"><code class="xref any std std-term docutils literal"><span class="pre">X</span></code></a> is sparse. <span class="raw-html"><span class="label label-danger">Fix</span></span> </li>
 </ul>
 <p>Details are listed in the changelog below.</p>
 <p>(While we are trying to better inform users by providing this information, we
@@ -264,6 +265,10 @@ the decision function as in the literature. Thus, <a class="reference internal" 
 <code class="docutils literal"><span class="pre">alpha_init</span></code> and <code class="docutils literal"><span class="pre">lambda_init</span></code> which can be used to set the initial value
 of the maximization procedure in <a class="reference internal" href="../glossary.html#term-fit"><span class="xref std std-term">fit</span></a>.
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/13618">#13618</a> by <a class="reference external" href="https://github.com/c56pony">Yoshihiro Uchida</a>.</li>
+<li><span class="raw-html"><span class="label label-danger">Fix</span></span>  <a class="reference internal" href="../modules/generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge" title="sklearn.linear_model.Ridge"><code class="xref py py-class docutils literal"><span class="pre">linear_model.Ridge</span></code></a> now correctly fits an intercept when <a class="reference internal" href="../glossary.html#term-x"><code class="xref any std std-term docutils literal"><span class="pre">X</span></code></a> is
+sparse, <code class="docutils literal"><span class="pre">solver=&quot;auto&quot;</span></code> and <code class="docutils literal"><span class="pre">fit_intercept=True</span></code>, because the default solver
+in this configuration has changed to <code class="docutils literal"><span class="pre">sparse_cg</span></code>, which can fit an intercept
+with sparse data. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/13995">#13995</a> by <a class="reference external" href="https://github.com/jeromedockes">Jérôme Dockès</a>.</li>
 <li><span class="raw-html"><span class="label label-info">Efficiency</span></span>  The ‘liblinear’ logistic regression solver is now faster and
 requires less memory.
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/14108">#14108</a>, pr:<code class="docutils literal"><span class="pre">14170</span></code> by <a class="reference external" href="https://github.com/alexhenrie">Alex Henrie</a>.</li>
