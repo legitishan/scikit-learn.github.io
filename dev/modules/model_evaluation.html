@@ -230,6 +230,7 @@
 <li><a class="reference internal" href="#mean-squared-logarithmic-error">3.3.4.5. Mean squared logarithmic error</a></li>
 <li><a class="reference internal" href="#median-absolute-error">3.3.4.6. Median absolute error</a></li>
 <li><a class="reference internal" href="#r2-score-the-coefficient-of-determination">3.3.4.7. R² score, the coefficient of determination</a></li>
+<li><a class="reference internal" href="#mean-poisson-gamma-and-tweedie-deviances">3.3.4.8. Mean Poisson, Gamma, and Tweedie deviances</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#clustering-metrics">3.3.5. Clustering metrics</a></li>
@@ -433,6 +434,14 @@ of the metric.</p>
 </tr>
 <tr class="row-odd"><td>‘r2’</td>
 <td><a class="reference internal" href="generated/sklearn.metrics.r2_score.html#sklearn.metrics.r2_score" title="sklearn.metrics.r2_score"><code class="xref py py-func docutils literal"><span class="pre">metrics.r2_score</span></code></a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>‘neg_mean_poisson_deviance’</td>
+<td><a class="reference internal" href="generated/sklearn.metrics.mean_poisson_deviance.html#sklearn.metrics.mean_poisson_deviance" title="sklearn.metrics.mean_poisson_deviance"><code class="xref py py-func docutils literal"><span class="pre">metrics.mean_poisson_deviance</span></code></a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>‘neg_mean_gamma_deviance’</td>
+<td><a class="reference internal" href="generated/sklearn.metrics.mean_gamma_deviance.html#sklearn.metrics.mean_gamma_deviance" title="sklearn.metrics.mean_gamma_deviance"><code class="xref py py-func docutils literal"><span class="pre">metrics.mean_gamma_deviance</span></code></a></td>
 <td>&#160;</td>
 </tr>
 </tbody>
@@ -2205,6 +2214,66 @@ for an example of R² score usage to
 evaluate Lasso and Elastic Net on sparse signals.</li>
 </ul>
 </div>
+</div>
+<div class="section" id="mean-poisson-gamma-and-tweedie-deviances">
+<span id="mean-tweedie-deviance"></span><h3>3.3.4.8. Mean Poisson, Gamma, and Tweedie deviances<a class="headerlink" href="#mean-poisson-gamma-and-tweedie-deviances" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference internal" href="generated/sklearn.metrics.mean_tweedie_deviance.html#sklearn.metrics.mean_tweedie_deviance" title="sklearn.metrics.mean_tweedie_deviance"><code class="xref py py-func docutils literal"><span class="pre">mean_tweedie_deviance</span></code></a> function computes the <a class="reference external" href="https://en.wikipedia.org/wiki/Tweedie_distribution#The_Tweedie_deviance">mean Tweedie
+deviance error</a>
+with power parameter <code class="docutils literal"><span class="pre">p</span></code>. This is a metric that elicits predicted expectation
+values of regression targets.</p>
+<p>Following special cases exist,</p>
+<ul class="simple">
+<li>when <code class="docutils literal"><span class="pre">p=0</span></code> it is equivalent to <a class="reference internal" href="generated/sklearn.metrics.mean_squared_error.html#sklearn.metrics.mean_squared_error" title="sklearn.metrics.mean_squared_error"><code class="xref py py-func docutils literal"><span class="pre">mean_squared_error</span></code></a>.</li>
+<li>when <code class="docutils literal"><span class="pre">p=1</span></code> it is equivalent to <a class="reference internal" href="generated/sklearn.metrics.mean_poisson_deviance.html#sklearn.metrics.mean_poisson_deviance" title="sklearn.metrics.mean_poisson_deviance"><code class="xref py py-func docutils literal"><span class="pre">mean_poisson_deviance</span></code></a>.</li>
+<li>when <code class="docutils literal"><span class="pre">p=2</span></code> it is equivalent to <a class="reference internal" href="generated/sklearn.metrics.mean_gamma_deviance.html#sklearn.metrics.mean_gamma_deviance" title="sklearn.metrics.mean_gamma_deviance"><code class="xref py py-func docutils literal"><span class="pre">mean_gamma_deviance</span></code></a>.</li>
+</ul>
+<p>If <span class="math">\(\hat{y}_i\)</span> is the predicted value of the <span class="math">\(i\)</span>-th sample,
+and <span class="math">\(y_i\)</span> is the corresponding true value, then the mean Tweedie
+deviance error (D) estimated over <span class="math">\(n_{\text{samples}}\)</span> is defined as</p>
+<div class="math">
+\[\begin{split}\text{D}(y, \hat{y}) = \frac{1}{n_\text{samples}}
+\sum_{i=0}^{n_\text{samples} - 1}
+\begin{cases}
+(y_i-\hat{y}_i)^2, &amp; \text{for }p=0\text{ (Normal)}\\
+2(y_i \log(y/\hat{y}_i) + \hat{y}_i - y_i),  &amp; \text{for }p=1\text{ (Poisson)}\\
+2(\log(\hat{y}_i/y_i) + y_i/\hat{y}_i - 1),  &amp; \text{for }p=2\text{ (Gamma)}\\
+2\left(\frac{\max(y_i,0)^{2-p}}{(1-p)(2-p)}-
+\frac{y\,\hat{y}^{1-p}_i}{1-p}+\frac{\hat{y}^{2-p}_i}{2-p}\right),
+&amp; \text{otherwise}
+\end{cases}\end{split}\]</div>
+<p>Tweedie deviance is a homogeneous function of degree <code class="docutils literal"><span class="pre">2-p</span></code>.
+Thus, Gamma distribution with <code class="docutils literal"><span class="pre">p=2</span></code> means that simultaneously scaling <code class="docutils literal"><span class="pre">y_true</span></code>
+and <code class="docutils literal"><span class="pre">y_pred</span></code> has no effect on the deviance. For Poisson distribution <code class="docutils literal"><span class="pre">p=1</span></code>
+the deviance scales linearly, and for Normal distribution (<code class="docutils literal"><span class="pre">p=0</span></code>),
+quadratically.  In general, the higher <code class="docutils literal"><span class="pre">p</span></code> the less weight is given to extreme
+deviations between true and predicted targets.</p>
+<p>For instance, let’s compare the two predictions 1.0 and 100 that are both
+50% of their corresponding true value.</p>
+<p>The mean squared error (<code class="docutils literal"><span class="pre">p=0</span></code>) is very sensitive to the
+prediction difference of the second point,:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">mean_tweedie_deviance</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mean_tweedie_deviance</span><span class="p">([</span><span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.5</span><span class="p">],</span> <span class="n">p</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">0.25</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mean_tweedie_deviance</span><span class="p">([</span><span class="mf">100.</span><span class="p">],</span> <span class="p">[</span><span class="mf">150.</span><span class="p">],</span> <span class="n">p</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">2500.0</span>
+</pre></div>
+</div>
+<p>If we increase <code class="docutils literal"><span class="pre">p</span></code> to 1,:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mean_tweedie_deviance</span><span class="p">([</span><span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.5</span><span class="p">],</span> <span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">0.18...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mean_tweedie_deviance</span><span class="p">([</span><span class="mf">100.</span><span class="p">],</span> <span class="p">[</span><span class="mf">150.</span><span class="p">],</span> <span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">18.9...</span>
+</pre></div>
+</div>
+<p>the difference in errors decreases. Finally, by setting, <code class="docutils literal"><span class="pre">p=2</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mean_tweedie_deviance</span><span class="p">([</span><span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.5</span><span class="p">],</span> <span class="n">p</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">0.14...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mean_tweedie_deviance</span><span class="p">([</span><span class="mf">100.</span><span class="p">],</span> <span class="p">[</span><span class="mf">150.</span><span class="p">],</span> <span class="n">p</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">0.14...</span>
+</pre></div>
+</div>
+<p>we would get identical errors. The deviance when <code class="docutils literal"><span class="pre">p=2</span></code> is thus only
+sensitive to relative errors.</p>
 </div>
 </div>
 <div class="section" id="clustering-metrics">
