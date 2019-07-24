@@ -1,12 +1,10 @@
 
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <meta charset="utf-8" />
   
     <title>Demonstration of multi-metric evaluation on cross_val_score and GridSearchCV &#8212; scikit-learn 0.22.dev0 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
@@ -14,27 +12,17 @@
   <link rel="stylesheet" href="../../_static/css/bootstrap.min.css" media="screen" />
   <link rel="stylesheet" href="../../_static/css/bootstrap-responsive.css"/>
 
-    
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '0.22.dev0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
     <script type="text/javascript" src="../../_static/js/copybutton.js"></script>
     <script type="text/javascript" src="../../_static/js/extra.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_SVG"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_SVG"></script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -70,8 +58,7 @@
     };
   </script>
 
-  </head>
-  <body>
+  </head><body>
 
 <div class="header-wrapper">
     <div class="header">
@@ -186,7 +173,7 @@
     <p class="citing">Please <b><a href="../../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
 <li><a class="reference internal" href="#">Demonstration of multi-metric evaluation on cross_val_score and GridSearchCV</a><ul>
-<li><a class="reference internal" href="#running-gridsearchcv-using-multiple-evaluation-metrics">Running <code class="docutils literal"><span class="pre">GridSearchCV</span></code> using multiple evaluation metrics</a></li>
+<li><a class="reference internal" href="#running-gridsearchcv-using-multiple-evaluation-metrics">Running <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code> using multiple evaluation metrics</a></li>
 <li><a class="reference internal" href="#plotting-the-result">Plotting the result</a></li>
 </ul>
 </li>
@@ -208,20 +195,20 @@
           <div class="body" role="main">
             
   <div class="sphx-glr-download-link-note admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-model-selection-plot-multi-metric-evaluation-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-model-selection-plot-multi-metric-evaluation-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="demonstration-of-multi-metric-evaluation-on-cross-val-score-and-gridsearchcv">
 <span id="sphx-glr-auto-examples-model-selection-plot-multi-metric-evaluation-py"></span><h1>Demonstration of multi-metric evaluation on cross_val_score and GridSearchCV<a class="headerlink" href="#demonstration-of-multi-metric-evaluation-on-cross-val-score-and-gridsearchcv" title="Permalink to this headline">¶</a></h1>
-<p>Multiple metric parameter search can be done by setting the <code class="docutils literal"><span class="pre">scoring</span></code>
+<p>Multiple metric parameter search can be done by setting the <code class="docutils literal notranslate"><span class="pre">scoring</span></code>
 parameter to a list of metric scorer names or a dict mapping the scorer names
 to the scorer callables.</p>
-<p>The scores of all the scorers are available in the <code class="docutils literal"><span class="pre">cv_results_</span></code> dict at keys
-ending in <code class="docutils literal"><span class="pre">'_&lt;scorer_name&gt;'</span></code> (<code class="docutils literal"><span class="pre">'mean_test_precision'</span></code>,
-<code class="docutils literal"><span class="pre">'rank_test_precision'</span></code>, etc…)</p>
-<p>The <code class="docutils literal"><span class="pre">best_estimator_</span></code>, <code class="docutils literal"><span class="pre">best_index_</span></code>, <code class="docutils literal"><span class="pre">best_score_</span></code> and <code class="docutils literal"><span class="pre">best_params_</span></code>
-correspond to the scorer (key) that is set to the <code class="docutils literal"><span class="pre">refit</span></code> attribute.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Author: Raghav RV &lt;rvraghav93@gmail.com&gt;</span>
+<p>The scores of all the scorers are available in the <code class="docutils literal notranslate"><span class="pre">cv_results_</span></code> dict at keys
+ending in <code class="docutils literal notranslate"><span class="pre">'_&lt;scorer_name&gt;'</span></code> (<code class="docutils literal notranslate"><span class="pre">'mean_test_precision'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'rank_test_precision'</span></code>, etc…)</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">best_estimator_</span></code>, <code class="docutils literal notranslate"><span class="pre">best_index_</span></code>, <code class="docutils literal notranslate"><span class="pre">best_score_</span></code> and <code class="docutils literal notranslate"><span class="pre">best_params_</span></code>
+correspond to the scorer (key) that is set to the <code class="docutils literal notranslate"><span class="pre">refit</span></code> attribute.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: Raghav RV &lt;rvraghav93@gmail.com&gt;</span>
 <span class="c1"># License: BSD</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
@@ -237,8 +224,8 @@ correspond to the scorer (key) that is set to the <code class="docutils literal"
 </pre></div>
 </div>
 <div class="section" id="running-gridsearchcv-using-multiple-evaluation-metrics">
-<h2>Running <code class="docutils literal"><span class="pre">GridSearchCV</span></code> using multiple evaluation metrics<a class="headerlink" href="#running-gridsearchcv-using-multiple-evaluation-metrics" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.make_hastie_10_2.html#sklearn.datasets.make_hastie_10_2" title="View documentation for sklearn.datasets.make_hastie_10_2"><span class="n">make_hastie_10_2</span></a><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">8000</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<h2>Running <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code> using multiple evaluation metrics<a class="headerlink" href="#running-gridsearchcv-using-multiple-evaluation-metrics" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.make_hastie_10_2.html#sklearn.datasets.make_hastie_10_2" title="View documentation for sklearn.datasets.make_hastie_10_2"><span class="n">make_hastie_10_2</span></a><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">8000</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
 
 <span class="c1"># The scorers can be either be one of the predefined metric strings or a scorer</span>
 <span class="c1"># callable, like the one returned by make_scorer</span>
@@ -259,7 +246,7 @@ correspond to the scorer (key) that is set to the <code class="docutils literal"
 </div>
 <div class="section" id="plotting-the-result">
 <h2>Plotting the result<a class="headerlink" href="#plotting-the-result" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">13</span><span class="p">))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">13</span><span class="p">))</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="View documentation for matplotlib.pyplot.title"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s2">&quot;GridSearchCV evaluating using multiple scorers simultaneously&quot;</span><span class="p">,</span>
           <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 
@@ -301,12 +288,14 @@ correspond to the scorer (key) that is set to the <code class="docutils literal"
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_multi_metric_evaluation_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_multi_metric_evaluation_001.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  20.898 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  22.889 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-model-selection-plot-multi-metric-evaluation-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../../_downloads/plot_multi_metric_evaluation.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_multi_metric_evaluation.py</span></code></a></div>
+<p><a class="reference download internal" download="" href="../../_downloads/08d5dd49f57f99e9638e3f76f11e28ac/plot_multi_metric_evaluation.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_multi_metric_evaluation.py</span></code></a></p>
+</div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../../_downloads/plot_multi_metric_evaluation.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_multi_metric_evaluation.ipynb</span></code></a></div>
+<p><a class="reference download internal" download="" href="../../_downloads/261514d5069509b492c1927a9bd3f092/plot_multi_metric_evaluation.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_multi_metric_evaluation.ipynb</span></code></a></p>
+</div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>

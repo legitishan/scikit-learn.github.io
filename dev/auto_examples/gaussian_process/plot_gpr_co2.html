@@ -1,12 +1,10 @@
 
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <meta charset="utf-8" />
   
     <title>Gaussian process regression (GPR) on Mauna Loa CO2 data. &#8212; scikit-learn 0.22.dev0 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
@@ -14,27 +12,17 @@
   <link rel="stylesheet" href="../../_static/css/bootstrap.min.css" media="screen" />
   <link rel="stylesheet" href="../../_static/css/bootstrap-responsive.css"/>
 
-    
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '0.22.dev0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
     <script type="text/javascript" src="../../_static/js/copybutton.js"></script>
     <script type="text/javascript" src="../../_static/js/extra.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_SVG"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_SVG"></script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -70,8 +58,7 @@
     };
   </script>
 
-  </head>
-  <body>
+  </head><body>
 
 <div class="header-wrapper">
     <div class="header">
@@ -204,8 +191,8 @@
           <div class="body" role="main">
             
   <div class="sphx-glr-download-link-note admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-gaussian-process-plot-gpr-co2-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-gaussian-process-plot-gpr-co2-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="gaussian-process-regression-gpr-on-mauna-loa-co2-data">
 <span id="sphx-glr-auto-examples-gaussian-process-plot-gpr-co2-py"></span><h1>Gaussian process regression (GPR) on Mauna Loa CO2 data.<a class="headerlink" href="#gaussian-process-regression-gpr-on-mauna-loa-co2-data" title="Permalink to this headline">¶</a></h1>
@@ -219,30 +206,30 @@ model the CO2 concentration as a function of the time t.</p>
 <p>The kernel is composed of several terms that are responsible for explaining
 different properties of the signal:</p>
 <ul class="simple">
-<li>a long term, smooth rising trend is to be explained by an RBF kernel. The
+<li><p>a long term, smooth rising trend is to be explained by an RBF kernel. The
 RBF kernel with a large length-scale enforces this component to be smooth;
 it is not enforced that the trend is rising which leaves this choice to the
-GP. The specific length-scale and the amplitude are free hyperparameters.</li>
-<li>a seasonal component, which is to be explained by the periodic
+GP. The specific length-scale and the amplitude are free hyperparameters.</p></li>
+<li><p>a seasonal component, which is to be explained by the periodic
 ExpSineSquared kernel with a fixed periodicity of 1 year. The length-scale
 of this periodic component, controlling its smoothness, is a free parameter.
 In order to allow decaying away from exact periodicity, the product with an
 RBF kernel is taken. The length-scale of this RBF component controls the
-decay time and is a further free parameter.</li>
-<li>smaller, medium term irregularities are to be explained by a
+decay time and is a further free parameter.</p></li>
+<li><p>smaller, medium term irregularities are to be explained by a
 RationalQuadratic kernel component, whose length-scale and alpha parameter,
 which determines the diffuseness of the length-scales, are to be determined.
 According to [RW2006], these irregularities can better be explained by
 a RationalQuadratic than an RBF kernel component, probably because it can
-accommodate several length-scales.</li>
-<li>a “noise” term, consisting of an RBF kernel contribution, which shall
+accommodate several length-scales.</p></li>
+<li><p>a “noise” term, consisting of an RBF kernel contribution, which shall
 explain the correlated noise components such as local weather phenomena,
 and a WhiteKernel contribution for the white noise. The relative amplitudes
-and the RBF’s length scale are further free parameters.</li>
+and the RBF’s length scale are further free parameters.</p></li>
 </ul>
 <p>Maximizing the log-marginal-likelihood after subtracting the target’s mean
 yields the following kernel with an LML of -83.214:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mf">34.4</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <a href="../../modules/generated/sklearn.gaussian_process.kernels.RBF.html#sklearn.gaussian_process.kernels.RBF" title="View documentation for sklearn.gaussian_process.kernels.RBF"><span class="n">RBF</span></a><span class="p">(</span><span class="n">length_scale</span><span class="o">=</span><span class="mf">41.8</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">34.4</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <a href="../../modules/generated/sklearn.gaussian_process.kernels.RBF.html#sklearn.gaussian_process.kernels.RBF" title="View documentation for sklearn.gaussian_process.kernels.RBF"><span class="n">RBF</span></a><span class="p">(</span><span class="n">length_scale</span><span class="o">=</span><span class="mf">41.8</span><span class="p">)</span>
 <span class="o">+</span> <span class="mf">3.27</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <a href="../../modules/generated/sklearn.gaussian_process.kernels.RBF.html#sklearn.gaussian_process.kernels.RBF" title="View documentation for sklearn.gaussian_process.kernels.RBF"><span class="n">RBF</span></a><span class="p">(</span><span class="n">length_scale</span><span class="o">=</span><span class="mi">180</span><span class="p">)</span> <span class="o">*</span> <a href="../../modules/generated/sklearn.gaussian_process.kernels.ExpSineSquared.html#sklearn.gaussian_process.kernels.ExpSineSquared" title="View documentation for sklearn.gaussian_process.kernels.ExpSineSquared"><span class="n">ExpSineSquared</span></a><span class="p">(</span><span class="n">length_scale</span><span class="o">=</span><span class="mf">1.44</span><span class="p">,</span>
                                                    <span class="n">periodicity</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="o">+</span> <span class="mf">0.446</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <a href="../../modules/generated/sklearn.gaussian_process.kernels.RationalQuadratic.html#sklearn.gaussian_process.kernels.RationalQuadratic" title="View documentation for sklearn.gaussian_process.kernels.RationalQuadratic"><span class="n">RationalQuadratic</span></a><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">17.7</span><span class="p">,</span> <span class="n">length_scale</span><span class="o">=</span><span class="mf">0.957</span><span class="p">)</span>
@@ -260,7 +247,7 @@ explained by the model. The figure shows also that the model makes very
 confident predictions until around 2015.</p>
 <img alt="../../_images/sphx_glr_plot_gpr_co2_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_gpr_co2_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>GPML kernel: 66**2 * RBF(length_scale=67) + 2.4**2 * RBF(length_scale=90) * ExpSineSquared(length_scale=1.3, periodicity=1) + 0.66**2 * RationalQuadratic(alpha=0.78, length_scale=1.2) + 0.18**2 * RBF(length_scale=0.134) + WhiteKernel(noise_level=0.0361)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>GPML kernel: 66**2 * RBF(length_scale=67) + 2.4**2 * RBF(length_scale=90) * ExpSineSquared(length_scale=1.3, periodicity=1) + 0.66**2 * RationalQuadratic(alpha=0.78, length_scale=1.2) + 0.18**2 * RBF(length_scale=0.134) + WhiteKernel(noise_level=0.0361)
 Log-marginal-likelihood: -117.023
 
 Learned kernel: 44.8**2 * RBF(length_scale=51.6) + 2.64**2 * RBF(length_scale=91.5) * ExpSineSquared(length_scale=1.48, periodicity=1) + 0.536**2 * RationalQuadratic(alpha=2.89, length_scale=0.968) + 0.188**2 * RBF(length_scale=0.122) + WhiteKernel(noise_level=0.0367)
@@ -270,7 +257,7 @@ Log-marginal-likelihood: -115.050
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Authors: Jan Hendrik Metzen &lt;jhm@informatik.uni-bremen.de&gt;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Authors: Jan Hendrik Metzen &lt;jhm@informatik.uni-bremen.de&gt;</span>
 <span class="c1">#</span>
 <span class="c1"># License: BSD 3 clause</span>
 
@@ -369,12 +356,14 @@ Log-marginal-likelihood: -115.050
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  6.125 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  4.499 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-gaussian-process-plot-gpr-co2-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../../_downloads/plot_gpr_co2.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_gpr_co2.py</span></code></a></div>
+<p><a class="reference download internal" download="" href="../../_downloads/22924b84e8589b1ceef00d12afcbd40e/plot_gpr_co2.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_gpr_co2.py</span></code></a></p>
+</div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../../_downloads/plot_gpr_co2.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_gpr_co2.ipynb</span></code></a></div>
+<p><a class="reference download internal" download="" href="../../_downloads/539cd4c347051b3af27de0cae21eb231/plot_gpr_co2.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_gpr_co2.ipynb</span></code></a></p>
+</div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>

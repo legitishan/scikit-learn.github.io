@@ -1,12 +1,10 @@
 
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <meta charset="utf-8" />
   
     <title>Partial Dependence Plots &#8212; scikit-learn 0.22.dev0 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
@@ -14,27 +12,17 @@
   <link rel="stylesheet" href="../../_static/css/bootstrap.min.css" media="screen" />
   <link rel="stylesheet" href="../../_static/css/bootstrap-responsive.css"/>
 
-    
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '0.22.dev0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
     <script type="text/javascript" src="../../_static/js/copybutton.js"></script>
     <script type="text/javascript" src="../../_static/js/extra.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_SVG"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_SVG"></script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -70,8 +58,7 @@
     };
   </script>
 
-  </head>
-  <body>
+  </head><body>
 
 <div class="header-wrapper">
     <div class="header">
@@ -211,41 +198,37 @@
           <div class="body" role="main">
             
   <div class="sphx-glr-download-link-note admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-inspection-plot-partial-dependence-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-inspection-plot-partial-dependence-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="partial-dependence-plots">
 <span id="sphx-glr-auto-examples-inspection-plot-partial-dependence-py"></span><h1>Partial Dependence Plots<a class="headerlink" href="#partial-dependence-plots" title="Permalink to this headline">¶</a></h1>
-<p>Partial dependence plots show the dependence between the target function <a class="footnote-reference" href="#id4" id="id1">[2]</a>
+<p>Partial dependence plots show the dependence between the target function <a class="footnote-reference brackets" href="#id4" id="id1">2</a>
 and a set of ‘target’ features, marginalizing over the
 values of all other features (the complement features). Due to the limits
 of human perception the size of the target feature set must be small (usually,
 one or two) thus the target features are usually chosen among the most
 important features.</p>
 <p>This example shows how to obtain partial dependence plots from a
-<a class="reference internal" href="../../modules/generated/sklearn.neural_network.MLPRegressor.html#sklearn.neural_network.MLPRegressor" title="sklearn.neural_network.MLPRegressor"><code class="xref py py-class docutils literal"><span class="pre">MLPRegressor</span></code></a> and a
-<a class="reference internal" href="../../modules/generated/sklearn.ensemble.HistGradientBoostingRegressor.html#sklearn.ensemble.HistGradientBoostingRegressor" title="sklearn.ensemble.HistGradientBoostingRegressor"><code class="xref py py-class docutils literal"><span class="pre">HistGradientBoostingRegressor</span></code></a> trained on the
-California housing dataset. The example is taken from <a class="footnote-reference" href="#id3" id="id2">[1]</a>.</p>
+<a class="reference internal" href="../../modules/generated/sklearn.neural_network.MLPRegressor.html#sklearn.neural_network.MLPRegressor" title="sklearn.neural_network.MLPRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">MLPRegressor</span></code></a> and a
+<a class="reference internal" href="../../modules/generated/sklearn.ensemble.HistGradientBoostingRegressor.html#sklearn.ensemble.HistGradientBoostingRegressor" title="sklearn.ensemble.HistGradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingRegressor</span></code></a> trained on the
+California housing dataset. The example is taken from <a class="footnote-reference brackets" href="#id3" id="id2">1</a>.</p>
 <p>The plots show four 1-way and two 1-way partial dependence plots (ommitted for
-<a class="reference internal" href="../../modules/generated/sklearn.neural_network.MLPRegressor.html#sklearn.neural_network.MLPRegressor" title="sklearn.neural_network.MLPRegressor"><code class="xref py py-class docutils literal"><span class="pre">MLPRegressor</span></code></a> due to computation time).
-The target variables for the one-way PDP are: median income (<code class="docutils literal"><span class="pre">MedInc</span></code>),
-average occupants per household (<code class="docutils literal"><span class="pre">AvgOccup</span></code>), median house age (<code class="docutils literal"><span class="pre">HouseAge</span></code>),
-and average rooms per household (<code class="docutils literal"><span class="pre">AveRooms</span></code>).</p>
-<table class="docutils footnote" frame="void" id="id3" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[1]</a></td><td>T. Hastie, R. Tibshirani and J. Friedman,
-“Elements of Statistical Learning Ed. 2”, Springer, 2009.</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id4" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[2]</a></td><td>For classification you can think of it as the regression score before
-the link function.</td></tr>
-</tbody>
-</table>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
+<a class="reference internal" href="../../modules/generated/sklearn.neural_network.MLPRegressor.html#sklearn.neural_network.MLPRegressor" title="sklearn.neural_network.MLPRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">MLPRegressor</span></code></a> due to computation time).
+The target variables for the one-way PDP are: median income (<code class="docutils literal notranslate"><span class="pre">MedInc</span></code>),
+average occupants per household (<code class="docutils literal notranslate"><span class="pre">AvgOccup</span></code>), median house age (<code class="docutils literal notranslate"><span class="pre">HouseAge</span></code>),
+and average rooms per household (<code class="docutils literal notranslate"><span class="pre">AveRooms</span></code>).</p>
+<dl class="footnote brackets">
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id2">1</a></span></dt>
+<dd><p>T. Hastie, R. Tibshirani and J. Friedman,
+“Elements of Statistical Learning Ed. 2”, Springer, 2009.</p>
+</dd>
+<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id1">2</a></span></dt>
+<dd><p>For classification you can think of it as the regression score before
+the link function.</p>
+</dd>
+</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
@@ -269,7 +252,7 @@ the link function.</td></tr>
 <p>Center target to avoid gradient boosting init bias: gradient boosting
 with the ‘recursion’ method does not account for the initial estimator
 (here the average target, by default)</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">cal_housing</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.fetch_california_housing.html#sklearn.datasets.fetch_california_housing" title="View documentation for sklearn.datasets.california_housing.fetch_california_housing"><span class="n">fetch_california_housing</span></a><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cal_housing</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.fetch_california_housing.html#sklearn.datasets.fetch_california_housing" title="View documentation for sklearn.datasets.california_housing.fetch_california_housing"><span class="n">fetch_california_housing</span></a><span class="p">()</span>
 <span class="n">names</span> <span class="o">=</span> <span class="n">cal_housing</span><span class="o">.</span><span class="n">feature_names</span>
 <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">cal_housing</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">cal_housing</span><span class="o">.</span><span class="n">target</span>
 
@@ -284,7 +267,7 @@ with the ‘recursion’ method does not account for the initial estimator
 <h2>Partial Dependence computation for multi-layer perceptron<a class="headerlink" href="#partial-dependence-computation-for-multi-layer-perceptron" title="Permalink to this headline">¶</a></h2>
 <p>Let’s fit a MLPRegressor and compute single-variable partial dependence
 plots</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">&quot;Training MLPRegressor...&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">&quot;Training MLPRegressor...&quot;</span><span class="p">)</span>
 <span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">est</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.pipeline.make_pipeline.html#sklearn.pipeline.make_pipeline" title="View documentation for sklearn.pipeline.make_pipeline"><span class="n">make_pipeline</span></a><span class="p">(</span><a href="../../modules/generated/sklearn.preprocessing.QuantileTransformer.html#sklearn.preprocessing.QuantileTransformer" title="View documentation for sklearn.preprocessing.QuantileTransformer"><span class="n">QuantileTransformer</span></a><span class="p">(),</span>
                     <a href="../../modules/generated/sklearn.neural_network.MLPRegressor.html#sklearn.neural_network.MLPRegressor" title="View documentation for sklearn.neural_network.MLPRegressor"><span class="n">MLPRegressor</span></a><span class="p">(</span><span class="n">hidden_layer_sizes</span><span class="o">=</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span>
@@ -313,11 +296,11 @@ plots</p>
 </div>
 <img alt="../../_images/sphx_glr_plot_partial_dependence_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_partial_dependence_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>Training MLPRegressor...
-done in 6.918s
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Training MLPRegressor...
+done in 5.795s
 Test R2 score: 0.82
 Computing partial dependence plots...
-done in 1.773s
+done in 1.655s
 </pre></div>
 </div>
 </div>
@@ -325,7 +308,7 @@ done in 1.773s
 <h2>Partial Dependence computation for Gradient Boosting<a class="headerlink" href="#partial-dependence-computation-for-gradient-boosting" title="Permalink to this headline">¶</a></h2>
 <p>Let’s now fit a GradientBoostingRegressor and compute the partial dependence
 plots either or one or two variables at a time.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">&quot;Training GradientBoostingRegressor...&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">&quot;Training GradientBoostingRegressor...&quot;</span><span class="p">)</span>
 <span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">est</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.ensemble.HistGradientBoostingRegressor.html#sklearn.ensemble.HistGradientBoostingRegressor" title="View documentation for sklearn.ensemble.HistGradientBoostingRegressor"><span class="n">HistGradientBoostingRegressor</span></a><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">max_leaf_nodes</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span>
                                     <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -347,11 +330,11 @@ plots either or one or two variables at a time.</p>
 </div>
 <img alt="../../_images/sphx_glr_plot_partial_dependence_002.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_partial_dependence_002.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>Training GradientBoostingRegressor...
-done in 0.952s
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Training GradientBoostingRegressor...
+done in 0.790s
 Test R2 score: 0.86
 Computing partial dependence plots...
-done in 0.181s
+done in 0.141s
 </pre></div>
 </div>
 </div>
@@ -365,12 +348,12 @@ a strong influence on the (median) house price; so does the average rooms
 per household.
 The tick marks on the x-axis represent the deciles of the feature values
 in the training data.</p>
-<p>We also observe that <a class="reference internal" href="../../modules/generated/sklearn.neural_network.MLPRegressor.html#sklearn.neural_network.MLPRegressor" title="sklearn.neural_network.MLPRegressor"><code class="xref py py-class docutils literal"><span class="pre">MLPRegressor</span></code></a> has much
+<p>We also observe that <a class="reference internal" href="../../modules/generated/sklearn.neural_network.MLPRegressor.html#sklearn.neural_network.MLPRegressor" title="sklearn.neural_network.MLPRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">MLPRegressor</span></code></a> has much
 smoother predictions than
-<a class="reference internal" href="../../modules/generated/sklearn.ensemble.HistGradientBoostingRegressor.html#sklearn.ensemble.HistGradientBoostingRegressor" title="sklearn.ensemble.HistGradientBoostingRegressor"><code class="xref py py-class docutils literal"><span class="pre">HistGradientBoostingRegressor</span></code></a>. For the plots to be
+<a class="reference internal" href="../../modules/generated/sklearn.ensemble.HistGradientBoostingRegressor.html#sklearn.ensemble.HistGradientBoostingRegressor" title="sklearn.ensemble.HistGradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingRegressor</span></code></a>. For the plots to be
 comparable, it is necessary to subtract the average value of the target
-<code class="docutils literal"><span class="pre">y</span></code>: The ‘recursion’ method, used by default for
-<a class="reference internal" href="../../modules/generated/sklearn.ensemble.HistGradientBoostingRegressor.html#sklearn.ensemble.HistGradientBoostingRegressor" title="sklearn.ensemble.HistGradientBoostingRegressor"><code class="xref py py-class docutils literal"><span class="pre">HistGradientBoostingRegressor</span></code></a>, does not account
+<code class="docutils literal notranslate"><span class="pre">y</span></code>: The ‘recursion’ method, used by default for
+<a class="reference internal" href="../../modules/generated/sklearn.ensemble.HistGradientBoostingRegressor.html#sklearn.ensemble.HistGradientBoostingRegressor" title="sklearn.ensemble.HistGradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingRegressor</span></code></a>, does not account
 for the initial predictor (in our case the average target). Setting the
 target average to 0 avoids this bias.</p>
 <p>Partial dependence plots with two target features enable us to visualize
@@ -385,7 +368,7 @@ is a strong dependence on age.</p>
 <h2>3D interaction plots<a class="headerlink" href="#d-interaction-plots" title="Permalink to this headline">¶</a></h2>
 <p>Let’s make the same partial dependence plot for the 2 features interaction,
 this time in 3 dimensions.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">()</span>
 
 <span class="n">target_feature</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 <span class="n">pdp</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.inspection.partial_dependence.html#sklearn.inspection.partial_dependence" title="View documentation for sklearn.inspection.partial_dependence"><span class="n">partial_dependence</span></a><span class="p">(</span><span class="n">est</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">target_feature</span><span class="p">,</span>
@@ -409,12 +392,14 @@ this time in 3 dimensions.</p>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_partial_dependence_003.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_partial_dependence_003.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  10.281 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  8.762 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-inspection-plot-partial-dependence-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../../_downloads/plot_partial_dependence.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_partial_dependence.py</span></code></a></div>
+<p><a class="reference download internal" download="" href="../../_downloads/fa25d310c75e4ff65e62ab2cd8fdcef4/plot_partial_dependence.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_partial_dependence.py</span></code></a></p>
+</div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../../_downloads/plot_partial_dependence.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_partial_dependence.ipynb</span></code></a></div>
+<p><a class="reference download internal" download="" href="../../_downloads/5a693c97e821586539ab9d250762742c/plot_partial_dependence.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_partial_dependence.ipynb</span></code></a></p>
+</div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>

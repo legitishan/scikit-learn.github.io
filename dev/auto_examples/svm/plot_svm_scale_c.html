@@ -1,12 +1,10 @@
 
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <meta charset="utf-8" />
   
     <title>Scaling the regularization parameter for SVCs &#8212; scikit-learn 0.22.dev0 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
@@ -14,27 +12,17 @@
   <link rel="stylesheet" href="../../_static/css/bootstrap.min.css" media="screen" />
   <link rel="stylesheet" href="../../_static/css/bootstrap-responsive.css"/>
 
-    
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '0.22.dev0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
     <script type="text/javascript" src="../../_static/js/copybutton.js"></script>
     <script type="text/javascript" src="../../_static/js/extra.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_SVG"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_SVG"></script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -70,8 +58,7 @@
     };
   </script>
 
-  </head>
-  <body>
+  </head><body>
 
 <div class="header-wrapper">
     <div class="header">
@@ -209,8 +196,8 @@
           <div class="body" role="main">
             
   <div class="sphx-glr-download-link-note admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-svm-plot-svm-scale-c-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-svm-plot-svm-scale-c-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="scaling-the-regularization-parameter-for-svcs">
 <span id="sphx-glr-auto-examples-svm-plot-svm-scale-c-py"></span><h1>Scaling the regularization parameter for SVCs<a class="headerlink" href="#scaling-the-regularization-parameter-for-svcs" title="Permalink to this headline">¶</a></h1>
@@ -219,15 +206,15 @@ regularization parameter when using <a class="reference internal" href="../../mo
 <a class="reference internal" href="../../modules/svm.html#svm-classification"><span class="std std-ref">classification</span></a>.
 For SVC classification, we are interested in a risk minimization for the
 equation:</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[C \sum_{i=1, n} \mathcal{L} (f(x_i), y_i) + \Omega (w)\]</div>
 <p>where</p>
 <blockquote>
 <div><ul class="simple">
-<li><span class="math">\(C\)</span> is used to set the amount of regularization</li>
-<li><span class="math">\(\mathcal{L}\)</span> is a <code class="docutils literal"><span class="pre">loss</span></code> function of our samples
-and our model parameters.</li>
-<li><span class="math">\(\Omega\)</span> is a <code class="docutils literal"><span class="pre">penalty</span></code> function of our model parameters</li>
+<li><p><span class="math notranslate nohighlight">\(C\)</span> is used to set the amount of regularization</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{L}\)</span> is a <code class="docutils literal notranslate"><span class="pre">loss</span></code> function of our samples
+and our model parameters.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Omega\)</span> is a <code class="docutils literal notranslate"><span class="pre">penalty</span></code> function of our model parameters</p></li>
 </ul>
 </div></blockquote>
 <p>If we consider the loss function to be the individual error per
@@ -235,25 +222,25 @@ sample, then the data-fit term, or the sum of the error for each sample, will
 increase as we add more samples. The penalization term, however, will not
 increase.</p>
 <p>When using, for example, <a class="reference internal" href="../../modules/cross_validation.html#cross-validation"><span class="std std-ref">cross validation</span></a>, to
-set the amount of regularization with <code class="docutils literal"><span class="pre">C</span></code>, there will be a
+set the amount of regularization with <code class="docutils literal notranslate"><span class="pre">C</span></code>, there will be a
 different amount of samples between the main problem and the smaller problems
 within the folds of the cross validation.</p>
 <p>Since our loss function is dependent on the amount of samples, the latter
-will influence the selected value of <code class="docutils literal"><span class="pre">C</span></code>.
-The question that arises is <code class="docutils literal"><span class="pre">How</span> <span class="pre">do</span> <span class="pre">we</span> <span class="pre">optimally</span> <span class="pre">adjust</span> <span class="pre">C</span> <span class="pre">to</span>
+will influence the selected value of <code class="docutils literal notranslate"><span class="pre">C</span></code>.
+The question that arises is <code class="docutils literal notranslate"><span class="pre">How</span> <span class="pre">do</span> <span class="pre">we</span> <span class="pre">optimally</span> <span class="pre">adjust</span> <span class="pre">C</span> <span class="pre">to</span>
 <span class="pre">account</span> <span class="pre">for</span> <span class="pre">the</span> <span class="pre">different</span> <span class="pre">amount</span> <span class="pre">of</span> <span class="pre">training</span> <span class="pre">samples?</span></code></p>
 <p>The figures below are used to illustrate the effect of scaling our
-<code class="docutils literal"><span class="pre">C</span></code> to compensate for the change in the number of samples, in the
-case of using an <code class="docutils literal"><span class="pre">l1</span></code> penalty, as well as the <code class="docutils literal"><span class="pre">l2</span></code> penalty.</p>
+<code class="docutils literal notranslate"><span class="pre">C</span></code> to compensate for the change in the number of samples, in the
+case of using an <code class="docutils literal notranslate"><span class="pre">l1</span></code> penalty, as well as the <code class="docutils literal notranslate"><span class="pre">l2</span></code> penalty.</p>
 <div class="section" id="l1-penalty-case">
 <h2>l1-penalty case<a class="headerlink" href="#l1-penalty-case" title="Permalink to this headline">¶</a></h2>
-<p>In the <code class="docutils literal"><span class="pre">l1</span></code> case, theory says that prediction consistency
+<p>In the <code class="docutils literal notranslate"><span class="pre">l1</span></code> case, theory says that prediction consistency
 (i.e. that under given hypothesis, the estimator
 learned predicts as well as a model knowing the true distribution)
-is not possible because of the bias of the <code class="docutils literal"><span class="pre">l1</span></code>. It does say, however,
+is not possible because of the bias of the <code class="docutils literal notranslate"><span class="pre">l1</span></code>. It does say, however,
 that model consistency, in terms of finding the right set of non-zero
 parameters as well as their signs, can be achieved by scaling
-<code class="docutils literal"><span class="pre">C1</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">C1</span></code>.</p>
 </div>
 <div class="section" id="l2-penalty-case">
 <h2>l2-penalty case<a class="headerlink" href="#l2-penalty-case" title="Permalink to this headline">¶</a></h2>
@@ -263,27 +250,27 @@ as the number of samples grow.</p>
 </div>
 <div class="section" id="simulations">
 <h2>Simulations<a class="headerlink" href="#simulations" title="Permalink to this headline">¶</a></h2>
-<p>The two figures below plot the values of <code class="docutils literal"><span class="pre">C</span></code> on the <code class="docutils literal"><span class="pre">x-axis</span></code> and the
-corresponding cross-validation scores on the <code class="docutils literal"><span class="pre">y-axis</span></code>, for several different
+<p>The two figures below plot the values of <code class="docutils literal notranslate"><span class="pre">C</span></code> on the <code class="docutils literal notranslate"><span class="pre">x-axis</span></code> and the
+corresponding cross-validation scores on the <code class="docutils literal notranslate"><span class="pre">y-axis</span></code>, for several different
 fractions of a generated data-set.</p>
-<p>In the <code class="docutils literal"><span class="pre">l1</span></code> penalty case, the cross-validation-error correlates best with
-the test-error, when scaling our <code class="docutils literal"><span class="pre">C</span></code> with the number of samples, <code class="docutils literal"><span class="pre">n</span></code>,
+<p>In the <code class="docutils literal notranslate"><span class="pre">l1</span></code> penalty case, the cross-validation-error correlates best with
+the test-error, when scaling our <code class="docutils literal notranslate"><span class="pre">C</span></code> with the number of samples, <code class="docutils literal notranslate"><span class="pre">n</span></code>,
 which can be seen in the first figure.</p>
-<p>For the <code class="docutils literal"><span class="pre">l2</span></code> penalty case, the best result comes from the case where <code class="docutils literal"><span class="pre">C</span></code>
+<p>For the <code class="docutils literal notranslate"><span class="pre">l2</span></code> penalty case, the best result comes from the case where <code class="docutils literal notranslate"><span class="pre">C</span></code>
 is not scaled.</p>
 <div class="topic">
 <p class="topic-title first">Note:</p>
 <p>Two separate datasets are used for the two different plots. The reason
-behind this is the <code class="docutils literal"><span class="pre">l1</span></code> case works better on sparse data, while <code class="docutils literal"><span class="pre">l2</span></code>
+behind this is the <code class="docutils literal notranslate"><span class="pre">l1</span></code> case works better on sparse data, while <code class="docutils literal notranslate"><span class="pre">l2</span></code>
 is better suited to the non-sparse case.</p>
 </div>
 <ul class="sphx-glr-horizontal">
-<li><img alt="../../_images/sphx_glr_plot_svm_scale_c_001.png" class="sphx-glr-multi-img first" src="../../_images/sphx_glr_plot_svm_scale_c_001.png" />
+<li><img alt="../../_images/sphx_glr_plot_svm_scale_c_001.png" class="sphx-glr-multi-img" src="../../_images/sphx_glr_plot_svm_scale_c_001.png" />
 </li>
-<li><img alt="../../_images/sphx_glr_plot_svm_scale_c_002.png" class="sphx-glr-multi-img first" src="../../_images/sphx_glr_plot_svm_scale_c_002.png" />
+<li><img alt="../../_images/sphx_glr_plot_svm_scale_c_002.png" class="sphx-glr-multi-img" src="../../_images/sphx_glr_plot_svm_scale_c_002.png" />
 </li>
 </ul>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
 
 
 <span class="c1"># Author: Andreas Mueller &lt;amueller@ais.uni-bonn.de&gt;</span>
@@ -358,12 +345,14 @@ is better suited to the non-sparse case.</p>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  15.621 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  15.015 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-svm-plot-svm-scale-c-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../../_downloads/plot_svm_scale_c.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_svm_scale_c.py</span></code></a></div>
+<p><a class="reference download internal" download="" href="../../_downloads/58e661bc0f16de8cbd6dd7f2c1237745/plot_svm_scale_c.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_svm_scale_c.py</span></code></a></p>
+</div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../../_downloads/plot_svm_scale_c.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_svm_scale_c.ipynb</span></code></a></div>
+<p><a class="reference download internal" download="" href="../../_downloads/5ba9a28ce0b812d50bf8133494f3bf19/plot_svm_scale_c.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_svm_scale_c.ipynb</span></code></a></p>
+</div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>

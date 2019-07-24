@@ -1,12 +1,10 @@
 
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <meta charset="utf-8" />
   
     <title>1.13. Feature selection &#8212; scikit-learn 0.22.dev0 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
@@ -14,27 +12,17 @@
   <link rel="stylesheet" href="../_static/css/bootstrap.min.css" media="screen" />
   <link rel="stylesheet" href="../_static/css/bootstrap-responsive.css"/>
 
-    
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '0.22.dev0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <script type="text/javascript" src="../_static/js/copybutton.js"></script>
     <script type="text/javascript" src="../_static/js/extra.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_SVG"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_SVG"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -70,8 +58,7 @@
     };
   </script>
 
-  </head>
-  <body>
+  </head><body>
 
 <div class="header-wrapper">
     <div class="header">
@@ -216,13 +203,13 @@
             
   <div class="section" id="feature-selection">
 <span id="id1"></span><h1>1.13. Feature selection<a class="headerlink" href="#feature-selection" title="Permalink to this headline">¶</a></h1>
-<p>The classes in the <a class="reference internal" href="classes.html#module-sklearn.feature_selection" title="sklearn.feature_selection"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.feature_selection</span></code></a> module can be used
+<p>The classes in the <a class="reference internal" href="classes.html#module-sklearn.feature_selection" title="sklearn.feature_selection"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.feature_selection</span></code></a> module can be used
 for feature selection/dimensionality reduction on sample sets, either to
 improve estimators’ accuracy scores or to boost their performance on very
 high-dimensional datasets.</p>
 <div class="section" id="removing-features-with-low-variance">
 <span id="variance-threshold"></span><h2>1.13.1. Removing features with low variance<a class="headerlink" href="#removing-features-with-low-variance" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference internal" href="generated/sklearn.feature_selection.VarianceThreshold.html#sklearn.feature_selection.VarianceThreshold" title="sklearn.feature_selection.VarianceThreshold"><code class="xref py py-class docutils literal"><span class="pre">VarianceThreshold</span></code></a> is a simple baseline approach to feature selection.
+<p><a class="reference internal" href="generated/sklearn.feature_selection.VarianceThreshold.html#sklearn.feature_selection.VarianceThreshold" title="sklearn.feature_selection.VarianceThreshold"><code class="xref py py-class docutils literal notranslate"><span class="pre">VarianceThreshold</span></code></a> is a simple baseline approach to feature selection.
 It removes all features whose variance doesn’t meet some threshold.
 By default, it removes all zero-variance features,
 i.e. features that have the same value in all samples.</p>
@@ -231,10 +218,10 @@ and we want to remove all features that are either one or zero (on or off)
 in more than 80% of the samples.
 Boolean features are Bernoulli random variables,
 and the variance of such variables is given by</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\mathrm{Var}[X] = p(1 - p)\]</div>
-<p>so we can select using the threshold <code class="docutils literal"><span class="pre">.8</span> <span class="pre">*</span> <span class="pre">(1</span> <span class="pre">-</span> <span class="pre">.8)</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="k">import</span> <span class="n">VarianceThreshold</span>
+<p>so we can select using the threshold <code class="docutils literal notranslate"><span class="pre">.8</span> <span class="pre">*</span> <span class="pre">(1</span> <span class="pre">-</span> <span class="pre">.8)</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="k">import</span> <span class="n">VarianceThreshold</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sel</span> <span class="o">=</span> <span class="n">VarianceThreshold</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="p">(</span><span class="o">.</span><span class="mi">8</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="o">.</span><span class="mi">8</span><span class="p">)))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sel</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
@@ -246,31 +233,31 @@ and the variance of such variables is given by</p>
 <span class="go">       [1, 1]])</span>
 </pre></div>
 </div>
-<p>As expected, <code class="docutils literal"><span class="pre">VarianceThreshold</span></code> has removed the first column,
-which has a probability <span class="math">\(p = 5/6 &gt; .8\)</span> of containing a zero.</p>
+<p>As expected, <code class="docutils literal notranslate"><span class="pre">VarianceThreshold</span></code> has removed the first column,
+which has a probability <span class="math notranslate nohighlight">\(p = 5/6 &gt; .8\)</span> of containing a zero.</p>
 </div>
 <div class="section" id="univariate-feature-selection">
 <span id="id2"></span><h2>1.13.2. Univariate feature selection<a class="headerlink" href="#univariate-feature-selection" title="Permalink to this headline">¶</a></h2>
 <p>Univariate feature selection works by selecting the best features based on
 univariate statistical tests. It can be seen as a preprocessing step
 to an estimator. Scikit-learn exposes feature selection routines
-as objects that implement the <code class="docutils literal"><span class="pre">transform</span></code> method:</p>
+as objects that implement the <code class="docutils literal notranslate"><span class="pre">transform</span></code> method:</p>
 <blockquote>
 <div><ul class="simple">
-<li><a class="reference internal" href="generated/sklearn.feature_selection.SelectKBest.html#sklearn.feature_selection.SelectKBest" title="sklearn.feature_selection.SelectKBest"><code class="xref py py-class docutils literal"><span class="pre">SelectKBest</span></code></a> removes all but the <span class="math">\(k\)</span> highest scoring features</li>
-<li><a class="reference internal" href="generated/sklearn.feature_selection.SelectPercentile.html#sklearn.feature_selection.SelectPercentile" title="sklearn.feature_selection.SelectPercentile"><code class="xref py py-class docutils literal"><span class="pre">SelectPercentile</span></code></a> removes all but a user-specified highest scoring
-percentage of features</li>
-<li>using common univariate statistical tests for each feature:
-false positive rate <a class="reference internal" href="generated/sklearn.feature_selection.SelectFpr.html#sklearn.feature_selection.SelectFpr" title="sklearn.feature_selection.SelectFpr"><code class="xref py py-class docutils literal"><span class="pre">SelectFpr</span></code></a>, false discovery rate
-<a class="reference internal" href="generated/sklearn.feature_selection.SelectFdr.html#sklearn.feature_selection.SelectFdr" title="sklearn.feature_selection.SelectFdr"><code class="xref py py-class docutils literal"><span class="pre">SelectFdr</span></code></a>, or family wise error <a class="reference internal" href="generated/sklearn.feature_selection.SelectFwe.html#sklearn.feature_selection.SelectFwe" title="sklearn.feature_selection.SelectFwe"><code class="xref py py-class docutils literal"><span class="pre">SelectFwe</span></code></a>.</li>
-<li><a class="reference internal" href="generated/sklearn.feature_selection.GenericUnivariateSelect.html#sklearn.feature_selection.GenericUnivariateSelect" title="sklearn.feature_selection.GenericUnivariateSelect"><code class="xref py py-class docutils literal"><span class="pre">GenericUnivariateSelect</span></code></a> allows to perform univariate feature
+<li><p><a class="reference internal" href="generated/sklearn.feature_selection.SelectKBest.html#sklearn.feature_selection.SelectKBest" title="sklearn.feature_selection.SelectKBest"><code class="xref py py-class docutils literal notranslate"><span class="pre">SelectKBest</span></code></a> removes all but the <span class="math notranslate nohighlight">\(k\)</span> highest scoring features</p></li>
+<li><p><a class="reference internal" href="generated/sklearn.feature_selection.SelectPercentile.html#sklearn.feature_selection.SelectPercentile" title="sklearn.feature_selection.SelectPercentile"><code class="xref py py-class docutils literal notranslate"><span class="pre">SelectPercentile</span></code></a> removes all but a user-specified highest scoring
+percentage of features</p></li>
+<li><p>using common univariate statistical tests for each feature:
+false positive rate <a class="reference internal" href="generated/sklearn.feature_selection.SelectFpr.html#sklearn.feature_selection.SelectFpr" title="sklearn.feature_selection.SelectFpr"><code class="xref py py-class docutils literal notranslate"><span class="pre">SelectFpr</span></code></a>, false discovery rate
+<a class="reference internal" href="generated/sklearn.feature_selection.SelectFdr.html#sklearn.feature_selection.SelectFdr" title="sklearn.feature_selection.SelectFdr"><code class="xref py py-class docutils literal notranslate"><span class="pre">SelectFdr</span></code></a>, or family wise error <a class="reference internal" href="generated/sklearn.feature_selection.SelectFwe.html#sklearn.feature_selection.SelectFwe" title="sklearn.feature_selection.SelectFwe"><code class="xref py py-class docutils literal notranslate"><span class="pre">SelectFwe</span></code></a>.</p></li>
+<li><p><a class="reference internal" href="generated/sklearn.feature_selection.GenericUnivariateSelect.html#sklearn.feature_selection.GenericUnivariateSelect" title="sklearn.feature_selection.GenericUnivariateSelect"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericUnivariateSelect</span></code></a> allows to perform univariate feature
 selection with a configurable strategy. This allows to select the best
-univariate selection strategy with hyper-parameter search estimator.</li>
+univariate selection strategy with hyper-parameter search estimator.</p></li>
 </ul>
 </div></blockquote>
-<p>For instance, we can perform a <span class="math">\(\chi^2\)</span> test to the samples
+<p>For instance, we can perform a <span class="math notranslate nohighlight">\(\chi^2\)</span> test to the samples
 to retrieve only the two best features as follows:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">load_iris</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">load_iris</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="k">import</span> <span class="n">SelectKBest</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="k">import</span> <span class="n">chi2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
@@ -283,12 +270,12 @@ to retrieve only the two best features as follows:</p>
 </pre></div>
 </div>
 <p>These objects take as input a scoring function that returns univariate scores
-and p-values (or only scores for <a class="reference internal" href="generated/sklearn.feature_selection.SelectKBest.html#sklearn.feature_selection.SelectKBest" title="sklearn.feature_selection.SelectKBest"><code class="xref py py-class docutils literal"><span class="pre">SelectKBest</span></code></a> and
-<a class="reference internal" href="generated/sklearn.feature_selection.SelectPercentile.html#sklearn.feature_selection.SelectPercentile" title="sklearn.feature_selection.SelectPercentile"><code class="xref py py-class docutils literal"><span class="pre">SelectPercentile</span></code></a>):</p>
+and p-values (or only scores for <a class="reference internal" href="generated/sklearn.feature_selection.SelectKBest.html#sklearn.feature_selection.SelectKBest" title="sklearn.feature_selection.SelectKBest"><code class="xref py py-class docutils literal notranslate"><span class="pre">SelectKBest</span></code></a> and
+<a class="reference internal" href="generated/sklearn.feature_selection.SelectPercentile.html#sklearn.feature_selection.SelectPercentile" title="sklearn.feature_selection.SelectPercentile"><code class="xref py py-class docutils literal notranslate"><span class="pre">SelectPercentile</span></code></a>):</p>
 <blockquote>
 <div><ul class="simple">
-<li>For regression: <a class="reference internal" href="generated/sklearn.feature_selection.f_regression.html#sklearn.feature_selection.f_regression" title="sklearn.feature_selection.f_regression"><code class="xref py py-func docutils literal"><span class="pre">f_regression</span></code></a>, <a class="reference internal" href="generated/sklearn.feature_selection.mutual_info_regression.html#sklearn.feature_selection.mutual_info_regression" title="sklearn.feature_selection.mutual_info_regression"><code class="xref py py-func docutils literal"><span class="pre">mutual_info_regression</span></code></a></li>
-<li>For classification: <a class="reference internal" href="generated/sklearn.feature_selection.chi2.html#sklearn.feature_selection.chi2" title="sklearn.feature_selection.chi2"><code class="xref py py-func docutils literal"><span class="pre">chi2</span></code></a>, <a class="reference internal" href="generated/sklearn.feature_selection.f_classif.html#sklearn.feature_selection.f_classif" title="sklearn.feature_selection.f_classif"><code class="xref py py-func docutils literal"><span class="pre">f_classif</span></code></a>, <a class="reference internal" href="generated/sklearn.feature_selection.mutual_info_classif.html#sklearn.feature_selection.mutual_info_classif" title="sklearn.feature_selection.mutual_info_classif"><code class="xref py py-func docutils literal"><span class="pre">mutual_info_classif</span></code></a></li>
+<li><p>For regression: <a class="reference internal" href="generated/sklearn.feature_selection.f_regression.html#sklearn.feature_selection.f_regression" title="sklearn.feature_selection.f_regression"><code class="xref py py-func docutils literal notranslate"><span class="pre">f_regression</span></code></a>, <a class="reference internal" href="generated/sklearn.feature_selection.mutual_info_regression.html#sklearn.feature_selection.mutual_info_regression" title="sklearn.feature_selection.mutual_info_regression"><code class="xref py py-func docutils literal notranslate"><span class="pre">mutual_info_regression</span></code></a></p></li>
+<li><p>For classification: <a class="reference internal" href="generated/sklearn.feature_selection.chi2.html#sklearn.feature_selection.chi2" title="sklearn.feature_selection.chi2"><code class="xref py py-func docutils literal notranslate"><span class="pre">chi2</span></code></a>, <a class="reference internal" href="generated/sklearn.feature_selection.f_classif.html#sklearn.feature_selection.f_classif" title="sklearn.feature_selection.f_classif"><code class="xref py py-func docutils literal notranslate"><span class="pre">f_classif</span></code></a>, <a class="reference internal" href="generated/sklearn.feature_selection.mutual_info_classif.html#sklearn.feature_selection.mutual_info_classif" title="sklearn.feature_selection.mutual_info_classif"><code class="xref py py-func docutils literal notranslate"><span class="pre">mutual_info_classif</span></code></a></p></li>
 </ul>
 </div></blockquote>
 <p>The methods based on F-test estimate the degree of linear dependency between
@@ -298,53 +285,53 @@ samples for accurate estimation.</p>
 <div class="topic">
 <p class="topic-title first">Feature selection with sparse data</p>
 <p>If you use sparse data (i.e. data represented as sparse matrices),
-<a class="reference internal" href="generated/sklearn.feature_selection.chi2.html#sklearn.feature_selection.chi2" title="sklearn.feature_selection.chi2"><code class="xref py py-func docutils literal"><span class="pre">chi2</span></code></a>, <a class="reference internal" href="generated/sklearn.feature_selection.mutual_info_regression.html#sklearn.feature_selection.mutual_info_regression" title="sklearn.feature_selection.mutual_info_regression"><code class="xref py py-func docutils literal"><span class="pre">mutual_info_regression</span></code></a>, <a class="reference internal" href="generated/sklearn.feature_selection.mutual_info_classif.html#sklearn.feature_selection.mutual_info_classif" title="sklearn.feature_selection.mutual_info_classif"><code class="xref py py-func docutils literal"><span class="pre">mutual_info_classif</span></code></a>
+<a class="reference internal" href="generated/sklearn.feature_selection.chi2.html#sklearn.feature_selection.chi2" title="sklearn.feature_selection.chi2"><code class="xref py py-func docutils literal notranslate"><span class="pre">chi2</span></code></a>, <a class="reference internal" href="generated/sklearn.feature_selection.mutual_info_regression.html#sklearn.feature_selection.mutual_info_regression" title="sklearn.feature_selection.mutual_info_regression"><code class="xref py py-func docutils literal notranslate"><span class="pre">mutual_info_regression</span></code></a>, <a class="reference internal" href="generated/sklearn.feature_selection.mutual_info_classif.html#sklearn.feature_selection.mutual_info_classif" title="sklearn.feature_selection.mutual_info_classif"><code class="xref py py-func docutils literal notranslate"><span class="pre">mutual_info_classif</span></code></a>
 will deal with the data without making it dense.</p>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Beware not to use a regression scoring function with a classification
+<p class="admonition-title">Warning</p>
+<p>Beware not to use a regression scoring function with a classification
 problem, you will get useless results.</p>
 </div>
 <div class="topic">
 <p class="topic-title first">Examples:</p>
 <ul class="simple">
-<li><a class="reference internal" href="../auto_examples/feature_selection/plot_feature_selection.html#sphx-glr-auto-examples-feature-selection-plot-feature-selection-py"><span class="std std-ref">Univariate Feature Selection</span></a></li>
-<li><a class="reference internal" href="../auto_examples/feature_selection/plot_f_test_vs_mi.html#sphx-glr-auto-examples-feature-selection-plot-f-test-vs-mi-py"><span class="std std-ref">Comparison of F-test and mutual information</span></a></li>
+<li><p><a class="reference internal" href="../auto_examples/feature_selection/plot_feature_selection.html#sphx-glr-auto-examples-feature-selection-plot-feature-selection-py"><span class="std std-ref">Univariate Feature Selection</span></a></p></li>
+<li><p><a class="reference internal" href="../auto_examples/feature_selection/plot_f_test_vs_mi.html#sphx-glr-auto-examples-feature-selection-plot-f-test-vs-mi-py"><span class="std std-ref">Comparison of F-test and mutual information</span></a></p></li>
 </ul>
 </div>
 </div>
 <div class="section" id="recursive-feature-elimination">
 <span id="rfe"></span><h2>1.13.3. Recursive feature elimination<a class="headerlink" href="#recursive-feature-elimination" title="Permalink to this headline">¶</a></h2>
 <p>Given an external estimator that assigns weights to features (e.g., the
-coefficients of a linear model), recursive feature elimination (<a class="reference internal" href="generated/sklearn.feature_selection.RFE.html#sklearn.feature_selection.RFE" title="sklearn.feature_selection.RFE"><code class="xref py py-class docutils literal"><span class="pre">RFE</span></code></a>)
+coefficients of a linear model), recursive feature elimination (<a class="reference internal" href="generated/sklearn.feature_selection.RFE.html#sklearn.feature_selection.RFE" title="sklearn.feature_selection.RFE"><code class="xref py py-class docutils literal notranslate"><span class="pre">RFE</span></code></a>)
 is to select features by recursively considering smaller and smaller sets of
 features.  First, the estimator is trained on the initial set of features and
-the importance of each feature is obtained either through a <code class="docutils literal"><span class="pre">coef_</span></code> attribute
-or through a <code class="docutils literal"><span class="pre">feature_importances_</span></code> attribute. Then, the least important
+the importance of each feature is obtained either through a <code class="docutils literal notranslate"><span class="pre">coef_</span></code> attribute
+or through a <code class="docutils literal notranslate"><span class="pre">feature_importances_</span></code> attribute. Then, the least important
 features are pruned from current set of features.That procedure is recursively
 repeated on the pruned set until the desired number of features to select is
 eventually reached.</p>
-<p><a class="reference internal" href="generated/sklearn.feature_selection.RFECV.html#sklearn.feature_selection.RFECV" title="sklearn.feature_selection.RFECV"><code class="xref py py-class docutils literal"><span class="pre">RFECV</span></code></a> performs RFE in a cross-validation loop to find the optimal
+<p><a class="reference internal" href="generated/sklearn.feature_selection.RFECV.html#sklearn.feature_selection.RFECV" title="sklearn.feature_selection.RFECV"><code class="xref py py-class docutils literal notranslate"><span class="pre">RFECV</span></code></a> performs RFE in a cross-validation loop to find the optimal
 number of features.</p>
 <div class="topic">
 <p class="topic-title first">Examples:</p>
 <ul class="simple">
-<li><a class="reference internal" href="../auto_examples/feature_selection/plot_rfe_digits.html#sphx-glr-auto-examples-feature-selection-plot-rfe-digits-py"><span class="std std-ref">Recursive feature elimination</span></a>: A recursive feature elimination example
-showing the relevance of pixels in a digit classification task.</li>
-<li><a class="reference internal" href="../auto_examples/feature_selection/plot_rfe_with_cross_validation.html#sphx-glr-auto-examples-feature-selection-plot-rfe-with-cross-validation-py"><span class="std std-ref">Recursive feature elimination with cross-validation</span></a>: A recursive feature
+<li><p><a class="reference internal" href="../auto_examples/feature_selection/plot_rfe_digits.html#sphx-glr-auto-examples-feature-selection-plot-rfe-digits-py"><span class="std std-ref">Recursive feature elimination</span></a>: A recursive feature elimination example
+showing the relevance of pixels in a digit classification task.</p></li>
+<li><p><a class="reference internal" href="../auto_examples/feature_selection/plot_rfe_with_cross_validation.html#sphx-glr-auto-examples-feature-selection-plot-rfe-with-cross-validation-py"><span class="std std-ref">Recursive feature elimination with cross-validation</span></a>: A recursive feature
 elimination example with automatic tuning of the number of features
-selected with cross-validation.</li>
+selected with cross-validation.</p></li>
 </ul>
 </div>
 </div>
 <div class="section" id="feature-selection-using-selectfrommodel">
 <span id="select-from-model"></span><h2>1.13.4. Feature selection using SelectFromModel<a class="headerlink" href="#feature-selection-using-selectfrommodel" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference internal" href="generated/sklearn.feature_selection.SelectFromModel.html#sklearn.feature_selection.SelectFromModel" title="sklearn.feature_selection.SelectFromModel"><code class="xref py py-class docutils literal"><span class="pre">SelectFromModel</span></code></a> is a meta-transformer that can be used along with any
-estimator that has a <code class="docutils literal"><span class="pre">coef_</span></code> or <code class="docutils literal"><span class="pre">feature_importances_</span></code> attribute after fitting.
+<p><a class="reference internal" href="generated/sklearn.feature_selection.SelectFromModel.html#sklearn.feature_selection.SelectFromModel" title="sklearn.feature_selection.SelectFromModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">SelectFromModel</span></code></a> is a meta-transformer that can be used along with any
+estimator that has a <code class="docutils literal notranslate"><span class="pre">coef_</span></code> or <code class="docutils literal notranslate"><span class="pre">feature_importances_</span></code> attribute after fitting.
 The features are considered unimportant and removed, if the corresponding
-<code class="docutils literal"><span class="pre">coef_</span></code> or <code class="docutils literal"><span class="pre">feature_importances_</span></code> values are below the provided
-<code class="docutils literal"><span class="pre">threshold</span></code> parameter. Apart from specifying the threshold numerically,
+<code class="docutils literal notranslate"><span class="pre">coef_</span></code> or <code class="docutils literal notranslate"><span class="pre">feature_importances_</span></code> values are below the provided
+<code class="docutils literal notranslate"><span class="pre">threshold</span></code> parameter. Apart from specifying the threshold numerically,
 there are built-in heuristics for finding a threshold using a string argument.
 Available heuristics are “mean”, “median” and float multiples of these like
 “0.1*mean”.</p>
@@ -352,9 +339,9 @@ Available heuristics are “mean”, “median” and float multiples of these l
 <div class="topic">
 <p class="topic-title first">Examples</p>
 <ul class="simple">
-<li><a class="reference internal" href="../auto_examples/feature_selection/plot_select_from_model_boston.html#sphx-glr-auto-examples-feature-selection-plot-select-from-model-boston-py"><span class="std std-ref">Feature selection using SelectFromModel and LassoCV</span></a>: Selecting the two
+<li><p><a class="reference internal" href="../auto_examples/feature_selection/plot_select_from_model_boston.html#sphx-glr-auto-examples-feature-selection-plot-select-from-model-boston-py"><span class="std std-ref">Feature selection using SelectFromModel and LassoCV</span></a>: Selecting the two
 most important features from the Boston dataset without knowing the
-threshold beforehand.</li>
+threshold beforehand.</p></li>
 </ul>
 </div>
 <div class="section" id="l1-based-feature-selection">
@@ -362,12 +349,12 @@ threshold beforehand.</li>
 <p><a class="reference internal" href="linear_model.html#linear-model"><span class="std std-ref">Linear models</span></a> penalized with the L1 norm have
 sparse solutions: many of their estimated coefficients are zero. When the goal
 is to reduce the dimensionality of the data to use with another classifier,
-they can be used along with <a class="reference internal" href="generated/sklearn.feature_selection.SelectFromModel.html#sklearn.feature_selection.SelectFromModel" title="sklearn.feature_selection.SelectFromModel"><code class="xref py py-class docutils literal"><span class="pre">feature_selection.SelectFromModel</span></code></a>
+they can be used along with <a class="reference internal" href="generated/sklearn.feature_selection.SelectFromModel.html#sklearn.feature_selection.SelectFromModel" title="sklearn.feature_selection.SelectFromModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">feature_selection.SelectFromModel</span></code></a>
 to select the non-zero coefficients. In particular, sparse estimators useful
-for this purpose are the <a class="reference internal" href="generated/sklearn.linear_model.Lasso.html#sklearn.linear_model.Lasso" title="sklearn.linear_model.Lasso"><code class="xref py py-class docutils literal"><span class="pre">linear_model.Lasso</span></code></a> for regression, and
-of <a class="reference internal" href="generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="sklearn.linear_model.LogisticRegression"><code class="xref py py-class docutils literal"><span class="pre">linear_model.LogisticRegression</span></code></a> and <a class="reference internal" href="generated/sklearn.svm.LinearSVC.html#sklearn.svm.LinearSVC" title="sklearn.svm.LinearSVC"><code class="xref py py-class docutils literal"><span class="pre">svm.LinearSVC</span></code></a>
+for this purpose are the <a class="reference internal" href="generated/sklearn.linear_model.Lasso.html#sklearn.linear_model.Lasso" title="sklearn.linear_model.Lasso"><code class="xref py py-class docutils literal notranslate"><span class="pre">linear_model.Lasso</span></code></a> for regression, and
+of <a class="reference internal" href="generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="sklearn.linear_model.LogisticRegression"><code class="xref py py-class docutils literal notranslate"><span class="pre">linear_model.LogisticRegression</span></code></a> and <a class="reference internal" href="generated/sklearn.svm.LinearSVC.html#sklearn.svm.LinearSVC" title="sklearn.svm.LinearSVC"><code class="xref py py-class docutils literal notranslate"><span class="pre">svm.LinearSVC</span></code></a>
 for classification:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="k">import</span> <span class="n">LinearSVC</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="k">import</span> <span class="n">LinearSVC</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">load_iris</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="k">import</span> <span class="n">SelectFromModel</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
@@ -387,9 +374,9 @@ alpha parameter, the fewer features selected.</p>
 <div class="topic">
 <p class="topic-title first">Examples:</p>
 <ul class="simple">
-<li><a class="reference internal" href="../auto_examples/text/plot_document_classification_20newsgroups.html#sphx-glr-auto-examples-text-plot-document-classification-20newsgroups-py"><span class="std std-ref">Classification of text documents using sparse features</span></a>: Comparison
+<li><p><a class="reference internal" href="../auto_examples/text/plot_document_classification_20newsgroups.html#sphx-glr-auto-examples-text-plot-document-classification-20newsgroups-py"><span class="std std-ref">Classification of text documents using sparse features</span></a>: Comparison
 of different algorithms for document classification including L1-based
-feature selection.</li>
+feature selection.</p></li>
 </ul>
 </div>
 <div class="topic" id="compressive-sensing">
@@ -405,10 +392,10 @@ structure of the design matrix X. In addition, the design matrix must
 display certain specific properties, such as not being too correlated.</p>
 <p>There is no general rule to select an alpha parameter for recovery of
 non-zero coefficients. It can by set by cross-validation
-(<code class="xref py py-class docutils literal"><span class="pre">LassoCV</span></code> or <code class="xref py py-class docutils literal"><span class="pre">LassoLarsCV</span></code>), though this may lead to
+(<code class="xref py py-class docutils literal notranslate"><span class="pre">LassoCV</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">LassoLarsCV</span></code>), though this may lead to
 under-penalized models: including a small number of non-relevant
 variables is not detrimental to prediction score. BIC
-(<code class="xref py py-class docutils literal"><span class="pre">LassoLarsIC</span></code>) tends, on the opposite, to set high values of
+(<code class="xref py py-class docutils literal notranslate"><span class="pre">LassoLarsIC</span></code>) tends, on the opposite, to set high values of
 alpha.</p>
 <p><strong>Reference</strong> Richard G. Baraniuk “Compressive Sensing”, IEEE Signal
 Processing Magazine [120] July 2007
@@ -417,12 +404,12 @@ Processing Magazine [120] July 2007
 </div>
 <div class="section" id="tree-based-feature-selection">
 <h3>1.13.4.2. Tree-based feature selection<a class="headerlink" href="#tree-based-feature-selection" title="Permalink to this headline">¶</a></h3>
-<p>Tree-based estimators (see the <a class="reference internal" href="classes.html#module-sklearn.tree" title="sklearn.tree"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.tree</span></code></a> module and forest
-of trees in the <a class="reference internal" href="classes.html#module-sklearn.ensemble" title="sklearn.ensemble"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.ensemble</span></code></a> module) can be used to compute
+<p>Tree-based estimators (see the <a class="reference internal" href="classes.html#module-sklearn.tree" title="sklearn.tree"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.tree</span></code></a> module and forest
+of trees in the <a class="reference internal" href="classes.html#module-sklearn.ensemble" title="sklearn.ensemble"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.ensemble</span></code></a> module) can be used to compute
 feature importances, which in turn can be used to discard irrelevant
-features (when coupled with the <a class="reference internal" href="generated/sklearn.feature_selection.SelectFromModel.html#sklearn.feature_selection.SelectFromModel" title="sklearn.feature_selection.SelectFromModel"><code class="xref py py-class docutils literal"><span class="pre">sklearn.feature_selection.SelectFromModel</span></code></a>
+features (when coupled with the <a class="reference internal" href="generated/sklearn.feature_selection.SelectFromModel.html#sklearn.feature_selection.SelectFromModel" title="sklearn.feature_selection.SelectFromModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.feature_selection.SelectFromModel</span></code></a>
 meta-transformer):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">ExtraTreesClassifier</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">ExtraTreesClassifier</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">load_iris</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="k">import</span> <span class="n">SelectFromModel</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
@@ -442,11 +429,11 @@ meta-transformer):</p>
 <div class="topic">
 <p class="topic-title first">Examples:</p>
 <ul class="simple">
-<li><a class="reference internal" href="../auto_examples/ensemble/plot_forest_importances.html#sphx-glr-auto-examples-ensemble-plot-forest-importances-py"><span class="std std-ref">Feature importances with forests of trees</span></a>: example on
+<li><p><a class="reference internal" href="../auto_examples/ensemble/plot_forest_importances.html#sphx-glr-auto-examples-ensemble-plot-forest-importances-py"><span class="std std-ref">Feature importances with forests of trees</span></a>: example on
 synthetic data showing the recovery of the actually meaningful
-features.</li>
-<li><a class="reference internal" href="../auto_examples/ensemble/plot_forest_importances_faces.html#sphx-glr-auto-examples-ensemble-plot-forest-importances-faces-py"><span class="std std-ref">Pixel importances with a parallel forest of trees</span></a>: example
-on face recognition data.</li>
+features.</p></li>
+<li><p><a class="reference internal" href="../auto_examples/ensemble/plot_forest_importances_faces.html#sphx-glr-auto-examples-ensemble-plot-forest-importances-faces-py"><span class="std std-ref">Pixel importances with a parallel forest of trees</span></a>: example
+on face recognition data.</p></li>
 </ul>
 </div>
 </div>
@@ -455,22 +442,22 @@ on face recognition data.</li>
 <h2>1.13.5. Feature selection as part of a pipeline<a class="headerlink" href="#feature-selection-as-part-of-a-pipeline" title="Permalink to this headline">¶</a></h2>
 <p>Feature selection is usually used as a pre-processing step before doing
 the actual learning. The recommended way to do this in scikit-learn is
-to use a <a class="reference internal" href="generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal"><span class="pre">sklearn.pipeline.Pipeline</span></code></a>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">clf</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+to use a <a class="reference internal" href="generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.pipeline.Pipeline</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">clf</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
   <span class="p">(</span><span class="s1">&#39;feature_selection&#39;</span><span class="p">,</span> <span class="n">SelectFromModel</span><span class="p">(</span><span class="n">LinearSVC</span><span class="p">(</span><span class="n">penalty</span><span class="o">=</span><span class="s2">&quot;l1&quot;</span><span class="p">))),</span>
   <span class="p">(</span><span class="s1">&#39;classification&#39;</span><span class="p">,</span> <span class="n">RandomForestClassifier</span><span class="p">())</span>
 <span class="p">])</span>
 <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>In this snippet we make use of a <a class="reference internal" href="generated/sklearn.svm.LinearSVC.html#sklearn.svm.LinearSVC" title="sklearn.svm.LinearSVC"><code class="xref py py-class docutils literal"><span class="pre">sklearn.svm.LinearSVC</span></code></a>
-coupled with <a class="reference internal" href="generated/sklearn.feature_selection.SelectFromModel.html#sklearn.feature_selection.SelectFromModel" title="sklearn.feature_selection.SelectFromModel"><code class="xref py py-class docutils literal"><span class="pre">sklearn.feature_selection.SelectFromModel</span></code></a>
+<p>In this snippet we make use of a <a class="reference internal" href="generated/sklearn.svm.LinearSVC.html#sklearn.svm.LinearSVC" title="sklearn.svm.LinearSVC"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.svm.LinearSVC</span></code></a>
+coupled with <a class="reference internal" href="generated/sklearn.feature_selection.SelectFromModel.html#sklearn.feature_selection.SelectFromModel" title="sklearn.feature_selection.SelectFromModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.feature_selection.SelectFromModel</span></code></a>
 to evaluate feature importances and select the most relevant features.
-Then, a <a class="reference internal" href="generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier" title="sklearn.ensemble.RandomForestClassifier"><code class="xref py py-class docutils literal"><span class="pre">sklearn.ensemble.RandomForestClassifier</span></code></a> is trained on the
+Then, a <a class="reference internal" href="generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier" title="sklearn.ensemble.RandomForestClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.ensemble.RandomForestClassifier</span></code></a> is trained on the
 transformed output, i.e. using only relevant features. You can perform
 similar operations with the other feature selection methods and also
 classifiers that provide a way to evaluate feature importances of course.
-See the <a class="reference internal" href="generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal"><span class="pre">sklearn.pipeline.Pipeline</span></code></a> examples for more details.</p>
+See the <a class="reference internal" href="generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.pipeline.Pipeline</span></code></a> examples for more details.</p>
 </div>
 </div>
 

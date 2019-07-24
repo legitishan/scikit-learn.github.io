@@ -1,12 +1,10 @@
 
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <meta charset="utf-8" />
   
     <title>1.16. Probability calibration &#8212; scikit-learn 0.22.dev0 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
@@ -14,27 +12,17 @@
   <link rel="stylesheet" href="../_static/css/bootstrap.min.css" media="screen" />
   <link rel="stylesheet" href="../_static/css/bootstrap-responsive.css"/>
 
-    
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '0.22.dev0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <script type="text/javascript" src="../_static/js/copybutton.js"></script>
     <script type="text/javascript" src="../_static/js/extra.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_SVG"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_SVG"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -70,8 +58,7 @@
     };
   </script>
 
-  </head>
-  <body>
+  </head><body>
 
 <div class="header-wrapper">
     <div class="header">
@@ -221,20 +208,20 @@ how well the probabilistic predictions of different classifiers are calibrated:<
 <div class="figure align-center">
 <a class="reference external image-reference" href="../auto_examples/calibration/plot_compare_calibration.html"><img alt="../_images/sphx_glr_plot_compare_calibration_0011.png" src="../_images/sphx_glr_plot_compare_calibration_0011.png" /></a>
 </div>
-<p><a class="reference internal" href="generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="sklearn.linear_model.LogisticRegression"><code class="xref py py-class docutils literal"><span class="pre">LogisticRegression</span></code></a> returns well calibrated predictions by default as it directly
+<p><a class="reference internal" href="generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="sklearn.linear_model.LogisticRegression"><code class="xref py py-class docutils literal notranslate"><span class="pre">LogisticRegression</span></code></a> returns well calibrated predictions by default as it directly
 optimizes log-loss. In contrast, the other methods return biased probabilities;
 with different biases per method:</p>
 <ul class="simple">
-<li><a class="reference internal" href="generated/sklearn.naive_bayes.GaussianNB.html#sklearn.naive_bayes.GaussianNB" title="sklearn.naive_bayes.GaussianNB"><code class="xref py py-class docutils literal"><span class="pre">GaussianNB</span></code></a> tends to push probabilities to 0 or 1 (note the
+<li><p><a class="reference internal" href="generated/sklearn.naive_bayes.GaussianNB.html#sklearn.naive_bayes.GaussianNB" title="sklearn.naive_bayes.GaussianNB"><code class="xref py py-class docutils literal notranslate"><span class="pre">GaussianNB</span></code></a> tends to push probabilities to 0 or 1 (note the
 counts in the histograms). This is mainly because it makes the assumption
 that features are conditionally independent given the class, which is not
-the case in this dataset which contains 2 redundant features.</li>
+the case in this dataset which contains 2 redundant features.</p></li>
 </ul>
 <ul class="simple">
-<li><a class="reference internal" href="generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier" title="sklearn.ensemble.RandomForestClassifier"><code class="xref py py-class docutils literal"><span class="pre">RandomForestClassifier</span></code></a> shows the opposite behavior: the histograms
+<li><p><a class="reference internal" href="generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier" title="sklearn.ensemble.RandomForestClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">RandomForestClassifier</span></code></a> shows the opposite behavior: the histograms
 show peaks at approximately 0.2 and 0.9 probability, while probabilities close to
 0 or 1 are very rare. An explanation for this is given by Niculescu-Mizil
-and Caruana <a class="footnote-reference" href="#id4" id="id1">[4]</a>: “Methods such as bagging and random forests that average
+and Caruana <a class="footnote-reference brackets" href="#id4" id="id1">4</a>: “Methods such as bagging and random forests that average
 predictions from a base set of models can have difficulty making predictions
 near 0 and 1 because variance in the underlying base models will bias
 predictions that should be near zero or one away from these values. Because
@@ -247,25 +234,25 @@ than 0 for this case, thus moving the average prediction of the bagged
 ensemble away from 0. We observe this effect most strongly with random
 forests because the base-level trees trained with random forests have
 relatively high variance due to feature subsetting.” As a result, the
-calibration curve also referred to as the reliability diagram (Wilks 1995 <a class="footnote-reference" href="#id5" id="id2">[5]</a>) shows a
+calibration curve also referred to as the reliability diagram (Wilks 1995 <a class="footnote-reference brackets" href="#id5" id="id2">5</a>) shows a
 characteristic sigmoid shape, indicating that the classifier could trust its
-“intuition” more and return probabilities closer to 0 or 1 typically.</li>
+“intuition” more and return probabilities closer to 0 or 1 typically.</p></li>
 </ul>
 <ul class="simple">
-<li>Linear Support Vector Classification (<a class="reference internal" href="generated/sklearn.svm.LinearSVC.html#sklearn.svm.LinearSVC" title="sklearn.svm.LinearSVC"><code class="xref py py-class docutils literal"><span class="pre">LinearSVC</span></code></a>) shows an even more sigmoid curve
+<li><p>Linear Support Vector Classification (<a class="reference internal" href="generated/sklearn.svm.LinearSVC.html#sklearn.svm.LinearSVC" title="sklearn.svm.LinearSVC"><code class="xref py py-class docutils literal notranslate"><span class="pre">LinearSVC</span></code></a>) shows an even more sigmoid curve
 as the RandomForestClassifier, which is typical for maximum-margin methods
-(compare Niculescu-Mizil and Caruana <a class="footnote-reference" href="#id4" id="id3">[4]</a>), which focus on hard samples
-that are close to the decision boundary (the support vectors).</li>
+(compare Niculescu-Mizil and Caruana <a class="footnote-reference brackets" href="#id4" id="id3">4</a>), which focus on hard samples
+that are close to the decision boundary (the support vectors).</p></li>
 </ul>
 <p>Two approaches for performing calibration of probabilistic predictions are
 provided: a parametric approach based on Platt’s sigmoid model and a
-non-parametric approach based on isotonic regression (<a class="reference internal" href="classes.html#module-sklearn.isotonic" title="sklearn.isotonic"><code class="xref py py-mod docutils literal"><span class="pre">sklearn.isotonic</span></code></a>).
+non-parametric approach based on isotonic regression (<a class="reference internal" href="classes.html#module-sklearn.isotonic" title="sklearn.isotonic"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.isotonic</span></code></a>).
 Probability calibration should be done on new data not used for model fitting.
-The class <a class="reference internal" href="generated/sklearn.calibration.CalibratedClassifierCV.html#sklearn.calibration.CalibratedClassifierCV" title="sklearn.calibration.CalibratedClassifierCV"><code class="xref py py-class docutils literal"><span class="pre">CalibratedClassifierCV</span></code></a> uses a cross-validation generator and
+The class <a class="reference internal" href="generated/sklearn.calibration.CalibratedClassifierCV.html#sklearn.calibration.CalibratedClassifierCV" title="sklearn.calibration.CalibratedClassifierCV"><code class="xref py py-class docutils literal notranslate"><span class="pre">CalibratedClassifierCV</span></code></a> uses a cross-validation generator and
 estimates for each split the model parameter on the train samples and the
 calibration of the test samples. The probabilities predicted for the
 folds are then averaged. Already fitted classifiers can be calibrated by
-<a class="reference internal" href="generated/sklearn.calibration.CalibratedClassifierCV.html#sklearn.calibration.CalibratedClassifierCV" title="sklearn.calibration.CalibratedClassifierCV"><code class="xref py py-class docutils literal"><span class="pre">CalibratedClassifierCV</span></code></a> via the parameter cv=”prefit”. In this case,
+<a class="reference internal" href="generated/sklearn.calibration.CalibratedClassifierCV.html#sklearn.calibration.CalibratedClassifierCV" title="sklearn.calibration.CalibratedClassifierCV"><code class="xref py py-class docutils literal notranslate"><span class="pre">CalibratedClassifierCV</span></code></a> via the parameter cv=”prefit”. In this case,
 the user has to take care manually that data for model fitting and calibration
 are disjoint.</p>
 <p>The following images demonstrate the benefit of probability calibration.
@@ -291,7 +278,7 @@ redundant. The figure shows the estimated probabilities obtained with
 logistic regression, a linear support-vector classifier (SVC), and linear SVC with
 both isotonic calibration and sigmoid calibration.
 The Brier score is a metric which is a combination of calibration loss and refinement loss,
-<a class="reference internal" href="generated/sklearn.metrics.brier_score_loss.html#sklearn.metrics.brier_score_loss" title="sklearn.metrics.brier_score_loss"><code class="xref py py-func docutils literal"><span class="pre">brier_score_loss</span></code></a>, reported in the legend (the smaller the better).
+<a class="reference internal" href="generated/sklearn.metrics.brier_score_loss.html#sklearn.metrics.brier_score_loss" title="sklearn.metrics.brier_score_loss"><code class="xref py py-func docutils literal notranslate"><span class="pre">brier_score_loss</span></code></a>, reported in the legend (the smaller the better).
 Calibration loss is defined as the mean squared deviation from empirical probabilities
 derived from the slope of ROC segments. Refinement loss can be defined as the expected
 optimal loss as measured by the area under the optimal cost curve.</p>
@@ -328,7 +315,7 @@ sigmoid calibration is preferable in cases where the calibration curve is sigmoi
 and where there is limited calibration data, while isotonic calibration is
 preferable for non-sigmoid calibration curves and in situations where large
 amounts of data are available for calibration.</p>
-<p><a class="reference internal" href="generated/sklearn.calibration.CalibratedClassifierCV.html#sklearn.calibration.CalibratedClassifierCV" title="sklearn.calibration.CalibratedClassifierCV"><code class="xref py py-class docutils literal"><span class="pre">CalibratedClassifierCV</span></code></a> can also deal with classification tasks that
+<p><a class="reference internal" href="generated/sklearn.calibration.CalibratedClassifierCV.html#sklearn.calibration.CalibratedClassifierCV" title="sklearn.calibration.CalibratedClassifierCV"><code class="xref py py-class docutils literal notranslate"><span class="pre">CalibratedClassifierCV</span></code></a> can also deal with classification tasks that
 involve more than two classes if the base estimator can do so. In this case,
 the classifier is calibrated first for each class separately in an one-vs-rest
 fashion. When predicting probabilities for unseen data, the calibrated
@@ -360,28 +347,24 @@ a similar decrease in log-loss.</p>
 <div class="topic">
 <p class="topic-title first">References:</p>
 <ul class="simple">
-<li>Obtaining calibrated probability estimates from decision trees
-and naive Bayesian classifiers, B. Zadrozny &amp; C. Elkan, ICML 2001</li>
-<li>Transforming Classifier Scores into Accurate Multiclass
-Probability Estimates, B. Zadrozny &amp; C. Elkan, (KDD 2002)</li>
-<li>Probabilistic Outputs for Support Vector Machines and Comparisons to
-Regularized Likelihood Methods, J. Platt, (1999)</li>
+<li><p>Obtaining calibrated probability estimates from decision trees
+and naive Bayesian classifiers, B. Zadrozny &amp; C. Elkan, ICML 2001</p></li>
+<li><p>Transforming Classifier Scores into Accurate Multiclass
+Probability Estimates, B. Zadrozny &amp; C. Elkan, (KDD 2002)</p></li>
+<li><p>Probabilistic Outputs for Support Vector Machines and Comparisons to
+Regularized Likelihood Methods, J. Platt, (1999)</p></li>
 </ul>
-<table class="docutils footnote" frame="void" id="id4" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label">[4]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id3">2</a>)</em> Predicting Good Probabilities with Supervised Learning,
-A. Niculescu-Mizil &amp; R. Caruana, ICML 2005</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id5" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[5]</a></td><td>On the combination of forecast probabilities for
+<dl class="footnote brackets">
+<dt class="label" id="id4"><span class="brackets">4</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id3">2</a>)</span></dt>
+<dd><p>Predicting Good Probabilities with Supervised Learning,
+A. Niculescu-Mizil &amp; R. Caruana, ICML 2005</p>
+</dd>
+<dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="#id2">5</a></span></dt>
+<dd><p>On the combination of forecast probabilities for
 consecutive precipitation periods. Wea. Forecasting, 5, 640–650.,
-Wilks, D. S., 1990a</td></tr>
-</tbody>
-</table>
+Wilks, D. S., 1990a</p>
+</dd>
+</dl>
 </div>
 </div>
 

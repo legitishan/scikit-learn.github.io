@@ -1,12 +1,10 @@
 
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <meta charset="utf-8" />
   
     <title>3.4. Model persistence &#8212; scikit-learn 0.22.dev0 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
@@ -14,27 +12,17 @@
   <link rel="stylesheet" href="../_static/css/bootstrap.min.css" media="screen" />
   <link rel="stylesheet" href="../_static/css/bootstrap-responsive.css"/>
 
-    
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '0.22.dev0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <script type="text/javascript" src="../_static/js/copybutton.js"></script>
     <script type="text/javascript" src="../_static/js/extra.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_SVG"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_SVG"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -70,8 +58,7 @@
     };
   </script>
 
-  </head>
-  <body>
+  </head><body>
 
 <div class="header-wrapper">
     <div class="header">
@@ -222,7 +209,7 @@ supporting open model interchange formats such as <a href="#id2"><span class="pr
 <h2>3.4.1. Persistence example<a class="headerlink" href="#persistence-example" title="Permalink to this headline">¶</a></h2>
 <p>It is possible to save a model in scikit-learn by using Python’s built-in
 persistence model, namely <a class="reference external" href="https://docs.python.org/2/library/pickle.html">pickle</a>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">svm</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">svm</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">datasets</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">iris</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">()</span>
@@ -240,22 +227,22 @@ persistence model, namely <a class="reference external" href="https://docs.pytho
 </pre></div>
 </div>
 <p>In the specific case of scikit-learn, it may be better to use joblib’s
-replacement of pickle (<code class="docutils literal"><span class="pre">dump</span></code> &amp; <code class="docutils literal"><span class="pre">load</span></code>), which is more efficient on
+replacement of pickle (<code class="docutils literal notranslate"><span class="pre">dump</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">load</span></code>), which is more efficient on
 objects that carry large numpy arrays internally as is often the case for
 fitted scikit-learn estimators, but can only pickle to the disk and not to a
 string:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">joblib</span> <span class="k">import</span> <span class="n">dump</span><span class="p">,</span> <span class="n">load</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">joblib</span> <span class="k">import</span> <span class="n">dump</span><span class="p">,</span> <span class="n">load</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dump</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="s1">&#39;filename.joblib&#39;</span><span class="p">)</span> 
 </pre></div>
 </div>
 <p>Later you can load back the pickled model (possibly in another Python process)
 with:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="s1">&#39;filename.joblib&#39;</span><span class="p">)</span> 
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="s1">&#39;filename.joblib&#39;</span><span class="p">)</span> 
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last"><code class="docutils literal"><span class="pre">dump</span></code> and <code class="docutils literal"><span class="pre">load</span></code> functions also accept file-like object
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">dump</span></code> and <code class="docutils literal notranslate"><span class="pre">load</span></code> functions also accept file-like object
 instead of filenames. More information on data persistence with Joblib is
 available <a class="reference external" href="https://joblib.readthedocs.io/en/latest/persistence.html">here</a>.</p>
 </div>
@@ -265,20 +252,20 @@ available <a class="reference external" href="https://joblib.readthedocs.io/en/l
 <p>pickle (and joblib by extension), has some issues regarding maintainability
 and security. Because of this,</p>
 <ul class="simple">
-<li>Never unpickle untrusted data as it could lead to malicious code being
-executed upon loading.</li>
-<li>While models saved using one version of scikit-learn might load in
+<li><p>Never unpickle untrusted data as it could lead to malicious code being
+executed upon loading.</p></li>
+<li><p>While models saved using one version of scikit-learn might load in
 other versions, this is entirely unsupported and inadvisable. It should
 also be kept in mind that operations performed on such data could give
-different and unexpected results.</li>
+different and unexpected results.</p></li>
 </ul>
 <p>In order to rebuild a similar model with future versions of scikit-learn,
 additional metadata should be saved along the pickled model:</p>
 <ul class="simple">
-<li>The training data, e.g. a reference to an immutable snapshot</li>
-<li>The python source code used to generate the model</li>
-<li>The versions of scikit-learn and its dependencies</li>
-<li>The cross validation score obtained on the training data</li>
+<li><p>The training data, e.g. a reference to an immutable snapshot</p></li>
+<li><p>The python source code used to generate the model</p></li>
+<li><p>The versions of scikit-learn and its dependencies</p></li>
+<li><p>The cross validation score obtained on the training data</p></li>
 </ul>
 <p>This should make it possible to check that the cross-validation score is in the
 same range as before.</p>

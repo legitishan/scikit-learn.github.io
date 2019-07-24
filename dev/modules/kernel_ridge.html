@@ -1,12 +1,10 @@
 
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <meta charset="utf-8" />
   
     <title>1.3. Kernel ridge regression &#8212; scikit-learn 0.22.dev0 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
@@ -14,27 +12,17 @@
   <link rel="stylesheet" href="../_static/css/bootstrap.min.css" media="screen" />
   <link rel="stylesheet" href="../_static/css/bootstrap-responsive.css"/>
 
-    
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '0.22.dev0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <script type="text/javascript" src="../_static/js/copybutton.js"></script>
     <script type="text/javascript" src="../_static/js/extra.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_SVG"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_SVG"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -70,8 +58,7 @@
     };
   </script>
 
-  </head>
-  <body>
+  </head><body>
 
 <div class="header-wrapper">
     <div class="header">
@@ -205,26 +192,26 @@
             
   <div class="section" id="kernel-ridge-regression">
 <span id="kernel-ridge"></span><h1>1.3. Kernel ridge regression<a class="headerlink" href="#kernel-ridge-regression" title="Permalink to this headline">¶</a></h1>
-<p>Kernel ridge regression (KRR) <a class="reference internal" href="#m2012" id="id1">[M2012]</a> combines <a class="reference internal" href="linear_model.html#ridge-regression"><span class="std std-ref">Ridge Regression</span></a>
+<p>Kernel ridge regression (KRR) <a class="reference internal" href="#m2012" id="id1"><span>[M2012]</span></a> combines <a class="reference internal" href="linear_model.html#ridge-regression"><span class="std std-ref">Ridge Regression</span></a>
 (linear least squares with l2-norm regularization) with the kernel trick. It
 thus learns a linear function in the space induced by the respective kernel and
 the data. For non-linear kernels, this corresponds to a non-linear
 function in the original space.</p>
-<p>The form of the model learned by <a class="reference internal" href="generated/sklearn.kernel_ridge.KernelRidge.html#sklearn.kernel_ridge.KernelRidge" title="sklearn.kernel_ridge.KernelRidge"><code class="xref py py-class docutils literal"><span class="pre">KernelRidge</span></code></a> is identical to support
-vector regression (<code class="xref py py-class docutils literal"><span class="pre">SVR</span></code>). However, different loss functions are used:
+<p>The form of the model learned by <a class="reference internal" href="generated/sklearn.kernel_ridge.KernelRidge.html#sklearn.kernel_ridge.KernelRidge" title="sklearn.kernel_ridge.KernelRidge"><code class="xref py py-class docutils literal notranslate"><span class="pre">KernelRidge</span></code></a> is identical to support
+vector regression (<code class="xref py py-class docutils literal notranslate"><span class="pre">SVR</span></code>). However, different loss functions are used:
 KRR uses squared error loss while support vector regression uses
-<span class="math">\(\epsilon\)</span>-insensitive loss, both combined with l2 regularization.  In
-contrast to <code class="xref py py-class docutils literal"><span class="pre">SVR</span></code>, fitting <a class="reference internal" href="generated/sklearn.kernel_ridge.KernelRidge.html#sklearn.kernel_ridge.KernelRidge" title="sklearn.kernel_ridge.KernelRidge"><code class="xref py py-class docutils literal"><span class="pre">KernelRidge</span></code></a> can be done in
+<span class="math notranslate nohighlight">\(\epsilon\)</span>-insensitive loss, both combined with l2 regularization.  In
+contrast to <code class="xref py py-class docutils literal notranslate"><span class="pre">SVR</span></code>, fitting <a class="reference internal" href="generated/sklearn.kernel_ridge.KernelRidge.html#sklearn.kernel_ridge.KernelRidge" title="sklearn.kernel_ridge.KernelRidge"><code class="xref py py-class docutils literal notranslate"><span class="pre">KernelRidge</span></code></a> can be done in
 closed-form and is typically faster for medium-sized datasets. On the other
 hand, the learned model is non-sparse and thus slower than SVR, which learns
-a sparse model for <span class="math">\(\epsilon &gt; 0\)</span>, at prediction-time.</p>
-<p>The following figure compares <a class="reference internal" href="generated/sklearn.kernel_ridge.KernelRidge.html#sklearn.kernel_ridge.KernelRidge" title="sklearn.kernel_ridge.KernelRidge"><code class="xref py py-class docutils literal"><span class="pre">KernelRidge</span></code></a> and <code class="xref py py-class docutils literal"><span class="pre">SVR</span></code> on
+a sparse model for <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span>, at prediction-time.</p>
+<p>The following figure compares <a class="reference internal" href="generated/sklearn.kernel_ridge.KernelRidge.html#sklearn.kernel_ridge.KernelRidge" title="sklearn.kernel_ridge.KernelRidge"><code class="xref py py-class docutils literal notranslate"><span class="pre">KernelRidge</span></code></a> and <code class="xref py py-class docutils literal notranslate"><span class="pre">SVR</span></code> on
 an artificial dataset, which consists of a sinusoidal target function and
 strong noise added to every fifth datapoint. The learned model of
-<a class="reference internal" href="generated/sklearn.kernel_ridge.KernelRidge.html#sklearn.kernel_ridge.KernelRidge" title="sklearn.kernel_ridge.KernelRidge"><code class="xref py py-class docutils literal"><span class="pre">KernelRidge</span></code></a> and <code class="xref py py-class docutils literal"><span class="pre">SVR</span></code> is plotted, where both
+<a class="reference internal" href="generated/sklearn.kernel_ridge.KernelRidge.html#sklearn.kernel_ridge.KernelRidge" title="sklearn.kernel_ridge.KernelRidge"><code class="xref py py-class docutils literal notranslate"><span class="pre">KernelRidge</span></code></a> and <code class="xref py py-class docutils literal notranslate"><span class="pre">SVR</span></code> is plotted, where both
 complexity/regularization and bandwidth of the RBF kernel have been optimized
 using grid-search. The learned functions are very similar; however, fitting
-<a class="reference internal" href="generated/sklearn.kernel_ridge.KernelRidge.html#sklearn.kernel_ridge.KernelRidge" title="sklearn.kernel_ridge.KernelRidge"><code class="xref py py-class docutils literal"><span class="pre">KernelRidge</span></code></a> is approx. seven times faster than fitting <code class="xref py py-class docutils literal"><span class="pre">SVR</span></code>
+<a class="reference internal" href="generated/sklearn.kernel_ridge.KernelRidge.html#sklearn.kernel_ridge.KernelRidge" title="sklearn.kernel_ridge.KernelRidge"><code class="xref py py-class docutils literal notranslate"><span class="pre">KernelRidge</span></code></a> is approx. seven times faster than fitting <code class="xref py py-class docutils literal notranslate"><span class="pre">SVR</span></code>
 (both with grid-search). However, prediction of 100000 target values is more
 than three times faster with SVR since it has learned a sparse model using only
 approx. 1/3 of the 100 training datapoints as support vectors.</p>
@@ -232,26 +219,25 @@ approx. 1/3 of the 100 training datapoints as support vectors.</p>
 <a class="reference external image-reference" href="../auto_examples/plot_kernel_ridge_regression.html"><img alt="../_images/sphx_glr_plot_kernel_ridge_regression_0011.png" src="../_images/sphx_glr_plot_kernel_ridge_regression_0011.png" /></a>
 </div>
 <p>The next figure compares the time for fitting and prediction of
-<a class="reference internal" href="generated/sklearn.kernel_ridge.KernelRidge.html#sklearn.kernel_ridge.KernelRidge" title="sklearn.kernel_ridge.KernelRidge"><code class="xref py py-class docutils literal"><span class="pre">KernelRidge</span></code></a> and <code class="xref py py-class docutils literal"><span class="pre">SVR</span></code> for different sizes of the training set.
-Fitting <a class="reference internal" href="generated/sklearn.kernel_ridge.KernelRidge.html#sklearn.kernel_ridge.KernelRidge" title="sklearn.kernel_ridge.KernelRidge"><code class="xref py py-class docutils literal"><span class="pre">KernelRidge</span></code></a> is faster than <code class="xref py py-class docutils literal"><span class="pre">SVR</span></code> for medium-sized
+<a class="reference internal" href="generated/sklearn.kernel_ridge.KernelRidge.html#sklearn.kernel_ridge.KernelRidge" title="sklearn.kernel_ridge.KernelRidge"><code class="xref py py-class docutils literal notranslate"><span class="pre">KernelRidge</span></code></a> and <code class="xref py py-class docutils literal notranslate"><span class="pre">SVR</span></code> for different sizes of the training set.
+Fitting <a class="reference internal" href="generated/sklearn.kernel_ridge.KernelRidge.html#sklearn.kernel_ridge.KernelRidge" title="sklearn.kernel_ridge.KernelRidge"><code class="xref py py-class docutils literal notranslate"><span class="pre">KernelRidge</span></code></a> is faster than <code class="xref py py-class docutils literal notranslate"><span class="pre">SVR</span></code> for medium-sized
 training sets (less than 1000 samples); however, for larger training sets
-<code class="xref py py-class docutils literal"><span class="pre">SVR</span></code> scales better. With regard to prediction time, <code class="xref py py-class docutils literal"><span class="pre">SVR</span></code> is
-faster than <a class="reference internal" href="generated/sklearn.kernel_ridge.KernelRidge.html#sklearn.kernel_ridge.KernelRidge" title="sklearn.kernel_ridge.KernelRidge"><code class="xref py py-class docutils literal"><span class="pre">KernelRidge</span></code></a> for all sizes of the training set because of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">SVR</span></code> scales better. With regard to prediction time, <code class="xref py py-class docutils literal notranslate"><span class="pre">SVR</span></code> is
+faster than <a class="reference internal" href="generated/sklearn.kernel_ridge.KernelRidge.html#sklearn.kernel_ridge.KernelRidge" title="sklearn.kernel_ridge.KernelRidge"><code class="xref py py-class docutils literal notranslate"><span class="pre">KernelRidge</span></code></a> for all sizes of the training set because of
 the learned sparse solution. Note that the degree of sparsity and thus the
-prediction time depends on the parameters <span class="math">\(\epsilon\)</span> and <span class="math">\(C\)</span> of the
-<code class="xref py py-class docutils literal"><span class="pre">SVR</span></code>; <span class="math">\(\epsilon = 0\)</span> would correspond to a dense model.</p>
+prediction time depends on the parameters <span class="math notranslate nohighlight">\(\epsilon\)</span> and <span class="math notranslate nohighlight">\(C\)</span> of the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">SVR</span></code>; <span class="math notranslate nohighlight">\(\epsilon = 0\)</span> would correspond to a dense model.</p>
 <div class="figure align-center">
 <a class="reference external image-reference" href="../auto_examples/plot_kernel_ridge_regression.html"><img alt="../_images/sphx_glr_plot_kernel_ridge_regression_0021.png" src="../_images/sphx_glr_plot_kernel_ridge_regression_0021.png" /></a>
 </div>
 <div class="topic">
 <p class="topic-title first">References:</p>
-<table class="docutils citation" frame="void" id="m2012" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[M2012]</a></td><td>“Machine Learning: A Probabilistic Perspective”
-Murphy, K. P. - chapter 14.4.3, pp. 492-493, The MIT Press, 2012</td></tr>
-</tbody>
-</table>
+<dl class="citation">
+<dt class="label" id="m2012"><span class="brackets"><a class="fn-backref" href="#id1">M2012</a></span></dt>
+<dd><p>“Machine Learning: A Probabilistic Perspective”
+Murphy, K. P. - chapter 14.4.3, pp. 492-493, The MIT Press, 2012</p>
+</dd>
+</dl>
 </div>
 </div>
 
