@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
   
-    <title>Effect of transforming the targets in regression model &#8212; scikit-learn 0.21.2 documentation</title>
+    <title>Effect of transforming the targets in regression model &#8212; scikit-learn 0.21.3 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../../_static/css/bootstrap.min.css" media="screen" />
@@ -22,7 +22,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.21.2',
+        VERSION:     '0.21.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -96,6 +96,7 @@
             <li><a href="../../faq.html">FAQ</a></li>
             <li><a href="../../developers/index.html">Development</a></li>
             <li><a href="../../roadmap.html">Roadmap</a></li>
+            <li><a href="../../about.html">About us</a></li>
             <li class="divider"></li>
                 <script>if (VERSION_SUBDIR != "stable") document.write('<li><a href="http://scikit-learn.org/stable/documentation.html">Stable version</a></li>')</script>
                 <script>if (VERSION_SUBDIR != "dev") document.write('<li><a href="http://scikit-learn.org/dev/documentation.html">Development version</a></li>')</script>
@@ -180,7 +181,7 @@
         </div>
     </div>
     
-      <p class="doc-version"><b>scikit-learn v0.21.2</b><br/>
+      <p class="doc-version"><b>scikit-learn v0.21.3</b><br/>
       <a href="http://scikit-learn.org/dev/versions.html">Other versions</a></p>
     <p class="citing">Please <b><a href="../../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
@@ -336,7 +337,9 @@ Boston employment centers.</p>
 <span class="n">X</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.logical_not.html#numpy.logical_not" title="View documentation for numpy.logical_not"><span class="n">np</span><span class="o">.</span><span class="n">logical_not</span></a><span class="p">(</span><span class="n">target</span><span class="p">)]</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="n">target</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
 <span class="n">y_trans</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.preprocessing.quantile_transform.html#sklearn.preprocessing.quantile_transform" title="View documentation for sklearn.preprocessing.quantile_transform"><span class="n">quantile_transform</span></a><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="n">target</span><span class="p">],</span>
-                             <span class="n">output_distribution</span><span class="o">=</span><span class="s1">&#39;normal&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+                             <span class="n">n_quantiles</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
+                             <span class="n">output_distribution</span><span class="o">=</span><span class="s1">&#39;normal&#39;</span><span class="p">,</span>
+                             <span class="n">copy</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>A <a class="reference internal" href="../../modules/generated/sklearn.preprocessing.QuantileTransformer.html#sklearn.preprocessing.QuantileTransformer" title="sklearn.preprocessing.QuantileTransformer"><code class="xref py py-class docutils literal"><span class="pre">sklearn.preprocessing.QuantileTransformer</span></code></a> is used such that the
@@ -381,7 +384,8 @@ the transform induces a decrease of the MAE.</p>
 
 <span class="n">regr_trans</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.compose.TransformedTargetRegressor.html#sklearn.compose.TransformedTargetRegressor" title="View documentation for sklearn.compose.TransformedTargetRegressor"><span class="n">TransformedTargetRegressor</span></a><span class="p">(</span>
     <span class="n">regressor</span><span class="o">=</span><a href="../../modules/generated/sklearn.linear_model.RidgeCV.html#sklearn.linear_model.RidgeCV" title="View documentation for sklearn.linear_model.RidgeCV"><span class="n">RidgeCV</span></a><span class="p">(),</span>
-    <span class="n">transformer</span><span class="o">=</span><a href="../../modules/generated/sklearn.preprocessing.QuantileTransformer.html#sklearn.preprocessing.QuantileTransformer" title="View documentation for sklearn.preprocessing.QuantileTransformer"><span class="n">QuantileTransformer</span></a><span class="p">(</span><span class="n">output_distribution</span><span class="o">=</span><span class="s1">&#39;normal&#39;</span><span class="p">))</span>
+    <span class="n">transformer</span><span class="o">=</span><a href="../../modules/generated/sklearn.preprocessing.QuantileTransformer.html#sklearn.preprocessing.QuantileTransformer" title="View documentation for sklearn.preprocessing.QuantileTransformer"><span class="n">QuantileTransformer</span></a><span class="p">(</span><span class="n">n_quantiles</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
+                                    <span class="n">output_distribution</span><span class="o">=</span><span class="s1">&#39;normal&#39;</span><span class="p">))</span>
 <span class="n">regr_trans</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <span class="n">y_pred</span> <span class="o">=</span> <span class="n">regr_trans</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
 
@@ -402,7 +406,7 @@ the transform induces a decrease of the MAE.</p>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_transformed_target_004.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_transformed_target_004.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  1.252 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  1.682 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-compose-plot-transformed-target-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/plot_transformed_target.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_transformed_target.py</span></code></a></div>

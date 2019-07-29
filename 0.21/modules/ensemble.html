@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
   
-    <title>1.11. Ensemble methods &#8212; scikit-learn 0.21.2 documentation</title>
+    <title>1.11. Ensemble methods &#8212; scikit-learn 0.21.3 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../_static/css/bootstrap.min.css" media="screen" />
@@ -22,7 +22,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.21.2',
+        VERSION:     '0.21.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -96,6 +96,7 @@
             <li><a href="../faq.html">FAQ</a></li>
             <li><a href="../developers/index.html">Development</a></li>
             <li><a href="../roadmap.html">Roadmap</a></li>
+            <li><a href="../about.html">About us</a></li>
             <li class="divider"></li>
                 <script>if (VERSION_SUBDIR != "stable") document.write('<li><a href="http://scikit-learn.org/stable/documentation.html">Stable version</a></li>')</script>
                 <script>if (VERSION_SUBDIR != "dev") document.write('<li><a href="http://scikit-learn.org/dev/documentation.html">Development version</a></li>')</script>
@@ -180,7 +181,7 @@
         </div>
     </div>
     
-      <p class="doc-version"><b>scikit-learn v0.21.2</b><br/>
+      <p class="doc-version"><b>scikit-learn v0.21.3</b><br/>
       <a href="http://scikit-learn.org/dev/versions.html">Other versions</a></p>
     <p class="citing">Please <b><a href="../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
@@ -381,16 +382,20 @@ to <a class="reference internal" href="tree.html#tree-multioutput"><span class="
 <div class="section" id="random-forests">
 <h3>1.11.2.1. Random Forests<a class="headerlink" href="#random-forests" title="Permalink to this headline">¶</a></h3>
 <p>In random forests (see <a class="reference internal" href="generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier" title="sklearn.ensemble.RandomForestClassifier"><code class="xref py py-class docutils literal"><span class="pre">RandomForestClassifier</span></code></a> and
-<a class="reference internal" href="generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor" title="sklearn.ensemble.RandomForestRegressor"><code class="xref py py-class docutils literal"><span class="pre">RandomForestRegressor</span></code></a> classes), each tree in the ensemble is
-built from a sample drawn with replacement (i.e., a bootstrap sample)
-from the training set. In addition, when splitting a node during the
-construction of the tree, the split that is chosen is no longer the
-best split among all features. Instead, the split that is picked is the
-best split among a random subset of the features. As a result of this
-randomness, the bias of the forest usually slightly increases (with
-respect to the bias of a single non-random tree) but, due to averaging,
-its variance also decreases, usually more than compensating for the
-increase in bias, hence yielding an overall better model.</p>
+<a class="reference internal" href="generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor" title="sklearn.ensemble.RandomForestRegressor"><code class="xref py py-class docutils literal"><span class="pre">RandomForestRegressor</span></code></a> classes), each tree in the ensemble is built
+from a sample drawn with replacement (i.e., a bootstrap sample) from the
+training set.</p>
+<p>Furthermore, when splitting each node during the construction of a tree, the
+best split is found either from all input features or a random subset of size
+<code class="docutils literal"><span class="pre">max_features</span></code>. (See the <a class="reference internal" href="#random-forest-parameters"><span class="std std-ref">parameter tuning guidelines</span></a> for more details).</p>
+<p>The purpose of these two sources of randomness is to decrease the variance of
+the forest estimator. Indeed, individual decision trees typically exhibit high
+variance and tend to overfit. The injected randomness in forests yield decision
+trees with somewhat decoupled prediction errors. By taking an average of those
+predictions, some errors can cancel out. Random forests achieve a reduced
+variance by combining diverse trees, sometimes at the cost of a slight increase
+in bias. In practice the variance reduction is often significant hence yielding
+an overall better model.</p>
 <p>In contrast to the original publication <a class="reference internal" href="#b2001" id="id6">[B2001]</a>, the scikit-learn
 implementation combines classifiers by averaging their probabilistic
 prediction, instead of letting each classifier vote for a single class.</p>
@@ -439,28 +444,27 @@ in bias:</p>
 </div>
 </div>
 <div class="section" id="parameters">
-<h3>1.11.2.3. Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h3>
-<p>The main parameters to adjust when using these methods is <code class="docutils literal"><span class="pre">n_estimators</span></code>
-and <code class="docutils literal"><span class="pre">max_features</span></code>. The former is the number of trees in the forest. The
-larger the better, but also the longer it will take to compute. In
-addition, note that results will stop getting significantly better
-beyond a critical number of trees. The latter is the size of the random
-subsets of features to consider when splitting a node. The lower the
-greater the reduction of variance, but also the greater the increase in
-bias. Empirical good default values are <code class="docutils literal"><span class="pre">max_features=n_features</span></code>
-for regression problems, and <code class="docutils literal"><span class="pre">max_features=sqrt(n_features)</span></code> for
-classification tasks (where <code class="docutils literal"><span class="pre">n_features</span></code> is the number of features
-in the data). Good results are often achieved when setting <code class="docutils literal"><span class="pre">max_depth=None</span></code>
-in combination with <code class="docutils literal"><span class="pre">min_samples_split=2</span></code> (i.e., when fully developing the
-trees). Bear in mind though that these values are usually not optimal, and
-might result in models that consume a lot of RAM. The best parameter values
-should always be cross-validated. In addition, note that in random forests,
-bootstrap samples are used by default (<code class="docutils literal"><span class="pre">bootstrap=True</span></code>)
-while the default strategy for extra-trees is to use the whole dataset
-(<code class="docutils literal"><span class="pre">bootstrap=False</span></code>).
-When using bootstrap sampling the generalization accuracy can be estimated
-on the left out or out-of-bag samples. This can be enabled by
-setting <code class="docutils literal"><span class="pre">oob_score=True</span></code>.</p>
+<span id="random-forest-parameters"></span><h3>1.11.2.3. Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h3>
+<p>The main parameters to adjust when using these methods is <code class="docutils literal"><span class="pre">n_estimators</span></code> and
+<code class="docutils literal"><span class="pre">max_features</span></code>. The former is the number of trees in the forest. The larger
+the better, but also the longer it will take to compute. In addition, note that
+results will stop getting significantly better beyond a critical number of
+trees. The latter is the size of the random subsets of features to consider
+when splitting a node. The lower the greater the reduction of variance, but
+also the greater the increase in bias. Empirical good default values are
+<code class="docutils literal"><span class="pre">max_features=None</span></code> (always considering all features instead of a random
+subset) for regression problems, and <code class="docutils literal"><span class="pre">max_features=&quot;sqrt&quot;</span></code> (using a random
+subset of size <code class="docutils literal"><span class="pre">sqrt(n_features)</span></code>) for classification tasks (where
+<code class="docutils literal"><span class="pre">n_features</span></code> is the number of features in the data). Good results are often
+achieved when setting <code class="docutils literal"><span class="pre">max_depth=None</span></code> in combination with
+<code class="docutils literal"><span class="pre">min_samples_split=2</span></code> (i.e., when fully developing the trees). Bear in mind
+though that these values are usually not optimal, and might result in models
+that consume a lot of RAM. The best parameter values should always be
+cross-validated. In addition, note that in random forests, bootstrap samples
+are used by default (<code class="docutils literal"><span class="pre">bootstrap=True</span></code>) while the default strategy for
+extra-trees is to use the whole dataset (<code class="docutils literal"><span class="pre">bootstrap=False</span></code>). When using
+bootstrap sampling the generalization accuracy can be estimated on the left out
+or out-of-bag samples. This can be enabled by setting <code class="docutils literal"><span class="pre">oob_score=True</span></code>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The size of the model with the default parameters is <span class="math">\(O( M * N * log (N) )\)</span>,
