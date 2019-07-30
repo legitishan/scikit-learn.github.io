@@ -26,8 +26,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Comparing different hierarchical linkage methods on toy datasets" href="plot_linkage_comparison.html" />
-    <link rel="prev" title="A demo of K-Means clustering on the handwritten digits data" href="plot_kmeans_digits.html" />
+    <link rel="next" title="Feature agglomeration vs. univariate selection" href="plot_feature_agglomeration_vs_univariate_selection.html" />
+    <link rel="prev" title="Adjustment for chance in clustering performance evaluation" href="plot_adjusted_for_chance_measures.html" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -122,14 +122,14 @@
         <div class="rel">
     
         <div class="rellink">
-        <a href="plot_kmeans_digits.html"
+        <a href="plot_adjusted_for_chance_measures.html"
         accesskey="P">Previous
         <br/>
         <span class="smallrellink">
-        A demo of K-M...
+        Adjustment fo...
         </span>
             <span class="hiddenrellink">
-            A demo of K-Means clustering on the handwritten digits data
+            Adjustment for chance in clustering performance evaluation
             </span>
         </a>
         </div>
@@ -137,14 +137,14 @@
             &nbsp;
             </div>
         <div class="rellink">
-        <a href="plot_linkage_comparison.html"
+        <a href="plot_feature_agglomeration_vs_univariate_selection.html"
         accesskey="N">Next
         <br/>
         <span class="smallrellink">
-        Comparing dif...
+        Feature agglo...
         </span>
             <span class="hiddenrellink">
-            Comparing different hierarchical linkage methods on toy datasets
+            Feature agglomeration vs. univariate selection
             </span>
         </a>
         </div>
@@ -251,12 +251,13 @@ algorithms.</p>
 <span class="c1"># We want to have the same colors for the same cluster from the</span>
 <span class="c1"># MiniBatchKMeans and the KMeans algorithm. Let&#39;s pair the cluster centers per</span>
 <span class="c1"># closest one.</span>
-<span class="n">k_means_cluster_centers</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.sort.html#numpy.sort" title="View documentation for numpy.sort"><span class="n">np</span><span class="o">.</span><span class="n">sort</span></a><span class="p">(</span><span class="n">k_means</span><span class="o">.</span><span class="n">cluster_centers_</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">mbk_means_cluster_centers</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.sort.html#numpy.sort" title="View documentation for numpy.sort"><span class="n">np</span><span class="o">.</span><span class="n">sort</span></a><span class="p">(</span><span class="n">mbk</span><span class="o">.</span><span class="n">cluster_centers_</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">k_means_cluster_centers</span> <span class="o">=</span> <span class="n">k_means</span><span class="o">.</span><span class="n">cluster_centers_</span>
+<span class="n">order</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.metrics.pairwise_distances_argmin.html#sklearn.metrics.pairwise_distances_argmin" title="View documentation for sklearn.metrics.pairwise.pairwise_distances_argmin"><span class="n">pairwise_distances_argmin</span></a><span class="p">(</span><span class="n">k_means</span><span class="o">.</span><span class="n">cluster_centers_</span><span class="p">,</span>
+                                  <span class="n">mbk</span><span class="o">.</span><span class="n">cluster_centers_</span><span class="p">)</span>
+<span class="n">mbk_means_cluster_centers</span> <span class="o">=</span> <span class="n">mbk</span><span class="o">.</span><span class="n">cluster_centers_</span><span class="p">[</span><span class="n">order</span><span class="p">]</span>
+
 <span class="n">k_means_labels</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.metrics.pairwise_distances_argmin.html#sklearn.metrics.pairwise_distances_argmin" title="View documentation for sklearn.metrics.pairwise.pairwise_distances_argmin"><span class="n">pairwise_distances_argmin</span></a><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">k_means_cluster_centers</span><span class="p">)</span>
 <span class="n">mbk_means_labels</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.metrics.pairwise_distances_argmin.html#sklearn.metrics.pairwise_distances_argmin" title="View documentation for sklearn.metrics.pairwise.pairwise_distances_argmin"><span class="n">pairwise_distances_argmin</span></a><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">mbk_means_cluster_centers</span><span class="p">)</span>
-<span class="n">order</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.metrics.pairwise_distances_argmin.html#sklearn.metrics.pairwise_distances_argmin" title="View documentation for sklearn.metrics.pairwise.pairwise_distances_argmin"><span class="n">pairwise_distances_argmin</span></a><span class="p">(</span><span class="n">k_means_cluster_centers</span><span class="p">,</span>
-                                  <span class="n">mbk_means_cluster_centers</span><span class="p">)</span>
 
 <span class="c1"># KMeans</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -276,8 +277,8 @@ algorithms.</p>
 <span class="c1"># MiniBatchKMeans</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n_clusters</span><span class="p">),</span> <span class="n">colors</span><span class="p">):</span>
-    <span class="n">my_members</span> <span class="o">=</span> <span class="n">mbk_means_labels</span> <span class="o">==</span> <span class="n">order</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
-    <span class="n">cluster_center</span> <span class="o">=</span> <span class="n">mbk_means_cluster_centers</span><span class="p">[</span><span class="n">order</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span>
+    <span class="n">my_members</span> <span class="o">=</span> <span class="n">mbk_means_labels</span> <span class="o">==</span> <span class="n">k</span>
+    <span class="n">cluster_center</span> <span class="o">=</span> <span class="n">mbk_means_cluster_centers</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">my_members</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">my_members</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span>
             <span class="n">markerfacecolor</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cluster_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cluster_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">markerfacecolor</span><span class="o">=</span><span class="n">col</span><span class="p">,</span>
@@ -293,7 +294,7 @@ algorithms.</p>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_clusters</span><span class="p">):</span>
-    <span class="n">different</span> <span class="o">+=</span> <span class="p">((</span><span class="n">k_means_labels</span> <span class="o">==</span> <span class="n">k</span><span class="p">)</span> <span class="o">!=</span> <span class="p">(</span><span class="n">mbk_means_labels</span> <span class="o">==</span> <span class="n">order</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
+    <span class="n">different</span> <span class="o">+=</span> <span class="p">((</span><span class="n">k_means_labels</span> <span class="o">==</span> <span class="n">k</span><span class="p">)</span> <span class="o">!=</span> <span class="p">(</span><span class="n">mbk_means_labels</span> <span class="o">==</span> <span class="n">k</span><span class="p">))</span>
 
 <span class="n">identic</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.logical_not.html#numpy.logical_not" title="View documentation for numpy.logical_not"><span class="n">np</span><span class="o">.</span><span class="n">logical_not</span></a><span class="p">(</span><span class="n">different</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">identic</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">identic</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span>
@@ -307,7 +308,7 @@ algorithms.</p>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.188 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.137 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-cluster-plot-mini-batch-kmeans-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/58afd0669a2190b8c0825a98eb4321d8/plot_mini_batch_kmeans.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_mini_batch_kmeans.py</span></code></a></p>
@@ -334,11 +335,11 @@ algorithms.</p>
      <div class="rel">
     
     <div class="buttonPrevious">
-      <a href="plot_kmeans_digits.html">Previous
+      <a href="plot_adjusted_for_chance_measures.html">Previous
       </a>
     </div>
     <div class="buttonNext">
-      <a href="plot_linkage_comparison.html">Next
+      <a href="plot_feature_agglomeration_vs_univariate_selection.html">Next
       </a>
     </div>
     
