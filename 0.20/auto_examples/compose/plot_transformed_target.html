@@ -6,23 +6,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
   
-    <title>Effect of transforming the targets in regression model &#8212; scikit-learn 0.20.3 documentation</title>
+    <title>Effect of transforming the targets in regression model &#8212; scikit-learn 0.20.4 documentation</title>
   <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../../_static/css/bootstrap.min.css" media="screen" />
   <link rel="stylesheet" href="../../_static/css/bootstrap-responsive.css"/>
 
-    
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.20.3',
+        VERSION:     '0.20.4',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -180,7 +177,7 @@
         </div>
     </div>
     
-      <p class="doc-version"><b>scikit-learn v0.20.3</b><br/>
+      <p class="doc-version"><b>scikit-learn v0.20.4</b><br/>
       <a href="http://scikit-learn.org/dev/versions.html">Other versions</a></p>
     <p class="citing">Please <b><a href="../../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
@@ -217,33 +214,37 @@
 illustrate the benefit of transforming the targets before learning a linear
 regression model. The first example uses synthetic data while the second
 example is based on the Boston housing data set.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Author: Guillaume Lemaitre &lt;guillaume.lemaitre@inria.fr&gt;</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Author: Guillaume Lemaitre &lt;guillaume.lemaitre@inria.fr&gt;</span>
 <span class="c1"># License: BSD 3 clause</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">division</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">distutils.version</span> <span class="kn">import</span> <span class="n">LooseVersion</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">distutils.version</span> <span class="k">import</span> <span class="n">LooseVersion</span>
 
-<span class="k">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 <div class="section" id="synthetic-example">
 <h2>Synthetic example<a class="headerlink" href="#synthetic-example" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.datasets.make_regression.html#sklearn.datasets.make_regression" title="View documentation for sklearn.datasets.make_regression"><span class="n">make_regression</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="View documentation for sklearn.model_selection.train_test_split"><span class="n">train_test_split</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.linear_model.RidgeCV.html#sklearn.linear_model.RidgeCV" title="View documentation for sklearn.linear_model.RidgeCV"><span class="n">RidgeCV</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.compose</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.compose.TransformedTargetRegressor.html#sklearn.compose.TransformedTargetRegressor" title="View documentation for sklearn.compose.TransformedTargetRegressor"><span class="n">TransformedTargetRegressor</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.metrics.median_absolute_error.html#sklearn.metrics.median_absolute_error" title="View documentation for sklearn.metrics.median_absolute_error"><span class="n">median_absolute_error</span></a><span class="p">,</span> <a href="../../modules/generated/sklearn.metrics.r2_score.html#sklearn.metrics.r2_score" title="View documentation for sklearn.metrics.r2_score"><span class="n">r2_score</span></a>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.datasets.make_regression.html#sklearn.datasets.make_regression" title="View documentation for sklearn.datasets.make_regression"><span class="n">make_regression</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="View documentation for sklearn.model_selection.train_test_split"><span class="n">train_test_split</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.linear_model.RidgeCV.html#sklearn.linear_model.RidgeCV" title="View documentation for sklearn.linear_model.RidgeCV"><span class="n">RidgeCV</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.compose</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.compose.TransformedTargetRegressor.html#sklearn.compose.TransformedTargetRegressor" title="View documentation for sklearn.compose.TransformedTargetRegressor"><span class="n">TransformedTargetRegressor</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.metrics.median_absolute_error.html#sklearn.metrics.median_absolute_error" title="View documentation for sklearn.metrics.median_absolute_error"><span class="n">median_absolute_error</span></a><span class="p">,</span> <a href="../../modules/generated/sklearn.metrics.r2_score.html#sklearn.metrics.r2_score" title="View documentation for sklearn.metrics.r2_score"><span class="n">r2_score</span></a>
 
 
 <span class="c1"># `normed` is being deprecated in favor of `density` in histograms</span>
 <span class="k">if</span> <span class="n">LooseVersion</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="s1">&#39;2.1&#39;</span><span class="p">:</span>
-    <span class="n">density_param</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;density&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
+    <span class="n">density_param</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;density&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="n">density_param</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;normed&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
+    <span class="n">density_param</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;normed&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
 </pre></div>
 </div>
 <p>A synthetic random regression problem is generated. The targets <code class="docutils literal"><span class="pre">y</span></code> are
@@ -253,14 +254,14 @@ targets which cannot be fitted using a simple linear model.</p>
 <p>Therefore, a logarithmic (<cite>np.log1p</cite>) and an exponential function
 (<cite>np.expm1</cite>) will be used to transform the targets before training a linear
 regression model and using it for prediction.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.make_regression.html#sklearn.datasets.make_regression" title="View documentation for sklearn.datasets.make_regression"><span class="n">make_regression</span></a><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.make_regression.html#sklearn.datasets.make_regression" title="View documentation for sklearn.datasets.make_regression"><span class="n">make_regression</span></a><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">y</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.exp.html#numpy.exp" title="View documentation for numpy.exp"><span class="n">np</span><span class="o">.</span><span class="n">exp</span></a><span class="p">((</span><span class="n">y</span> <span class="o">+</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">min</span><span class="p">()))</span> <span class="o">/</span> <span class="mi">200</span><span class="p">)</span>
 <span class="n">y_trans</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.log1p.html#numpy.log1p" title="View documentation for numpy.log1p"><span class="n">np</span><span class="o">.</span><span class="n">log1p</span></a><span class="p">(</span><span class="n">y</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The following illustrate the probability density functions of the target
 before and after applying the logarithmic functions.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">ax0</span><span class="p">,</span> <span class="n">ax1</span><span class="p">)</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="View documentation for matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">ax0</span><span class="p">,</span> <span class="n">ax1</span><span class="p">)</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="View documentation for matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
 <span class="n">ax0</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="o">**</span><span class="n">density_param</span><span class="p">)</span>
 <span class="n">ax0</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2000</span><span class="p">])</span>
@@ -285,7 +286,7 @@ non-linearity, the model trained will not be precise during the
 prediction. Subsequently, a logarithmic function is used to linearize the
 targets, allowing better prediction even with a similar linear model as
 reported by the median absolute error (MAE).</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">ax0</span><span class="p">,</span> <span class="n">ax1</span><span class="p">)</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="View documentation for matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">ax0</span><span class="p">,</span> <span class="n">ax1</span><span class="p">)</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="View documentation for matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">regr</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.linear_model.RidgeCV.html#sklearn.linear_model.RidgeCV" title="View documentation for sklearn.linear_model.RidgeCV"><span class="n">RidgeCV</span></a><span class="p">()</span>
 <span class="n">regr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
@@ -329,8 +330,8 @@ reported by the median absolute error (MAE).</p>
 of transforming the targets before learning a model. In this example, the
 targets to be predicted corresponds to the weighted distances to the five
 Boston employment centers.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.datasets.load_boston.html#sklearn.datasets.load_boston" title="View documentation for sklearn.datasets.load_boston"><span class="n">load_boston</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.preprocessing.QuantileTransformer.html#sklearn.preprocessing.QuantileTransformer" title="View documentation for sklearn.preprocessing.QuantileTransformer"><span class="n">QuantileTransformer</span></a><span class="p">,</span> <a href="../../modules/generated/sklearn.preprocessing.quantile_transform.html#sklearn.preprocessing.quantile_transform" title="View documentation for sklearn.preprocessing.quantile_transform"><span class="n">quantile_transform</span></a>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.datasets.load_boston.html#sklearn.datasets.load_boston" title="View documentation for sklearn.datasets.load_boston"><span class="n">load_boston</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.preprocessing.QuantileTransformer.html#sklearn.preprocessing.QuantileTransformer" title="View documentation for sklearn.preprocessing.QuantileTransformer"><span class="n">QuantileTransformer</span></a><span class="p">,</span> <a href="../../modules/generated/sklearn.preprocessing.quantile_transform.html#sklearn.preprocessing.quantile_transform" title="View documentation for sklearn.preprocessing.quantile_transform"><span class="n">quantile_transform</span></a>
 
 <span class="n">dataset</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.load_boston.html#sklearn.datasets.load_boston" title="View documentation for sklearn.datasets.load_boston"><span class="n">load_boston</span></a><span class="p">()</span>
 <span class="n">target</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">feature_names</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;DIS&quot;</span>
@@ -343,7 +344,7 @@ Boston employment centers.</p>
 <p>A <a class="reference internal" href="../../modules/generated/sklearn.preprocessing.QuantileTransformer.html#sklearn.preprocessing.QuantileTransformer" title="sklearn.preprocessing.QuantileTransformer"><code class="xref py py-class docutils literal"><span class="pre">sklearn.preprocessing.QuantileTransformer</span></code></a> is used such that the
 targets follows a normal distribution before applying a
 <a class="reference internal" href="../../modules/generated/sklearn.linear_model.RidgeCV.html#sklearn.linear_model.RidgeCV" title="sklearn.linear_model.RidgeCV"><code class="xref py py-class docutils literal"><span class="pre">sklearn.linear_model.RidgeCV</span></code></a> model.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">ax0</span><span class="p">,</span> <span class="n">ax1</span><span class="p">)</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="View documentation for matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">ax0</span><span class="p">,</span> <span class="n">ax1</span><span class="p">)</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="View documentation for matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
 <span class="n">ax0</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="o">**</span><span class="n">density_param</span><span class="p">)</span>
 <span class="n">ax0</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Probability&#39;</span><span class="p">)</span>
@@ -364,7 +365,7 @@ targets follows a normal distribution before applying a
 <img alt="../../_images/sphx_glr_plot_transformed_target_003.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_transformed_target_003.png" />
 <p>The effect of the transformer is weaker than on the synthetic data. However,
 the transform induces a decrease of the MAE.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">ax0</span><span class="p">,</span> <span class="n">ax1</span><span class="p">)</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="View documentation for matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">ax0</span><span class="p">,</span> <span class="n">ax1</span><span class="p">)</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="View documentation for matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">regr</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.linear_model.RidgeCV.html#sklearn.linear_model.RidgeCV" title="View documentation for sklearn.linear_model.RidgeCV"><span class="n">RidgeCV</span></a><span class="p">()</span>
 <span class="n">regr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
@@ -403,14 +404,14 @@ the transform induces a decrease of the MAE.</p>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_transformed_target_004.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_transformed_target_004.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  1.127 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.606 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-compose-plot-transformed-target-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/plot_transformed_target.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_transformed_target.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/plot_transformed_target.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_transformed_target.ipynb</span></code></a></div>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
 </div>
 
