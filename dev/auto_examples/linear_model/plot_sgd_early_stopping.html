@@ -233,27 +233,27 @@ Validation score: .................................................
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Authors: Tom Dupre la Tour</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Authors: Tom Dupre la Tour</span>
 <span class="c1">#</span>
 <span class="c1"># License: BSD 3 clause</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
-<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">linear_model</span>
-<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.datasets.fetch_openml.html#sklearn.datasets.fetch_openml" title="View documentation for sklearn.datasets.fetch_openml"><span class="n">fetch_openml</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="View documentation for sklearn.model_selection.train_test_split"><span class="n">train_test_split</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.utils.testing</span> <span class="kn">import</span> <span class="n">ignore_warnings</span>
-<span class="kn">from</span> <span class="nn">sklearn.exceptions</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.exceptions.ConvergenceWarning.html#sklearn.exceptions.ConvergenceWarning" title="View documentation for sklearn.exceptions.ConvergenceWarning"><span class="n">ConvergenceWarning</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.utils.shuffle.html#sklearn.utils.shuffle" title="View documentation for sklearn.utils.shuffle"><span class="n">shuffle</span></a>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">linear_model</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.datasets.fetch_openml.html#sklearn.datasets.fetch_openml" title="View documentation for sklearn.datasets.fetch_openml"><span class="n">fetch_openml</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="View documentation for sklearn.model_selection.train_test_split"><span class="n">train_test_split</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.utils.testing</span> <span class="k">import</span> <span class="n">ignore_warnings</span>
+<span class="kn">from</span> <span class="nn">sklearn.exceptions</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.exceptions.ConvergenceWarning.html#sklearn.exceptions.ConvergenceWarning" title="View documentation for sklearn.exceptions.ConvergenceWarning"><span class="n">ConvergenceWarning</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.utils.shuffle.html#sklearn.utils.shuffle" title="View documentation for sklearn.utils.shuffle"><span class="n">shuffle</span></a>
 
-<span class="k">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">load_mnist</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">class_0</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="n">class_1</span><span class="o">=</span><span class="s1">&#39;8&#39;</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">load_mnist</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">class_0</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="n">class_1</span><span class="o">=</span><span class="s1">&#39;8&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Load MNIST, select two classes, shuffle and return only n_samples.&quot;&quot;&quot;</span>
     <span class="c1"># Load data from http://openml.org/d/554</span>
     <span class="n">mnist</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.fetch_openml.html#sklearn.datasets.fetch_openml" title="View documentation for sklearn.datasets.fetch_openml"><span class="n">fetch_openml</span></a><span class="p">(</span><span class="s1">&#39;mnist_784&#39;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -262,7 +262,7 @@ Validation score: .................................................
     <span class="n">mask</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.logical_or.html#numpy.logical_or" title="View documentation for numpy.logical_or"><span class="n">np</span><span class="o">.</span><span class="n">logical_or</span></a><span class="p">(</span><span class="n">mnist</span><span class="o">.</span><span class="n">target</span> <span class="o">==</span> <span class="n">class_0</span><span class="p">,</span> <span class="n">mnist</span><span class="o">.</span><span class="n">target</span> <span class="o">==</span> <span class="n">class_1</span><span class="p">)</span>
 
     <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.utils.shuffle.html#sklearn.utils.shuffle" title="View documentation for sklearn.utils.shuffle"><span class="n">shuffle</span></a><span class="p">(</span><span class="n">mnist</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="n">mnist</span><span class="o">.</span><span class="n">target</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">n_samples</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">n_samples</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:</span><span class="n">n_samples</span><span class="p">],</span> <span class="n">y</span><span class="p">[:</span><span class="n">n_samples</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span>
 
@@ -289,10 +289,10 @@ Validation score: .................................................
     <span class="s1">&#39;No stopping criterion&#39;</span><span class="p">:</span>
     <a href="../../modules/generated/sklearn.linear_model.SGDClassifier.html#sklearn.linear_model.SGDClassifier" title="View documentation for sklearn.linear_model.SGDClassifier"><span class="n">linear_model</span><span class="o">.</span><span class="n">SGDClassifier</span></a><span class="p">(</span><span class="n">tol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">n_iter_no_change</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span>
     <span class="s1">&#39;Training loss&#39;</span><span class="p">:</span>
-    <a href="../../modules/generated/sklearn.linear_model.SGDClassifier.html#sklearn.linear_model.SGDClassifier" title="View documentation for sklearn.linear_model.SGDClassifier"><span class="n">linear_model</span><span class="o">.</span><span class="n">SGDClassifier</span></a><span class="p">(</span><span class="n">early_stopping</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">n_iter_no_change</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <a href="../../modules/generated/sklearn.linear_model.SGDClassifier.html#sklearn.linear_model.SGDClassifier" title="View documentation for sklearn.linear_model.SGDClassifier"><span class="n">linear_model</span><span class="o">.</span><span class="n">SGDClassifier</span></a><span class="p">(</span><span class="n">early_stopping</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">n_iter_no_change</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
                                <span class="n">tol</span><span class="o">=</span><span class="mf">0.1</span><span class="p">),</span>
     <span class="s1">&#39;Validation score&#39;</span><span class="p">:</span>
-    <a href="../../modules/generated/sklearn.linear_model.SGDClassifier.html#sklearn.linear_model.SGDClassifier" title="View documentation for sklearn.linear_model.SGDClassifier"><span class="n">linear_model</span><span class="o">.</span><span class="n">SGDClassifier</span></a><span class="p">(</span><span class="n">early_stopping</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">n_iter_no_change</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <a href="../../modules/generated/sklearn.linear_model.SGDClassifier.html#sklearn.linear_model.SGDClassifier" title="View documentation for sklearn.linear_model.SGDClassifier"><span class="n">linear_model</span><span class="o">.</span><span class="n">SGDClassifier</span></a><span class="p">(</span><span class="n">early_stopping</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">n_iter_no_change</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
                                <span class="n">tol</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">,</span> <span class="n">validation_fraction</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
 <span class="p">}</span>
 
@@ -303,9 +303,9 @@ Validation score: .................................................
 
 <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">estimator_name</span><span class="p">,</span> <span class="n">estimator</span> <span class="ow">in</span> <span class="n">estimator_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">estimator_name</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">estimator_name</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">max_iter</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">):</span>
-        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
 
         <span class="n">fit_time</span><span class="p">,</span> <span class="n">n_iter</span><span class="p">,</span> <span class="n">train_score</span><span class="p">,</span> <span class="n">test_score</span> <span class="o">=</span> <span class="n">fit_and_score</span><span class="p">(</span>
@@ -313,7 +313,7 @@ Validation score: .................................................
 
         <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">estimator_name</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">,</span> <span class="n">fit_time</span><span class="p">,</span> <span class="n">n_iter</span><span class="p">,</span>
                         <span class="n">train_score</span><span class="p">,</span> <span class="n">test_score</span><span class="p">))</span>
-    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
 
 <span class="c1"># Transform the results in a pandas dataframe for easy plotting</span>
 <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span>
@@ -347,7 +347,7 @@ Validation score: .................................................
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  33.752 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  34.443 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-linear-model-plot-sgd-early-stopping-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/9f3f07bb0415c63c255a2eb1b8db4d9d/plot_sgd_early_stopping.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_sgd_early_stopping.py</span></code></a></p>

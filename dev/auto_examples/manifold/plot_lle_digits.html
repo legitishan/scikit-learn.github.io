@@ -265,19 +265,19 @@ Computing NCA projection
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Authors: Fabian Pedregosa &lt;fabian.pedregosa@inria.fr&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Authors: Fabian Pedregosa &lt;fabian.pedregosa@inria.fr&gt;</span>
 <span class="c1">#          Olivier Grisel &lt;olivier.grisel@ensta.org&gt;</span>
 <span class="c1">#          Mathieu Blondel &lt;mathieu@mblondel.org&gt;</span>
 <span class="c1">#          Gael Varoquaux</span>
 <span class="c1"># License: BSD 3 clause (C) INRIA 2011</span>
 
-<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <a href="https://matplotlib.org/api/offsetbox_api.html#module-matplotlib.offsetbox" title="View documentation for matplotlib.offsetbox"><span class="n">offsetbox</span></a>
-<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="p">(</span><span class="n">manifold</span><span class="p">,</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">decomposition</span><span class="p">,</span> <span class="n">ensemble</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <a href="https://matplotlib.org/api/offsetbox_api.html#module-matplotlib.offsetbox" title="View documentation for matplotlib.offsetbox"><span class="n">offsetbox</span></a>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="p">(</span><span class="n">manifold</span><span class="p">,</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">decomposition</span><span class="p">,</span> <span class="n">ensemble</span><span class="p">,</span>
                      <span class="n">discriminant_analysis</span><span class="p">,</span> <span class="n">random_projection</span><span class="p">,</span> <span class="n">neighbors</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
 
 <span class="n">digits</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.load_digits.html#sklearn.datasets.load_digits" title="View documentation for sklearn.datasets.load_digits"><span class="n">datasets</span><span class="o">.</span><span class="n">load_digits</span></a><span class="p">(</span><span class="n">n_class</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">digits</span><span class="o">.</span><span class="n">data</span>
@@ -288,7 +288,7 @@ Computing NCA projection
 
 <span class="c1"># ----------------------------------------------------------------------</span>
 <span class="c1"># Scale and visualize the embedding vectors</span>
-<span class="k">def</span> <span class="nf">plot_embedding</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">plot_embedding</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
     <span class="n">X</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">x_min</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x_max</span> <span class="o">-</span> <span class="n">x_min</span><span class="p">)</span>
 
@@ -313,7 +313,7 @@ Computing NCA projection
                 <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">imagebox</span><span class="p">)</span>
     <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xticks.html#matplotlib.pyplot.xticks" title="View documentation for matplotlib.pyplot.xticks"><span class="n">plt</span><span class="o">.</span><span class="n">xticks</span></a><span class="p">([]),</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.yticks.html#matplotlib.pyplot.yticks" title="View documentation for matplotlib.pyplot.yticks"><span class="n">plt</span><span class="o">.</span><span class="n">yticks</span></a><span class="p">([])</span>
-    <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="View documentation for matplotlib.pyplot.title"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="n">title</span><span class="p">)</span>
 
 
@@ -335,7 +335,7 @@ Computing NCA projection
 
 <span class="c1"># ----------------------------------------------------------------------</span>
 <span class="c1"># Random 2D projection using a random unitary matrix</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Computing random projection&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computing random projection&quot;</span><span class="p">)</span>
 <span class="n">rp</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.random_projection.SparseRandomProjection.html#sklearn.random_projection.SparseRandomProjection" title="View documentation for sklearn.random_projection.SparseRandomProjection"><span class="n">random_projection</span><span class="o">.</span><span class="n">SparseRandomProjection</span></a><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
 <span class="n">X_projected</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <span class="n">plot_embedding</span><span class="p">(</span><span class="n">X_projected</span><span class="p">,</span> <span class="s2">&quot;Random Projection of the digits&quot;</span><span class="p">)</span>
@@ -344,7 +344,7 @@ Computing NCA projection
 <span class="c1"># ----------------------------------------------------------------------</span>
 <span class="c1"># Projection on to the first 2 principal components</span>
 
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Computing PCA projection&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computing PCA projection&quot;</span><span class="p">)</span>
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">X_pca</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.decomposition.TruncatedSVD.html#sklearn.decomposition.TruncatedSVD" title="View documentation for sklearn.decomposition.TruncatedSVD"><span class="n">decomposition</span><span class="o">.</span><span class="n">TruncatedSVD</span></a><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <span class="n">plot_embedding</span><span class="p">(</span><span class="n">X_pca</span><span class="p">,</span>
@@ -354,7 +354,7 @@ Computing NCA projection
 <span class="c1"># ----------------------------------------------------------------------</span>
 <span class="c1"># Projection on to the first 2 linear discriminant components</span>
 
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Computing Linear Discriminant Analysis projection&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computing Linear Discriminant Analysis projection&quot;</span><span class="p">)</span>
 <span class="n">X2</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">X2</span><span class="o">.</span><span class="n">flat</span><span class="p">[::</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="mf">0.01</span>  <span class="c1"># Make X invertible</span>
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
@@ -367,10 +367,10 @@ Computing NCA projection
 
 <span class="c1"># ----------------------------------------------------------------------</span>
 <span class="c1"># Isomap projection of the digits dataset</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Computing Isomap projection&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computing Isomap projection&quot;</span><span class="p">)</span>
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">X_iso</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.manifold.Isomap.html#sklearn.manifold.Isomap" title="View documentation for sklearn.manifold.Isomap"><span class="n">manifold</span><span class="o">.</span><span class="n">Isomap</span></a><span class="p">(</span><span class="n">n_neighbors</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Done.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done.&quot;</span><span class="p">)</span>
 <span class="n">plot_embedding</span><span class="p">(</span><span class="n">X_iso</span><span class="p">,</span>
                <span class="s2">&quot;Isomap projection of the digits (time </span><span class="si">%.2f</span><span class="s2">s)&quot;</span> <span class="o">%</span>
                <span class="p">(</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">))</span>
@@ -378,12 +378,12 @@ Computing NCA projection
 
 <span class="c1"># ----------------------------------------------------------------------</span>
 <span class="c1"># Locally linear embedding of the digits dataset</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Computing LLE embedding&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computing LLE embedding&quot;</span><span class="p">)</span>
 <span class="n">clf</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.manifold.LocallyLinearEmbedding.html#sklearn.manifold.LocallyLinearEmbedding" title="View documentation for sklearn.manifold.LocallyLinearEmbedding"><span class="n">manifold</span><span class="o">.</span><span class="n">LocallyLinearEmbedding</span></a><span class="p">(</span><span class="n">n_neighbors</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                                       <span class="n">method</span><span class="o">=</span><span class="s1">&#39;standard&#39;</span><span class="p">)</span>
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">X_lle</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Done. Reconstruction error: </span><span class="si">%g</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">clf</span><span class="o">.</span><span class="n">reconstruction_error_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done. Reconstruction error: </span><span class="si">%g</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">clf</span><span class="o">.</span><span class="n">reconstruction_error_</span><span class="p">)</span>
 <span class="n">plot_embedding</span><span class="p">(</span><span class="n">X_lle</span><span class="p">,</span>
                <span class="s2">&quot;Locally Linear Embedding of the digits (time </span><span class="si">%.2f</span><span class="s2">s)&quot;</span> <span class="o">%</span>
                <span class="p">(</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">))</span>
@@ -391,12 +391,12 @@ Computing NCA projection
 
 <span class="c1"># ----------------------------------------------------------------------</span>
 <span class="c1"># Modified Locally linear embedding of the digits dataset</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Computing modified LLE embedding&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computing modified LLE embedding&quot;</span><span class="p">)</span>
 <span class="n">clf</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.manifold.LocallyLinearEmbedding.html#sklearn.manifold.LocallyLinearEmbedding" title="View documentation for sklearn.manifold.LocallyLinearEmbedding"><span class="n">manifold</span><span class="o">.</span><span class="n">LocallyLinearEmbedding</span></a><span class="p">(</span><span class="n">n_neighbors</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                                       <span class="n">method</span><span class="o">=</span><span class="s1">&#39;modified&#39;</span><span class="p">)</span>
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">X_mlle</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Done. Reconstruction error: </span><span class="si">%g</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">clf</span><span class="o">.</span><span class="n">reconstruction_error_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done. Reconstruction error: </span><span class="si">%g</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">clf</span><span class="o">.</span><span class="n">reconstruction_error_</span><span class="p">)</span>
 <span class="n">plot_embedding</span><span class="p">(</span><span class="n">X_mlle</span><span class="p">,</span>
                <span class="s2">&quot;Modified Locally Linear Embedding of the digits (time </span><span class="si">%.2f</span><span class="s2">s)&quot;</span> <span class="o">%</span>
                <span class="p">(</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">))</span>
@@ -404,12 +404,12 @@ Computing NCA projection
 
 <span class="c1"># ----------------------------------------------------------------------</span>
 <span class="c1"># HLLE embedding of the digits dataset</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Computing Hessian LLE embedding&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computing Hessian LLE embedding&quot;</span><span class="p">)</span>
 <span class="n">clf</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.manifold.LocallyLinearEmbedding.html#sklearn.manifold.LocallyLinearEmbedding" title="View documentation for sklearn.manifold.LocallyLinearEmbedding"><span class="n">manifold</span><span class="o">.</span><span class="n">LocallyLinearEmbedding</span></a><span class="p">(</span><span class="n">n_neighbors</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                                       <span class="n">method</span><span class="o">=</span><span class="s1">&#39;hessian&#39;</span><span class="p">)</span>
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">X_hlle</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Done. Reconstruction error: </span><span class="si">%g</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">clf</span><span class="o">.</span><span class="n">reconstruction_error_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done. Reconstruction error: </span><span class="si">%g</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">clf</span><span class="o">.</span><span class="n">reconstruction_error_</span><span class="p">)</span>
 <span class="n">plot_embedding</span><span class="p">(</span><span class="n">X_hlle</span><span class="p">,</span>
                <span class="s2">&quot;Hessian Locally Linear Embedding of the digits (time </span><span class="si">%.2f</span><span class="s2">s)&quot;</span> <span class="o">%</span>
                <span class="p">(</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">))</span>
@@ -417,30 +417,30 @@ Computing NCA projection
 
 <span class="c1"># ----------------------------------------------------------------------</span>
 <span class="c1"># LTSA embedding of the digits dataset</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Computing LTSA embedding&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computing LTSA embedding&quot;</span><span class="p">)</span>
 <span class="n">clf</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.manifold.LocallyLinearEmbedding.html#sklearn.manifold.LocallyLinearEmbedding" title="View documentation for sklearn.manifold.LocallyLinearEmbedding"><span class="n">manifold</span><span class="o">.</span><span class="n">LocallyLinearEmbedding</span></a><span class="p">(</span><span class="n">n_neighbors</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                                       <span class="n">method</span><span class="o">=</span><span class="s1">&#39;ltsa&#39;</span><span class="p">)</span>
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">X_ltsa</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Done. Reconstruction error: </span><span class="si">%g</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">clf</span><span class="o">.</span><span class="n">reconstruction_error_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done. Reconstruction error: </span><span class="si">%g</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">clf</span><span class="o">.</span><span class="n">reconstruction_error_</span><span class="p">)</span>
 <span class="n">plot_embedding</span><span class="p">(</span><span class="n">X_ltsa</span><span class="p">,</span>
                <span class="s2">&quot;Local Tangent Space Alignment of the digits (time </span><span class="si">%.2f</span><span class="s2">s)&quot;</span> <span class="o">%</span>
                <span class="p">(</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">))</span>
 
 <span class="c1"># ----------------------------------------------------------------------</span>
 <span class="c1"># MDS  embedding of the digits dataset</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Computing MDS embedding&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computing MDS embedding&quot;</span><span class="p">)</span>
 <span class="n">clf</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.manifold.MDS.html#sklearn.manifold.MDS" title="View documentation for sklearn.manifold.MDS"><span class="n">manifold</span><span class="o">.</span><span class="n">MDS</span></a><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_init</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">X_mds</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Done. Stress: </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">clf</span><span class="o">.</span><span class="n">stress_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done. Stress: </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">clf</span><span class="o">.</span><span class="n">stress_</span><span class="p">)</span>
 <span class="n">plot_embedding</span><span class="p">(</span><span class="n">X_mds</span><span class="p">,</span>
                <span class="s2">&quot;MDS embedding of the digits (time </span><span class="si">%.2f</span><span class="s2">s)&quot;</span> <span class="o">%</span>
                <span class="p">(</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">))</span>
 
 <span class="c1"># ----------------------------------------------------------------------</span>
 <span class="c1"># Random Trees embedding of the digits dataset</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Computing Totally Random Trees embedding&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computing Totally Random Trees embedding&quot;</span><span class="p">)</span>
 <span class="n">hasher</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.ensemble.RandomTreesEmbedding.html#sklearn.ensemble.RandomTreesEmbedding" title="View documentation for sklearn.ensemble.RandomTreesEmbedding"><span class="n">ensemble</span><span class="o">.</span><span class="n">RandomTreesEmbedding</span></a><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                                        <span class="n">max_depth</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
@@ -454,7 +454,7 @@ Computing NCA projection
 
 <span class="c1"># ----------------------------------------------------------------------</span>
 <span class="c1"># Spectral embedding of the digits dataset</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Computing Spectral embedding&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computing Spectral embedding&quot;</span><span class="p">)</span>
 <span class="n">embedder</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.manifold.SpectralEmbedding.html#sklearn.manifold.SpectralEmbedding" title="View documentation for sklearn.manifold.SpectralEmbedding"><span class="n">manifold</span><span class="o">.</span><span class="n">SpectralEmbedding</span></a><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                                       <span class="n">eigen_solver</span><span class="o">=</span><span class="s2">&quot;arpack&quot;</span><span class="p">)</span>
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
@@ -466,7 +466,7 @@ Computing NCA projection
 
 <span class="c1"># ----------------------------------------------------------------------</span>
 <span class="c1"># t-SNE embedding of the digits dataset</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Computing t-SNE embedding&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computing t-SNE embedding&quot;</span><span class="p">)</span>
 <span class="n">tsne</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.manifold.TSNE.html#sklearn.manifold.TSNE" title="View documentation for sklearn.manifold.TSNE"><span class="n">manifold</span><span class="o">.</span><span class="n">TSNE</span></a><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="s1">&#39;pca&#39;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">X_tsne</span> <span class="o">=</span> <span class="n">tsne</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
@@ -477,7 +477,7 @@ Computing NCA projection
 
 <span class="c1"># ----------------------------------------------------------------------</span>
 <span class="c1"># NCA projection of the digits dataset</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Computing NCA projection&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computing NCA projection&quot;</span><span class="p">)</span>
 <span class="n">nca</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.neighbors.NeighborhoodComponentsAnalysis.html#sklearn.neighbors.NeighborhoodComponentsAnalysis" title="View documentation for sklearn.neighbors.NeighborhoodComponentsAnalysis"><span class="n">neighbors</span><span class="o">.</span><span class="n">NeighborhoodComponentsAnalysis</span></a><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span>
                                                <span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
@@ -490,7 +490,7 @@ Computing NCA projection
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  21.699 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  27.566 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-manifold-plot-lle-digits-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/caa6b6139528c0dc31c9a7cd4c98b7e2/plot_lle_digits.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_lle_digits.py</span></code></a></p>

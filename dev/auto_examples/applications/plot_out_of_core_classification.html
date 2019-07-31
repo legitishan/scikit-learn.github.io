@@ -216,11 +216,11 @@ of classification accuracy over the course of the mini-batches. Accuracy is
 measured on the first 1000 samples, held out as a validation set.</p>
 <p>To limit the memory consumption, we queue examples up to a fixed amount before
 feeding them to the learner.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Authors: Eustache Diemert &lt;eustache@diemert.fr&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Authors: Eustache Diemert &lt;eustache@diemert.fr&gt;</span>
 <span class="c1">#          @FedericoV &lt;https://github.com/FedericoV/&gt;</span>
 <span class="c1"># License: BSD 3 clause</span>
 
-<span class="kn">from</span> <span class="nn">glob</span> <span class="kn">import</span> <span class="n">glob</span>
+<span class="kn">from</span> <span class="nn">glob</span> <span class="k">import</span> <span class="n">glob</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">os.path</span>
 <span class="kn">import</span> <span class="nn">re</span>
@@ -228,18 +228,18 @@ feeding them to the learner.</p>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <a href="https://matplotlib.org/api/matplotlib_configuration_api.html#matplotlib.rcParams" title="View documentation for matplotlib.rcParams"><span class="n">rcParams</span></a>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <a href="https://matplotlib.org/api/matplotlib_configuration_api.html#matplotlib.rcParams" title="View documentation for matplotlib.rcParams"><span class="n">rcParams</span></a>
 
-<span class="kn">from</span> <span class="nn">html.parser</span> <span class="kn">import</span> <span class="n">HTMLParser</span>
-<span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">urlretrieve</span>
-<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.datasets.get_data_home.html#sklearn.datasets.get_data_home" title="View documentation for sklearn.datasets.get_data_home"><span class="n">get_data_home</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.feature_extraction.text.HashingVectorizer.html#sklearn.feature_extraction.text.HashingVectorizer" title="View documentation for sklearn.feature_extraction.text.HashingVectorizer"><span class="n">HashingVectorizer</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.linear_model.SGDClassifier.html#sklearn.linear_model.SGDClassifier" title="View documentation for sklearn.linear_model.SGDClassifier"><span class="n">SGDClassifier</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.linear_model.PassiveAggressiveClassifier.html#sklearn.linear_model.PassiveAggressiveClassifier" title="View documentation for sklearn.linear_model.PassiveAggressiveClassifier"><span class="n">PassiveAggressiveClassifier</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.linear_model.Perceptron.html#sklearn.linear_model.Perceptron" title="View documentation for sklearn.linear_model.Perceptron"><span class="n">Perceptron</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.naive_bayes.MultinomialNB.html#sklearn.naive_bayes.MultinomialNB" title="View documentation for sklearn.naive_bayes.MultinomialNB"><span class="n">MultinomialNB</span></a>
+<span class="kn">from</span> <span class="nn">html.parser</span> <span class="k">import</span> <span class="n">HTMLParser</span>
+<span class="kn">from</span> <span class="nn">urllib.request</span> <span class="k">import</span> <span class="n">urlretrieve</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.datasets.get_data_home.html#sklearn.datasets.get_data_home" title="View documentation for sklearn.datasets.get_data_home"><span class="n">get_data_home</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.feature_extraction.text.HashingVectorizer.html#sklearn.feature_extraction.text.HashingVectorizer" title="View documentation for sklearn.feature_extraction.text.HashingVectorizer"><span class="n">HashingVectorizer</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.linear_model.SGDClassifier.html#sklearn.linear_model.SGDClassifier" title="View documentation for sklearn.linear_model.SGDClassifier"><span class="n">SGDClassifier</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.linear_model.PassiveAggressiveClassifier.html#sklearn.linear_model.PassiveAggressiveClassifier" title="View documentation for sklearn.linear_model.PassiveAggressiveClassifier"><span class="n">PassiveAggressiveClassifier</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.linear_model.Perceptron.html#sklearn.linear_model.Perceptron" title="View documentation for sklearn.linear_model.Perceptron"><span class="n">Perceptron</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.naive_bayes.MultinomialNB.html#sklearn.naive_bayes.MultinomialNB" title="View documentation for sklearn.naive_bayes.MultinomialNB"><span class="n">MultinomialNB</span></a>
 
 
 <span class="k">def</span> <span class="nf">_not_in_sphinx</span><span class="p">():</span>
@@ -249,21 +249,21 @@ feeding them to the learner.</p>
 </div>
 <div class="section" id="reuters-dataset-related-routines">
 <h2>Reuters Dataset related routines<a class="headerlink" href="#reuters-dataset-related-routines" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ReutersParser</span><span class="p">(</span><span class="n">HTMLParser</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ReutersParser</span><span class="p">(</span><span class="n">HTMLParser</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Utility class to parse a SGML file and yield documents one at a time.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;latin-1&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;latin-1&#39;</span><span class="p">):</span>
         <span class="n">HTMLParser</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_reset</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">encoding</span> <span class="o">=</span> <span class="n">encoding</span>
 
     <span class="k">def</span> <span class="nf">handle_starttag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
         <span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;start_&#39;</span> <span class="o">+</span> <span class="n">tag</span>
-        <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">None</span><span class="p">)(</span><span class="n">attrs</span><span class="p">)</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="kc">None</span><span class="p">)(</span><span class="n">attrs</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">handle_endtag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">):</span>
         <span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;end_&#39;</span> <span class="o">+</span> <span class="n">tag</span>
-        <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">None</span><span class="p">)()</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span><span class="p">)()</span>
 
     <span class="k">def</span> <span class="nf">_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">in_title</span> <span class="o">=</span> <span class="mi">0</span>
@@ -329,7 +329,7 @@ feeding them to the learner.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">topic_d</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
 
-<span class="k">def</span> <span class="nf">stream_reuters_documents</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">stream_reuters_documents</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Iterate over documents of the Reuters dataset.</span>
 
 <span class="sd">    The Reuters archive will automatically be downloaded and uncompressed if</span>
@@ -344,11 +344,11 @@ feeding them to the learner.</p>
                     <span class="s1">&#39;reuters21578-mld/reuters21578.tar.gz&#39;</span><span class="p">)</span>
     <span class="n">ARCHIVE_FILENAME</span> <span class="o">=</span> <span class="s1">&#39;reuters21578.tar.gz&#39;</span>
 
-    <span class="k">if</span> <span class="n">data_path</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">data_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><a href="../../modules/generated/sklearn.datasets.get_data_home.html#sklearn.datasets.get_data_home" title="View documentation for sklearn.datasets.get_data_home"><span class="n">get_data_home</span></a><span class="p">(),</span> <span class="s2">&quot;reuters&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">data_path</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the dataset.&quot;&quot;&quot;</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;downloading dataset (once and for all) into </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;downloading dataset (once and for all) into </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span>
               <span class="n">data_path</span><span class="p">)</span>
         <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
 
@@ -364,9 +364,9 @@ feeding them to the learner.</p>
                     <span class="n">reporthook</span><span class="o">=</span><span class="n">progress</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">_not_in_sphinx</span><span class="p">():</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;untarring Reuters dataset...&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;untarring Reuters dataset...&quot;</span><span class="p">)</span>
         <span class="n">tarfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">archive_path</span><span class="p">,</span> <span class="s1">&#39;r:gz&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;done.&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;done.&quot;</span><span class="p">)</span>
 
     <span class="n">parser</span> <span class="o">=</span> <span class="n">ReutersParser</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;*.sgm&quot;</span><span class="p">)):</span>
@@ -379,8 +379,8 @@ feeding them to the learner.</p>
 <h2>Main<a class="headerlink" href="#main" title="Permalink to this headline">¶</a></h2>
 <p>Create the vectorizer and limit the number of features to a reasonable
 maximum</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">vectorizer</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.feature_extraction.text.HashingVectorizer.html#sklearn.feature_extraction.text.HashingVectorizer" title="View documentation for sklearn.feature_extraction.text.HashingVectorizer"><span class="n">HashingVectorizer</span></a><span class="p">(</span><span class="n">decode_error</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">2</span> <span class="o">**</span> <span class="mi">18</span><span class="p">,</span>
-                               <span class="n">alternate_sign</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vectorizer</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.feature_extraction.text.HashingVectorizer.html#sklearn.feature_extraction.text.HashingVectorizer" title="View documentation for sklearn.feature_extraction.text.HashingVectorizer"><span class="n">HashingVectorizer</span></a><span class="p">(</span><span class="n">decode_error</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">2</span> <span class="o">**</span> <span class="mi">18</span><span class="p">,</span>
+                               <span class="n">alternate_sign</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 
 <span class="c1"># Iterator over parsed Reuters SGML files.</span>
@@ -408,7 +408,7 @@ maximum</p>
 <span class="sd">    Note: size is before excluding invalid docs with no topics assigned.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;{title}</span><span class="se">\n\n</span><span class="s1">{body}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">doc</span><span class="p">),</span> <span class="n">pos_class</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">[</span><span class="s1">&#39;topics&#39;</span><span class="p">])</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;</span><span class="si">{title}</span><span class="se">\n\n</span><span class="si">{body}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">doc</span><span class="p">),</span> <span class="n">pos_class</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">[</span><span class="s1">&#39;topics&#39;</span><span class="p">])</span>
             <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">islice</span><span class="p">(</span><span class="n">doc_iter</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">doc</span><span class="p">[</span><span class="s1">&#39;topics&#39;</span><span class="p">]]</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
@@ -438,7 +438,7 @@ maximum</p>
 <span class="n">vectorizing_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">tick</span>
 <span class="n">test_stats</span><span class="p">[</span><span class="s1">&#39;n_test&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span>
 <span class="n">test_stats</span><span class="p">[</span><span class="s1">&#39;n_test_pos&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Test set is </span><span class="si">%d</span><span class="s2"> documents (</span><span class="si">%d</span><span class="s2"> positive)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">y_test</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Test set is </span><span class="si">%d</span><span class="s2"> documents (</span><span class="si">%d</span><span class="s2"> positive)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">y_test</span><span class="p">)))</span>
 
 
 <span class="k">def</span> <span class="nf">progress</span><span class="p">(</span><span class="n">cls_name</span><span class="p">,</span> <span class="n">stats</span><span class="p">):</span>
@@ -500,66 +500,66 @@ maximum</p>
         <span class="n">cls_stats</span><span class="p">[</span><span class="n">cls_name</span><span class="p">][</span><span class="s1">&#39;runtime_history&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">run_history</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="n">progress</span><span class="p">(</span><span class="n">cls_name</span><span class="p">,</span> <span class="n">cls_stats</span><span class="p">[</span><span class="n">cls_name</span><span class="p">]))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">progress</span><span class="p">(</span><span class="n">cls_name</span><span class="p">,</span> <span class="n">cls_stats</span><span class="p">[</span><span class="n">cls_name</span><span class="p">]))</span>
     <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Test set is 988 documents (122 positive)
-                 SGD classifier :          969 train docs (   155 positive)    988 test docs (   122 positive) accuracy: 0.914 in 0.80s ( 1215 docs/s)
-          Perceptron classifier :          969 train docs (   155 positive)    988 test docs (   122 positive) accuracy: 0.893 in 0.80s ( 1212 docs/s)
-      NB Multinomial classifier :          969 train docs (   155 positive)    988 test docs (   122 positive) accuracy: 0.877 in 0.81s ( 1201 docs/s)
-  Passive-Aggressive classifier :          969 train docs (   155 positive)    988 test docs (   122 positive) accuracy: 0.912 in 0.81s ( 1197 docs/s)
+                 SGD classifier :          988 train docs (   126 positive)    988 test docs (   122 positive) accuracy: 0.924 in 0.90s ( 1092 docs/s)
+          Perceptron classifier :          988 train docs (   126 positive)    988 test docs (   122 positive) accuracy: 0.920 in 0.91s ( 1089 docs/s)
+      NB Multinomial classifier :          988 train docs (   126 positive)    988 test docs (   122 positive) accuracy: 0.878 in 0.92s ( 1077 docs/s)
+  Passive-Aggressive classifier :          988 train docs (   126 positive)    988 test docs (   122 positive) accuracy: 0.908 in 0.92s ( 1072 docs/s)
 
 
-                 SGD classifier :         3278 train docs (   444 positive)    988 test docs (   122 positive) accuracy: 0.937 in 1.99s ( 1647 docs/s)
-          Perceptron classifier :         3278 train docs (   444 positive)    988 test docs (   122 positive) accuracy: 0.946 in 1.99s ( 1645 docs/s)
-      NB Multinomial classifier :         3278 train docs (   444 positive)    988 test docs (   122 positive) accuracy: 0.886 in 2.00s ( 1640 docs/s)
-  Passive-Aggressive classifier :         3278 train docs (   444 positive)    988 test docs (   122 positive) accuracy: 0.935 in 2.00s ( 1638 docs/s)
+                 SGD classifier :         2785 train docs (   345 positive)    988 test docs (   122 positive) accuracy: 0.943 in 2.31s ( 1206 docs/s)
+          Perceptron classifier :         2785 train docs (   345 positive)    988 test docs (   122 positive) accuracy: 0.921 in 2.31s ( 1205 docs/s)
+      NB Multinomial classifier :         2785 train docs (   345 positive)    988 test docs (   122 positive) accuracy: 0.883 in 2.32s ( 1201 docs/s)
+  Passive-Aggressive classifier :         2785 train docs (   345 positive)    988 test docs (   122 positive) accuracy: 0.937 in 2.32s ( 1200 docs/s)
 
 
-                 SGD classifier :         6145 train docs (   854 positive)    988 test docs (   122 positive) accuracy: 0.948 in 3.25s ( 1890 docs/s)
-          Perceptron classifier :         6145 train docs (   854 positive)    988 test docs (   122 positive) accuracy: 0.955 in 3.25s ( 1889 docs/s)
-      NB Multinomial classifier :         6145 train docs (   854 positive)    988 test docs (   122 positive) accuracy: 0.911 in 3.26s ( 1885 docs/s)
-  Passive-Aggressive classifier :         6145 train docs (   854 positive)    988 test docs (   122 positive) accuracy: 0.945 in 3.26s ( 1884 docs/s)
+                 SGD classifier :         5666 train docs (   754 positive)    988 test docs (   122 positive) accuracy: 0.959 in 3.87s ( 1462 docs/s)
+          Perceptron classifier :         5666 train docs (   754 positive)    988 test docs (   122 positive) accuracy: 0.941 in 3.88s ( 1461 docs/s)
+      NB Multinomial classifier :         5666 train docs (   754 positive)    988 test docs (   122 positive) accuracy: 0.903 in 3.89s ( 1457 docs/s)
+  Passive-Aggressive classifier :         5666 train docs (   754 positive)    988 test docs (   122 positive) accuracy: 0.945 in 3.89s ( 1455 docs/s)
 
 
-                 SGD classifier :         9020 train docs (  1200 positive)    988 test docs (   122 positive) accuracy: 0.954 in 4.44s ( 2029 docs/s)
-          Perceptron classifier :         9020 train docs (  1200 positive)    988 test docs (   122 positive) accuracy: 0.880 in 4.45s ( 2028 docs/s)
-      NB Multinomial classifier :         9020 train docs (  1200 positive)    988 test docs (   122 positive) accuracy: 0.928 in 4.45s ( 2025 docs/s)
-  Passive-Aggressive classifier :         9020 train docs (  1200 positive)    988 test docs (   122 positive) accuracy: 0.949 in 4.45s ( 2024 docs/s)
+                 SGD classifier :         8586 train docs (  1111 positive)    988 test docs (   122 positive) accuracy: 0.953 in 5.36s ( 1601 docs/s)
+          Perceptron classifier :         8586 train docs (  1111 positive)    988 test docs (   122 positive) accuracy: 0.949 in 5.36s ( 1601 docs/s)
+      NB Multinomial classifier :         8586 train docs (  1111 positive)    988 test docs (   122 positive) accuracy: 0.922 in 5.37s ( 1598 docs/s)
+  Passive-Aggressive classifier :         8586 train docs (  1111 positive)    988 test docs (   122 positive) accuracy: 0.964 in 5.37s ( 1597 docs/s)
 
 
-                 SGD classifier :        11885 train docs (  1499 positive)    988 test docs (   122 positive) accuracy: 0.951 in 5.64s ( 2106 docs/s)
-          Perceptron classifier :        11885 train docs (  1499 positive)    988 test docs (   122 positive) accuracy: 0.924 in 5.64s ( 2105 docs/s)
-      NB Multinomial classifier :        11885 train docs (  1499 positive)    988 test docs (   122 positive) accuracy: 0.932 in 5.65s ( 2103 docs/s)
-  Passive-Aggressive classifier :        11885 train docs (  1499 positive)    988 test docs (   122 positive) accuracy: 0.957 in 5.65s ( 2102 docs/s)
+                 SGD classifier :        11403 train docs (  1407 positive)    988 test docs (   122 positive) accuracy: 0.941 in 6.78s ( 1681 docs/s)
+          Perceptron classifier :        11403 train docs (  1407 positive)    988 test docs (   122 positive) accuracy: 0.944 in 6.78s ( 1680 docs/s)
+      NB Multinomial classifier :        11403 train docs (  1407 positive)    988 test docs (   122 positive) accuracy: 0.928 in 6.79s ( 1678 docs/s)
+  Passive-Aggressive classifier :        11403 train docs (  1407 positive)    988 test docs (   122 positive) accuracy: 0.965 in 6.79s ( 1678 docs/s)
 
 
-                 SGD classifier :        14273 train docs (  1791 positive)    988 test docs (   122 positive) accuracy: 0.947 in 6.77s ( 2108 docs/s)
-          Perceptron classifier :        14273 train docs (  1791 positive)    988 test docs (   122 positive) accuracy: 0.964 in 6.77s ( 2107 docs/s)
-      NB Multinomial classifier :        14273 train docs (  1791 positive)    988 test docs (   122 positive) accuracy: 0.934 in 6.78s ( 2105 docs/s)
-  Passive-Aggressive classifier :        14273 train docs (  1791 positive)    988 test docs (   122 positive) accuracy: 0.963 in 6.78s ( 2104 docs/s)
+                 SGD classifier :        14315 train docs (  1815 positive)    988 test docs (   122 positive) accuracy: 0.960 in 8.28s ( 1729 docs/s)
+          Perceptron classifier :        14315 train docs (  1815 positive)    988 test docs (   122 positive) accuracy: 0.929 in 8.28s ( 1729 docs/s)
+      NB Multinomial classifier :        14315 train docs (  1815 positive)    988 test docs (   122 positive) accuracy: 0.933 in 8.29s ( 1726 docs/s)
+  Passive-Aggressive classifier :        14315 train docs (  1815 positive)    988 test docs (   122 positive) accuracy: 0.943 in 8.29s ( 1726 docs/s)
 
 
-                 SGD classifier :        17197 train docs (  2159 positive)    988 test docs (   122 positive) accuracy: 0.965 in 7.97s ( 2157 docs/s)
-          Perceptron classifier :        17197 train docs (  2159 positive)    988 test docs (   122 positive) accuracy: 0.954 in 7.97s ( 2156 docs/s)
-      NB Multinomial classifier :        17197 train docs (  2159 positive)    988 test docs (   122 positive) accuracy: 0.933 in 7.98s ( 2154 docs/s)
-  Passive-Aggressive classifier :        17197 train docs (  2159 positive)    988 test docs (   122 positive) accuracy: 0.962 in 7.98s ( 2153 docs/s)
+                 SGD classifier :        17245 train docs (  2132 positive)    988 test docs (   122 positive) accuracy: 0.962 in 9.94s ( 1734 docs/s)
+          Perceptron classifier :        17245 train docs (  2132 positive)    988 test docs (   122 positive) accuracy: 0.934 in 9.94s ( 1734 docs/s)
+      NB Multinomial classifier :        17245 train docs (  2132 positive)    988 test docs (   122 positive) accuracy: 0.932 in 9.95s ( 1732 docs/s)
+  Passive-Aggressive classifier :        17245 train docs (  2132 positive)    988 test docs (   122 positive) accuracy: 0.957 in 9.96s ( 1731 docs/s)
 </pre></div>
 </div>
 </div>
 <div class="section" id="plot-results">
 <h2>Plot results<a class="headerlink" href="#plot-results" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_accuracy</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x_legend</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_accuracy</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x_legend</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Plot accuracy as a function of x.&quot;&quot;&quot;</span>
     <span class="n">x</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="n">y</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">y</span><span class="p">)</span>
     <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="View documentation for matplotlib.pyplot.title"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s1">&#39;Classification accuracy as a function of </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">x_legend</span><span class="p">)</span>
     <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="View documentation for matplotlib.pyplot.xlabel"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">x_legend</span><span class="p">)</span>
     <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="View documentation for matplotlib.pyplot.ylabel"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="s1">&#39;Accuracy&#39;</span><span class="p">)</span>
-    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.grid.html#matplotlib.pyplot.grid" title="View documentation for matplotlib.pyplot.grid"><span class="n">plt</span><span class="o">.</span><span class="n">grid</span></a><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.grid.html#matplotlib.pyplot.grid" title="View documentation for matplotlib.pyplot.grid"><span class="n">plt</span><span class="o">.</span><span class="n">grid</span></a><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
     <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
 
@@ -658,7 +658,7 @@ maximum</p>
 <li><img alt="../../_images/sphx_glr_plot_out_of_core_classification_004.png" class="sphx-glr-multi-img" src="../../_images/sphx_glr_plot_out_of_core_classification_004.png" />
 </li>
 </ul>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  8.786 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  11.246 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-applications-plot-out-of-core-classification-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/80692cf167e9ea27b27e5bd144159c82/plot_out_of_core_classification.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_out_of_core_classification.py</span></code></a></p>

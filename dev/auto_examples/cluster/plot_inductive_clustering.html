@@ -211,17 +211,17 @@ describe or explain the clusters</p></li>
 <p>This example illustrates a generic implementation of a meta-estimator which
 extends clustering by inducing a classifier from the cluster labels.</p>
 <img alt="../../_images/sphx_glr_plot_inductive_clustering_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_inductive_clustering_001.png" />
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Authors: Chirag Nagpal</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Authors: Chirag Nagpal</span>
 <span class="c1">#          Christos Aridas</span>
-<span class="k">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.base.BaseEstimator.html#sklearn.base.BaseEstimator" title="View documentation for sklearn.base.BaseEstimator"><span class="n">BaseEstimator</span></a><span class="p">,</span> <span class="n">clone</span>
-<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.cluster.AgglomerativeClustering.html#sklearn.cluster.AgglomerativeClustering" title="View documentation for sklearn.cluster.AgglomerativeClustering"><span class="n">AgglomerativeClustering</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.datasets.make_blobs.html#sklearn.datasets.make_blobs" title="View documentation for sklearn.datasets.make_blobs"><span class="n">make_blobs</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier" title="View documentation for sklearn.ensemble.RandomForestClassifier"><span class="n">RandomForestClassifier</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.utils.metaestimators</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.utils.metaestimators.if_delegate_has_method.html#sklearn.utils.metaestimators.if_delegate_has_method" title="View documentation for sklearn.utils.metaestimators.if_delegate_has_method"><span class="n">if_delegate_has_method</span></a>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.base.BaseEstimator.html#sklearn.base.BaseEstimator" title="View documentation for sklearn.base.BaseEstimator"><span class="n">BaseEstimator</span></a><span class="p">,</span> <span class="n">clone</span>
+<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.cluster.AgglomerativeClustering.html#sklearn.cluster.AgglomerativeClustering" title="View documentation for sklearn.cluster.AgglomerativeClustering"><span class="n">AgglomerativeClustering</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.datasets.make_blobs.html#sklearn.datasets.make_blobs" title="View documentation for sklearn.datasets.make_blobs"><span class="n">make_blobs</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier" title="View documentation for sklearn.ensemble.RandomForestClassifier"><span class="n">RandomForestClassifier</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.utils.metaestimators</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.utils.metaestimators.if_delegate_has_method.html#sklearn.utils.metaestimators.if_delegate_has_method" title="View documentation for sklearn.utils.metaestimators.if_delegate_has_method"><span class="n">if_delegate_has_method</span></a>
 
 
 <span class="n">N_SAMPLES</span> <span class="o">=</span> <span class="mi">5000</span>
@@ -229,11 +229,11 @@ extends clustering by inducing a classifier from the cluster labels.</p>
 
 
 <span class="k">class</span> <span class="nc">InductiveClusterer</span><span class="p">(</span><a href="../../modules/generated/sklearn.base.BaseEstimator.html#sklearn.base.BaseEstimator" title="View documentation for sklearn.base.BaseEstimator"><span class="n">BaseEstimator</span></a><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clusterer</span><span class="p">,</span> <span class="n">classifier</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clusterer</span><span class="p">,</span> <span class="n">classifier</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clusterer</span> <span class="o">=</span> <span class="n">clusterer</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">classifier</span> <span class="o">=</span> <span class="n">classifier</span>
 
-    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clusterer_</span> <span class="o">=</span> <span class="n">clone</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clusterer</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">classifier_</span> <span class="o">=</span> <span class="n">clone</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">classifier</span><span class="p">)</span>
         <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clusterer_</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
@@ -313,7 +313,7 @@ extends clustering by inducing a classifier from the cluster labels.</p>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  1.767 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.242 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-cluster-plot-inductive-clustering-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/055d4f71a7b34b1bd9ae301dd0035d29/plot_inductive_clustering.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_inductive_clustering.py</span></code></a></p>
