@@ -226,16 +226,18 @@
 <li><a class="reference internal" href="#calinski-harabasz-index">2.3.10.6. Calinski-Harabasz Index</a><ul>
 <li><a class="reference internal" href="#id27">2.3.10.6.1. Advantages</a></li>
 <li><a class="reference internal" href="#id28">2.3.10.6.2. Drawbacks</a></li>
+<li><a class="reference internal" href="#id29">2.3.10.6.3. Mathematical formulation</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#davies-bouldin-index">2.3.10.7. Davies-Bouldin Index</a><ul>
-<li><a class="reference internal" href="#id30">2.3.10.7.1. Advantages</a></li>
-<li><a class="reference internal" href="#id31">2.3.10.7.2. Drawbacks</a></li>
+<li><a class="reference internal" href="#id31">2.3.10.7.1. Advantages</a></li>
+<li><a class="reference internal" href="#id32">2.3.10.7.2. Drawbacks</a></li>
+<li><a class="reference internal" href="#id33">2.3.10.7.3. Mathematical formulation</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#contingency-matrix">2.3.10.8. Contingency Matrix</a><ul>
-<li><a class="reference internal" href="#id33">2.3.10.8.1. Advantages</a></li>
-<li><a class="reference internal" href="#id34">2.3.10.8.2. Drawbacks</a></li>
+<li><a class="reference internal" href="#id35">2.3.10.8.1. Advantages</a></li>
+<li><a class="reference internal" href="#id36">2.3.10.8.2. Drawbacks</a></li>
 </ul>
 </li>
 </ul>
@@ -281,9 +283,9 @@ in the <a class="reference internal" href="classes.html#module-sklearn.metrics.p
 </div>
 <div class="section" id="overview-of-clustering-methods">
 <h2>2.3.1. Overview of clustering methods<a class="headerlink" href="#overview-of-clustering-methods" title="Permalink to this headline">¶</a></h2>
-<div class="figure align-center" id="id35">
+<div class="figure align-center" id="id37">
 <a class="reference external image-reference" href="../auto_examples/cluster/plot_cluster_comparison.html"><img alt="../_images/sphx_glr_plot_cluster_comparison_0011.png" src="../_images/sphx_glr_plot_cluster_comparison_0011.png" style="width: 1050.0px; height: 625.0px;" /></a>
-<p class="caption"><span class="caption-text">A comparison of the clustering algorithms in scikit-learn</span><a class="headerlink" href="#id35" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">A comparison of the clustering algorithms in scikit-learn</span><a class="headerlink" href="#id37" title="Permalink to this image">¶</a></p>
 </div>
 <table class="colwidths-given docutils align-default">
 <colgroup>
@@ -1735,21 +1737,9 @@ the silhouette analysis is used to choose an optimal value for n_clusters.</p></
 (<a class="reference internal" href="generated/sklearn.metrics.calinski_harabasz_score.html#sklearn.metrics.calinski_harabasz_score" title="sklearn.metrics.calinski_harabasz_score"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.metrics.calinski_harabasz_score</span></code></a>) - also known as the Variance
 Ratio Criterion - can be used to evaluate the model, where a higher
 Calinski-Harabasz score relates to a model with better defined clusters.</p>
-<p>For <span class="math notranslate nohighlight">\(k\)</span> clusters, the Calinski-Harabasz score <span class="math notranslate nohighlight">\(s\)</span> is given as the
-ratio of the between-clusters dispersion mean and the within-cluster
-dispersion:</p>
-<div class="math notranslate nohighlight">
-\[s(k) = \frac{\mathrm{Tr}(B_k)}{\mathrm{Tr}(W_k)} \times \frac{N - k}{k - 1}\]</div>
-<p>where <span class="math notranslate nohighlight">\(B_K\)</span> is the between group dispersion matrix and <span class="math notranslate nohighlight">\(W_K\)</span>
-is the within-cluster dispersion matrix defined by:</p>
-<div class="math notranslate nohighlight">
-\[W_k = \sum_{q=1}^k \sum_{x \in C_q} (x - c_q) (x - c_q)^T\]</div>
-<div class="math notranslate nohighlight">
-\[B_k = \sum_q n_q (c_q - c) (c_q - c)^T\]</div>
-<p>with <span class="math notranslate nohighlight">\(N\)</span> be the number of points in our data, <span class="math notranslate nohighlight">\(C_q\)</span> be the set of
-points in cluster <span class="math notranslate nohighlight">\(q\)</span>, <span class="math notranslate nohighlight">\(c_q\)</span> be the center of cluster
-<span class="math notranslate nohighlight">\(q\)</span>, <span class="math notranslate nohighlight">\(c\)</span> be the center of <span class="math notranslate nohighlight">\(E\)</span>, <span class="math notranslate nohighlight">\(n_q\)</span> be the number of
-points in cluster <span class="math notranslate nohighlight">\(q\)</span>.</p>
+<p>The index is the ratio of the sum of between-clusters dispersion and of
+inter-cluster dispersion for all clusters (where dispersion is defined as the
+sum of distances squared):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">metrics</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">pairwise_distances</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">datasets</span>
@@ -1759,7 +1749,7 @@ points in cluster <span class="math notranslate nohighlight">\(q\)</span>.</p>
 </pre></div>
 </div>
 <p>In normal usage, the Calinski-Harabasz index is applied to the results of a
-cluster analysis.</p>
+cluster analysis:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="k">import</span> <span class="n">KMeans</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">kmeans_model</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
@@ -1773,7 +1763,7 @@ cluster analysis.</p>
 <ul class="simple">
 <li><p>The score is higher when clusters are dense and well separated, which relates
 to a standard concept of a cluster.</p></li>
-<li><p>The score is fast to compute</p></li>
+<li><p>The score is fast to compute.</p></li>
 </ul>
 </div>
 <div class="section" id="id28">
@@ -1783,37 +1773,44 @@ to a standard concept of a cluster.</p></li>
 concepts of clusters, such as density based clusters like those obtained
 through DBSCAN.</p></li>
 </ul>
+</div>
+<div class="section" id="id29">
+<h4>2.3.10.6.3. Mathematical formulation<a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h4>
+<p>For a set of data <span class="math notranslate nohighlight">\(E\)</span> of size <span class="math notranslate nohighlight">\(n_E\)</span> which has been clustered into
+<span class="math notranslate nohighlight">\(k\)</span> clusters, the Calinski-Harabasz score <span class="math notranslate nohighlight">\(s\)</span> is defined as the
+ratio of the between-clusters dispersion mean and the within-cluster dispersion:</p>
+<div class="math notranslate nohighlight">
+\[s = \frac{\mathrm{tr}(B_k)}{\mathrm{tr}(W_k)} \times \frac{n_E - k}{k - 1}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathrm{tr}(B_k)\)</span> is trace of the between group dispersion matrix
+and <span class="math notranslate nohighlight">\(\mathrm{tr}(W_k)\)</span> is the trace of the within-cluster dispersion
+matrix defined by:</p>
+<div class="math notranslate nohighlight">
+\[W_k = \sum_{q=1}^k \sum_{x \in C_q} (x - c_q) (x - c_q)^T\]</div>
+<div class="math notranslate nohighlight">
+\[B_k = \sum_{q=1}^k n_q (c_q - c_E) (c_q - c_E)^T\]</div>
+<p>with <span class="math notranslate nohighlight">\(C_q\)</span> the set of points in cluster <span class="math notranslate nohighlight">\(q\)</span>, <span class="math notranslate nohighlight">\(c_q\)</span> the center
+of cluster <span class="math notranslate nohighlight">\(q\)</span>, <span class="math notranslate nohighlight">\(c_E\)</span> the center of <span class="math notranslate nohighlight">\(E\)</span>, and <span class="math notranslate nohighlight">\(n_q\)</span> the
+number of points in cluster <span class="math notranslate nohighlight">\(q\)</span>.</p>
 <div class="topic">
 <p class="topic-title first">References</p>
 <ul class="simple">
-<li><p>Caliński, T., &amp; Harabasz, J. (1974). “A dendrite method for cluster
-analysis”. Communications in Statistics-theory and Methods 3: 1-27.
-<a class="reference external" href="https://doi.org/10.1080/03610926.2011.560741">doi:10.1080/03610926.2011.560741</a>.</p></li>
+<li><p>Caliński, T., &amp; Harabasz, J. (1974).
+<a class="reference external" href="https://www.researchgate.net/publication/233096619_A_Dendrite_Method_for_Cluster_Analysis">“A Dendrite Method for Cluster Analysis”</a>.
+Communications in Statistics-theory and Methods 3: 1-27.
+<a class="reference external" href="https://doi.org/10.1080/03610927408827101">doi:10.1080/03610927408827101</a>.</p></li>
 </ul>
 </div>
 </div>
 </div>
 <div class="section" id="davies-bouldin-index">
-<span id="id29"></span><h3>2.3.10.7. Davies-Bouldin Index<a class="headerlink" href="#davies-bouldin-index" title="Permalink to this headline">¶</a></h3>
+<span id="id30"></span><h3>2.3.10.7. Davies-Bouldin Index<a class="headerlink" href="#davies-bouldin-index" title="Permalink to this headline">¶</a></h3>
 <p>If the ground truth labels are not known, the Davies-Bouldin index
 (<a class="reference internal" href="generated/sklearn.metrics.davies_bouldin_score.html#sklearn.metrics.davies_bouldin_score" title="sklearn.metrics.davies_bouldin_score"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.metrics.davies_bouldin_score</span></code></a>) can be used to evaluate the
 model, where a lower Davies-Bouldin index relates to a model with better
 separation between the clusters.</p>
-<p>The index is defined as the average similarity between each cluster <span class="math notranslate nohighlight">\(C_i\)</span>
-for <span class="math notranslate nohighlight">\(i=1, ..., k\)</span> and its most similar one <span class="math notranslate nohighlight">\(C_j\)</span>. In the context of
-this index, similarity is defined as a measure <span class="math notranslate nohighlight">\(R_{ij}\)</span> that trades off:</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(s_i\)</span>, the average distance between each point of cluster <span class="math notranslate nohighlight">\(i\)</span> and
-the centroid of that cluster – also know as cluster diameter.</p></li>
-<li><p><span class="math notranslate nohighlight">\(d_{ij}\)</span>, the distance between cluster centroids <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span>.</p></li>
-</ul>
-<p>A simple choice to construct <span class="math notranslate nohighlight">\(R_ij\)</span> so that it is nonnegative and
-symmetric is:</p>
-<div class="math notranslate nohighlight">
-\[R_{ij} = \frac{s_i + s_j}{d_{ij}}\]</div>
-<p>Then the Davies-Bouldin index is defined as:</p>
-<div class="math notranslate nohighlight">
-\[DB = \frac{1}{k} \sum_{i=1}^k \max_{i \neq j} R_{ij}\]</div>
+<p>This index signifies the average ‘similarity’ between clusters, where the
+similarity is a measure that compares the distance between clusters with the
+size of the clusters themselves.</p>
 <p>Zero is the lowest possible score. Values closer to zero indicate a better
 partition.</p>
 <p>In normal usage, the Davies-Bouldin index is applied to the results of a
@@ -1829,22 +1826,39 @@ cluster analysis as follows:</p>
 <span class="go">0.6619...</span>
 </pre></div>
 </div>
-<div class="section" id="id30">
-<h4>2.3.10.7.1. Advantages<a class="headerlink" href="#id30" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id31">
+<h4>2.3.10.7.1. Advantages<a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
 <li><p>The computation of Davies-Bouldin is simpler than that of Silhouette scores.</p></li>
 <li><p>The index is computed only quantities and features inherent to the dataset.</p></li>
 </ul>
 </div>
-<div class="section" id="id31">
-<h4>2.3.10.7.2. Drawbacks<a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id32">
+<h4>2.3.10.7.2. Drawbacks<a class="headerlink" href="#id32" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
 <li><p>The Davies-Boulding index is generally higher for convex clusters than other
 concepts of clusters, such as density based clusters like those obtained from
 DBSCAN.</p></li>
 <li><p>The usage of centroid distance limits the distance metric to Euclidean space.</p></li>
-<li><p>A good value reported by this method does not imply the best information retrieval.</p></li>
 </ul>
+</div>
+<div class="section" id="id33">
+<h4>2.3.10.7.3. Mathematical formulation<a class="headerlink" href="#id33" title="Permalink to this headline">¶</a></h4>
+<p>The index is defined as the average similarity between each cluster <span class="math notranslate nohighlight">\(C_i\)</span>
+for <span class="math notranslate nohighlight">\(i=1, ..., k\)</span> and its most similar one <span class="math notranslate nohighlight">\(C_j\)</span>. In the context of
+this index, similarity is defined as a measure <span class="math notranslate nohighlight">\(R_{ij}\)</span> that trades off:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(s_i\)</span>, the average distance between each point of cluster <span class="math notranslate nohighlight">\(i\)</span> and
+the centroid of that cluster – also know as cluster diameter.</p></li>
+<li><p><span class="math notranslate nohighlight">\(d_{ij}\)</span>, the distance between cluster centroids <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span>.</p></li>
+</ul>
+<p>A simple choice to construct <span class="math notranslate nohighlight">\(R_ij\)</span> so that it is nonnegative and
+symmetric is:</p>
+<div class="math notranslate nohighlight">
+\[R_{ij} = \frac{s_i + s_j}{d_{ij}}\]</div>
+<p>Then the Davies-Bouldin index is defined as:</p>
+<div class="math notranslate nohighlight">
+\[DB = \frac{1}{k} \sum_{i=1}^k \max_{i \neq j} R_{ij}\]</div>
 <div class="topic">
 <p class="topic-title first">References</p>
 <ul class="simple">
@@ -1863,7 +1877,7 @@ Journal of Intelligent Information Systems, 17(2-3), 107-145.
 </div>
 </div>
 <div class="section" id="contingency-matrix">
-<span id="id32"></span><h3>2.3.10.8. Contingency Matrix<a class="headerlink" href="#contingency-matrix" title="Permalink to this headline">¶</a></h3>
+<span id="id34"></span><h3>2.3.10.8. Contingency Matrix<a class="headerlink" href="#contingency-matrix" title="Permalink to this headline">¶</a></h3>
 <p>Contingency matrix (<a class="reference internal" href="generated/sklearn.metrics.cluster.contingency_matrix.html#sklearn.metrics.cluster.contingency_matrix" title="sklearn.metrics.cluster.contingency_matrix"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.metrics.cluster.contingency_matrix</span></code></a>)
 reports the intersection cardinality for every true/predicted cluster pair.
 The contingency matrix provides sufficient statistics for all clustering
@@ -1886,8 +1900,8 @@ whose true cluster is “b”. Of them, none is in predicted cluster 0, one is i
 <p>A <a class="reference internal" href="model_evaluation.html#confusion-matrix"><span class="std std-ref">confusion matrix</span></a> for classification is a square
 contingency matrix where the order of rows and columns correspond to a list
 of classes.</p>
-<div class="section" id="id33">
-<h4>2.3.10.8.1. Advantages<a class="headerlink" href="#id33" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id35">
+<h4>2.3.10.8.1. Advantages<a class="headerlink" href="#id35" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
 <li><p>Allows to examine the spread of each true cluster across predicted
 clusters and vice versa.</p></li>
@@ -1896,8 +1910,8 @@ of a similarity statistic (like the others listed in this document) between
 the two clusterings.</p></li>
 </ul>
 </div>
-<div class="section" id="id34">
-<h4>2.3.10.8.2. Drawbacks<a class="headerlink" href="#id34" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id36">
+<h4>2.3.10.8.2. Drawbacks<a class="headerlink" href="#id36" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
 <li><p>Contingency matrix is easy to interpret for a small number of clusters, but
 becomes very hard to interpret for a large number of clusters.</p></li>
