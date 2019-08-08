@@ -2,7 +2,7 @@
     var latestStable = '0.21';
     var goodPaths = ['stable', 'dev', latestStable];
     var showWarning = (msg) => {
-        $('.header').append(
+        $('.body[role=main]').prepend(
             '<p style="' +
             [
                 'padding: 1em',
