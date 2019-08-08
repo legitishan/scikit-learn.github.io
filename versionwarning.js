@@ -13,7 +13,7 @@
             ].join('; ') +
             '">' + msg + '</p>')
     };
-///    if (location.hostname == 'scikit-learn.org') {
+    if (location.hostname == 'scikit-learn.org') {
         var versionPath = location.pathname.split('/')[1];
         if (!goodPaths.includes(versionPath)) {
             showWarning('You are looking at documentation for an old release of ' +
@@ -27,5 +27,5 @@
                         '<a href="https://scikit-learn.org">latest release</a> ' +
                         'version.')
         }
-///    }
+    }
 })()
