@@ -377,9 +377,44 @@ result in an error when using multiple metrics.</p>
 for an example usage.</p>
 </div>
 <div class="section" id="composite-estimators-and-parameter-spaces">
-<h3>3.2.3.3. Composite estimators and parameter spaces<a class="headerlink" href="#composite-estimators-and-parameter-spaces" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference internal" href="compose.html#pipeline"><span class="std std-ref">Pipeline: chaining estimators</span></a> describes building composite estimators whose
-parameter space can be searched with these tools.</p>
+<span id="composite-grid-search"></span><h3>3.2.3.3. Composite estimators and parameter spaces<a class="headerlink" href="#composite-estimators-and-parameter-spaces" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV" title="sklearn.model_selection.GridSearchCV"><code class="xref any py py-class docutils literal notranslate"><span class="pre">GridSearchCV</span></code></a> and <a class="reference internal" href="generated/sklearn.model_selection.RandomizedSearchCV.html#sklearn.model_selection.RandomizedSearchCV" title="sklearn.model_selection.RandomizedSearchCV"><code class="xref any py py-class docutils literal notranslate"><span class="pre">RandomizedSearchCV</span></code></a> allow searching over parameters of
+composite or nested estimators such as <a class="reference internal" href="generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref any py py-class docutils literal notranslate"><span class="pre">pipeline.Pipeline</span></code></a>,
+<a class="reference internal" href="generated/sklearn.compose.ColumnTransformer.html#sklearn.compose.ColumnTransformer" title="sklearn.compose.ColumnTransformer"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ColumnTransformer</span></code></a>, <a class="reference internal" href="generated/sklearn.ensemble.VotingClassifier.html#sklearn.ensemble.VotingClassifier" title="sklearn.ensemble.VotingClassifier"><code class="xref any py py-class docutils literal notranslate"><span class="pre">VotingClassifier</span></code></a> or <a class="reference internal" href="generated/sklearn.calibration.CalibratedClassifierCV.html#sklearn.calibration.CalibratedClassifierCV" title="sklearn.calibration.CalibratedClassifierCV"><code class="xref any py py-class docutils literal notranslate"><span class="pre">CalibratedClassifierCV</span></code></a>
+using a dedicated <code class="docutils literal notranslate"><span class="pre">&lt;estimator&gt;__&lt;parameter&gt;</span></code> syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">GridSearchCV</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.calibration</span> <span class="k">import</span> <span class="n">CalibratedClassifierCV</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">RandomForestClassifier</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">make_moons</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_moons</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">calibrated_forest</span> <span class="o">=</span> <span class="n">CalibratedClassifierCV</span><span class="p">(</span>
+<span class="gp">... </span>   <span class="n">base_estimator</span><span class="o">=</span><span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">param_grid</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>   <span class="s1">&#39;base_estimator__max_depth&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">calibrated_forest</span><span class="p">,</span> <span class="n">param_grid</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="go">GridSearchCV(cv=5,</span>
+<span class="go">             estimator=CalibratedClassifierCV(...),</span>
+<span class="go">             param_grid={&#39;base_estimator__max_depth&#39;: [2, 4, 6, 8]})</span>
+</pre></div>
+</div>
+<p>Here, <code class="docutils literal notranslate"><span class="pre">&lt;estimator&gt;</span></code> is the parameter name of the nested estimator,
+in this case <code class="docutils literal notranslate"><span class="pre">base_estimator</span></code>.
+If the meta-estimator is constructed as a collection of estimators as in
+<a class="reference internal" href="generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref any py py-class docutils literal notranslate"><span class="pre">pipeline.Pipeline</span></code></a>, then <code class="docutils literal notranslate"><span class="pre">&lt;estimator&gt;</span></code> refers to the name of the estimator,
+see <a class="reference internal" href="compose.html#pipeline-nested-parameters"><span class="std std-ref">Nested parameters</span></a>.  In practice, there can be several
+levels of nesting:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="k">import</span> <span class="n">Pipeline</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="k">import</span> <span class="n">SelectKBest</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pipe</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+<span class="gp">... </span>   <span class="p">(</span><span class="s1">&#39;select&#39;</span><span class="p">,</span> <span class="n">SelectKBest</span><span class="p">()),</span>
+<span class="gp">... </span>   <span class="p">(</span><span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="n">calibrated_forest</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">param_grid</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>   <span class="s1">&#39;select__k&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+<span class="gp">... </span>   <span class="s1">&#39;model__base_estimator__max_depth&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="n">param_grid</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="model-selection-development-and-evaluation">
 <h3>3.2.3.4. Model selection: development and evaluation<a class="headerlink" href="#model-selection-development-and-evaluation" title="Permalink to this headline">¶</a></h3>
