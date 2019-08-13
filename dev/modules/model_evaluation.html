@@ -207,6 +207,7 @@
 <li><a class="reference internal" href="#coverage-error">3.3.3.1. Coverage error</a></li>
 <li><a class="reference internal" href="#label-ranking-average-precision">3.3.3.2. Label ranking average precision</a></li>
 <li><a class="reference internal" href="#ranking-loss">3.3.3.3. Ranking loss</a></li>
+<li><a class="reference internal" href="#normalized-discounted-cumulative-gain">3.3.3.4. Normalized Discounted Cumulative Gain</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#regression-metrics">3.3.4. Regression metrics</a><ul>
@@ -1937,6 +1938,56 @@ elements in the set) and <span class="math notranslate nohighlight">\(||\cdot||_
 <ul class="simple">
 <li><p>Tsoumakas, G., Katakis, I., &amp; Vlahavas, I. (2010). Mining multi-label data. In
 Data mining and knowledge discovery handbook (pp. 667-685). Springer US.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="normalized-discounted-cumulative-gain">
+<span id="ndcg"></span><h3>3.3.3.4. Normalized Discounted Cumulative Gain<a class="headerlink" href="#normalized-discounted-cumulative-gain" title="Permalink to this headline">¶</a></h3>
+<p>Discounted Cumulative Gain (DCG) and Normalized Discounted Cumulative Gain
+(NDCG) are ranking metrics; they compare a predicted order to ground-truth
+scores, such as the relevance of answers to a query.</p>
+<p>from the Wikipedia page for Discounted Cumulative Gain:</p>
+<p>“Discounted cumulative gain (DCG) is a measure of ranking quality. In
+information retrieval, it is often used to measure effectiveness of web search
+engine algorithms or related applications. Using a graded relevance scale of
+documents in a search-engine result set, DCG measures the usefulness, or gain,
+of a document based on its position in the result list. The gain is accumulated
+from the top of the result list to the bottom, with the gain of each result
+discounted at lower ranks”</p>
+<p>DCG orders the true targets (e.g. relevance of query answers) in the predicted
+order, then multiplies them by a logarithmic decay and sums the result. The sum
+can be truncated after the first <span class="math notranslate nohighlight">\(K\)</span> results, in which case we call it
+DCG&#64;K.
+NDCG, or NDCG&#64;K is DCG divided by the DCG obtained by a perfect prediction, so
+that it is always between 0 and 1. Usually, NDCG is preferred to DCG.</p>
+<p>Compared with the ranking loss, NDCG can take into account relevance scores,
+rather than a ground-truth ranking. So if the ground-truth consists only of an
+ordering, the ranking loss should be preferred; if the ground-truth consists of
+actual usefulness scores (e.g. 0 for irrelevant, 1 for relevant, 2 for very
+relevant), NDCG can be used.</p>
+<p>For one sample, given the vector of continuous ground-truth values for each
+target <span class="math notranslate nohighlight">\(y \in \mathbb{R}^{M}\)</span>, where <span class="math notranslate nohighlight">\(M\)</span> is the number of outputs, and
+the prediction <span class="math notranslate nohighlight">\(\hat{y}\)</span>, which induces the ranking funtion <span class="math notranslate nohighlight">\(f\)</span>, the
+DCG score is</p>
+<div class="math notranslate nohighlight">
+\[\sum_{r=1}^{\min(K, M)}\frac{y_{f(r)}}{\log(1 + r)}\]</div>
+<p>and the NDCG score is the DCG score divided by the DCG score obtained for
+<span class="math notranslate nohighlight">\(y\)</span>.</p>
+<div class="topic">
+<p class="topic-title first">References:</p>
+<ul class="simple">
+<li><p>Wikipedia entry for Discounted Cumulative Gain:
+<a class="reference external" href="https://en.wikipedia.org/wiki/Discounted_cumulative_gain">https://en.wikipedia.org/wiki/Discounted_cumulative_gain</a></p></li>
+<li><p>Jarvelin, K., &amp; Kekalainen, J. (2002).
+Cumulated gain-based evaluation of IR techniques. ACM Transactions on
+Information Systems (TOIS), 20(4), 422-446.</p></li>
+<li><p>Wang, Y., Wang, L., Li, Y., He, D., Chen, W., &amp; Liu, T. Y. (2013, May).
+A theoretical analysis of NDCG ranking measures. In Proceedings of the 26th
+Annual Conference on Learning Theory (COLT 2013)</p></li>
+<li><p>McSherry, F., &amp; Najork, M. (2008, March). Computing information retrieval
+performance measures efficiently in the presence of tied scores. In
+European conference on information retrieval (pp. 414-421). Springer,
+Berlin, Heidelberg.</p></li>
 </ul>
 </div>
 </div>
