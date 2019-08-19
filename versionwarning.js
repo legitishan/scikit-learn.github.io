@@ -14,6 +14,10 @@
             '">' + msg + '</p>')
     };
     if (location.hostname == 'scikit-learn.org') {
+        if (location.pathname == '/dev/versions.html') {
+            // this page is specially generated and linked from all versions
+            return;
+        }
         var versionPath = location.pathname.split('/')[1];
         if (!goodPaths.includes(versionPath)) {
             showWarning('This is documentation for an old release of ' +
