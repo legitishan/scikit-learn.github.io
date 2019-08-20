@@ -184,6 +184,7 @@
 <li><a class="reference internal" href="#regression-criteria">1.10.7.2. Regression criteria</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#minimal-cost-complexity-pruning">1.10.8. Minimal Cost-Complexity Pruning</a></li>
 </ul>
 </li>
 </ul>
@@ -624,18 +625,57 @@ minimizes the L1 error using median values at terminal nodes.</p>
 <div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}\bar{y}_m = \frac{1}{N_m} \sum_{i \in N_m} y_i\\H(X_m) = \frac{1}{N_m} \sum_{i \in N_m} |y_i - \bar{y}_m|\end{aligned}\end{align} \]</div>
 <p>where <span class="math notranslate nohighlight">\(X_m\)</span> is the training data in node <span class="math notranslate nohighlight">\(m\)</span></p>
+</div>
+</div>
+<div class="section" id="minimal-cost-complexity-pruning">
+<span id="id1"></span><h2>1.10.8. Minimal Cost-Complexity Pruning<a class="headerlink" href="#minimal-cost-complexity-pruning" title="Permalink to this headline">¶</a></h2>
+<p>Minimal cost-complexity pruning is an algorithm used to prune a tree to avoid
+over-fitting, described in Chapter 3 of <a class="reference internal" href="#bre" id="id2"><span>[BRE]</span></a>. This algorithm is parameterized
+by <span class="math notranslate nohighlight">\(\alpha\ge0\)</span> known as the complexity parameter. The complexity
+parameter is used to define the cost-complexity measure, <span class="math notranslate nohighlight">\(R_\alpha(T)\)</span> of
+a given tree <span class="math notranslate nohighlight">\(T\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[R_\alpha(T) = R(T) + \alpha|T|\]</div>
+<p>where <span class="math notranslate nohighlight">\(|T|\)</span> is the number of terminal nodes in <span class="math notranslate nohighlight">\(T\)</span> and <span class="math notranslate nohighlight">\(R(T)\)</span>
+is traditionally defined as the total misclassification rate of the terminal
+nodes. Alternatively, scikit-learn uses the total sample weighted impurity of
+the terminal nodes for <span class="math notranslate nohighlight">\(R(T)\)</span>. As shown above, the impurity of a node
+depends on the criterion. Minimal cost-complexity pruning finds the subtree of
+<span class="math notranslate nohighlight">\(T\)</span> that minimizes <span class="math notranslate nohighlight">\(R_\alpha(T)\)</span>.</p>
+<p>The cost complexity measure of a single node is
+<span class="math notranslate nohighlight">\(R_\alpha(t)=R(t)+\alpha\)</span>. The branch, <span class="math notranslate nohighlight">\(T_t\)</span>, is defined to be a
+tree where node <span class="math notranslate nohighlight">\(t\)</span> is its root. In general, the impurity of a node
+is greater than the sum of impurities of its terminal nodes,
+<span class="math notranslate nohighlight">\(R(T_t)&lt;R(t)\)</span>. However, the cost complexity measure of a node,
+<span class="math notranslate nohighlight">\(t\)</span>, and its branch, <span class="math notranslate nohighlight">\(T_t\)</span>, can be equal depending on
+<span class="math notranslate nohighlight">\(\alpha\)</span>. We define the effective <span class="math notranslate nohighlight">\(\alpha\)</span> of a node to be the
+value where they are equal, <span class="math notranslate nohighlight">\(R_\alpha(T_t)=R_\alpha(t)\)</span> or
+<span class="math notranslate nohighlight">\(\alpha_{eff}(t)=\frac{R(t)-R(T_t)}{|T|-1}\)</span>. A non-terminal node
+with the smallest value of <span class="math notranslate nohighlight">\(\alpha_{eff}\)</span> is the weakest link and will
+be pruned. This process stops when the pruned tree’s minimal
+<span class="math notranslate nohighlight">\(\alpha_{eff}\)</span> is greater than the <code class="docutils literal notranslate"><span class="pre">ccp_alpha</span></code> parameter.</p>
+<div class="topic">
+<p class="topic-title first">Examples:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../auto_examples/tree/plot_cost_complexity_pruning.html#sphx-glr-auto-examples-tree-plot-cost-complexity-pruning-py"><span class="std std-ref">Post pruning decision trees with cost complexity pruning</span></a></p></li>
+</ul>
+</div>
 <div class="topic">
 <p class="topic-title first">References:</p>
+<dl class="citation">
+<dt class="label" id="bre"><span class="brackets"><a class="fn-backref" href="#id2">BRE</a></span></dt>
+<dd><p>L. Breiman, J. Friedman, R. Olshen, and C. Stone. Classification
+and Regression Trees. Wadsworth, Belmont, CA, 1984.</p>
+</dd>
+</dl>
 <ul class="simple">
 <li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Decision_tree_learning">https://en.wikipedia.org/wiki/Decision_tree_learning</a></p></li>
 <li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Predictive_analytics">https://en.wikipedia.org/wiki/Predictive_analytics</a></p></li>
-<li><p>L. Breiman, J. Friedman, R. Olshen, and C. Stone. Classification and
-Regression Trees. Wadsworth, Belmont, CA, 1984.</p></li>
-<li><p>J.R. Quinlan. C4. 5: programs for machine learning. Morgan Kaufmann, 1993.</p></li>
-<li><p>T. Hastie, R. Tibshirani and J. Friedman.
-Elements of Statistical Learning, Springer, 2009.</p></li>
+<li><p>J.R. Quinlan. C4. 5: programs for machine learning. Morgan
+Kaufmann, 1993.</p></li>
+<li><p>T. Hastie, R. Tibshirani and J. Friedman. Elements of Statistical
+Learning, Springer, 2009.</p></li>
 </ul>
-</div>
 </div>
 </div>
 </div>
