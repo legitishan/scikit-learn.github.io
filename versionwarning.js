@@ -9,7 +9,6 @@
                 'font-size: 1.5em',
                 'border: 1px solid red',
                 'background: pink',
-                'width: 100%',
             ].join('; ') +
             '">' + msg + '</p>')
     };
