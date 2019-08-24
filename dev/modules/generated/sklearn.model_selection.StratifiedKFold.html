@@ -197,7 +197,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.model_selection" title="sklearn.model_selection"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.model_selection</span></code></a>.StratifiedKFold<a class="headerlink" href="#sklearn-model-selection-stratifiedkfold" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="sklearn.model_selection.StratifiedKFold">
-<em class="property">class </em><code class="sig-prename descclassname">sklearn.model_selection.</code><code class="sig-name descname">StratifiedKFold</code><span class="sig-paren">(</span><em class="sig-param">n_splits=5</em>, <em class="sig-param">shuffle=False</em>, <em class="sig-param">random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f09839d0f/sklearn/model_selection/_split.py#L556"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.model_selection.StratifiedKFold" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sklearn.model_selection.</code><code class="sig-name descname">StratifiedKFold</code><span class="sig-paren">(</span><em class="sig-param">n_splits=5</em>, <em class="sig-param">shuffle=False</em>, <em class="sig-param">random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/3de368d40/sklearn/model_selection/_split.py#L556"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.model_selection.StratifiedKFold" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stratified K-Folds cross-validator</p>
 <p>Provides train/test indices to split data in train/test sets.</p>
 <p>This cross-validation object is a variation of KFold that returns
@@ -230,8 +230,21 @@ by <code class="docutils literal notranslate"><span class="pre">np.random</span>
 </dl>
 </div>
 <p class="rubric">Notes</p>
-<p>Train and test sizes may be different in each fold, with a difference of at
-most <code class="docutils literal notranslate"><span class="pre">n_classes</span></code>.</p>
+<p>The implementation is designed to:</p>
+<ul class="simple">
+<li><p>Generate test sets such that all contain the same distribution of
+classes, or as close as possible.</p></li>
+<li><p>Be invariant to class label: relabelling <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">[&quot;Happy&quot;,</span> <span class="pre">&quot;Sad&quot;]</span></code> to
+<code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">[1,</span> <span class="pre">0]</span></code> should not change the indices generated.</p></li>
+<li><p>Preserve order dependencies in the dataset ordering, when
+<code class="docutils literal notranslate"><span class="pre">shuffle=False</span></code>: all samples from class k in some test set were
+contiguous in y, or separated in y by samples from classes other than k.</p></li>
+<li><p>Generate test sets where the smallest and largest differ by at most one
+sample.</p></li>
+</ul>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.22: </span>The previous implementation did not follow the last constraint.</p>
+</div>
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">StratifiedKFold</span>
@@ -267,13 +280,13 @@ most <code class="docutils literal notranslate"><span class="pre">n_classes</spa
 </table>
 <dl class="method">
 <dt id="sklearn.model_selection.StratifiedKFold.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">n_splits=5</em>, <em class="sig-param">shuffle=False</em>, <em class="sig-param">random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f09839d0f/sklearn/model_selection/_split.py#L612"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.model_selection.StratifiedKFold.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">n_splits=5</em>, <em class="sig-param">shuffle=False</em>, <em class="sig-param">random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/3de368d40/sklearn/model_selection/_split.py#L624"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.model_selection.StratifiedKFold.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="sklearn.model_selection.StratifiedKFold.get_n_splits">
-<code class="sig-name descname">get_n_splits</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X=None</em>, <em class="sig-param">y=None</em>, <em class="sig-param">groups=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f09839d0f/sklearn/model_selection/_split.py#L329"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.model_selection.StratifiedKFold.get_n_splits" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_n_splits</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X=None</em>, <em class="sig-param">y=None</em>, <em class="sig-param">groups=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/3de368d40/sklearn/model_selection/_split.py#L329"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.model_selection.StratifiedKFold.get_n_splits" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the number of splitting iterations in the cross-validator</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -297,7 +310,7 @@ most <code class="docutils literal notranslate"><span class="pre">n_classes</spa
 
 <dl class="method">
 <dt id="sklearn.model_selection.StratifiedKFold.split">
-<code class="sig-name descname">split</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">groups=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f09839d0f/sklearn/model_selection/_split.py#L672"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.model_selection.StratifiedKFold.split" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">split</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">groups=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/3de368d40/sklearn/model_selection/_split.py#L685"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.model_selection.StratifiedKFold.split" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate indices to split data into training and test set.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
