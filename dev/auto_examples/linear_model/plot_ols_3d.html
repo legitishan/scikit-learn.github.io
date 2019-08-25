@@ -26,8 +26,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Lasso on dense and sparse data" href="plot_lasso_dense_vs_sparse_data.html" />
-    <link rel="prev" title="HuberRegressor vs Ridge on dataset with strong outliers" href="plot_huber_vs_ridge.html" />
+    <link rel="next" title="HuberRegressor vs Ridge on dataset with strong outliers" href="plot_huber_vs_ridge.html" />
+    <link rel="prev" title="Robust linear model estimation using RANSAC" href="plot_ransac.html" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -122,14 +122,14 @@
         <div class="rel">
     
         <div class="rellink">
-        <a href="plot_huber_vs_ridge.html"
+        <a href="plot_ransac.html"
         accesskey="P">Previous
         <br/>
         <span class="smallrellink">
-        HuberRegresso...
+        Robust linear...
         </span>
             <span class="hiddenrellink">
-            HuberRegressor vs Ridge on dataset with strong outliers
+            Robust linear model estimation using RANSAC
             </span>
         </a>
         </div>
@@ -137,14 +137,14 @@
             &nbsp;
             </div>
         <div class="rellink">
-        <a href="plot_lasso_dense_vs_sparse_data.html"
+        <a href="plot_huber_vs_ridge.html"
         accesskey="N">Next
         <br/>
         <span class="smallrellink">
-        Lasso on dens...
+        HuberRegresso...
         </span>
             <span class="hiddenrellink">
-            Lasso on dense and sparse data
+            HuberRegressor vs Ridge on dataset with strong outliers
             </span>
         </a>
         </div>
@@ -221,13 +221,13 @@ give us much regarding <a class="reference internal" href="../../glossary.html#t
 
 <span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">linear_model</span>
 
-<span class="n">diabetes</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.load_diabetes.html#sklearn.datasets.load_diabetes" title="View documentation for sklearn.datasets.load_diabetes"><span class="n">datasets</span><span class="o">.</span><span class="n">load_diabetes</span></a><span class="p">()</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.load_diabetes.html#sklearn.datasets.load_diabetes" title="View documentation for sklearn.datasets.load_diabetes"><span class="n">datasets</span><span class="o">.</span><span class="n">load_diabetes</span></a><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">indices</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-<span class="n">X_train</span> <span class="o">=</span> <span class="n">diabetes</span><span class="o">.</span><span class="n">data</span><span class="p">[:</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="n">indices</span><span class="p">]</span>
-<span class="n">X_test</span> <span class="o">=</span> <span class="n">diabetes</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">20</span><span class="p">:,</span> <span class="n">indices</span><span class="p">]</span>
-<span class="n">y_train</span> <span class="o">=</span> <span class="n">diabetes</span><span class="o">.</span><span class="n">target</span><span class="p">[:</span><span class="o">-</span><span class="mi">20</span><span class="p">]</span>
-<span class="n">y_test</span> <span class="o">=</span> <span class="n">diabetes</span><span class="o">.</span><span class="n">target</span><span class="p">[</span><span class="o">-</span><span class="mi">20</span><span class="p">:]</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="n">indices</span><span class="p">]</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="o">-</span><span class="mi">20</span><span class="p">:,</span> <span class="n">indices</span><span class="p">]</span>
+<span class="n">y_train</span> <span class="o">=</span> <span class="n">y</span><span class="p">[:</span><span class="o">-</span><span class="mi">20</span><span class="p">]</span>
+<span class="n">y_test</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="o">-</span><span class="mi">20</span><span class="p">:]</span>
 
 <span class="n">ols</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression" title="View documentation for sklearn.linear_model.LinearRegression"><span class="n">linear_model</span><span class="o">.</span><span class="n">LinearRegression</span></a><span class="p">()</span>
 <span class="n">ols</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
@@ -254,7 +254,8 @@ give us much regarding <a class="reference internal" href="../../glossary.html#t
     <span class="n">ax</span><span class="o">.</span><span class="n">w_yaxis</span><span class="o">.</span><span class="n">set_ticklabels</span><span class="p">([])</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">w_zaxis</span><span class="o">.</span><span class="n">set_ticklabels</span><span class="p">([])</span>
 
-<span class="c1">#Generate the three different figures from different views</span>
+
+<span class="c1"># Generate the three different figures from different views</span>
 <span class="n">elev</span> <span class="o">=</span> <span class="mf">43.5</span>
 <span class="n">azim</span> <span class="o">=</span> <span class="o">-</span><span class="mi">110</span>
 <span class="n">plot_figs</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">elev</span><span class="p">,</span> <span class="n">azim</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">ols</span><span class="p">)</span>
@@ -270,7 +271,7 @@ give us much regarding <a class="reference internal" href="../../glossary.html#t
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.607 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.543 seconds)</p>
 <p><strong>Estimated memory usage:</strong>  8 MB</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-linear-model-plot-ols-3d-py">
 <div class="binder-badge docutils container">
@@ -301,11 +302,11 @@ give us much regarding <a class="reference internal" href="../../glossary.html#t
      <div class="rel">
     
     <div class="buttonPrevious">
-      <a href="plot_huber_vs_ridge.html">Previous
+      <a href="plot_ransac.html">Previous
       </a>
     </div>
     <div class="buttonNext">
-      <a href="plot_lasso_dense_vs_sparse_data.html">Next
+      <a href="plot_huber_vs_ridge.html">Next
       </a>
     </div>
     
