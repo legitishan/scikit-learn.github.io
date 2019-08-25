@@ -103,7 +103,10 @@ plots
     est = make_pipeline(QuantileTransformer(),
                         MLPRegressor(hidden_layer_sizes=(50, 50),
                                      learning_rate_init=0.01,
-                                     early_stopping=True))
+                                     max_iter=200,
+                                     early_stopping=True,
+                                     n_iter_no_change=10,
+                                     validation_fraction=0.1))
     est.fit(X_train, y_train)
     print("done in {:.3f}s".format(time() - tic))
     print("Test R2 score: {:.2f}".format(est.score(X_test, y_test)))
@@ -135,10 +138,10 @@ plots
  .. code-block:: none
 
     Training MLPRegressor...
-    done in 6.338s
+    done in 7.438s
     Test R2 score: 0.82
     Computing partial dependence plots...
-    done in 1.725s
+    done in 2.268s
 
 
 Partial Dependence computation for Gradient Boosting
@@ -184,10 +187,10 @@ plots either or one or two variables at a time.
  .. code-block:: none
 
     Training GradientBoostingRegressor...
-    done in 0.815s
+    done in 1.173s
     Test R2 score: 0.86
     Computing partial dependence plots...
-    done in 0.258s
+    done in 0.442s
 
 
 Analysis of the plots
@@ -262,7 +265,7 @@ this time in 3 dimensions.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  10.416 seconds)
+   **Total running time of the script:** ( 0 minutes  13.430 seconds)
 
 **Estimated memory usage:**  10 MB
 

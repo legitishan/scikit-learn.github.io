@@ -75,7 +75,10 @@ tic = time()
 est = make_pipeline(QuantileTransformer(),
                     MLPRegressor(hidden_layer_sizes=(50, 50),
                                  learning_rate_init=0.01,
-                                 early_stopping=True))
+                                 max_iter=200,
+                                 early_stopping=True,
+                                 n_iter_no_change=10,
+                                 validation_fraction=0.1))
 est.fit(X_train, y_train)
 print("done in {:.3f}s".format(time() - tic))
 print("Test R2 score: {:.2f}".format(est.score(X_test, y_test)))
