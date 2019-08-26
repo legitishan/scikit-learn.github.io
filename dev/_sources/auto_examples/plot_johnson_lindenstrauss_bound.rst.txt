@@ -18,10 +18,37 @@ space while controlling the distortion in the pairwise distances.
 
 .. _`Johnson-Lindenstrauss lemma`: https://en.wikipedia.org/wiki/Johnson%E2%80%93Lindenstrauss_lemma
 
+.. code-block:: default
+
+
+    print(__doc__)
+
+    import sys
+    from time import time
+    import numpy as np
+    import matplotlib
+    import matplotlib.pyplot as plt
+    from distutils.version import LooseVersion
+    from sklearn.random_projection import johnson_lindenstrauss_min_dim
+    from sklearn.random_projection import SparseRandomProjection
+    from sklearn.datasets import fetch_20newsgroups_vectorized
+    from sklearn.datasets import load_digits
+    from sklearn.metrics.pairwise import euclidean_distances
+
+    # `normed` is being deprecated in favor of `density` in histograms
+    if LooseVersion(matplotlib.__version__) >= '2.1':
+        density_param = {'density': True}
+    else:
+        density_param = {'normed': True}
+
+
+
+
+
+
 
 Theoretical bounds
 ==================
-
 The distortion introduced by a random projection `p` is asserted by
 the fact that `p` is defining an eps-embedding with good probability
 as defined by:
@@ -44,9 +71,71 @@ The first plot shows that with an increasing number of samples ``n_samples``,
 the minimal number of dimensions ``n_components`` increased logarithmically
 in order to guarantee an ``eps``-embedding.
 
+
+.. code-block:: default
+
+
+    # range of admissible distortions
+    eps_range = np.linspace(0.1, 0.99, 5)
+    colors = plt.cm.Blues(np.linspace(0.3, 1.0, len(eps_range)))
+
+    # range of number of samples (observation) to embed
+    n_samples_range = np.logspace(1, 9, 9)
+
+    plt.figure()
+    for eps, color in zip(eps_range, colors):
+        min_n_components = johnson_lindenstrauss_min_dim(n_samples_range, eps=eps)
+        plt.loglog(n_samples_range, min_n_components, color=color)
+
+    plt.legend(["eps = %0.1f" % eps for eps in eps_range], loc="lower right")
+    plt.xlabel("Number of observations to eps-embed")
+    plt.ylabel("Minimum number of dimensions")
+    plt.title("Johnson-Lindenstrauss bounds:\nn_samples vs n_components")
+    plt.show()
+
+
+
+
+
+.. image:: /auto_examples/images/sphx_glr_plot_johnson_lindenstrauss_bound_001.png
+    :class: sphx-glr-single-img
+
+
+
+
 The second plot shows that an increase of the admissible
 distortion ``eps`` allows to reduce drastically the minimal number of
 dimensions ``n_components`` for a given number of samples ``n_samples``
+
+
+.. code-block:: default
+
+
+    # range of admissible distortions
+    eps_range = np.linspace(0.01, 0.99, 100)
+
+    # range of number of samples (observation) to embed
+    n_samples_range = np.logspace(2, 6, 5)
+    colors = plt.cm.Blues(np.linspace(0.3, 1.0, len(n_samples_range)))
+
+    plt.figure()
+    for n_samples, color in zip(n_samples_range, colors):
+        min_n_components = johnson_lindenstrauss_min_dim(n_samples, eps=eps_range)
+        plt.semilogy(eps_range, min_n_components, color=color)
+
+    plt.legend(["n_samples = %d" % n for n in n_samples_range], loc="upper right")
+    plt.xlabel("Distortion eps")
+    plt.ylabel("Minimum number of dimensions")
+    plt.title("Johnson-Lindenstrauss bounds:\nn_components vs eps")
+    plt.show()
+
+
+
+
+.. image:: /auto_examples/images/sphx_glr_plot_johnson_lindenstrauss_bound_002.png
+    :class: sphx-glr-single-img
+
+
 
 
 Empirical validation
@@ -65,8 +154,24 @@ text document (TF-IDF word frequencies) dataset:
   ``n_components``.
 
 The default dataset is the digits dataset. To run the example on the twenty
-newsgroups dataset, pass the --twenty-newsgroups command line argument to this
-script.
+newsgroups dataset, pass the --twenty-newsgroups command line argument to
+this script.
+
+
+.. code-block:: default
+
+
+    if '--twenty-newsgroups' in sys.argv:
+        # Need an internet connection hence not enabled by default
+        data = fetch_20newsgroups_vectorized().data[:500]
+    else:
+        data = load_digits().data[:500]
+
+
+
+
+
+
 
 For each value of ``n_components``, we plot:
 
@@ -75,163 +180,9 @@ For each value of ``n_components``, we plot:
 
 - 1D histogram of the ratio of those distances (projected / original).
 
-We can see that for low values of ``n_components`` the distribution is wide
-with many distorted pairs and a skewed distribution (due to the hard
-limit of zero ratio on the left as distances are always positives)
-while for larger values of n_components the distortion is controlled
-and the distances are well preserved by the random projection.
-
-
-Remarks
-=======
-
-According to the JL lemma, projecting 500 samples without too much distortion
-will require at least several thousands dimensions, irrespective of the
-number of features of the original dataset.
-
-Hence using random projections on the digits dataset which only has 64 features
-in the input space does not make sense: it does not allow for dimensionality
-reduction in this case.
-
-On the twenty newsgroups on the other hand the dimensionality can be decreased
-from 56436 down to 10000 while reasonably preserving pairwise distances.
-
-
-.. rst-class:: sphx-glr-horizontal
-
-
-    *
-
-      .. image:: /auto_examples/images/sphx_glr_plot_johnson_lindenstrauss_bound_001.png
-            :class: sphx-glr-multi-img
-
-    *
-
-      .. image:: /auto_examples/images/sphx_glr_plot_johnson_lindenstrauss_bound_002.png
-            :class: sphx-glr-multi-img
-
-    *
-
-      .. image:: /auto_examples/images/sphx_glr_plot_johnson_lindenstrauss_bound_003.png
-            :class: sphx-glr-multi-img
-
-    *
-
-      .. image:: /auto_examples/images/sphx_glr_plot_johnson_lindenstrauss_bound_004.png
-            :class: sphx-glr-multi-img
-
-    *
-
-      .. image:: /auto_examples/images/sphx_glr_plot_johnson_lindenstrauss_bound_005.png
-            :class: sphx-glr-multi-img
-
-    *
-
-      .. image:: /auto_examples/images/sphx_glr_plot_johnson_lindenstrauss_bound_006.png
-            :class: sphx-glr-multi-img
-
-    *
-
-      .. image:: /auto_examples/images/sphx_glr_plot_johnson_lindenstrauss_bound_007.png
-            :class: sphx-glr-multi-img
-
-    *
-
-      .. image:: /auto_examples/images/sphx_glr_plot_johnson_lindenstrauss_bound_008.png
-            :class: sphx-glr-multi-img
-
-
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    Embedding 500 samples with dim 64 using various random projections
-    Projected 500 samples from 64 to 300 in 0.016s
-    Random matrix with size: 0.029MB
-    Mean distances rate: 1.01 (0.08)
-    Projected 500 samples from 64 to 1000 in 0.038s
-    Random matrix with size: 0.098MB
-    Mean distances rate: 1.03 (0.04)
-    Projected 500 samples from 64 to 10000 in 0.425s
-    Random matrix with size: 0.958MB
-    Mean distances rate: 1.01 (0.02)
-
-
-
-
-|
-
 
 .. code-block:: default
 
-    print(__doc__)
-
-    import sys
-    from time import time
-    import numpy as np
-    import matplotlib
-    import matplotlib.pyplot as plt
-    from distutils.version import LooseVersion
-    from sklearn.random_projection import johnson_lindenstrauss_min_dim
-    from sklearn.random_projection import SparseRandomProjection
-    from sklearn.datasets import fetch_20newsgroups_vectorized
-    from sklearn.datasets import load_digits
-    from sklearn.metrics.pairwise import euclidean_distances
-
-    # `normed` is being deprecated in favor of `density` in histograms
-    if LooseVersion(matplotlib.__version__) >= '2.1':
-        density_param = {'density': True}
-    else:
-        density_param = {'normed': True}
-
-    # Part 1: plot the theoretical dependency between n_components_min and
-    # n_samples
-
-    # range of admissible distortions
-    eps_range = np.linspace(0.1, 0.99, 5)
-    colors = plt.cm.Blues(np.linspace(0.3, 1.0, len(eps_range)))
-
-    # range of number of samples (observation) to embed
-    n_samples_range = np.logspace(1, 9, 9)
-
-    plt.figure()
-    for eps, color in zip(eps_range, colors):
-        min_n_components = johnson_lindenstrauss_min_dim(n_samples_range, eps=eps)
-        plt.loglog(n_samples_range, min_n_components, color=color)
-
-    plt.legend(["eps = %0.1f" % eps for eps in eps_range], loc="lower right")
-    plt.xlabel("Number of observations to eps-embed")
-    plt.ylabel("Minimum number of dimensions")
-    plt.title("Johnson-Lindenstrauss bounds:\nn_samples vs n_components")
-
-    # range of admissible distortions
-    eps_range = np.linspace(0.01, 0.99, 100)
-
-    # range of number of samples (observation) to embed
-    n_samples_range = np.logspace(2, 6, 5)
-    colors = plt.cm.Blues(np.linspace(0.3, 1.0, len(n_samples_range)))
-
-    plt.figure()
-    for n_samples, color in zip(n_samples_range, colors):
-        min_n_components = johnson_lindenstrauss_min_dim(n_samples, eps=eps_range)
-        plt.semilogy(eps_range, min_n_components, color=color)
-
-    plt.legend(["n_samples = %d" % n for n in n_samples_range], loc="upper right")
-    plt.xlabel("Distortion eps")
-    plt.ylabel("Minimum number of dimensions")
-    plt.title("Johnson-Lindenstrauss bounds:\nn_components vs eps")
-
-    # Part 2: perform sparse random projection of some digits images which are
-    # quite low dimensional and dense or documents of the 20 newsgroups dataset
-    # which is both high dimensional and sparse
-
-    if '--twenty-newsgroups' in sys.argv:
-        # Need an internet connection hence not enabled by default
-        data = fetch_20newsgroups_vectorized().data[:500]
-    else:
-        data = load_digits().data[:500]
 
     n_samples, n_features = data.shape
     print("Embedding %d samples with dim %d using various random projections"
@@ -284,11 +235,88 @@ from 56436 down to 10000 while reasonably preserving pairwise distances.
     plt.show()
 
 
+
+
+
+.. rst-class:: sphx-glr-horizontal
+
+
+    *
+
+      .. image:: /auto_examples/images/sphx_glr_plot_johnson_lindenstrauss_bound_003.png
+            :class: sphx-glr-multi-img
+
+    *
+
+      .. image:: /auto_examples/images/sphx_glr_plot_johnson_lindenstrauss_bound_004.png
+            :class: sphx-glr-multi-img
+
+    *
+
+      .. image:: /auto_examples/images/sphx_glr_plot_johnson_lindenstrauss_bound_005.png
+            :class: sphx-glr-multi-img
+
+    *
+
+      .. image:: /auto_examples/images/sphx_glr_plot_johnson_lindenstrauss_bound_006.png
+            :class: sphx-glr-multi-img
+
+    *
+
+      .. image:: /auto_examples/images/sphx_glr_plot_johnson_lindenstrauss_bound_007.png
+            :class: sphx-glr-multi-img
+
+    *
+
+      .. image:: /auto_examples/images/sphx_glr_plot_johnson_lindenstrauss_bound_008.png
+            :class: sphx-glr-multi-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    Embedding 500 samples with dim 64 using various random projections
+    Projected 500 samples from 64 to 300 in 0.018s
+    Random matrix with size: 0.029MB
+    Mean distances rate: 1.00 (0.09)
+    Projected 500 samples from 64 to 1000 in 0.163s
+    Random matrix with size: 0.098MB
+    Mean distances rate: 1.02 (0.05)
+    Projected 500 samples from 64 to 10000 in 0.427s
+    Random matrix with size: 0.957MB
+    Mean distances rate: 1.00 (0.01)
+
+
+We can see that for low values of ``n_components`` the distribution is wide
+with many distorted pairs and a skewed distribution (due to the hard
+limit of zero ratio on the left as distances are always positives)
+while for larger values of n_components the distortion is controlled
+and the distances are well preserved by the random projection.
+
+Remarks
+=======
+
+According to the JL lemma, projecting 500 samples without too much distortion
+will require at least several thousands dimensions, irrespective of the
+number of features of the original dataset.
+
+Hence using random projections on the digits dataset which only has 64
+features in the input space does not make sense: it does not allow
+for dimensionality reduction in this case.
+
+On the twenty newsgroups on the other hand the dimensionality can be
+decreased from 56436 down to 10000 while reasonably preserving
+pairwise distances.
+
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.689 seconds)
+   **Total running time of the script:** ( 0 minutes  3.323 seconds)
 
-**Estimated memory usage:**  9 MB
+**Estimated memory usage:**  11 MB
 
 
 .. _sphx_glr_download_auto_examples_plot_johnson_lindenstrauss_bound.py:
