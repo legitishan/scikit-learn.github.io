@@ -172,7 +172,12 @@
       <a href="http://scikit-learn.org/dev/versions.html">Other versions</a></p>
     <p class="citing">Please <b><a href="../../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
-<li><a class="reference internal" href="#">Classification of text documents using sparse features</a></li>
+<li><a class="reference internal" href="#">Classification of text documents using sparse features</a><ul>
+<li><a class="reference internal" href="#load-data-from-the-training-set">Load data from the training set</a></li>
+<li><a class="reference internal" href="#benchmark-classifiers">Benchmark classifiers</a></li>
+<li><a class="reference internal" href="#add-plots">Add plots</a></li>
+</ul>
+</li>
 </ul>
 
     </div>
@@ -202,210 +207,6 @@ matrix to store the features and demonstrates various classifiers that can
 efficiently handle sparse matrices.</p>
 <p>The dataset used in this example is the 20 newsgroups dataset. It will be
 automatically downloaded, then cached.</p>
-<p>The bar plot indicates the accuracy, training time (normalized) and test time
-(normalized) of each classifier.</p>
-<img alt="../../_images/sphx_glr_plot_document_classification_20newsgroups_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_document_classification_20newsgroups_001.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Usage: plot_document_classification_20newsgroups.py [options]
-
-Options:
-  -h, --help            show this help message and exit
-  --report              Print a detailed classification report.
-  --chi2_select=SELECT_CHI2
-                        Select some number of features using a chi-squared
-                        test
-  --confusion_matrix    Print the confusion matrix.
-  --top10               Print ten most discriminative terms per class for
-                        every classifier.
-  --all_categories      Whether to use all categories or not.
-  --use_hashing         Use a hashing vectorizer.
-  --n_features=N_FEATURES
-                        n_features when using the hashing vectorizer.
-  --filtered            Remove newsgroup information that is easily overfit:
-                        headers, signatures, and quoting.
-
-Loading 20 newsgroups dataset for categories:
-[&#39;alt.atheism&#39;, &#39;talk.religion.misc&#39;, &#39;comp.graphics&#39;, &#39;sci.space&#39;]
-data loaded
-2034 documents - 3.980MB (training set)
-1353 documents - 2.867MB (test set)
-4 categories
-
-Extracting features from the training data using a sparse vectorizer
-done in 0.536248s at 7.421MB/s
-n_samples: 2034, n_features: 33809
-
-Extracting features from the test data using the same vectorizer
-done in 0.310891s at 9.223MB/s
-n_samples: 1353, n_features: 33809
-
-================================================================================
-Ridge Classifier
-________________________________________________________________________________
-Training:
-RidgeClassifier(solver=&#39;sag&#39;, tol=0.01)
-train time: 0.156s
-test time:  0.002s
-accuracy:   0.896
-dimensionality: 33809
-density: 1.000000
-
-
-================================================================================
-Perceptron
-________________________________________________________________________________
-Training:
-Perceptron(max_iter=50)
-train time: 0.018s
-test time:  0.002s
-accuracy:   0.888
-dimensionality: 33809
-density: 0.255302
-
-
-================================================================================
-Passive-Aggressive
-________________________________________________________________________________
-Training:
-PassiveAggressiveClassifier(max_iter=50)
-train time: 0.029s
-test time:  0.002s
-accuracy:   0.904
-dimensionality: 33809
-density: 0.694674
-
-
-================================================================================
-kNN
-________________________________________________________________________________
-Training:
-KNeighborsClassifier(n_neighbors=10)
-train time: 0.002s
-test time:  0.201s
-accuracy:   0.858
-
-================================================================================
-Random forest
-________________________________________________________________________________
-Training:
-RandomForestClassifier()
-train time: 1.507s
-test time:  0.081s
-accuracy:   0.840
-
-================================================================================
-L2 penalty
-________________________________________________________________________________
-Training:
-LinearSVC(dual=False, tol=0.001)
-train time: 0.078s
-test time:  0.001s
-accuracy:   0.900
-dimensionality: 33809
-density: 1.000000
-
-
-________________________________________________________________________________
-Training:
-SGDClassifier(max_iter=50)
-train time: 0.022s
-test time:  0.002s
-accuracy:   0.902
-dimensionality: 33809
-density: 0.579380
-
-
-================================================================================
-L1 penalty
-________________________________________________________________________________
-Training:
-LinearSVC(dual=False, penalty=&#39;l1&#39;, tol=0.001)
-train time: 0.211s
-test time:  0.002s
-accuracy:   0.873
-dimensionality: 33809
-density: 0.005553
-
-
-________________________________________________________________________________
-Training:
-SGDClassifier(max_iter=50, penalty=&#39;l1&#39;)
-train time: 0.111s
-test time:  0.002s
-accuracy:   0.887
-dimensionality: 33809
-density: 0.022901
-
-
-================================================================================
-Elastic-Net penalty
-________________________________________________________________________________
-Training:
-SGDClassifier(max_iter=50, penalty=&#39;elasticnet&#39;)
-train time: 0.146s
-test time:  0.002s
-accuracy:   0.899
-dimensionality: 33809
-density: 0.187472
-
-
-================================================================================
-NearestCentroid (aka Rocchio classifier)
-________________________________________________________________________________
-Training:
-NearestCentroid()
-train time: 0.005s
-test time:  0.002s
-accuracy:   0.855
-
-================================================================================
-Naive Bayes
-________________________________________________________________________________
-Training:
-MultinomialNB(alpha=0.01)
-train time: 0.004s
-test time:  0.001s
-accuracy:   0.899
-dimensionality: 33809
-density: 1.000000
-
-
-________________________________________________________________________________
-Training:
-BernoulliNB(alpha=0.01)
-train time: 0.005s
-test time:  0.003s
-accuracy:   0.884
-dimensionality: 33809
-density: 1.000000
-
-
-________________________________________________________________________________
-Training:
-ComplementNB(alpha=0.1)
-train time: 0.004s
-test time:  0.002s
-accuracy:   0.911
-dimensionality: 33809
-density: 1.000000
-
-
-================================================================================
-LinearSVC with L1-based feature selection
-________________________________________________________________________________
-Training:
-Pipeline(steps=[(&#39;feature_selection&#39;,
-                 SelectFromModel(estimator=LinearSVC(dual=False, penalty=&#39;l1&#39;,
-                                                     tol=0.001))),
-                (&#39;classification&#39;, LinearSVC())])
-train time: 0.291s
-test time:  0.003s
-accuracy:   0.880
-</pre></div>
-</div>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: Peter Prettenhofer &lt;peter.prettenhofer@gmail.com&gt;</span>
 <span class="c1">#         Olivier Grisel &lt;olivier.grisel@ensta.org&gt;</span>
 <span class="c1">#         Mathieu Blondel &lt;mathieu@mblondel.org&gt;</span>
@@ -441,8 +242,6 @@ accuracy:   0.880
 <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
                     <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)s</span><span class="s1"> </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">)</span>
 
-
-<span class="c1"># parse commandline arguments</span>
 <span class="n">op</span> <span class="o">=</span> <span class="n">OptionParser</span><span class="p">()</span>
 <span class="n">op</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;--report&quot;</span><span class="p">,</span>
               <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;print_report&quot;</span><span class="p">,</span>
@@ -486,11 +285,34 @@ accuracy:   0.880
 <span class="nb">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
 <span class="n">op</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Usage: plot_document_classification_20newsgroups.py [options]
 
-
-<span class="c1"># #############################################################################</span>
-<span class="c1"># Load some categories from the training set</span>
-<span class="k">if</span> <span class="n">opts</span><span class="o">.</span><span class="n">all_categories</span><span class="p">:</span>
+Options:
+  -h, --help            show this help message and exit
+  --report              Print a detailed classification report.
+  --chi2_select=SELECT_CHI2
+                        Select some number of features using a chi-squared
+                        test
+  --confusion_matrix    Print the confusion matrix.
+  --top10               Print ten most discriminative terms per class for
+                        every classifier.
+  --all_categories      Whether to use all categories or not.
+  --use_hashing         Use a hashing vectorizer.
+  --n_features=N_FEATURES
+                        n_features when using the hashing vectorizer.
+  --filtered            Remove newsgroup information that is easily overfit:
+                        headers, signatures, and quoting.
+</pre></div>
+</div>
+<div class="section" id="load-data-from-the-training-set">
+<h2>Load data from the training set<a class="headerlink" href="#load-data-from-the-training-set" title="Permalink to this headline">¶</a></h2>
+<p>Let’s load data from the newsgroups dataset which comprises around 18000
+newsgroups posts on 20 topics split in two subsets: one for training (or
+development) and the other one for testing (or for performance evaluation).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">opts</span><span class="o">.</span><span class="n">all_categories</span><span class="p">:</span>
     <span class="n">categories</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="k">else</span><span class="p">:</span>
     <span class="n">categories</span> <span class="o">=</span> <span class="p">[</span>
@@ -588,11 +410,31 @@ accuracy:   0.880
 <span class="k">def</span> <span class="nf">trim</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Trim string to fit on terminal (assuming 80-column display)&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">s</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">80</span> <span class="k">else</span> <span class="n">s</span><span class="p">[:</span><span class="mi">77</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Loading 20 newsgroups dataset for categories:
+[&#39;alt.atheism&#39;, &#39;talk.religion.misc&#39;, &#39;comp.graphics&#39;, &#39;sci.space&#39;]
+data loaded
+2034 documents - 3.980MB (training set)
+1353 documents - 2.867MB (test set)
+4 categories
 
+Extracting features from the training data using a sparse vectorizer
+done in 0.473848s at 8.398MB/s
+n_samples: 2034, n_features: 33809
 
-<span class="c1"># #############################################################################</span>
-<span class="c1"># Benchmark classifiers</span>
-<span class="k">def</span> <span class="nf">benchmark</span><span class="p">(</span><span class="n">clf</span><span class="p">):</span>
+Extracting features from the test data using the same vectorizer
+done in 0.293483s at 9.771MB/s
+n_samples: 1353, n_features: 33809
+</pre></div>
+</div>
+</div>
+<div class="section" id="benchmark-classifiers">
+<h2>Benchmark classifiers<a class="headerlink" href="#benchmark-classifiers" title="Permalink to this headline">¶</a></h2>
+<p>We train and test the datasets with 15 different classification models
+and get performance results for each model.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">benchmark</span><span class="p">(</span><span class="n">clf</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_&#39;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training: &quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">clf</span><span class="p">)</span>
@@ -683,10 +525,179 @@ accuracy:   0.880
   <span class="p">(</span><span class="s1">&#39;feature_selection&#39;</span><span class="p">,</span> <a href="../../modules/generated/sklearn.feature_selection.SelectFromModel.html#sklearn.feature_selection.SelectFromModel" title="View documentation for sklearn.feature_selection.SelectFromModel"><span class="n">SelectFromModel</span></a><span class="p">(</span><a href="../../modules/generated/sklearn.svm.LinearSVC.html#sklearn.svm.LinearSVC" title="View documentation for sklearn.svm.LinearSVC"><span class="n">LinearSVC</span></a><span class="p">(</span><span class="n">penalty</span><span class="o">=</span><span class="s2">&quot;l1&quot;</span><span class="p">,</span> <span class="n">dual</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                                                   <span class="n">tol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">))),</span>
   <span class="p">(</span><span class="s1">&#39;classification&#39;</span><span class="p">,</span> <a href="../../modules/generated/sklearn.svm.LinearSVC.html#sklearn.svm.LinearSVC" title="View documentation for sklearn.svm.LinearSVC"><span class="n">LinearSVC</span></a><span class="p">(</span><span class="n">penalty</span><span class="o">=</span><span class="s2">&quot;l2&quot;</span><span class="p">))])))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>================================================================================
+Ridge Classifier
+________________________________________________________________________________
+Training:
+RidgeClassifier(solver=&#39;sag&#39;, tol=0.01)
+train time: 0.151s
+test time:  0.002s
+accuracy:   0.896
+dimensionality: 33809
+density: 1.000000
 
-<span class="c1"># make some plots</span>
 
-<span class="n">indices</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="View documentation for numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
+================================================================================
+Perceptron
+________________________________________________________________________________
+Training:
+Perceptron(max_iter=50)
+train time: 0.016s
+test time:  0.002s
+accuracy:   0.888
+dimensionality: 33809
+density: 0.255302
+
+
+================================================================================
+Passive-Aggressive
+________________________________________________________________________________
+Training:
+PassiveAggressiveClassifier(max_iter=50)
+train time: 0.028s
+test time:  0.003s
+accuracy:   0.904
+dimensionality: 33809
+density: 0.694674
+
+
+================================================================================
+kNN
+________________________________________________________________________________
+Training:
+KNeighborsClassifier(n_neighbors=10)
+train time: 0.003s
+test time:  0.202s
+accuracy:   0.858
+
+================================================================================
+Random forest
+________________________________________________________________________________
+Training:
+RandomForestClassifier()
+train time: 1.337s
+test time:  0.073s
+accuracy:   0.840
+
+================================================================================
+L2 penalty
+________________________________________________________________________________
+Training:
+LinearSVC(dual=False, tol=0.001)
+train time: 0.077s
+test time:  0.001s
+accuracy:   0.900
+dimensionality: 33809
+density: 1.000000
+
+
+________________________________________________________________________________
+Training:
+SGDClassifier(max_iter=50)
+train time: 0.022s
+test time:  0.002s
+accuracy:   0.902
+dimensionality: 33809
+density: 0.579380
+
+
+================================================================================
+L1 penalty
+________________________________________________________________________________
+Training:
+LinearSVC(dual=False, penalty=&#39;l1&#39;, tol=0.001)
+train time: 0.202s
+test time:  0.001s
+accuracy:   0.873
+dimensionality: 33809
+density: 0.005553
+
+
+________________________________________________________________________________
+Training:
+SGDClassifier(max_iter=50, penalty=&#39;l1&#39;)
+train time: 0.094s
+test time:  0.002s
+accuracy:   0.887
+dimensionality: 33809
+density: 0.022901
+
+
+================================================================================
+Elastic-Net penalty
+________________________________________________________________________________
+Training:
+SGDClassifier(max_iter=50, penalty=&#39;elasticnet&#39;)
+train time: 0.130s
+test time:  0.002s
+accuracy:   0.899
+dimensionality: 33809
+density: 0.187472
+
+
+================================================================================
+NearestCentroid (aka Rocchio classifier)
+________________________________________________________________________________
+Training:
+NearestCentroid()
+train time: 0.007s
+test time:  0.002s
+accuracy:   0.855
+
+================================================================================
+Naive Bayes
+________________________________________________________________________________
+Training:
+MultinomialNB(alpha=0.01)
+train time: 0.003s
+test time:  0.001s
+accuracy:   0.899
+dimensionality: 33809
+density: 1.000000
+
+
+________________________________________________________________________________
+Training:
+BernoulliNB(alpha=0.01)
+train time: 0.004s
+test time:  0.003s
+accuracy:   0.884
+dimensionality: 33809
+density: 1.000000
+
+
+________________________________________________________________________________
+Training:
+ComplementNB(alpha=0.1)
+train time: 0.004s
+test time:  0.001s
+accuracy:   0.911
+dimensionality: 33809
+density: 1.000000
+
+
+================================================================================
+LinearSVC with L1-based feature selection
+________________________________________________________________________________
+Training:
+Pipeline(steps=[(&#39;feature_selection&#39;,
+                 SelectFromModel(estimator=LinearSVC(dual=False, penalty=&#39;l1&#39;,
+                                                     tol=0.001))),
+                (&#39;classification&#39;, LinearSVC())])
+train time: 0.211s
+test time:  0.003s
+accuracy:   0.880
+</pre></div>
+</div>
+</div>
+<div class="section" id="add-plots">
+<h2>Add plots<a class="headerlink" href="#add-plots" title="Permalink to this headline">¶</a></h2>
+<p>The bar plot indicates the accuracy, training time (normalized) and test time
+(normalized) of each classifier.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">indices</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="View documentation for numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
 
 <span class="n">results</span> <span class="o">=</span> <span class="p">[[</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span>
 
@@ -712,8 +723,9 @@ accuracy:   0.880
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  4.705 seconds)</p>
-<p><strong>Estimated memory usage:</strong>  49 MB</p>
+<img alt="../../_images/sphx_glr_plot_document_classification_20newsgroups_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_document_classification_20newsgroups_001.png" />
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  4.509 seconds)</p>
+<p><strong>Estimated memory usage:</strong>  44 MB</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-text-plot-document-classification-20newsgroups-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/scikit-learn/binder-examples/master?urlpath=lab/tree/notebooks/auto_examples/text/plot_document_classification_20newsgroups.ipynb"><img alt="https://mybinder.org/badge_logo.svg" src="https://mybinder.org/badge_logo.svg" width="150px" /></a>
@@ -726,6 +738,7 @@ accuracy:   0.880
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
 </div>
 
 
