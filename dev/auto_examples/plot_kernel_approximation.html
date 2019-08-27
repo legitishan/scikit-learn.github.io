@@ -172,7 +172,11 @@
       <a href="http://scikit-learn.org/dev/versions.html">Other versions</a></p>
     <p class="citing">Please <b><a href="../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
-<li><a class="reference internal" href="#">Explicit feature map approximation for RBF kernels</a></li>
+<li><a class="reference internal" href="#">Explicit feature map approximation for RBF kernels</a><ul>
+<li><a class="reference internal" href="#timing-and-accuracy-plots">Timing and accuracy plots</a></li>
+<li><a class="reference internal" href="#decision-surfaces-of-rbf-kernel-svm-and-linear-svm">Decision Surfaces of RBF Kernel SVM and Linear SVM</a></li>
+</ul>
+</li>
 </ul>
 
     </div>
@@ -213,29 +217,14 @@ comes at a greater cost. This means there is a tradeoff between runtime and
 accuracy, given by the parameter n_components. Note that solving the Linear
 SVM and also the approximate kernel SVM could be greatly accelerated by using
 stochastic gradient descent via <a class="reference internal" href="../modules/generated/sklearn.linear_model.SGDClassifier.html#sklearn.linear_model.SGDClassifier" title="sklearn.linear_model.SGDClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.linear_model.SGDClassifier</span></code></a>.
-This is not easily possible for the case of the kernelized SVM.</p>
-<p>The second plot visualized the decision surfaces of the RBF kernel SVM and
-the linear SVM with approximate kernel maps.
-The plot shows decision surfaces of the classifiers projected onto
-the first two principal components of the data. This visualization should
-be taken with a grain of salt since it is just an interesting slice through
-the decision surface in 64 dimensions. In particular note that
-a datapoint (represented as a dot) does not necessarily be classified
-into the region it is lying in, since it will not lie on the plane
-that the first two principal components span.</p>
-<p>The usage of <a class="reference internal" href="../modules/generated/sklearn.kernel_approximation.RBFSampler.html#sklearn.kernel_approximation.RBFSampler" title="sklearn.kernel_approximation.RBFSampler"><code class="xref py py-class docutils literal notranslate"><span class="pre">RBFSampler</span></code></a> and <a class="reference internal" href="../modules/generated/sklearn.kernel_approximation.Nystroem.html#sklearn.kernel_approximation.Nystroem" title="sklearn.kernel_approximation.Nystroem"><code class="xref py py-class docutils literal notranslate"><span class="pre">Nystroem</span></code></a> is described in detail
-in <a class="reference internal" href="../modules/kernel_approximation.html#kernel-approximation"><span class="std std-ref">Kernel Approximation</span></a>.</p>
-<ul class="sphx-glr-horizontal">
-<li><img alt="../_images/sphx_glr_plot_kernel_approximation_001.png" class="sphx-glr-multi-img" src="../_images/sphx_glr_plot_kernel_approximation_001.png" />
-</li>
-<li><img alt="../_images/sphx_glr_plot_kernel_approximation_002.png" class="sphx-glr-multi-img" src="../_images/sphx_glr_plot_kernel_approximation_002.png" />
-</li>
-</ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
-
-<span class="c1"># Author: Gael Varoquaux &lt;gael dot varoquaux at normalesup dot org&gt;</span>
+This is not easily possible for the case of the kernelized SVM.
+Python package and dataset imports, load dataset
+—————————————————</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: Gael Varoquaux &lt;gael dot varoquaux at normalesup dot org&gt;</span>
 <span class="c1">#         Andreas Mueller &lt;amueller@ais.uni-bonn.de&gt;</span>
 <span class="c1"># License: BSD 3 clause</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
 
 <span class="c1"># Standard scientific Python imports</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -250,10 +239,13 @@ in <a class="reference internal" href="../modules/kernel_approximation.html#kern
 
 <span class="c1"># The digits dataset</span>
 <span class="n">digits</span> <span class="o">=</span> <a href="../modules/generated/sklearn.datasets.load_digits.html#sklearn.datasets.load_digits" title="View documentation for sklearn.datasets.load_digits"><span class="n">datasets</span><span class="o">.</span><span class="n">load_digits</span></a><span class="p">(</span><span class="n">n_class</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
-
-<span class="c1"># To apply an classifier on this data, we need to flatten the image, to</span>
-<span class="c1"># turn the data in a (samples, feature) matrix:</span>
-<span class="n">n_samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="timing-and-accuracy-plots">
+<h2>Timing and accuracy plots<a class="headerlink" href="#timing-and-accuracy-plots" title="Permalink to this headline">¶</a></h2>
+<p>To apply an classifier on this data, we need to flatten the image, to
+turn the data in a (samples, feature) matrix:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">n_samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">digits</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">digits</span><span class="o">.</span><span class="n">data</span> <span class="o">/</span> <span class="mf">16.</span>
 <span class="n">data</span> <span class="o">-=</span> <span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
@@ -316,10 +308,10 @@ in <a class="reference internal" href="../modules/kernel_approximation.html#kern
     <span class="n">fourier_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fourier_score</span><span class="p">)</span>
 
 <span class="c1"># plot the results:</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
-<span class="n">accuracy</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplot.html#matplotlib.pyplot.subplot" title="View documentation for matplotlib.pyplot.subplot"><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span></a><span class="p">(</span><span class="mi">211</span><span class="p">)</span>
-<span class="c1"># second y axis for timeings</span>
-<span class="n">timescale</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplot.html#matplotlib.pyplot.subplot" title="View documentation for matplotlib.pyplot.subplot"><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span></a><span class="p">(</span><span class="mi">212</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">accuracy</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplot.html#matplotlib.pyplot.subplot" title="View documentation for matplotlib.pyplot.subplot"><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span></a><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
+<span class="c1"># second y axis for timings</span>
+<span class="n">timescale</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplot.html#matplotlib.pyplot.subplot" title="View documentation for matplotlib.pyplot.subplot"><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span></a><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
 
 <span class="n">accuracy</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sample_sizes</span><span class="p">,</span> <span class="n">nystroem_scores</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Nystroem approx. kernel&quot;</span><span class="p">)</span>
 <span class="n">timescale</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sample_sizes</span><span class="p">,</span> <span class="n">nystroem_times</span><span class="p">,</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span>
@@ -354,8 +346,26 @@ in <a class="reference internal" href="../modules/kernel_approximation.html#kern
 <span class="n">timescale</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Training time in seconds&quot;</span><span class="p">)</span>
 <span class="n">accuracy</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
 <span class="n">timescale</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
-
-<span class="c1"># visualize the decision surface, projected down to the first</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="View documentation for matplotlib.pyplot.tight_layout"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_plot_kernel_approximation_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_kernel_approximation_001.png" />
+</div>
+<div class="section" id="decision-surfaces-of-rbf-kernel-svm-and-linear-svm">
+<h2>Decision Surfaces of RBF Kernel SVM and Linear SVM<a class="headerlink" href="#decision-surfaces-of-rbf-kernel-svm-and-linear-svm" title="Permalink to this headline">¶</a></h2>
+<p>The second plot visualized the decision surfaces of the RBF kernel SVM and
+the linear SVM with approximate kernel maps.
+The plot shows decision surfaces of the classifiers projected onto
+the first two principal components of the data. This visualization should
+be taken with a grain of salt since it is just an interesting slice through
+the decision surface in 64 dimensions. In particular note that
+a datapoint (represented as a dot) does not necessarily be classified
+into the region it is lying in, since it will not lie on the plane
+that the first two principal components span.
+The usage of <a class="reference internal" href="../modules/generated/sklearn.kernel_approximation.RBFSampler.html#sklearn.kernel_approximation.RBFSampler" title="sklearn.kernel_approximation.RBFSampler"><code class="xref py py-class docutils literal notranslate"><span class="pre">RBFSampler</span></code></a> and <a class="reference internal" href="../modules/generated/sklearn.kernel_approximation.Nystroem.html#sklearn.kernel_approximation.Nystroem" title="sklearn.kernel_approximation.Nystroem"><code class="xref py py-class docutils literal notranslate"><span class="pre">Nystroem</span></code></a> is described in detail
+in <a class="reference internal" href="../modules/kernel_approximation.html#kernel-approximation"><span class="std std-ref">Kernel Approximation</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># visualize the decision surface, projected down to the first</span>
 <span class="c1"># two principal components of the dataset</span>
 <span class="n">pca</span> <span class="o">=</span> <a href="../modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="View documentation for sklearn.decomposition.PCA"><span class="n">PCA</span></a><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data_train</span><span class="p">)</span>
 
@@ -378,9 +388,8 @@ in <a class="reference internal" href="../modules/kernel_approximation.html#kern
           <span class="s1">&#39;SVC (linear kernel)</span><span class="se">\n</span><span class="s1"> with Nystroem rbf feature map</span><span class="se">\n</span><span class="s1">&#39;</span>
           <span class="s1">&#39;n_components=100&#39;</span><span class="p">]</span>
 
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="View documentation for matplotlib.pyplot.tight_layout"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">14</span><span class="p">})</span>
 <span class="c1"># predict and plot</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">clf</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">((</span><span class="n">kernel_svm</span><span class="p">,</span> <span class="n">nystroem_approx_svm</span><span class="p">,</span>
                          <span class="n">fourier_approx_svm</span><span class="p">)):</span>
@@ -403,7 +412,8 @@ in <a class="reference internal" href="../modules/kernel_approximation.html#kern
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.441 seconds)</p>
+<img alt="../_images/sphx_glr_plot_kernel_approximation_002.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_kernel_approximation_002.png" />
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.733 seconds)</p>
 <p><strong>Estimated memory usage:</strong>  10 MB</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-kernel-approximation-py">
 <div class="binder-badge docutils container">
@@ -417,6 +427,7 @@ in <a class="reference internal" href="../modules/kernel_approximation.html#kern
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
 </div>
 
 
