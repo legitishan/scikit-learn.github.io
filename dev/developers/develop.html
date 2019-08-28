@@ -449,6 +449,23 @@ adheres to the scikit-learn interface and standards by running
 interface might be that you want to use it together with model evaluation and
 selection tools such as <a class="reference internal" href="../modules/generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV" title="sklearn.model_selection.GridSearchCV"><code class="xref py py-class docutils literal notranslate"><span class="pre">model_selection.GridSearchCV</span></code></a> and
 <a class="reference internal" href="../modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal notranslate"><span class="pre">pipeline.Pipeline</span></code></a>.</p>
+<p>Setting <code class="docutils literal notranslate"><span class="pre">generate_only=True</span></code> returns a generator that yields (estimator, check)
+tuples where the check can be called independently from each other, i.e.
+<code class="docutils literal notranslate"><span class="pre">check(estimator)</span></code>. This allows all checks to be run independently and report
+the checks that are failing. scikit-learn provides a pytest specific decorator,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">parametrize_with_checks</span></code>, making it easier to test
+multiple estimators:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="k">import</span> <span class="n">DecisionTreeRegressor</span>
+
+<span class="nd">@parametrize_with_checks</span><span class="p">([</span><span class="n">LogisticRegression</span><span class="p">,</span> <span class="n">DecisionTreeRegressor</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">test_sklearn_compatible_estimator</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">check</span><span class="p">):</span>
+    <span class="n">check</span><span class="p">(</span><span class="n">estimator</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This decorator sets the <code class="docutils literal notranslate"><span class="pre">id</span></code> keyword in <code class="docutils literal notranslate"><span class="pre">pytest.mark.parameterize</span></code> exposing
+the name of the underlying estimator and check in the test name. This allows
+<code class="docutils literal notranslate"><span class="pre">pytest</span> <span class="pre">-k</span></code> to be used to specify which tests to run.</p>
 <p>Before detailing the required interface below, we describe two ways to achieve
 the correct interface more easily.</p>
 <div class="topic">
