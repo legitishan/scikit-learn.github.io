@@ -204,24 +204,23 @@
 <div class="sphx-glr-example-title section" id="partial-dependence-plots">
 <span id="sphx-glr-auto-examples-inspection-plot-partial-dependence-py"></span><h1>Partial Dependence Plots<a class="headerlink" href="#partial-dependence-plots" title="Permalink to this headline">¶</a></h1>
 <p>Partial dependence plots show the dependence between the target function <a class="footnote-reference brackets" href="#id4" id="id1">2</a>
-and a set of ‘target’ features, marginalizing over the
-values of all other features (the complement features). Due to the limits
-of human perception the size of the target feature set must be small (usually,
-one or two) thus the target features are usually chosen among the most
-important features.</p>
+and a set of ‘target’ features, marginalizing over the values of all other
+features (the complement features). Due to the limits of human perception, the
+size of the target feature set must be small (usually, one or two) thus the
+target features are usually chosen among the most important features.</p>
 <p>This example shows how to obtain partial dependence plots from a
 <a class="reference internal" href="../../modules/generated/sklearn.neural_network.MLPRegressor.html#sklearn.neural_network.MLPRegressor" title="sklearn.neural_network.MLPRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">MLPRegressor</span></code></a> and a
 <a class="reference internal" href="../../modules/generated/sklearn.ensemble.HistGradientBoostingRegressor.html#sklearn.ensemble.HistGradientBoostingRegressor" title="sklearn.ensemble.HistGradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingRegressor</span></code></a> trained on the
 California housing dataset. The example is taken from <a class="footnote-reference brackets" href="#id3" id="id2">1</a>.</p>
 <p>The plots show four 1-way and two 1-way partial dependence plots (ommitted for
-<a class="reference internal" href="../../modules/generated/sklearn.neural_network.MLPRegressor.html#sklearn.neural_network.MLPRegressor" title="sklearn.neural_network.MLPRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">MLPRegressor</span></code></a> due to computation time).
-The target variables for the one-way PDP are: median income (<code class="docutils literal notranslate"><span class="pre">MedInc</span></code>),
-average occupants per household (<code class="docutils literal notranslate"><span class="pre">AvgOccup</span></code>), median house age (<code class="docutils literal notranslate"><span class="pre">HouseAge</span></code>),
-and average rooms per household (<code class="docutils literal notranslate"><span class="pre">AveRooms</span></code>).</p>
+<a class="reference internal" href="../../modules/generated/sklearn.neural_network.MLPRegressor.html#sklearn.neural_network.MLPRegressor" title="sklearn.neural_network.MLPRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">MLPRegressor</span></code></a> due to computation time). The
+target variables for the one-way PDP are: median income (<code class="docutils literal notranslate"><span class="pre">MedInc</span></code>), average
+occupants per household (<code class="docutils literal notranslate"><span class="pre">AvgOccup</span></code>), median house age (<code class="docutils literal notranslate"><span class="pre">HouseAge</span></code>), and
+average rooms per household (<code class="docutils literal notranslate"><span class="pre">AveRooms</span></code>).</p>
 <dl class="footnote brackets">
 <dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id2">1</a></span></dt>
-<dd><p>T. Hastie, R. Tibshirani and J. Friedman,
-“Elements of Statistical Learning Ed. 2”, Springer, 2009.</p>
+<dd><p>T. Hastie, R. Tibshirani and J. Friedman, “Elements of Statistical
+Learning Ed. 2”, Springer, 2009.</p>
 </dd>
 <dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id1">2</a></span></dt>
 <dd><p>For classification you can think of it as the regression score before
@@ -276,8 +275,30 @@ plots</p>
 <span class="n">est</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;done in </span><span class="si">{:.3f}</span><span class="s2">s&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">tic</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Test R2 score: </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">est</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Computing partial dependence plots...&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Training MLPRegressor...
+done in 6.284s
+Test R2 score: 0.82
+</pre></div>
+</div>
+<p>We configured a pipeline to scale the numerical input features and tuned the
+neural network size and learning rate to get a reasonable compromise between
+training time and predictive performance on a test set.</p>
+<p>Importantly, this tabular dataset has very different dynamic ranges for its
+features. Neural networks tend to be very sensitive to features with varying
+scales and forgetting to preprocess the numeric feature would lead to a very
+poor model.</p>
+<p>It would be possible to get even higher predictive performance with a larger
+neural network but the training would also be significantly more expensive.</p>
+<p>Note that it is important to check that the model is accurate enough on a
+test set before plotting the partial dependence since there would be little
+use in explaining the impact of a given feature on the prediction function of
+a poor model.</p>
+<p>Let’s now compute the partial dependence plots for this neural network using
+the model-agnostic (brute-force) method:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Computing partial dependence plots...&#39;</span><span class="p">)</span>
 <span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="c1"># We don&#39;t compute the 2-way PDP (5, 1) here, because it is a lot slower</span>
 <span class="c1"># with the brute method.</span>
@@ -293,10 +314,7 @@ plots</p>
 </div>
 <img alt="../../_images/sphx_glr_plot_partial_dependence_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_partial_dependence_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Training MLPRegressor...
-done in 6.407s
-Test R2 score: 0.82
-Computing partial dependence plots...
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Computing partial dependence plots...
 done in 1.641s
 </pre></div>
 </div>
@@ -307,13 +325,29 @@ done in 1.641s
 plots either or one or two variables at a time.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training GradientBoostingRegressor...&quot;</span><span class="p">)</span>
 <span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-<span class="n">est</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.ensemble.HistGradientBoostingRegressor.html#sklearn.ensemble.HistGradientBoostingRegressor" title="View documentation for sklearn.ensemble.HistGradientBoostingRegressor"><span class="n">HistGradientBoostingRegressor</span></a><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">max_leaf_nodes</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span>
-                                    <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">est</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.ensemble.HistGradientBoostingRegressor.html#sklearn.ensemble.HistGradientBoostingRegressor" title="View documentation for sklearn.ensemble.HistGradientBoostingRegressor"><span class="n">HistGradientBoostingRegressor</span></a><span class="p">()</span>
 <span class="n">est</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;done in </span><span class="si">{:.3f}</span><span class="s2">s&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">tic</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Test R2 score: </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">est</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Computing partial dependence plots...&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Training GradientBoostingRegressor...
+done in 0.425s
+Test R2 score: 0.85
+</pre></div>
+</div>
+<p>Here, we used the default hyperparameters for the gradient boosting model
+without any preprocessing as tree-based models are naturally robust to
+monotonic transformations of numerical features.</p>
+<p>Note that on this tabular dataset, Gradient Boosting Machines are both
+significantly faster to train and more accurate than neural networks. It is
+also significantly cheaper to tune their hyperparameters (the default tend to
+work well while this is not often the case for neural networks).</p>
+<p>Finally, as we will see next, computing partial dependence plots tree-based
+models is also orders of magnitude faster making it cheap to compute partial
+dependence plots for pairs of interacting features:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Computing partial dependence plots...&#39;</span><span class="p">)</span>
 <span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
 <a href="../../modules/generated/sklearn.inspection.plot_partial_dependence.html#sklearn.inspection.plot_partial_dependence" title="View documentation for sklearn.inspection.plot_partial_dependence"><span class="n">plot_partial_dependence</span></a><span class="p">(</span><span class="n">est</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">feature_names</span><span class="o">=</span><span class="n">names</span><span class="p">,</span>
@@ -327,11 +361,8 @@ plots either or one or two variables at a time.</p>
 </div>
 <img alt="../../_images/sphx_glr_plot_partial_dependence_002.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_partial_dependence_002.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Training GradientBoostingRegressor...
-done in 0.774s
-Test R2 score: 0.86
-Computing partial dependence plots...
-done in 0.232s
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Computing partial dependence plots...
+done in 0.136s
 </pre></div>
 </div>
 </div>
@@ -389,8 +420,8 @@ this time in 3 dimensions.</p>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_plot_partial_dependence_003.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_partial_dependence_003.png" />
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  10.659 seconds)</p>
-<p><strong>Estimated memory usage:</strong>  10 MB</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  10.229 seconds)</p>
+<p><strong>Estimated memory usage:</strong>  8 MB</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-inspection-plot-partial-dependence-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/scikit-learn/scikit-learn/master?urlpath=lab/tree/notebooks/auto_examples/inspection/plot_partial_dependence.ipynb"><img alt="https://mybinder.org/badge_logo.svg" src="https://mybinder.org/badge_logo.svg" width="150px" /></a>
