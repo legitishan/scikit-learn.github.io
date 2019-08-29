@@ -634,20 +634,22 @@ D. Comaniciu and P. Meer, <em>IEEE Transactions on Pattern Analysis and Machine 
 </div>
 <div class="section" id="spectral-clustering">
 <span id="id5"></span><h2>2.3.5. Spectral clustering<a class="headerlink" href="#spectral-clustering" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference internal" href="generated/sklearn.cluster.SpectralClustering.html#sklearn.cluster.SpectralClustering" title="sklearn.cluster.SpectralClustering"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpectralClustering</span></code></a> does a low-dimension embedding of the
-affinity matrix between samples, followed by a KMeans in the low
-dimensional space. It is especially efficient if the affinity matrix is
-sparse and the <a class="reference external" href="https://github.com/pyamg/pyamg">pyamg</a> module is installed.
-SpectralClustering requires the number of clusters to be specified. It
-works well for a small number of clusters but is not advised when using
-many clusters.</p>
-<p>For two clusters, it solves a convex relaxation of the <a class="reference external" href="https://people.eecs.berkeley.edu/~malik/papers/SM-ncut.pdf">normalised
-cuts</a> problem on
-the similarity graph: cutting the graph in two so that the weight of the
-edges cut is small compared to the weights of the edges inside each
-cluster. This criteria is especially interesting when working on images:
-graph vertices are pixels, and edges of the similarity graph are a
-function of the gradient of the image.</p>
+<p><a class="reference internal" href="generated/sklearn.cluster.SpectralClustering.html#sklearn.cluster.SpectralClustering" title="sklearn.cluster.SpectralClustering"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpectralClustering</span></code></a> performs a low-dimension embedding of the
+affinity matrix between samples, followed by clustering, e.g., by KMeans,
+of the components of the eigenvectors in the low dimensional space.
+It is especially computationally efficient if the affinity matrix is sparse
+and the <code class="docutils literal notranslate"><span class="pre">amg</span></code> solver is used for the eigenvalue problem (Note, the <code class="docutils literal notranslate"><span class="pre">amg</span></code> solver
+requires that the <a class="reference external" href="https://github.com/pyamg/pyamg">pyamg</a> module is installed.)</p>
+<p>The present version of SpectralClustering requires the number of clusters
+to be specified in advance. It works well for a small number of clusters,
+but is not advised for many clusters.</p>
+<p>For two clusters, SpectralClustering solves a convex relaxation of the
+<a class="reference external" href="https://people.eecs.berkeley.edu/~malik/papers/SM-ncut.pdf">normalised cuts</a>
+problem on the similarity graph: cutting the graph in two so that the weight of
+the edges cut is small compared to the weights of the edges inside each
+cluster. This criteria is especially interesting when working on images, where
+graph vertices are pixels, and weights of the edges of the similarity graph are
+computed using a function of a gradient of the image.</p>
 <p class="centered">
 <strong><a class="reference external" href="../auto_examples/cluster/plot_segmentation_toy.html"><img alt="noisy_img" src="../_images/sphx_glr_plot_segmentation_toy_0011.png" style="width: 240.0px; height: 240.0px;" /></a> <a class="reference external" href="../auto_examples/cluster/plot_segmentation_toy.html"><img alt="segmented_img" src="../_images/sphx_glr_plot_segmentation_toy_0021.png" style="width: 240.0px; height: 240.0px;" /></a></strong></p><div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -676,12 +678,11 @@ to split the image of coins in regions.</p></li>
 <h3>2.3.5.1. Different label assignment strategies<a class="headerlink" href="#different-label-assignment-strategies" title="Permalink to this headline">¶</a></h3>
 <p>Different label assignment strategies can be used, corresponding to the
 <code class="docutils literal notranslate"><span class="pre">assign_labels</span></code> parameter of <a class="reference internal" href="generated/sklearn.cluster.SpectralClustering.html#sklearn.cluster.SpectralClustering" title="sklearn.cluster.SpectralClustering"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpectralClustering</span></code></a>.
-The <code class="docutils literal notranslate"><span class="pre">&quot;kmeans&quot;</span></code> strategy can match finer details of the data, but it can be
-more unstable. In particular, unless you control the <code class="docutils literal notranslate"><span class="pre">random_state</span></code>, it
-may not be reproducible from run-to-run, as it depends on a random
-initialization. On the other hand, the <code class="docutils literal notranslate"><span class="pre">&quot;discretize&quot;</span></code> strategy is 100%
-reproducible, but it tends to create parcels of fairly even and
-geometrical shape.</p>
+<code class="docutils literal notranslate"><span class="pre">&quot;kmeans&quot;</span></code> strategy can match finer details, but can be unstable.
+In particular, unless you control the <code class="docutils literal notranslate"><span class="pre">random_state</span></code>, it may not be
+reproducible from run-to-run, as it depends on random initialization.
+The alternative <code class="docutils literal notranslate"><span class="pre">&quot;discretize&quot;</span></code> strategy is 100% reproducible, but tends
+to create parcels of fairly even and geometrical shape.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 50%" />
@@ -701,7 +702,7 @@ geometrical shape.</p>
 </div>
 <div class="section" id="spectral-clustering-graphs">
 <h3>2.3.5.2. Spectral Clustering Graphs<a class="headerlink" href="#spectral-clustering-graphs" title="Permalink to this headline">¶</a></h3>
-<p>Spectral Clustering can also be used to cluster graphs by their spectral
+<p>Spectral Clustering can also be used to partition graphs via their spectral
 embeddings.  In this case, the affinity matrix is the adjacency matrix of the
 graph, and SpectralClustering is initialized with <code class="docutils literal notranslate"><span class="pre">affinity='precomputed'</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="k">import</span> <span class="n">SpectralClustering</span>
@@ -721,6 +722,9 @@ Jianbo Shi, Jitendra Malik, 2000</p></li>
 Marina Meila, Jianbo Shi, 2001</p></li>
 <li><p><a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.19.8100">“On Spectral Clustering: Analysis and an algorithm”</a>
 Andrew Y. Ng, Michael I. Jordan, Yair Weiss, 2001</p></li>
+<li><p><a class="reference external" href="https://arxiv.org/abs/1708.07481">“Preconditioned Spectral Clustering for Stochastic
+Block Partition Streaming Graph Challenge”</a>
+David Zhuzhunashvili, Andrew Knyazev</p></li>
 </ul>
 </div>
 </div>
