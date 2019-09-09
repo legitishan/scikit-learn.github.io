@@ -194,7 +194,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.metrics" title="sklearn.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.metrics</span></code></a>.mean_tweedie_deviance<a class="headerlink" href="#sklearn-metrics-mean-tweedie-deviance" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.metrics.mean_tweedie_deviance">
-<code class="sig-prename descclassname">sklearn.metrics.</code><code class="sig-name descname">mean_tweedie_deviance</code><span class="sig-paren">(</span><em class="sig-param">y_true</em>, <em class="sig-param">y_pred</em>, <em class="sig-param">sample_weight=None</em>, <em class="sig-param">p=0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/5cf88db24/sklearn/metrics/regression.py#L629"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.metrics.mean_tweedie_deviance" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sklearn.metrics.</code><code class="sig-name descname">mean_tweedie_deviance</code><span class="sig-paren">(</span><em class="sig-param">y_true</em>, <em class="sig-param">y_pred</em>, <em class="sig-param">sample_weight=None</em>, <em class="sig-param">power=0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8c4d1e922/sklearn/metrics/regression.py#L629"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.metrics.mean_tweedie_deviance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mean Tweedie deviance regression loss.</p>
 <p>Read more in the <a class="reference internal" href="../model_evaluation.html#mean-tweedie-deviance"><span class="std std-ref">User Guide</span></a>.</p>
 <dl class="field-list">
@@ -206,18 +206,19 @@
 </dd>
 <dt><strong>sample_weight</strong><span class="classifier">array-like, shape (n_samples,), optional</span></dt><dd><p>Sample weights.</p>
 </dd>
-<dt><strong>p</strong><span class="classifier">float, optional</span></dt><dd><p>Tweedie power parameter. Either p &lt;= 0 or p &gt;= 1.</p>
+<dt><strong>power</strong><span class="classifier">float, default=0</span></dt><dd><p>Tweedie power parameter. Either power &lt;= 0 or power &gt;= 1.</p>
 <p>The higher <code class="docutils literal notranslate"><span class="pre">p</span></code> the less weight is given to extreme
 deviations between true and predicted targets.</p>
 <ul class="simple">
-<li><p>p &lt; 0: Extreme stable distribution. Requires: y_pred &gt; 0.</p></li>
-<li><p>p = 0 : Normal distribution, output corresponds to
+<li><p>power &lt; 0: Extreme stable distribution. Requires: y_pred &gt; 0.</p></li>
+<li><p>power = 0 : Normal distribution, output corresponds to
 mean_squared_error. y_true and y_pred can be any real numbers.</p></li>
-<li><p>p = 1 : Poisson distribution. Requires: y_true &gt;= 0 and y_pred &gt; 0.</p></li>
+<li><p>power = 1 : Poisson distribution. Requires: y_true &gt;= 0 and
+y_pred &gt; 0.</p></li>
 <li><p>1 &lt; p &lt; 2 : Compound Poisson distribution. Requires: y_true &gt;= 0
 and y_pred &gt; 0.</p></li>
-<li><p>p = 2 : Gamma distribution. Requires: y_true &gt; 0 and y_pred &gt; 0.</p></li>
-<li><p>p = 3 : Inverse Gaussian distribution. Requires: y_true &gt; 0
+<li><p>power = 2 : Gamma distribution. Requires: y_true &gt; 0 and y_pred &gt; 0.</p></li>
+<li><p>power = 3 : Inverse Gaussian distribution. Requires: y_true &gt; 0
 and y_pred &gt; 0.</p></li>
 <li><p>otherwise : Positive stable distribution. Requires: y_true &gt; 0
 and y_pred &gt; 0.</p></li>
@@ -236,7 +237,7 @@ and y_pred &gt; 0.</p></li>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">mean_tweedie_deviance</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y_true</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y_pred</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mean_tweedie_deviance</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mean_tweedie_deviance</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="go">1.4260...</span>
 </pre></div>
 </div>
