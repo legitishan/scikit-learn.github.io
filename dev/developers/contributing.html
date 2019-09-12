@@ -200,7 +200,6 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#issue-tracker-tags">Issue Tracker Tags</a></li>
-<li><a class="reference internal" href="#coding-guidelines">Coding guidelines</a></li>
 <li><a class="reference internal" href="#maintaining-backwards-compatibility">Maintaining backwards compatibility</a><ul>
 <li><a class="reference internal" href="#deprecation">Deprecation</a></li>
 <li><a class="reference internal" href="#change-the-default-value-of-a-parameter">Change the default value of a parameter</a></li>
@@ -532,7 +531,7 @@ and pass for the PR code.</p></li>
 system, you can run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">flake8-diff</span></code>. <code class="docutils literal notranslate"><span class="pre">flake8</span> <span class="pre">path_to_file</span></code>, would work
 for any system, but please avoid reformatting parts of the file that your
 pull request doesn’t change, as it distracts from code review.</p></li>
-<li><p>Follow the <a class="reference internal" href="#coding-guidelines">coding-guidelines</a> (see below).</p></li>
+<li><p>Follow the <a class="reference internal" href="develop.html#coding-guidelines"><span class="std std-ref">Coding guidelines</span></a>.</p></li>
 <li><p>When applicable, use the validation tools and scripts in the
 <code class="docutils literal notranslate"><span class="pre">sklearn.utils</span></code> submodule.  A list of utility routines available
 for developers can be found in the <a class="reference internal" href="utilities.html#developers-utils"><span class="std std-ref">Utilities for Developers</span></a> page.</p></li>
@@ -825,6 +824,8 @@ can also be a <code class="docutils literal notranslate"><span class="pre">list<
 </li>
 <li><p>When editing reStructuredText (<code class="docutils literal notranslate"><span class="pre">.rst</span></code>) files, try to keep line length under
 80 characters when possible (exceptions include links and tables).</p></li>
+<li><p>Before submitting you pull request check if your modifications have introduced
+new sphinx warnings and try to fix them.</p></li>
 </ul>
 </div>
 <div class="section" id="generated-documentation-on-circleci">
@@ -941,40 +942,6 @@ for new contributors. Note that not all issues which need
 contributors will have this tag.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="coding-guidelines">
-<span id="id5"></span><h2>Coding guidelines<a class="headerlink" href="#coding-guidelines" title="Permalink to this headline">¶</a></h2>
-<p>The following are some guidelines on how new code should be written. Of
-course, there are special cases and there will be exceptions to these
-rules. However, following these rules when submitting new code makes
-the review easier so new code can be integrated in less time.</p>
-<p>Uniformly formatted code makes it easier to share code ownership. The
-scikit-learn project tries to closely follow the official Python guidelines
-detailed in <a class="reference external" href="https://www.python.org/dev/peps/pep-0008">PEP8</a> that
-detail how code should be formatted and indented. Please read it and
-follow it.</p>
-<p>In addition, we add the following guidelines:</p>
-<ul class="simple">
-<li><p>Use underscores to separate words in non class names: <code class="docutils literal notranslate"><span class="pre">n_samples</span></code>
-rather than <code class="docutils literal notranslate"><span class="pre">nsamples</span></code>.</p></li>
-<li><p>Avoid multiple statements on one line. Prefer a line return after
-a control flow statement (<code class="docutils literal notranslate"><span class="pre">if</span></code>/<code class="docutils literal notranslate"><span class="pre">for</span></code>).</p></li>
-<li><p>Use relative imports for references inside scikit-learn.</p></li>
-<li><p>Unit tests are an exception to the previous rule;
-they should use absolute imports, exactly as client code would.
-A corollary is that, if <code class="docutils literal notranslate"><span class="pre">sklearn.foo</span></code> exports a class or function
-that is implemented in <code class="docutils literal notranslate"><span class="pre">sklearn.foo.bar.baz</span></code>,
-the test should import it from <code class="docutils literal notranslate"><span class="pre">sklearn.foo</span></code>.</p></li>
-<li><p><strong>Please don’t use</strong> <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">*</span></code> <strong>in any case</strong>. It is considered harmful
-by the <a class="reference external" href="https://docs.python.org/2/howto/doanddont.html#from-module-import">official Python recommendations</a>.
-It makes the code harder to read as the origin of symbols is no
-longer explicitly referenced, but most important, it prevents
-using a static analysis tool like <a class="reference external" href="https://divmod.readthedocs.io/en/latest/products/pyflakes.html">pyflakes</a> to automatically
-find bugs in scikit-learn.</p></li>
-<li><p>Use the <a class="reference external" href="https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt">numpy docstring standard</a>
-in all your docstrings.</p></li>
-</ul>
-<p>A good example of code that we like can be found <a class="reference external" href="https://gist.github.com/nateGeorge/5455d2c57fb33c1ae04706f2dc4fee01">here</a>.</p>
 </div>
 <div class="section" id="maintaining-backwards-compatibility">
 <span id="backwards-compatibility"></span><h2>Maintaining backwards compatibility<a class="headerlink" href="#maintaining-backwards-compatibility" title="Permalink to this headline">¶</a></h2>
@@ -1203,7 +1170,7 @@ variable) in the code base.</p></li>
 </ul>
 </div>
 <div class="section" id="plotting-api">
-<span id="id7"></span><h2>Plotting API<a class="headerlink" href="#plotting-api" title="Permalink to this headline">¶</a></h2>
+<span id="id6"></span><h2>Plotting API<a class="headerlink" href="#plotting-api" title="Permalink to this headline">¶</a></h2>
 <p>Scikit-learn defines a simple API for creating visualizations for machine
 learning. The key features of this API is to run calculations once and to have
 the flexibility to adjust the visualizations after the fact. This logic is
