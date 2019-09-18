@@ -227,6 +227,7 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#voting-regressor">1.11.7. Voting Regressor</a></li>
+<li><a class="reference internal" href="#stacked-generalization">1.11.8. Stacked generalization</a></li>
 </ul>
 </li>
 </ul>
@@ -661,7 +662,7 @@ On-Line Learning and an Application to Boosting”, 1997.</p>
 <li><p>Drucker. “Improving Regressors using Boosting Techniques”, 1997.</p></li>
 </ol>
 </dd>
-<dt class="label" id="htf"><span class="brackets"><a class="fn-backref" href="#id10">HTF</a></span></dt>
+<dt class="label" id="htf"><span class="brackets">HTF</span><span class="fn-backref">(<a href="#id10">1</a>,<a href="#id17">2</a>,<a href="#id28">3</a>)</span></dt>
 <dd><p>T. Hastie, R. Tibshirani and J. Friedman, “Elements of
 Statistical Learning Ed. 2”, Springer, 2009.</p>
 </dd>
@@ -922,7 +923,7 @@ be set via the <code class="docutils literal notranslate"><span class="pre">lear
 <code class="docutils literal notranslate"><span class="pre">n_estimators</span></code>, the number of weak learners to fit. Smaller values
 of <code class="docutils literal notranslate"><span class="pre">learning_rate</span></code> require larger numbers of weak learners to maintain
 a constant training error. Empirical evidence suggests that small
-values of <code class="docutils literal notranslate"><span class="pre">learning_rate</span></code> favor better test error. <a class="reference internal" href="partial_dependence.html#htf2009" id="id17"><span>[HTF2009]</span></a>
+values of <code class="docutils literal notranslate"><span class="pre">learning_rate</span></code> favor better test error. <a class="reference internal" href="#htf" id="id17"><span>[HTF]</span></a>
 recommend to set the learning rate to a small constant
 (e.g. <code class="docutils literal notranslate"><span class="pre">learning_rate</span> <span class="pre">&lt;=</span> <span class="pre">0.1</span></code>) and choose <code class="docutils literal notranslate"><span class="pre">n_estimators</span></code> by early
 stopping. For a more detailed discussion of the interaction between
@@ -1234,7 +1235,9 @@ based on the ascending sort order. E.g., in the following scenario</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf2</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf3</span> <span class="o">=</span> <span class="n">GaussianNB</span><span class="p">()</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">eclf</span> <span class="o">=</span> <span class="n">VotingClassifier</span><span class="p">(</span><span class="n">estimators</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;lr&#39;</span><span class="p">,</span> <span class="n">clf1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span> <span class="n">clf2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;gnb&#39;</span><span class="p">,</span> <span class="n">clf3</span><span class="p">)],</span> <span class="n">voting</span><span class="o">=</span><span class="s1">&#39;hard&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">eclf</span> <span class="o">=</span> <span class="n">VotingClassifier</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">estimators</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;lr&#39;</span><span class="p">,</span> <span class="n">clf1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span> <span class="n">clf2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;gnb&#39;</span><span class="p">,</span> <span class="n">clf3</span><span class="p">)],</span>
+<span class="gp">... </span>    <span class="n">voting</span><span class="o">=</span><span class="s1">&#39;hard&#39;</span><span class="p">)</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">clf</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="n">clf1</span><span class="p">,</span> <span class="n">clf2</span><span class="p">,</span> <span class="n">clf3</span><span class="p">,</span> <span class="n">eclf</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Logistic Regression&#39;</span><span class="p">,</span> <span class="s1">&#39;Random Forest&#39;</span><span class="p">,</span> <span class="s1">&#39;naive Bayes&#39;</span><span class="p">,</span> <span class="s1">&#39;Ensemble&#39;</span><span class="p">]):</span>
 <span class="gp">... </span>    <span class="n">scores</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
@@ -1341,7 +1344,10 @@ hyperparameters of the individual estimators:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf1</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf2</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf3</span> <span class="o">=</span> <span class="n">GaussianNB</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">eclf</span> <span class="o">=</span> <span class="n">VotingClassifier</span><span class="p">(</span><span class="n">estimators</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;lr&#39;</span><span class="p">,</span> <span class="n">clf1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span> <span class="n">clf2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;gnb&#39;</span><span class="p">,</span> <span class="n">clf3</span><span class="p">)],</span> <span class="n">voting</span><span class="o">=</span><span class="s1">&#39;soft&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">eclf</span> <span class="o">=</span> <span class="n">VotingClassifier</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">estimators</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;lr&#39;</span><span class="p">,</span> <span class="n">clf1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span> <span class="n">clf2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;gnb&#39;</span><span class="p">,</span> <span class="n">clf3</span><span class="p">)],</span>
+<span class="gp">... </span>    <span class="n">voting</span><span class="o">=</span><span class="s1">&#39;soft&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;lr__C&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">],</span> <span class="s1">&#39;rf__n_estimators&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">200</span><span class="p">]}</span>
 
@@ -1354,12 +1360,17 @@ hyperparameters of the individual estimators:</p>
 <p>In order to predict the class labels based on the predicted
 class-probabilities (scikit-learn estimators in the VotingClassifier
 must support <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code> method):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">eclf</span> <span class="o">=</span> <span class="n">VotingClassifier</span><span class="p">(</span><span class="n">estimators</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;lr&#39;</span><span class="p">,</span> <span class="n">clf1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span> <span class="n">clf2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;gnb&#39;</span><span class="p">,</span> <span class="n">clf3</span><span class="p">)],</span> <span class="n">voting</span><span class="o">=</span><span class="s1">&#39;soft&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">eclf</span> <span class="o">=</span> <span class="n">VotingClassifier</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">estimators</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;lr&#39;</span><span class="p">,</span> <span class="n">clf1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span> <span class="n">clf2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;gnb&#39;</span><span class="p">,</span> <span class="n">clf3</span><span class="p">)],</span>
+<span class="gp">... </span>    <span class="n">voting</span><span class="o">=</span><span class="s1">&#39;soft&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Optionally, weights can be provided for the individual classifiers:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">eclf</span> <span class="o">=</span> <span class="n">VotingClassifier</span><span class="p">(</span><span class="n">estimators</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;lr&#39;</span><span class="p">,</span> <span class="n">clf1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span> <span class="n">clf2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;gnb&#39;</span><span class="p">,</span> <span class="n">clf3</span><span class="p">)],</span>
-<span class="gp">... </span>                        <span class="n">voting</span><span class="o">=</span><span class="s1">&#39;soft&#39;</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">eclf</span> <span class="o">=</span> <span class="n">VotingClassifier</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">estimators</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;lr&#39;</span><span class="p">,</span> <span class="n">clf1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span> <span class="n">clf2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;gnb&#39;</span><span class="p">,</span> <span class="n">clf3</span><span class="p">)],</span>
+<span class="gp">... </span>    <span class="n">voting</span><span class="o">=</span><span class="s1">&#39;soft&#39;</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1397,6 +1408,119 @@ in order to balance out their individual weaknesses.</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="../auto_examples/ensemble/plot_voting_regressor.html#sphx-glr-auto-examples-ensemble-plot-voting-regressor-py"><span class="std std-ref">Plot individual and voting regression predictions</span></a></p></li>
 </ul>
+</div>
+</div>
+<div class="section" id="stacked-generalization">
+<span id="stacking"></span><h2>1.11.8. Stacked generalization<a class="headerlink" href="#stacked-generalization" title="Permalink to this headline">¶</a></h2>
+<p>Stacked generalization is a method for combining estimators to reduce their
+biases <a class="reference internal" href="#w1992" id="id27"><span>[W1992]</span></a> <a class="reference internal" href="#htf" id="id28"><span>[HTF]</span></a>. More precisely, the predictions of each individual
+estimator are stacked together and used as input to a final estimator to
+compute the prediction. This final estimator is trained through
+cross-validation.</p>
+<p>The <a class="reference internal" href="generated/sklearn.ensemble.StackingClassifier.html#sklearn.ensemble.StackingClassifier" title="sklearn.ensemble.StackingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">StackingClassifier</span></code></a> and <a class="reference internal" href="generated/sklearn.ensemble.StackingRegressor.html#sklearn.ensemble.StackingRegressor" title="sklearn.ensemble.StackingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">StackingRegressor</span></code></a> provide such
+strategies which can be applied to classification and regression problems.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">estimators</span></code> parameter corresponds to the list of the estimators which
+are stacked together in parallel on the input data. It should be given as a
+list of names and estimators:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">RidgeCV</span><span class="p">,</span> <span class="n">LassoCV</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="k">import</span> <span class="n">SVR</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">estimators</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;ridge&#39;</span><span class="p">,</span> <span class="n">RidgeCV</span><span class="p">()),</span>
+<span class="gp">... </span>              <span class="p">(</span><span class="s1">&#39;lasso&#39;</span><span class="p">,</span> <span class="n">LassoCV</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)),</span>
+<span class="gp">... </span>              <span class="p">(</span><span class="s1">&#39;svr&#39;</span><span class="p">,</span> <span class="n">SVR</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">))]</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">final_estimator</span></code> will use the predictions of the <code class="docutils literal notranslate"><span class="pre">estimators</span></code> as input. It
+needs to be a classifier or a regressor when using <a class="reference internal" href="generated/sklearn.ensemble.StackingClassifier.html#sklearn.ensemble.StackingClassifier" title="sklearn.ensemble.StackingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">StackingClassifier</span></code></a>
+or <a class="reference internal" href="generated/sklearn.ensemble.StackingRegressor.html#sklearn.ensemble.StackingRegressor" title="sklearn.ensemble.StackingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">StackingRegressor</span></code></a>, respectively:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">GradientBoostingRegressor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">StackingRegressor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reg</span> <span class="o">=</span> <span class="n">StackingRegressor</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">estimators</span><span class="o">=</span><span class="n">estimators</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">final_estimator</span><span class="o">=</span><span class="n">GradientBoostingRegressor</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>To train the <code class="docutils literal notranslate"><span class="pre">estimators</span></code> and <code class="docutils literal notranslate"><span class="pre">final_estimator</span></code>, the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method needs
+to be called on the training data:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">load_boston</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_boston</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>
+<span class="gp">... </span>                                                    <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="go">StackingRegressor(...)</span>
+</pre></div>
+</div>
+<p>During training, the <code class="docutils literal notranslate"><span class="pre">estimators</span></code> are fitted on the whole training data
+<code class="docutils literal notranslate"><span class="pre">X_train</span></code>. They will be used when calling <code class="docutils literal notranslate"><span class="pre">predict</span></code> or <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code>. To
+generalize and avoid over-fitting, the <code class="docutils literal notranslate"><span class="pre">final_estimator</span></code> is trained on
+out-samples using <a class="reference internal" href="generated/sklearn.model_selection.cross_val_predict.html#sklearn.model_selection.cross_val_predict" title="sklearn.model_selection.cross_val_predict"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.model_selection.cross_val_predict</span></code></a> internally.</p>
+<p>For <a class="reference internal" href="generated/sklearn.ensemble.StackingClassifier.html#sklearn.ensemble.StackingClassifier" title="sklearn.ensemble.StackingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">StackingClassifier</span></code></a>, note that the output of the <code class="docutils literal notranslate"><span class="pre">estimators</span></code> is
+controlled by the parameter <code class="docutils literal notranslate"><span class="pre">stack_method</span></code> and it is called by each estimator.
+This parameter is either a string, being estimator method names, or <code class="docutils literal notranslate"><span class="pre">'auto'</span></code>
+which will automatically identify an available method depending on the
+availability, tested in the order of preference: <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code>,
+<code class="docutils literal notranslate"><span class="pre">decision_function</span></code> and <code class="docutils literal notranslate"><span class="pre">predict</span></code>.</p>
+<p>A <a class="reference internal" href="generated/sklearn.ensemble.StackingRegressor.html#sklearn.ensemble.StackingRegressor" title="sklearn.ensemble.StackingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">StackingRegressor</span></code></a> and <a class="reference internal" href="generated/sklearn.ensemble.StackingClassifier.html#sklearn.ensemble.StackingClassifier" title="sklearn.ensemble.StackingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">StackingClassifier</span></code></a> can be used as
+any other regressor or classifier, exposing a <code class="docutils literal notranslate"><span class="pre">predict</span></code>, <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">decision_function</span></code> methods, e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">r2_score</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;R2 score: </span><span class="si">{:.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">r2_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)))</span>
+<span class="go">R2 score: 0.81</span>
+</pre></div>
+</div>
+<p>Note that it is also possible to get the output of the stacked outputs of the
+<code class="docutils literal notranslate"><span class="pre">estimators</span></code> using the <code class="docutils literal notranslate"><span class="pre">transform</span></code> method:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reg</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span>
+<span class="go">array([[28.78..., 28.43...  , 22.62...],</span>
+<span class="go">       [35.96..., 32.58..., 23.68...],</span>
+<span class="go">       [14.97..., 14.05..., 16.45...],</span>
+<span class="go">       [25.19..., 25.54..., 22.92...],</span>
+<span class="go">       [18.93..., 19.26..., 17.03... ]])</span>
+</pre></div>
+</div>
+<p>In practise, a stacking predictor predict as good as the best predictor of the
+base layer and even sometimes outputperform it by combining the different
+strength of the these predictors. However, training a stacking predictor is
+computationally expensive.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For <a class="reference internal" href="generated/sklearn.ensemble.StackingClassifier.html#sklearn.ensemble.StackingClassifier" title="sklearn.ensemble.StackingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">StackingClassifier</span></code></a>, when using <code class="docutils literal notranslate"><span class="pre">stack_method_='predict_proba'</span></code>,
+the first column is dropped when the problem is a binary classification
+problem. Indeed, both probability columns predicted by each estimator are
+perfectly collinear.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Multiple stacking layers can be achieved by assigning <code class="docutils literal notranslate"><span class="pre">final_estimator</span></code> to
+a <a class="reference internal" href="generated/sklearn.ensemble.StackingClassifier.html#sklearn.ensemble.StackingClassifier" title="sklearn.ensemble.StackingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">StackingClassifier</span></code></a> or <a class="reference internal" href="generated/sklearn.ensemble.StackingRegressor.html#sklearn.ensemble.StackingRegressor" title="sklearn.ensemble.StackingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">StackingRegressor</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">final_layer</span> <span class="o">=</span> <span class="n">StackingRegressor</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">estimators</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span> <span class="n">RandomForestRegressor</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)),</span>
+<span class="gp">... </span>                <span class="p">(</span><span class="s1">&#39;gbrt&#39;</span><span class="p">,</span> <span class="n">GradientBoostingRegressor</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">))],</span>
+<span class="gp">... </span>    <span class="n">final_estimator</span><span class="o">=</span><span class="n">RidgeCV</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">multi_layer_regressor</span> <span class="o">=</span> <span class="n">StackingRegressor</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">estimators</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;ridge&#39;</span><span class="p">,</span> <span class="n">RidgeCV</span><span class="p">()),</span>
+<span class="gp">... </span>                <span class="p">(</span><span class="s1">&#39;lasso&#39;</span><span class="p">,</span> <span class="n">LassoCV</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)),</span>
+<span class="gp">... </span>                <span class="p">(</span><span class="s1">&#39;svr&#39;</span><span class="p">,</span> <span class="n">SVR</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;rbf&#39;</span><span class="p">))],</span>
+<span class="gp">... </span>    <span class="n">final_estimator</span><span class="o">=</span><span class="n">final_layer</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">multi_layer_regressor</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="go">StackingRegressor(...)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;R2 score: </span><span class="si">{:.2f}</span><span class="s1">&#39;</span>
+<span class="gp">... </span>      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">multi_layer_regressor</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
+<span class="go">R2 score: 0.82</span>
+</pre></div>
+</div>
+</div>
+<div class="topic">
+<p class="topic-title first">References</p>
+<dl class="citation">
+<dt class="label" id="w1992"><span class="brackets"><a class="fn-backref" href="#id27">W1992</a></span></dt>
+<dd><p>Wolpert, David H. “Stacked generalization.” Neural networks 5.2
+(1992): 241-259.</p>
+</dd>
+</dl>
 </div>
 </div>
 </div>
