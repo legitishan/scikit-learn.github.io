@@ -26,8 +26,8 @@
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Kernel Density Estimate of Species Distributions" href="plot_species_kde.html" />
-    <link rel="prev" title="Dimensionality Reduction with Neighborhood Components Analysis" href="plot_nca_dim_reduction.html" />
+    <link rel="next" title="Novelty detection with Local Outlier Factor (LOF)" href="plot_lof_novelty_detection.html" />
+    <link rel="prev" title="Caching nearest neighbors" href="plot_caching_nearest_neighbors.html" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -122,14 +122,14 @@
         <div class="rel">
     
         <div class="rellink">
-        <a href="plot_nca_dim_reduction.html"
+        <a href="plot_caching_nearest_neighbors.html"
         accesskey="P">Previous
         <br/>
         <span class="smallrellink">
-        Dimensionalit...
+        Caching neare...
         </span>
             <span class="hiddenrellink">
-            Dimensionality Reduction with Neighborhood Components Analysis
+            Caching nearest neighbors
             </span>
         </a>
         </div>
@@ -137,14 +137,14 @@
             &nbsp;
             </div>
         <div class="rellink">
-        <a href="plot_species_kde.html"
+        <a href="plot_lof_novelty_detection.html"
         accesskey="N">Next
         <br/>
         <span class="smallrellink">
-        Kernel Densit...
+        Novelty detec...
         </span>
             <span class="hiddenrellink">
-            Kernel Density Estimate of Species Distributions
+            Novelty detection with Local Outlier Factor (LOF)
             </span>
         </a>
         </div>
@@ -172,7 +172,11 @@
       <a href="http://scikit-learn.org/dev/versions.html">Other versions</a></p>
     <p class="citing">Please <b><a href="../../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
-<li><a class="reference internal" href="#">Neighborhood Components Analysis Illustration</a></li>
+<li><a class="reference internal" href="#">Neighborhood Components Analysis Illustration</a><ul>
+<li><a class="reference internal" href="#original-points">Original points</a></li>
+<li><a class="reference internal" href="#learning-an-embedding">Learning an embedding</a></li>
+</ul>
+</li>
 </ul>
 
     </div>
@@ -196,16 +200,10 @@
 </div>
 <div class="sphx-glr-example-title section" id="neighborhood-components-analysis-illustration">
 <span id="sphx-glr-auto-examples-neighbors-plot-nca-illustration-py"></span><h1>Neighborhood Components Analysis Illustration<a class="headerlink" href="#neighborhood-components-analysis-illustration" title="Permalink to this headline">¶</a></h1>
-<p>An example illustrating the goal of learning a distance metric that maximizes
-the nearest neighbors classification accuracy. The example is solely for
-illustration purposes. Please refer to the <a class="reference internal" href="../../modules/neighbors.html#nca"><span class="std std-ref">User Guide</span></a> for
-more information.</p>
-<ul class="sphx-glr-horizontal">
-<li><img alt="../../_images/sphx_glr_plot_nca_illustration_001.png" class="sphx-glr-multi-img" src="../../_images/sphx_glr_plot_nca_illustration_001.png" />
-</li>
-<li><img alt="../../_images/sphx_glr_plot_nca_illustration_002.png" class="sphx-glr-multi-img" src="../../_images/sphx_glr_plot_nca_illustration_002.png" />
-</li>
-</ul>
+<p>This example illustrates a learned distance metric that maximizes
+the nearest neighbors classification accuracy. It provides a visual
+representation of this metric compared to the original point
+space. Please refer to the <a class="reference internal" href="../../modules/neighbors.html#nca"><span class="std std-ref">User Guide</span></a> for more information.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># License: BSD 3 clause</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -216,24 +214,31 @@ more information.</p>
 <span class="kn">from</span> <span class="nn">sklearn.utils.fixes</span> <span class="k">import</span> <span class="n">logsumexp</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
-
-<span class="n">random_state</span> <span class="o">=</span> <span class="mi">0</span>
-
-<span class="c1"># Create a tiny data set of 9 samples from 3 classes</span>
-<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.make_classification.html#sklearn.datasets.make_classification" title="View documentation for sklearn.datasets.make_classification"><span class="n">make_classification</span></a><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_informative</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+</pre></div>
+</div>
+<div class="section" id="original-points">
+<h2>Original points<a class="headerlink" href="#original-points" title="Permalink to this headline">¶</a></h2>
+<p>First we create a data set of 9 samples from 3 classes, and plot the points
+in the original space. For this example, we focus on the classification of
+point no. 3. The thickness of a link between point no. 3 and another point
+is proportional to their distance.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.make_classification.html#sklearn.datasets.make_classification" title="View documentation for sklearn.datasets.make_classification"><span class="n">make_classification</span></a><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_informative</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                            <span class="n">n_redundant</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_classes</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_clusters_per_class</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                           <span class="n">class_sep</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">)</span>
+                           <span class="n">class_sep</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-<span class="c1"># Plot the points in the original space</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.gca.html#matplotlib.pyplot.gca" title="View documentation for matplotlib.pyplot.gca"><span class="n">plt</span><span class="o">.</span><span class="n">gca</span></a><span class="p">()</span>
-
-<span class="c1"># Draw the graph nodes</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">Set1</span><span class="p">(</span><span class="n">y</span><span class="p">[[</span><span class="n">i</span><span class="p">]]),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">p_i</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Original points&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">get_xaxis</span><span class="p">()</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">get_yaxis</span><span class="p">()</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>  <span class="c1"># so that boundaries are displayed correctly as circles</span>
+
+
+<span class="k">def</span> <span class="nf">link_thickness_i</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
     <span class="n">diff_embedded</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">X</span>
     <span class="n">dist_embedded</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.einsum.html#numpy.einsum" title="View documentation for numpy.einsum"><span class="n">np</span><span class="o">.</span><span class="n">einsum</span></a><span class="p">(</span><span class="s1">&#39;ij,ij-&gt;i&#39;</span><span class="p">,</span> <span class="n">diff_embedded</span><span class="p">,</span>
                               <span class="n">diff_embedded</span><span class="p">)</span>
@@ -249,34 +254,31 @@ more information.</p>
 <span class="k">def</span> <span class="nf">relate_point</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
     <span class="n">pt_i</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">pt_j</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-        <span class="n">thickness</span> <span class="o">=</span> <span class="n">p_i</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="n">thickness</span> <span class="o">=</span> <span class="n">link_thickness_i</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span><span class="p">:</span>
             <span class="n">line</span> <span class="o">=</span> <span class="p">([</span><span class="n">pt_i</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pt_j</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">pt_i</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">pt_j</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">*</span><span class="n">line</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">Set1</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">j</span><span class="p">]),</span>
                     <span class="n">linewidth</span><span class="o">=</span><span class="mi">5</span><span class="o">*</span><span class="n">thickness</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
 
 
-<span class="c1"># we consider only point 3</span>
 <span class="n">i</span> <span class="o">=</span> <span class="mi">3</span>
-
-<span class="c1"># Plot bonds linked to sample i in the original space</span>
 <span class="n">relate_point</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Original points&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">get_xaxis</span><span class="p">()</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">get_yaxis</span><span class="p">()</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
-
-<span class="c1"># Learn an embedding with NeighborhoodComponentsAnalysis</span>
-<span class="n">nca</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.neighbors.NeighborhoodComponentsAnalysis.html#sklearn.neighbors.NeighborhoodComponentsAnalysis" title="View documentation for sklearn.neighbors.NeighborhoodComponentsAnalysis"><span class="n">NeighborhoodComponentsAnalysis</span></a><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../../_images/sphx_glr_plot_nca_illustration_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_nca_illustration_001.png" />
+</div>
+<div class="section" id="learning-an-embedding">
+<h2>Learning an embedding<a class="headerlink" href="#learning-an-embedding" title="Permalink to this headline">¶</a></h2>
+<p>We use <a class="reference internal" href="../../modules/generated/sklearn.neighbors.NeighborhoodComponentsAnalysis.html#sklearn.neighbors.NeighborhoodComponentsAnalysis" title="sklearn.neighbors.NeighborhoodComponentsAnalysis"><code class="xref py py-class docutils literal notranslate"><span class="pre">NeighborhoodComponentsAnalysis</span></code></a> to learn an
+embedding and plot the points after the transformation. We then take the
+embedding and find the nearest neighbors.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nca</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.neighbors.NeighborhoodComponentsAnalysis.html#sklearn.neighbors.NeighborhoodComponentsAnalysis" title="View documentation for sklearn.neighbors.NeighborhoodComponentsAnalysis"><span class="n">NeighborhoodComponentsAnalysis</span></a><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">nca</span> <span class="o">=</span> <span class="n">nca</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
-<span class="c1"># Plot the points after transformation with NeighborhoodComponentsAnalysis</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">ax2</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.gca.html#matplotlib.pyplot.gca" title="View documentation for matplotlib.pyplot.gca"><span class="n">plt</span><span class="o">.</span><span class="n">gca</span></a><span class="p">()</span>
-
-<span class="c1"># Get the embedding and find the new nearest neighbors</span>
 <span class="n">X_embedded</span> <span class="o">=</span> <span class="n">nca</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-
 <span class="n">relate_point</span><span class="p">(</span><span class="n">X_embedded</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)):</span>
@@ -285,7 +287,6 @@ more information.</p>
     <span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_embedded</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_embedded</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">Set1</span><span class="p">(</span><span class="n">y</span><span class="p">[[</span><span class="n">i</span><span class="p">]]),</span>
                 <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
 
-<span class="c1"># Make axes equal so that boundaries are displayed correctly as circles</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;NCA embedding&quot;</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">get_xaxis</span><span class="p">()</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">get_yaxis</span><span class="p">()</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
@@ -293,7 +294,8 @@ more information.</p>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.718 seconds)</p>
+<img alt="../../_images/sphx_glr_plot_nca_illustration_002.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_nca_illustration_002.png" />
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.293 seconds)</p>
 <p><strong>Estimated memory usage:</strong>  8 MB</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-neighbors-plot-nca-illustration-py">
 <div class="binder-badge docutils container">
@@ -307,6 +309,7 @@ more information.</p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
 </div>
 
 
@@ -324,11 +327,11 @@ more information.</p>
      <div class="rel">
     
     <div class="buttonPrevious">
-      <a href="plot_nca_dim_reduction.html">Previous
+      <a href="plot_caching_nearest_neighbors.html">Previous
       </a>
     </div>
     <div class="buttonNext">
-      <a href="plot_species_kde.html">Next
+      <a href="plot_lof_novelty_detection.html">Next
       </a>
     </div>
     
