@@ -197,7 +197,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.manifold" title="sklearn.manifold"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.manifold</span></code></a>.Isomap<a class="headerlink" href="#sklearn-manifold-isomap" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="sklearn.manifold.Isomap">
-<em class="property">class </em><code class="sig-prename descclassname">sklearn.manifold.</code><code class="sig-name descname">Isomap</code><span class="sig-paren">(</span><em class="sig-param">n_neighbors=5</em>, <em class="sig-param">n_components=2</em>, <em class="sig-param">eigen_solver='auto'</em>, <em class="sig-param">tol=0</em>, <em class="sig-param">max_iter=None</em>, <em class="sig-param">path_method='auto'</em>, <em class="sig-param">neighbors_algorithm='auto'</em>, <em class="sig-param">n_jobs=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e5be3ad02/sklearn/manifold/isomap.py#L15"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.manifold.Isomap" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sklearn.manifold.</code><code class="sig-name descname">Isomap</code><span class="sig-paren">(</span><em class="sig-param">n_neighbors=5</em>, <em class="sig-param">n_components=2</em>, <em class="sig-param">eigen_solver='auto'</em>, <em class="sig-param">tol=0</em>, <em class="sig-param">max_iter=None</em>, <em class="sig-param">path_method='auto'</em>, <em class="sig-param">neighbors_algorithm='auto'</em>, <em class="sig-param">n_jobs=None</em>, <em class="sig-param">metric='minkowski'</em>, <em class="sig-param">p=2</em>, <em class="sig-param">metric_params=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e52e9c8d7/sklearn/manifold/isomap.py#L16"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.manifold.Isomap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Isomap Embedding</p>
 <p>Non-linear dimensionality reduction through Isometric Mapping</p>
 <p>Read more in the <a class="reference internal" href="../manifold.html#isomap"><span class="std std-ref">User Guide</span></a>.</p>
@@ -229,10 +229,33 @@ not used if eigen_solver == ‘dense’.</p>
 <dt><strong>neighbors_algorithm</strong><span class="classifier">string [‘auto’|’brute’|’kd_tree’|’ball_tree’]</span></dt><dd><p>Algorithm to use for nearest neighbors search,
 passed to neighbors.NearestNeighbors instance.</p>
 </dd>
-<dt><strong>n_jobs</strong><span class="classifier">int or None, optional (default=None)</span></dt><dd><p>The number of parallel jobs to run.
+<dt><strong>n_jobs</strong><span class="classifier">int or None, default=None</span></dt><dd><p>The number of parallel jobs to run.
 <code class="docutils literal notranslate"><span class="pre">None</span></code> means 1 unless in a <a class="reference external" href="https://joblib.readthedocs.io/en/latest/parallel.html#joblib.parallel_backend" title="(in joblib v0.13.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">joblib.parallel_backend</span></code></a> context.
 <code class="docutils literal notranslate"><span class="pre">-1</span></code> means using all processors. See <a class="reference internal" href="../../glossary.html#term-n-jobs"><span class="xref std std-term">Glossary</span></a>
 for more details.</p>
+</dd>
+<dt><strong>metric</strong><span class="classifier">string, or callable, default=”minkowski”</span></dt><dd><p>The metric to use when calculating distance between instances in a
+feature array. If metric is a string or callable, it must be one of
+the options allowed by <a class="reference internal" href="sklearn.metrics.pairwise_distances.html#sklearn.metrics.pairwise_distances" title="sklearn.metrics.pairwise_distances"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.metrics.pairwise_distances</span></code></a> for
+its metric parameter.
+If metric is “precomputed”, X is assumed to be a distance matrix and
+must be square. X may be a <a class="reference internal" href="../../glossary.html#term-sparse-graph"><span class="xref std std-term">Glossary</span></a>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.22.</span></p>
+</div>
+</dd>
+<dt><strong>p</strong><span class="classifier">int, default=2</span></dt><dd><p>Parameter for the Minkowski metric from
+sklearn.metrics.pairwise.pairwise_distances. When p = 1, this is
+equivalent to using manhattan_distance (l1), and euclidean_distance
+(l2) for p = 2. For arbitrary p, minkowski_distance (l_p) is used.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.22.</span></p>
+</div>
+</dd>
+<dt><strong>metric_params</strong><span class="classifier">dict, default=None</span></dt><dd><p>Additional keyword arguments for the metric function.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.22.</span></p>
+</div>
 </dd>
 </dl>
 </dd>
@@ -242,8 +265,6 @@ for more details.</p>
 </dd>
 <dt><strong>kernel_pca_</strong><span class="classifier">object</span></dt><dd><p><a class="reference internal" href="sklearn.decomposition.KernelPCA.html#sklearn.decomposition.KernelPCA" title="sklearn.decomposition.KernelPCA"><code class="xref py py-class docutils literal notranslate"><span class="pre">KernelPCA</span></code></a> object used to implement the
 embedding.</p>
-</dd>
-<dt><strong>training_data_</strong><span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>Stores the training data.</p>
 </dd>
 <dt><strong>nbrs_</strong><span class="classifier">sklearn.neighbors.NearestNeighbors instance</span></dt><dd><p>Stores nearest neighbors instance, including BallTree or KDtree
 if applicable.</p>
@@ -301,19 +322,19 @@ framework for nonlinear dimensionality reduction. Science 290 (5500)</p>
 </table>
 <dl class="method">
 <dt id="sklearn.manifold.Isomap.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">n_neighbors=5</em>, <em class="sig-param">n_components=2</em>, <em class="sig-param">eigen_solver='auto'</em>, <em class="sig-param">tol=0</em>, <em class="sig-param">max_iter=None</em>, <em class="sig-param">path_method='auto'</em>, <em class="sig-param">neighbors_algorithm='auto'</em>, <em class="sig-param">n_jobs=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e5be3ad02/sklearn/manifold/isomap.py#L105"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.manifold.Isomap.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">n_neighbors=5</em>, <em class="sig-param">n_components=2</em>, <em class="sig-param">eigen_solver='auto'</em>, <em class="sig-param">tol=0</em>, <em class="sig-param">max_iter=None</em>, <em class="sig-param">path_method='auto'</em>, <em class="sig-param">neighbors_algorithm='auto'</em>, <em class="sig-param">n_jobs=None</em>, <em class="sig-param">metric='minkowski'</em>, <em class="sig-param">p=2</em>, <em class="sig-param">metric_params=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e52e9c8d7/sklearn/manifold/isomap.py#L126"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.manifold.Isomap.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="sklearn.manifold.Isomap.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e5be3ad02/sklearn/manifold/isomap.py#L165"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.manifold.Isomap.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e52e9c8d7/sklearn/manifold/isomap.py#L201"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.manifold.Isomap.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the embedding vectors for data X</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix, BallTree, KDTree, NearestNeighbors}</span></dt><dd><p>Sample data, shape = (n_samples, n_features), in the form of a
-numpy array, precomputed tree, or NearestNeighbors
+<dt><strong>X</strong><span class="classifier">{array-like, sparse graph, BallTree, KDTree, NearestNeighbors}</span></dt><dd><p>Sample data, shape = (n_samples, n_features), in the form of a
+numpy array, sparse graph, precomputed tree, or NearestNeighbors
 object.</p>
 </dd>
 <dt><strong>y</strong><span class="classifier">Ignored</span></dt><dd></dd>
@@ -329,12 +350,12 @@ object.</p>
 
 <dl class="method">
 <dt id="sklearn.manifold.Isomap.fit_transform">
-<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e5be3ad02/sklearn/manifold/isomap.py#L184"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.manifold.Isomap.fit_transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e52e9c8d7/sklearn/manifold/isomap.py#L220"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.manifold.Isomap.fit_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the model from data in X and transform X.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix, BallTree, KDTree}</span></dt><dd><p>Training vector, where n_samples in the number of samples
+<dt><strong>X</strong><span class="classifier">{array-like, sparse graph, BallTree, KDTree}</span></dt><dd><p>Training vector, where n_samples in the number of samples
 and n_features is the number of features.</p>
 </dd>
 <dt><strong>y</strong><span class="classifier">Ignored</span></dt><dd></dd>
@@ -350,7 +371,7 @@ and n_features is the number of features.</p>
 
 <dl class="method">
 <dt id="sklearn.manifold.Isomap.get_params">
-<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e5be3ad02/sklearn/base.py#L169"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.manifold.Isomap.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e52e9c8d7/sklearn/base.py#L169"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.manifold.Isomap.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -371,7 +392,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.manifold.Isomap.reconstruction_error">
-<code class="sig-name descname">reconstruction_error</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e5be3ad02/sklearn/manifold/isomap.py#L141"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.manifold.Isomap.reconstruction_error" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">reconstruction_error</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e52e9c8d7/sklearn/manifold/isomap.py#L177"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.manifold.Isomap.reconstruction_error" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the reconstruction error for the embedding.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -391,7 +412,7 @@ and K is the isomap kernel:</p>
 
 <dl class="method">
 <dt id="sklearn.manifold.Isomap.set_params">
-<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e5be3ad02/sklearn/base.py#L200"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.manifold.Isomap.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e52e9c8d7/sklearn/base.py#L200"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.manifold.Isomap.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
@@ -407,8 +428,14 @@ component of a nested object.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="sklearn.manifold.Isomap.training_data_">
+<em class="property">property </em><code class="sig-name descname">training_data_</code><a class="headerlink" href="#sklearn.manifold.Isomap.training_data_" title="Permalink to this definition">¶</a></dt>
+<dd><p>DEPRECATED: Attribute <a href="#id5"><span class="problematic" id="id6">training_data_</span></a> was deprecated in version 0.22 and will be removed in 0.24.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="sklearn.manifold.Isomap.transform">
-<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e5be3ad02/sklearn/manifold/isomap.py#L202"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.manifold.Isomap.transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e52e9c8d7/sklearn/manifold/isomap.py#L238"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.manifold.Isomap.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform X.</p>
 <p>This is implemented by linking the points X into the graph of geodesic
 distances of the training data. First the <code class="docutils literal notranslate"><span class="pre">n_neighbors</span></code> nearest
@@ -420,12 +447,15 @@ embedding vectors of the training set.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd></dd>
+<dt><strong>X</strong><span class="classifier">array-like, shape (n_queries, n_features)</span></dt><dd><p>If neighbors_algorithm=’precomputed’, X is assumed to be a
+distance matrix or a sparse graph of shape
+(n_queries, n_samples_fit).</p>
+</dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>X_new</strong><span class="classifier">array-like, shape (n_samples, n_components)</span></dt><dd></dd>
+<dt><strong>X_new</strong><span class="classifier">array-like, shape (n_queries, n_components)</span></dt><dd></dd>
 </dl>
 </dd>
 </dl>

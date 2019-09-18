@@ -194,7 +194,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.neighbors" title="sklearn.neighbors"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.neighbors</span></code></a>.NearestNeighbors<a class="headerlink" href="#sklearn-neighbors-nearestneighbors" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="sklearn.neighbors.NearestNeighbors">
-<em class="property">class </em><code class="sig-prename descclassname">sklearn.neighbors.</code><code class="sig-name descname">NearestNeighbors</code><span class="sig-paren">(</span><em class="sig-param">n_neighbors=5</em>, <em class="sig-param">radius=1.0</em>, <em class="sig-param">algorithm='auto'</em>, <em class="sig-param">leaf_size=30</em>, <em class="sig-param">metric='minkowski'</em>, <em class="sig-param">p=2</em>, <em class="sig-param">metric_params=None</em>, <em class="sig-param">n_jobs=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e5be3ad02/sklearn/neighbors/unsupervised.py#L9"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.NearestNeighbors" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sklearn.neighbors.</code><code class="sig-name descname">NearestNeighbors</code><span class="sig-paren">(</span><em class="sig-param">n_neighbors=5</em>, <em class="sig-param">radius=1.0</em>, <em class="sig-param">algorithm='auto'</em>, <em class="sig-param">leaf_size=30</em>, <em class="sig-param">metric='minkowski'</em>, <em class="sig-param">p=2</em>, <em class="sig-param">metric_params=None</em>, <em class="sig-param">n_jobs=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e52e9c8d7/sklearn/neighbors/unsupervised.py#L8"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.NearestNeighbors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Unsupervised learner for implementing neighbor searches.</p>
 <p>Read more in the <a class="reference internal" href="../neighbors.html#unsupervised-neighbors"><span class="std std-ref">User Guide</span></a>.</p>
 <dl class="field-list">
@@ -221,26 +221,13 @@ speed of the construction and query, as well as the memory
 required to store the tree.  The optimal value depends on the
 nature of the problem.</p>
 </dd>
-<dt><strong>metric</strong><span class="classifier">string or callable, default ‘minkowski’</span></dt><dd><p>metric to use for distance computation. Any metric from scikit-learn
-or scipy.spatial.distance can be used.</p>
-<p>If metric is a callable function, it is called on each
-pair of instances (rows) and the resulting value recorded. The callable
-should take two arrays as input and return one value indicating the
-distance between them. This works for Scipy’s metrics, but is less
-efficient than passing the metric name as a string.</p>
-<p>Distance matrices are not supported.</p>
-<p>Valid values for metric are:</p>
-<ul class="simple">
-<li><p>from scikit-learn: [‘cityblock’, ‘cosine’, ‘euclidean’, ‘l1’, ‘l2’,
-‘manhattan’]</p></li>
-<li><p>from scipy.spatial.distance: [‘braycurtis’, ‘canberra’, ‘chebyshev’,
-‘correlation’, ‘dice’, ‘hamming’, ‘jaccard’, ‘kulsinski’,
-‘mahalanobis’, ‘minkowski’, ‘rogerstanimoto’, ‘russellrao’,
-‘seuclidean’, ‘sokalmichener’, ‘sokalsneath’, ‘sqeuclidean’,
-‘yule’]</p></li>
-</ul>
-<p>See the documentation for scipy.spatial.distance for details on these
-metrics.</p>
+<dt><strong>metric</strong><span class="classifier">string or callable, default ‘minkowski’</span></dt><dd><p>the distance metric to use for the tree.  The default metric is
+minkowski, and with p=2 is equivalent to the standard Euclidean
+metric. See the documentation of the DistanceMetric class for a
+list of available metrics.
+If metric is “precomputed”, X is assumed to be a distance matrix and
+must be square during fit. X may be a <a class="reference internal" href="../../glossary.html#term-sparse-graph"><span class="xref std std-term">Glossary</span></a>,
+in which case only “nonzero” elements may be considered neighbors.</p>
 </dd>
 <dt><strong>p</strong><span class="classifier">integer, optional (default = 2)</span></dt><dd><p>Parameter for the Minkowski metric from
 sklearn.metrics.pairwise.pairwise_distances. When p = 1, this is
@@ -321,7 +308,7 @@ for a discussion of the choice of <code class="docutils literal notranslate"><sp
 <tr class="row-odd"><td><p><a class="reference internal" href="#sklearn.neighbors.NearestNeighbors.radius_neighbors" title="sklearn.neighbors.NearestNeighbors.radius_neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">radius_neighbors</span></code></a>(self[, X, radius, …])</p></td>
 <td><p>Finds the neighbors within a given radius of a point or points.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sklearn.neighbors.NearestNeighbors.radius_neighbors_graph" title="sklearn.neighbors.NearestNeighbors.radius_neighbors_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">radius_neighbors_graph</span></code></a>(self[, X, radius, mode])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sklearn.neighbors.NearestNeighbors.radius_neighbors_graph" title="sklearn.neighbors.NearestNeighbors.radius_neighbors_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">radius_neighbors_graph</span></code></a>(self[, X, radius, …])</p></td>
 <td><p>Computes the (weighted) graph of Neighbors for points in X</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sklearn.neighbors.NearestNeighbors.set_params" title="sklearn.neighbors.NearestNeighbors.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(self, \*\*params)</p></td>
@@ -331,13 +318,13 @@ for a discussion of the choice of <code class="docutils literal notranslate"><sp
 </table>
 <dl class="method">
 <dt id="sklearn.neighbors.NearestNeighbors.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">n_neighbors=5</em>, <em class="sig-param">radius=1.0</em>, <em class="sig-param">algorithm='auto'</em>, <em class="sig-param">leaf_size=30</em>, <em class="sig-param">metric='minkowski'</em>, <em class="sig-param">p=2</em>, <em class="sig-param">metric_params=None</em>, <em class="sig-param">n_jobs=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e5be3ad02/sklearn/neighbors/unsupervised.py#L124"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.NearestNeighbors.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">n_neighbors=5</em>, <em class="sig-param">radius=1.0</em>, <em class="sig-param">algorithm='auto'</em>, <em class="sig-param">leaf_size=30</em>, <em class="sig-param">metric='minkowski'</em>, <em class="sig-param">p=2</em>, <em class="sig-param">metric_params=None</em>, <em class="sig-param">n_jobs=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e52e9c8d7/sklearn/neighbors/unsupervised.py#L106"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.NearestNeighbors.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="sklearn.neighbors.NearestNeighbors.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e5be3ad02/sklearn/neighbors/base.py#L929"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.NearestNeighbors.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e52e9c8d7/sklearn/neighbors/base.py#L1157"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.NearestNeighbors.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the model using X as training data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -352,7 +339,7 @@ or [n_samples, n_samples] if metric=’precomputed’.</p>
 
 <dl class="method">
 <dt id="sklearn.neighbors.NearestNeighbors.get_params">
-<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e5be3ad02/sklearn/base.py#L169"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.NearestNeighbors.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e52e9c8d7/sklearn/base.py#L169"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.NearestNeighbors.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -373,13 +360,13 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.neighbors.NearestNeighbors.kneighbors">
-<code class="sig-name descname">kneighbors</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X=None</em>, <em class="sig-param">n_neighbors=None</em>, <em class="sig-param">return_distance=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e5be3ad02/sklearn/neighbors/base.py#L339"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.NearestNeighbors.kneighbors" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">kneighbors</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X=None</em>, <em class="sig-param">n_neighbors=None</em>, <em class="sig-param">return_distance=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e52e9c8d7/sklearn/neighbors/base.py#L529"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.NearestNeighbors.kneighbors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the K-neighbors of a point.
 Returns indices of and distances to the neighbors of each point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like, shape (n_query, n_features),                 or (n_query, n_indexed) if metric == ‘precomputed’</span></dt><dd><p>The query point or points.
+<dt><strong>X</strong><span class="classifier">array-like, shape (n_queries, n_features),                 or (n_queries, n_indexed) if metric == ‘precomputed’</span></dt><dd><p>The query point or points.
 If not provided, neighbors of each indexed point are returned.
 In this case, the query point is not considered its own neighbor.</p>
 </dd>
@@ -392,10 +379,10 @@ passed to the constructor).</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>dist</strong><span class="classifier">array</span></dt><dd><p>Array representing the lengths to points, only present if
+<dt><strong>neigh_dist</strong><span class="classifier">array, shape (n_queries, n_neighbors)</span></dt><dd><p>Array representing the lengths to points, only present if
 return_distance=True</p>
 </dd>
-<dt><strong>ind</strong><span class="classifier">array</span></dt><dd><p>Indices of the nearest points in the population matrix.</p>
+<dt><strong>neigh_ind</strong><span class="classifier">array, shape (n_queries, n_neighbors)</span></dt><dd><p>Indices of the nearest points in the population matrix.</p>
 </dd>
 </dl>
 </dd>
@@ -426,12 +413,12 @@ element is at distance 0.5 and is the third element of samples
 
 <dl class="method">
 <dt id="sklearn.neighbors.NearestNeighbors.kneighbors_graph">
-<code class="sig-name descname">kneighbors_graph</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X=None</em>, <em class="sig-param">n_neighbors=None</em>, <em class="sig-param">mode='connectivity'</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e5be3ad02/sklearn/neighbors/base.py#L502"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.NearestNeighbors.kneighbors_graph" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">kneighbors_graph</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X=None</em>, <em class="sig-param">n_neighbors=None</em>, <em class="sig-param">mode='connectivity'</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e52e9c8d7/sklearn/neighbors/base.py#L703"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.NearestNeighbors.kneighbors_graph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the (weighted) graph of k-Neighbors for points in X</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like, shape (n_query, n_features),                 or (n_query, n_indexed) if metric == ‘precomputed’</span></dt><dd><p>The query point or points.
+<dt><strong>X</strong><span class="classifier">array-like, shape (n_queries, n_features),                 or (n_queries, n_indexed) if metric == ‘precomputed’</span></dt><dd><p>The query point or points.
 If not provided, neighbors of each indexed point are returned.
 In this case, the query point is not considered its own neighbor.</p>
 </dd>
@@ -446,7 +433,7 @@ edges are Euclidean distance between points.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>A</strong><span class="classifier">sparse matrix in CSR format, shape = [n_samples, n_samples_fit]</span></dt><dd><p>n_samples_fit is the number of samples in the fitted data
+<dt><strong>A</strong><span class="classifier">sparse graph in CSR format, shape = [n_queries, n_samples_fit]</span></dt><dd><p>n_samples_fit is the number of samples in the fitted data
 A[i, j] is assigned the weight of edge that connects i to j.</p>
 </dd>
 </dl>
@@ -475,16 +462,16 @@ A[i, j] is assigned the weight of edge that connects i to j.</p>
 
 <dl class="method">
 <dt id="sklearn.neighbors.NearestNeighbors.radius_neighbors">
-<code class="sig-name descname">radius_neighbors</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X=None</em>, <em class="sig-param">radius=None</em>, <em class="sig-param">return_distance=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e5be3ad02/sklearn/neighbors/base.py#L628"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.NearestNeighbors.radius_neighbors" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">radius_neighbors</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X=None</em>, <em class="sig-param">radius=None</em>, <em class="sig-param">return_distance=True</em>, <em class="sig-param">sort_results=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e52e9c8d7/sklearn/neighbors/base.py#L826"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.NearestNeighbors.radius_neighbors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the neighbors within a given radius of a point or points.</p>
 <p>Return the indices and distances of each point from the dataset
 lying in a ball with size <code class="docutils literal notranslate"><span class="pre">radius</span></code> around the points of the query
 array. Points lying on the boundary are included in the results.</p>
 <p>The result points are <em>not</em> necessarily sorted by distance to their
 query point.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>X</strong><span class="classifier">array-like, (n_samples, n_features), optional</span></dt><dd><p>The query point or points.
 If not provided, neighbors of each indexed point are returned.
 In this case, the query point is not considered its own neighbor.</p>
@@ -492,17 +479,25 @@ In this case, the query point is not considered its own neighbor.</p>
 <dt><strong>radius</strong><span class="classifier">float</span></dt><dd><p>Limiting distance of neighbors to return.
 (default is the value passed to the constructor).</p>
 </dd>
-<dt><strong>return_distance</strong><span class="classifier">boolean, optional. Defaults to True.</span></dt><dd><p>If False, distances will not be returned</p>
+<dt><strong>return_distance</strong><span class="classifier">boolean, optional. Defaults to True.</span></dt><dd><p>If False, distances will not be returned.</p>
+</dd>
+<dt><strong>sort_results</strong><span class="classifier">boolean, optional. Defaults to False.</span></dt><dd><p>If True, the distances and indices will be sorted before being
+returned. If False, the results will not be sorted. If
+return_distance == False, setting sort_results = True will
+result in an error.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.22.</span></p>
+</div>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>dist</strong><span class="classifier">array, shape (n_samples,) of arrays</span></dt><dd><p>Array representing the distances to each point, only present if
+<dt><strong>neigh_dist</strong><span class="classifier">array, shape (n_samples,) of arrays</span></dt><dd><p>Array representing the distances to each point, only present if
 return_distance=True. The distance values are computed according
 to the <code class="docutils literal notranslate"><span class="pre">metric</span></code> constructor parameter.</p>
 </dd>
-<dt><strong>ind</strong><span class="classifier">array, shape (n_samples,) of arrays</span></dt><dd><p>An array of arrays of indices of the approximate nearest points
+<dt><strong>neigh_ind</strong><span class="classifier">array, shape (n_samples,) of arrays</span></dt><dd><p>An array of arrays of indices of the approximate nearest points
 from the population matrix that lie within a ball of size
 <code class="docutils literal notranslate"><span class="pre">radius</span></code> around the query points.</p>
 </dd>
@@ -539,14 +534,14 @@ indices.  In general, multiple points can be queried at the same time.</p>
 
 <dl class="method">
 <dt id="sklearn.neighbors.NearestNeighbors.radius_neighbors_graph">
-<code class="sig-name descname">radius_neighbors_graph</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X=None</em>, <em class="sig-param">radius=None</em>, <em class="sig-param">mode='connectivity'</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e5be3ad02/sklearn/neighbors/base.py#L787"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.NearestNeighbors.radius_neighbors_graph" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">radius_neighbors_graph</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X=None</em>, <em class="sig-param">radius=None</em>, <em class="sig-param">mode='connectivity'</em>, <em class="sig-param">sort_results=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e52e9c8d7/sklearn/neighbors/base.py#L1005"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.NearestNeighbors.radius_neighbors_graph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the (weighted) graph of Neighbors for points in X</p>
 <p>Neighborhoods are restricted the points at a distance lower than
 radius.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like, shape = [n_samples, n_features], optional</span></dt><dd><p>The query point or points.
+<dd class="field-odd"><dl>
+<dt><strong>X</strong><span class="classifier">array-like, shape = [n_queries, n_features], optional</span></dt><dd><p>The query point or points.
 If not provided, neighbors of each indexed point are returned.
 In this case, the query point is not considered its own neighbor.</p>
 </dd>
@@ -557,11 +552,19 @@ In this case, the query point is not considered its own neighbor.</p>
 connectivity matrix with ones and zeros, in ‘distance’ the
 edges are Euclidean distance between points.</p>
 </dd>
+<dt><strong>sort_results</strong><span class="classifier">boolean, optional. Defaults to False.</span></dt><dd><p>If True, the distances and indices will be sorted before being
+returned. If False, the results will not be sorted.
+Only used with mode=’distance’.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.22.</span></p>
+</div>
+</dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>A</strong><span class="classifier">sparse matrix in CSR format, shape = [n_samples, n_samples]</span></dt><dd><p>A[i, j] is assigned the weight of edge that connects i to j.</p>
+<dt><strong>A</strong><span class="classifier">sparse graph in CSR format, shape = [n_queries, n_samples_fit]</span></dt><dd><p>n_samples_fit is the number of samples in the fitted data
+A[i, j] is assigned the weight of edge that connects i to j.</p>
 </dd>
 </dl>
 </dd>
@@ -589,7 +592,7 @@ edges are Euclidean distance between points.</p>
 
 <dl class="method">
 <dt id="sklearn.neighbors.NearestNeighbors.set_params">
-<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e5be3ad02/sklearn/base.py#L200"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.NearestNeighbors.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e52e9c8d7/sklearn/base.py#L200"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.NearestNeighbors.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form

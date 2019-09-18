@@ -192,17 +192,18 @@
 <li><a class="reference internal" href="#nearest-shrunken-centroid">1.6.5.1. Nearest Shrunken Centroid</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#neighborhood-components-analysis">1.6.6. Neighborhood Components Analysis</a><ul>
-<li><a class="reference internal" href="#id4">1.6.6.1. Classification</a></li>
-<li><a class="reference internal" href="#dimensionality-reduction">1.6.6.2. Dimensionality reduction</a></li>
-<li><a class="reference internal" href="#mathematical-formulation">1.6.6.3. Mathematical formulation</a><ul>
-<li><a class="reference internal" href="#mahalanobis-distance">1.6.6.3.1. Mahalanobis distance</a></li>
+<li><a class="reference internal" href="#nearest-neighbors-transformer">1.6.6. Nearest Neighbors Transformer</a></li>
+<li><a class="reference internal" href="#neighborhood-components-analysis">1.6.7. Neighborhood Components Analysis</a><ul>
+<li><a class="reference internal" href="#id4">1.6.7.1. Classification</a></li>
+<li><a class="reference internal" href="#dimensionality-reduction">1.6.7.2. Dimensionality reduction</a></li>
+<li><a class="reference internal" href="#mathematical-formulation">1.6.7.3. Mathematical formulation</a><ul>
+<li><a class="reference internal" href="#mahalanobis-distance">1.6.7.3.1. Mahalanobis distance</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#implementation">1.6.6.4. Implementation</a></li>
-<li><a class="reference internal" href="#complexity">1.6.6.5. Complexity</a><ul>
-<li><a class="reference internal" href="#training">1.6.6.5.1. Training</a></li>
-<li><a class="reference internal" href="#transform">1.6.6.5.2. Transform</a></li>
+<li><a class="reference internal" href="#implementation">1.6.7.4. Implementation</a></li>
+<li><a class="reference internal" href="#complexity">1.6.7.5. Complexity</a><ul>
+<li><a class="reference internal" href="#training">1.6.7.5.1. Training</a></li>
+<li><a class="reference internal" href="#transform">1.6.7.5.2. Transform</a></li>
 </ul>
 </li>
 </ul>
@@ -670,8 +671,88 @@ classification using nearest centroid with different shrink thresholds.</p></li>
 </div>
 </div>
 </div>
+<div class="section" id="nearest-neighbors-transformer">
+<span id="neighbors-transformer"></span><h2>1.6.6. Nearest Neighbors Transformer<a class="headerlink" href="#nearest-neighbors-transformer" title="Permalink to this headline">¶</a></h2>
+<p>Many scikit-learn estimators rely on nearest neighbors: Several classifiers and
+regressors such as <a class="reference internal" href="generated/sklearn.neighbors.KNeighborsClassifier.html#sklearn.neighbors.KNeighborsClassifier" title="sklearn.neighbors.KNeighborsClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">KNeighborsClassifier</span></code></a> and
+<a class="reference internal" href="generated/sklearn.neighbors.KNeighborsRegressor.html#sklearn.neighbors.KNeighborsRegressor" title="sklearn.neighbors.KNeighborsRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">KNeighborsRegressor</span></code></a>, but also some clustering methods such as
+<a class="reference internal" href="generated/sklearn.cluster.DBSCAN.html#sklearn.cluster.DBSCAN" title="sklearn.cluster.DBSCAN"><code class="xref py py-class docutils literal notranslate"><span class="pre">DBSCAN</span></code></a> and
+<a class="reference internal" href="generated/sklearn.cluster.SpectralClustering.html#sklearn.cluster.SpectralClustering" title="sklearn.cluster.SpectralClustering"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpectralClustering</span></code></a>, and some manifold embeddings such
+as <a class="reference internal" href="generated/sklearn.manifold.TSNE.html#sklearn.manifold.TSNE" title="sklearn.manifold.TSNE"><code class="xref py py-class docutils literal notranslate"><span class="pre">TSNE</span></code></a> and <a class="reference internal" href="generated/sklearn.manifold.Isomap.html#sklearn.manifold.Isomap" title="sklearn.manifold.Isomap"><code class="xref py py-class docutils literal notranslate"><span class="pre">Isomap</span></code></a>.</p>
+<p>All these estimators can compute internally the nearest neighbors, but most of
+them also accept precomputed nearest neighbors <a class="reference internal" href="../glossary.html#term-sparse-graph"><span class="xref std std-term">sparse graph</span></a>,
+as given by <a class="reference internal" href="generated/sklearn.neighbors.kneighbors_graph.html#sklearn.neighbors.kneighbors_graph" title="sklearn.neighbors.kneighbors_graph"><code class="xref py py-func docutils literal notranslate"><span class="pre">kneighbors_graph</span></code></a> and
+<a class="reference internal" href="generated/sklearn.neighbors.radius_neighbors_graph.html#sklearn.neighbors.radius_neighbors_graph" title="sklearn.neighbors.radius_neighbors_graph"><code class="xref py py-func docutils literal notranslate"><span class="pre">radius_neighbors_graph</span></code></a>. With mode
+<code class="docutils literal notranslate"><span class="pre">mode='connectivity'</span></code>, these functions return a binary adjacency sparse graph
+as required, for instance, in <a class="reference internal" href="generated/sklearn.cluster.SpectralClustering.html#sklearn.cluster.SpectralClustering" title="sklearn.cluster.SpectralClustering"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpectralClustering</span></code></a>.
+Whereas with <code class="docutils literal notranslate"><span class="pre">mode='distance'</span></code>, they return a distance sparse graph as required,
+for instance, in <a class="reference internal" href="generated/sklearn.cluster.DBSCAN.html#sklearn.cluster.DBSCAN" title="sklearn.cluster.DBSCAN"><code class="xref py py-class docutils literal notranslate"><span class="pre">DBSCAN</span></code></a>. To include these functions in
+a scikit-learn pipeline, one can also use the corresponding classes
+<a class="reference internal" href="generated/sklearn.neighbors.KNeighborsTransformer.html#sklearn.neighbors.KNeighborsTransformer" title="sklearn.neighbors.KNeighborsTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">KNeighborsTransformer</span></code></a> and <a class="reference internal" href="generated/sklearn.neighbors.RadiusNeighborsTransformer.html#sklearn.neighbors.RadiusNeighborsTransformer" title="sklearn.neighbors.RadiusNeighborsTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">RadiusNeighborsTransformer</span></code></a>.
+The benefits of this sparse graph API are multiple.</p>
+<p>First, the precomputed graph can be re-used multiple times, for instance while
+varying a parameter of the estimator. This can be done manually by the user, or
+using the caching properties of the scikit-learn pipeline:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.manifold</span> <span class="k">import</span> <span class="n">Isomap</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="k">import</span> <span class="n">KNeighborsTransformer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="k">import</span> <span class="n">make_pipeline</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">estimator</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">KNeighborsTransformer</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;distance&#39;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">Isomap</span><span class="p">(</span><span class="n">neighbors_algorithm</span><span class="o">=</span><span class="s1">&#39;precomputed&#39;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">memory</span><span class="o">=</span><span class="s1">&#39;/path/to/cache&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Second, precomputing the graph can give finer control on the nearest neighbors
+estimation, for instance enabling multiprocessing though the parameter
+<code class="docutils literal notranslate"><span class="pre">n_jobs</span></code>, which might not be available in all estimators.</p>
+<p>Finally, the precomputation can be performed by custom estimators to use
+different implementations, such as approximate nearest neighbors methods, or
+implementation with special data types. The precomputed neighbors
+<a class="reference internal" href="../glossary.html#term-sparse-graph"><span class="xref std std-term">sparse graph</span></a> needs to be formatted as in
+<a class="reference internal" href="generated/sklearn.neighbors.radius_neighbors_graph.html#sklearn.neighbors.radius_neighbors_graph" title="sklearn.neighbors.radius_neighbors_graph"><code class="xref py py-func docutils literal notranslate"><span class="pre">radius_neighbors_graph</span></code></a> output:</p>
+<ul class="simple">
+<li><p>a CSR matrix (although COO, CSC or LIL will be accepted).</p></li>
+<li><p>only explicitly store nearest neighborhoods of each sample with respect to the
+training data. This should include those at 0 distance from a query point,
+including the matrix diagonal when computing the nearest neighborhoods
+between the training data and itself.</p></li>
+<li><p>each row’s <code class="docutils literal notranslate"><span class="pre">data</span></code> should store the distance in increasing order (optional.
+Unsorted data will be stable-sorted, adding a computational overhead).</p></li>
+<li><p>all values in data should be non-negative.</p></li>
+<li><p>there should be no duplicate <code class="docutils literal notranslate"><span class="pre">indices</span></code> in any row
+(see <a class="reference external" href="https://github.com/scipy/scipy/issues/5807">https://github.com/scipy/scipy/issues/5807</a>).</p></li>
+<li><p>if the algorithm being passed the precomputed matrix uses k nearest neighbors
+(as opposed to radius neighborhood), at least k neighbors must be stored in
+each row (or k+1, as explained in the following note).</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When a specific number of neighbors is queried (using
+<a class="reference internal" href="generated/sklearn.neighbors.KNeighborsTransformer.html#sklearn.neighbors.KNeighborsTransformer" title="sklearn.neighbors.KNeighborsTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">KNeighborsTransformer</span></code></a>), the definition of <code class="docutils literal notranslate"><span class="pre">n_neighbors</span></code> is ambiguous
+since it can either include each training point as its own neighbor, or
+exclude them. Neither choice is perfect, since including them leads to a
+different number of non-self neighbors during training and testing, while
+excluding them leads to a difference between <code class="docutils literal notranslate"><span class="pre">fit(X).transform(X)</span></code> and
+<code class="docutils literal notranslate"><span class="pre">fit_transform(X)</span></code>, which is against scikit-learn API.
+In <a class="reference internal" href="generated/sklearn.neighbors.KNeighborsTransformer.html#sklearn.neighbors.KNeighborsTransformer" title="sklearn.neighbors.KNeighborsTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">KNeighborsTransformer</span></code></a> we use the definition which includes each
+training point as its own neighbor in the count of <code class="docutils literal notranslate"><span class="pre">n_neighbors</span></code>. However,
+for compatibility reasons with other estimators which use the other
+definition, one extra neighbor will be computed when <code class="docutils literal notranslate"><span class="pre">mode</span> <span class="pre">==</span> <span class="pre">'distance'</span></code>.
+To maximise compatiblity with all estimators, a safe choice is to always
+include one extra neighbor in a custom nearest neighbors estimator, since
+unnecessary neighbors will be filtered by following estimators.</p>
+</div>
+<div class="topic">
+<p class="topic-title first">Examples:</p>
+<ul class="simple">
+<li><p><span class="xref std std-ref">sphx_glr_auto_examples_neighbors_neighbors_in_pipeline_api.py</span>: an
+example of pipelining KNeighborsTransformer and TSNE, and of two custom
+nearest neighbors estimators based on external packages.</p></li>
+</ul>
+</div>
+</div>
 <div class="section" id="neighborhood-components-analysis">
-<span id="nca"></span><h2>1.6.6. Neighborhood Components Analysis<a class="headerlink" href="#neighborhood-components-analysis" title="Permalink to this headline">¶</a></h2>
+<span id="nca"></span><h2>1.6.7. Neighborhood Components Analysis<a class="headerlink" href="#neighborhood-components-analysis" title="Permalink to this headline">¶</a></h2>
 <p>Neighborhood Components Analysis (NCA, <a class="reference internal" href="generated/sklearn.neighbors.NeighborhoodComponentsAnalysis.html#sklearn.neighbors.NeighborhoodComponentsAnalysis" title="sklearn.neighbors.NeighborhoodComponentsAnalysis"><code class="xref py py-class docutils literal notranslate"><span class="pre">NeighborhoodComponentsAnalysis</span></code></a>)
 is a distance metric learning algorithm which aims to improve the accuracy of
 nearest neighbors classification compared to the standard Euclidean distance.
@@ -692,7 +773,7 @@ from the same class as sample 3, guaranteeing that the latter will be well
 classified. See the <a class="reference internal" href="#nca-mathematical-formulation"><span class="std std-ref">mathematical formulation</span></a>
 for more details.</p>
 <div class="section" id="id4">
-<h3>1.6.6.1. Classification<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<h3>1.6.7.1. Classification<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <p>Combined with a nearest neighbors classifier (<a class="reference internal" href="generated/sklearn.neighbors.KNeighborsClassifier.html#sklearn.neighbors.KNeighborsClassifier" title="sklearn.neighbors.KNeighborsClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">KNeighborsClassifier</span></code></a>),
 NCA is attractive for classification because it can naturally handle
 multi-class problems without any increase in the model size, and does not
@@ -730,7 +811,7 @@ Neighborhood Components Analysis classification on the iris dataset, when
 training and scoring on only two features, for visualisation purposes.</p>
 </div>
 <div class="section" id="dimensionality-reduction">
-<span id="nca-dim-reduction"></span><h3>1.6.6.2. Dimensionality reduction<a class="headerlink" href="#dimensionality-reduction" title="Permalink to this headline">¶</a></h3>
+<span id="nca-dim-reduction"></span><h3>1.6.7.2. Dimensionality reduction<a class="headerlink" href="#dimensionality-reduction" title="Permalink to this headline">¶</a></h3>
 <p>NCA can be used to perform supervised dimensionality reduction. The input data
 are projected onto a linear subspace consisting of the directions which
 minimize the NCA objective. The desired dimensionality can be set using the
@@ -755,7 +836,7 @@ by each method. Each data sample belongs to one of 10 classes.</p>
 </div>
 </div>
 <div class="section" id="mathematical-formulation">
-<span id="nca-mathematical-formulation"></span><h3>1.6.6.3. Mathematical formulation<a class="headerlink" href="#mathematical-formulation" title="Permalink to this headline">¶</a></h3>
+<span id="nca-mathematical-formulation"></span><h3>1.6.7.3. Mathematical formulation<a class="headerlink" href="#mathematical-formulation" title="Permalink to this headline">¶</a></h3>
 <p>The goal of NCA is to learn an optimal linear transformation matrix of size
 <code class="docutils literal notranslate"><span class="pre">(n_components,</span> <span class="pre">n_features)</span></code>, which maximises the sum over all samples
 <span class="math notranslate nohighlight">\(i\)</span> of the probability <span class="math notranslate nohighlight">\(p_i\)</span> that <span class="math notranslate nohighlight">\(i\)</span> is correctly
@@ -774,7 +855,7 @@ space:</p>
 \[p_{i j} = \frac{\exp(-||L x_i - L x_j||^2)}{\sum\limits_{k \ne
           i} {\exp{-(||L x_i - L x_k||^2)}}} , \quad p_{i i} = 0\]</div>
 <div class="section" id="mahalanobis-distance">
-<h4>1.6.6.3.1. Mahalanobis distance<a class="headerlink" href="#mahalanobis-distance" title="Permalink to this headline">¶</a></h4>
+<h4>1.6.7.3.1. Mahalanobis distance<a class="headerlink" href="#mahalanobis-distance" title="Permalink to this headline">¶</a></h4>
 <p>NCA can be seen as learning a (squared) Mahalanobis distance metric:</p>
 <div class="math notranslate nohighlight">
 \[|| L(x_i - x_j)||^2 = (x_i - x_j)^TM(x_i - x_j),\]</div>
@@ -783,7 +864,7 @@ space:</p>
 </div>
 </div>
 <div class="section" id="implementation">
-<h3>1.6.6.4. Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h3>
+<h3>1.6.7.4. Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h3>
 <p>This implementation follows what is explained in the original paper <a class="footnote-reference brackets" href="#id6" id="id5">1</a>. For
 the optimisation method, it currently uses scipy’s L-BFGS-B with a full
 gradient computation at each iteration, to avoid to tune the learning rate and
@@ -792,9 +873,9 @@ provide stable learning.</p>
 <a class="reference internal" href="generated/sklearn.neighbors.NeighborhoodComponentsAnalysis.html#sklearn.neighbors.NeighborhoodComponentsAnalysis.fit" title="sklearn.neighbors.NeighborhoodComponentsAnalysis.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">NeighborhoodComponentsAnalysis.fit</span></code></a> for further information.</p>
 </div>
 <div class="section" id="complexity">
-<h3>1.6.6.5. Complexity<a class="headerlink" href="#complexity" title="Permalink to this headline">¶</a></h3>
+<h3>1.6.7.5. Complexity<a class="headerlink" href="#complexity" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="training">
-<h4>1.6.6.5.1. Training<a class="headerlink" href="#training" title="Permalink to this headline">¶</a></h4>
+<h4>1.6.7.5.1. Training<a class="headerlink" href="#training" title="Permalink to this headline">¶</a></h4>
 <p>NCA stores a matrix of pairwise distances, taking <code class="docutils literal notranslate"><span class="pre">n_samples</span> <span class="pre">**</span> <span class="pre">2</span></code> memory.
 Time complexity depends on the number of iterations done by the optimisation
 algorithm. However, one can set the maximum number of iterations with the
@@ -802,7 +883,7 @@ argument <code class="docutils literal notranslate"><span class="pre">max_iter</
 <code class="docutils literal notranslate"><span class="pre">O(n_components</span> <span class="pre">x</span> <span class="pre">n_samples</span> <span class="pre">x</span> <span class="pre">min(n_samples,</span> <span class="pre">n_features))</span></code>.</p>
 </div>
 <div class="section" id="transform">
-<h4>1.6.6.5.2. Transform<a class="headerlink" href="#transform" title="Permalink to this headline">¶</a></h4>
+<h4>1.6.7.5.2. Transform<a class="headerlink" href="#transform" title="Permalink to this headline">¶</a></h4>
 <p>Here the <code class="docutils literal notranslate"><span class="pre">transform</span></code> operation returns <span class="math notranslate nohighlight">\(LX^T\)</span>, therefore its time
 complexity equals <code class="docutils literal notranslate"><span class="pre">n_components</span> <span class="pre">*</span> <span class="pre">n_features</span> <span class="pre">*</span> <span class="pre">n_samples_test</span></code>. There is no
 added space complexity in the operation.</p>
