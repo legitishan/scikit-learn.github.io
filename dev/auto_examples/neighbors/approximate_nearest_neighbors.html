@@ -173,7 +173,6 @@
     <p class="citing">Please <b><a href="../../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
     <ul>
 <li><a class="reference internal" href="#">Approximate nearest neighbors in TSNE</a><ul>
-<li><a class="reference internal" href="#benchmarking-on-mnist-2000">Benchmarking on MNIST_2000:</a></li>
 <li><a class="reference internal" href="#benchmarking-on-mnist-10000">Benchmarking on MNIST_10000:</a></li>
 </ul>
 </li>
@@ -201,28 +200,28 @@
 <div class="sphx-glr-example-title section" id="approximate-nearest-neighbors-in-tsne">
 <span id="sphx-glr-auto-examples-neighbors-approximate-nearest-neighbors-py"></span><h1>Approximate nearest neighbors in TSNE<a class="headerlink" href="#approximate-nearest-neighbors-in-tsne" title="Permalink to this headline">¶</a></h1>
 <p>This example presents how to chain KNeighborsTransformer and TSNE in a
-pipeline, and how to wrap the packages <code class="docutils literal notranslate"><span class="pre">annoy</span></code> and <code class="docutils literal notranslate"><span class="pre">nmslib</span></code> to replace
-KNeighborsTransformer and perform approximate nearest neighbors.
-These package can be installed with <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">annoy</span> <span class="pre">nmslib</span></code>.</p>
-<p>Note: Currently TSNE(metric=’precomputed’) does not modify the precomputed
+pipeline. It also shows how to wrap the packages <code class="docutils literal notranslate"><span class="pre">annoy</span></code> and <code class="docutils literal notranslate"><span class="pre">nmslib</span></code> to
+replace KNeighborsTransformer and perform approximate nearest neighbors.
+These packages can be installed with <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">annoy</span> <span class="pre">nmslib</span></code>.</p>
+<p>Note: Currently <code class="docutils literal notranslate"><span class="pre">TSNE(metric='precomputed')</span></code> does not modify the precomputed
 distances, and thus assumes that precomputed euclidean distances are squared.
 In future versions, a parameter in TSNE will control the optional squaring of
 precomputed distances (see #12401).</p>
-<p>Note: In <code class="xref py py-class docutils literal notranslate"><span class="pre">KNeighborsTransformer</span></code> we use the definition which includes
-each training point as its own neighbor in the count of <code class="docutils literal notranslate"><span class="pre">n_neighbors</span></code>, and for
+<p>Note: In KNeighborsTransformer we use the definition which includes each
+training point as its own neighbor in the count of <code class="docutils literal notranslate"><span class="pre">n_neighbors</span></code>, and for
 compatibility reasons, one extra neighbor is computed when
 <code class="docutils literal notranslate"><span class="pre">mode</span> <span class="pre">==</span> <span class="pre">'distance'</span></code>. Please note that we do the same in the proposed wrappers.</p>
 <p>Sample output:</p>
-<div class="section" id="benchmarking-on-mnist-2000">
-<h2>Benchmarking on MNIST_2000:<a class="headerlink" href="#benchmarking-on-mnist-2000" title="Permalink to this headline">¶</a></h2>
-<p>AnnoyTransformer:                    0.583 sec
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a>`
+Benchmarking on MNIST_2000:
+—————————
+AnnoyTransformer:                    0.583 sec
 NMSlibTransformer:                   0.321 sec
 KNeighborsTransformer:               1.225 sec
 TSNE with AnnoyTransformer:          4.903 sec
 TSNE with NMSlibTransformer:         5.009 sec
 TSNE with KNeighborsTransformer:     6.210 sec
 TSNE with internal NearestNeighbors: 6.365 sec</p>
-</div>
 <div class="section" id="benchmarking-on-mnist-10000">
 <h2>Benchmarking on MNIST_10000:<a class="headerlink" href="#benchmarking-on-mnist-10000" title="Permalink to this headline">¶</a></h2>
 <p>AnnoyTransformer:                    4.457 sec
@@ -231,7 +230,8 @@ KNeighborsTransformer:               30.680 sec
 TSNE with AnnoyTransformer:          30.225 sec
 TSNE with NMSlibTransformer:         43.295 sec
 TSNE with KNeighborsTransformer:     64.845 sec
-TSNE with internal NearestNeighbors: 64.984 sec</p>
+TSNE with internal NearestNeighbors: 64.984 sec
+<a href="#id3"><span class="problematic" id="id4">``</span></a><a href="#id5"><span class="problematic" id="id6">`</span></a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: Tom Dupre la Tour</span>
 <span class="c1">#</span>
 <span class="c1"># License: BSD 3 clause</span>
