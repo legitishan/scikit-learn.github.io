@@ -27,7 +27,7 @@
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="sklearn.isotonic.IsotonicRegression" href="sklearn.isotonic.IsotonicRegression.html" />
-    <link rel="prev" title="sklearn.inspection.permutation_importance" href="sklearn.inspection.permutation_importance.html" />
+    <link rel="prev" title="sklearn.inspection.PartialDependenceDisplay" href="sklearn.inspection.PartialDependenceDisplay.html" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -122,14 +122,14 @@
         <div class="rel">
     
         <div class="rellink">
-        <a href="sklearn.inspection.permutation_importance.html"
+        <a href="sklearn.inspection.PartialDependenceDisplay.html"
         accesskey="P">Previous
         <br/>
         <span class="smallrellink">
         sklearn.inspe...
         </span>
             <span class="hiddenrellink">
-            sklearn.inspection.permutation_importance
+            sklearn.inspection.PartialDependenceDisplay
             </span>
         </a>
         </div>
@@ -197,16 +197,18 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.inspection" title="sklearn.inspection"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.inspection</span></code></a>.plot_partial_dependence<a class="headerlink" href="#sklearn-inspection-plot-partial-dependence" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.inspection.plot_partial_dependence">
-<code class="sig-prename descclassname">sklearn.inspection.</code><code class="sig-name descname">plot_partial_dependence</code><span class="sig-paren">(</span><em class="sig-param">estimator</em>, <em class="sig-param">X</em>, <em class="sig-param">features</em>, <em class="sig-param">feature_names=None</em>, <em class="sig-param">target=None</em>, <em class="sig-param">response_method='auto'</em>, <em class="sig-param">n_cols=3</em>, <em class="sig-param">grid_resolution=100</em>, <em class="sig-param">percentiles=(0.05</em>, <em class="sig-param">0.95)</em>, <em class="sig-param">method='auto'</em>, <em class="sig-param">n_jobs=None</em>, <em class="sig-param">verbose=0</em>, <em class="sig-param">fig=None</em>, <em class="sig-param">line_kw=None</em>, <em class="sig-param">contour_kw=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/38af35db9/sklearn/inspection/partial_dependence.py#L373"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.inspection.plot_partial_dependence" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sklearn.inspection.</code><code class="sig-name descname">plot_partial_dependence</code><span class="sig-paren">(</span><em class="sig-param">estimator</em>, <em class="sig-param">X</em>, <em class="sig-param">features</em>, <em class="sig-param">feature_names=None</em>, <em class="sig-param">target=None</em>, <em class="sig-param">response_method='auto'</em>, <em class="sig-param">n_cols=3</em>, <em class="sig-param">grid_resolution=100</em>, <em class="sig-param">percentiles=(0.05</em>, <em class="sig-param">0.95)</em>, <em class="sig-param">method='auto'</em>, <em class="sig-param">n_jobs=None</em>, <em class="sig-param">verbose=0</em>, <em class="sig-param">fig=None</em>, <em class="sig-param">line_kw=None</em>, <em class="sig-param">contour_kw=None</em>, <em class="sig-param">ax=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e6a4dc97c/sklearn/inspection/partial_dependence.py#L376"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.inspection.plot_partial_dependence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Partial dependence plots.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">len(features)</span></code> plots are arranged in a grid with <code class="docutils literal notranslate"><span class="pre">n_cols</span></code>
-columns. Two-way partial dependence plots are plotted as contour plots.</p>
+columns. Two-way partial dependence plots are plotted as contour plots. The
+deciles of the feature values will be shown with tick marks on the x-axes
+for one-way plots, and on both axes for two-way plots.</p>
 <p>Read more in the <a class="reference internal" href="../partial_dependence.html#partial-dependence"><span class="std std-ref">User Guide</span></a>.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>estimator</strong><span class="classifier">BaseEstimator</span></dt><dd><p>A fitted estimator object implementing <a class="reference internal" href="../../glossary.html#term-predict"><span class="xref std std-term">predict</span></a>,
-:term:predict_proba`, or <a class="reference internal" href="../../glossary.html#term-decision-function"><span class="xref std std-term">decision_function</span></a>.
+<a class="reference internal" href="../../glossary.html#term-predict-proba"><span class="xref std std-term">predict_proba</span></a>, or <a class="reference internal" href="../../glossary.html#term-decision-function"><span class="xref std std-term">decision_function</span></a>.
 Multioutput-multiclass classifiers are not supported.</p>
 </dd>
 <dt><strong>X</strong><span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>The data to use to build the grid of values on which the dependence
@@ -239,7 +241,8 @@ and we revert to <a class="reference internal" href="../../glossary.html#term-de
 <code class="docutils literal notranslate"><span class="pre">method</span></code> is ‘recursion’, the response is always the output of
 <a class="reference internal" href="../../glossary.html#term-decision-function"><span class="xref std std-term">decision_function</span></a>.</p>
 </dd>
-<dt><strong>n_cols</strong><span class="classifier">int, optional (default=3)</span></dt><dd><p>The maximum number of columns in the grid plot.</p>
+<dt><strong>n_cols</strong><span class="classifier">int, optional (default=3)</span></dt><dd><p>The maximum number of columns in the grid plot. Only active when <code class="docutils literal notranslate"><span class="pre">ax</span></code>
+is a single axis or <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 </dd>
 <dt><strong>grid_resolution</strong><span class="classifier">int, optional (default=100)</span></dt><dd><p>The number of equally spaced points on the axes of the plots, for each
 target feature.</p>
@@ -278,13 +281,44 @@ for more details.</p>
 </dd>
 <dt><strong>fig</strong><span class="classifier">Matplotlib figure object, optional (default=None)</span></dt><dd><p>A figure object onto which the plots will be drawn, after the figure
 has been cleared. By default, a new one is created.</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.22: </span><code class="docutils literal notranslate"><span class="pre">fig</span></code> will be removed in 0.24.</p>
+</div>
 </dd>
 <dt><strong>line_kw</strong><span class="classifier">dict, optional</span></dt><dd><p>Dict with keywords passed to the <code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot.plot</span></code> call.
 For one-way partial dependence plots.</p>
 </dd>
-<dt><strong>contour_kw</strong><span class="classifier">dict, optional</span></dt><dd><p>Dict with keywords passed to the <code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot.plot</span></code> call.
+<dt><strong>contour_kw</strong><span class="classifier">dict, optional</span></dt><dd><p>Dict with keywords passed to the <code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot.contourf</span></code> call.
 For two-way partial dependence plots.</p>
 </dd>
+<dt><strong>ax</strong><span class="classifier">Matplotlib axes or array-like of Matplotlib axes, default=None</span></dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>If a single axis is passed in, it is treated as a bounding axes</dt><dd><p>and a grid of partial depedendence plots will be drawn within
+these bounds. The <code class="docutils literal notranslate"><span class="pre">n_cols</span></code> parameter controls the number of
+columns in the grid.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>If an array-like of axes are passed in, the partial dependence</dt><dd><p>plots will be drawn directly into these axes.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>If <code class="docutils literal notranslate"><span class="pre">None</span></code>, a figure and a bounding axes is created and treated</dt><dd><p>as the single axes case.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.22.</span></p>
+</div>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>display: <a class="reference internal" href="sklearn.inspection.PartialDependenceDisplay.html#sklearn.inspection.PartialDependenceDisplay" title="sklearn.inspection.PartialDependenceDisplay"><code class="xref py py-class docutils literal notranslate"><span class="pre">PartialDependenceDisplay</span></code></a></dt><dd></dd>
 </dl>
 </dd>
 </dl>
@@ -320,9 +354,13 @@ dependence values are incorrect for ‘recursion’. This is not relevant for
 
 <div class="section" id="examples-using-sklearn-inspection-plot-partial-dependence">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">sklearn.inspection.plot_partial_dependence</span></code><a class="headerlink" href="#examples-using-sklearn-inspection-plot-partial-dependence" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Partial dependence plots show the dependence between the target function [2]_ and a set of &#x27;tar..."><div class="figure align-default" id="id1">
+<div class="sphx-glr-thumbcontainer" tooltip="    See also :ref:`sphx_glr_auto_examples_plot_roc_curve_visualization_api.py`"><div class="figure align-default" id="id1">
+<img alt="../../_images/sphx_glr_plot_partial_dependence_visualization_api_thumb.png" src="../../_images/sphx_glr_plot_partial_dependence_visualization_api_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/plot_partial_dependence_visualization_api.html#sphx-glr-auto-examples-plot-partial-dependence-visualization-api-py"><span class="std std-ref">Advanced Plotting With Partial Dependence</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Partial dependence plots show the dependence between the target function [2]_ and a set of &#x27;tar..."><div class="figure align-default" id="id2">
 <img alt="../../_images/sphx_glr_plot_partial_dependence_thumb.png" src="../../_images/sphx_glr_plot_partial_dependence_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/inspection/plot_partial_dependence.html#sphx-glr-auto-examples-inspection-plot-partial-dependence-py"><span class="std std-ref">Partial Dependence Plots</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/inspection/plot_partial_dependence.html#sphx-glr-auto-examples-inspection-plot-partial-dependence-py"><span class="std std-ref">Partial Dependence Plots</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="clearer"></div></div>
 </div>
@@ -342,7 +380,7 @@ dependence values are incorrect for ‘recursion’. This is not relevant for
      <div class="rel">
     
     <div class="buttonPrevious">
-      <a href="sklearn.inspection.permutation_importance.html">Previous
+      <a href="sklearn.inspection.PartialDependenceDisplay.html">Previous
       </a>
     </div>
     <div class="buttonNext">

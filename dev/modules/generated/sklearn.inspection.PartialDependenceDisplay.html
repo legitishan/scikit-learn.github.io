@@ -1,0 +1,381 @@
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+  
+    <title>sklearn.inspection.PartialDependenceDisplay &#8212; scikit-learn 0.22.dev0 documentation</title>
+  <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../../_static/css/bootstrap.min.css" media="screen" />
+  <link rel="stylesheet" href="../../_static/css/bootstrap-responsive.css"/>
+
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/copybutton.js"></script>
+    <script type="text/javascript" src="../../_static/js/extra.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_SVG"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="sklearn.inspection.plot_partial_dependence" href="sklearn.inspection.plot_partial_dependence.html" />
+    <link rel="prev" title="sklearn.inspection.permutation_importance" href="sklearn.inspection.permutation_importance.html" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../../_static/js/bootstrap.min.js" type="text/javascript"></script>
+  <script>
+     VERSION_SUBDIR = (function(groups) {
+         return groups ? groups[1] : null;
+     })(location.href.match(/^https?:\/\/scikit-learn.org\/([^\/]+)/));
+  </script>
+  <link rel="canonical" href="http://scikit-learn.org/stable/modules/generated/sklearn.inspection.PartialDependenceDisplay.html" />
+
+  <script type="text/javascript">
+    $("div.buttonNext, div.buttonPrevious").hover(
+       function () {
+           $(this).css('background-color', '#FF9C34');
+       },
+       function () {
+           $(this).css('background-color', '#A7D6E2');
+       }
+    );
+    function showMenu() {
+      var topNav = document.getElementById("scikit-navbar");
+      if (topNav.className === "navbar") {
+          topNav.className += " responsive";
+      } else {
+          topNav.className = "navbar";
+      }
+    };
+  </script>
+
+  </head><body>
+
+<div class="header-wrapper">
+    <div class="header">
+        <p class="logo"><a href="../../index.html">
+            <img src="../../_static/scikit-learn-logo-small.png" alt="Logo"/>
+        </a>
+        </p><div class="navbar" id="scikit-navbar">
+            <ul>
+                <li><a href="../../index.html">Home</a></li>
+                <li><a href="../../install.html">Installation</a></li>
+                <li class="btn-li"><div class="btn-group">
+              <a href="../../documentation.html">Documentation</a>
+              <a class="btn dropdown-toggle" data-toggle="dropdown">
+                 <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+            <li class="link-title">Scikit-learn <script>document.write(DOCUMENTATION_OPTIONS.VERSION + (VERSION_SUBDIR ? " (" + VERSION_SUBDIR + ")" : ""));</script></li>
+            <li><a href="../../tutorial/index.html">Tutorials</a></li>
+            <li><a href="../../user_guide.html">User guide</a></li>
+            <li><a href="../classes.html">API</a></li>
+            <li><a href="../../glossary.html">Glossary</a></li>
+            <li><a href="../../faq.html">FAQ</a></li>
+            <li><a href="../../developers/index.html">Development</a></li>
+            <li><a href="../../roadmap.html">Roadmap</a></li>
+            <li><a href="../../about.html">About us</a></li>
+            <li class="divider"></li>
+                <script>if (VERSION_SUBDIR != "stable") document.write('<li><a href="http://scikit-learn.org/stable/documentation.html">Stable version</a></li>')</script>
+                <script>if (VERSION_SUBDIR != "dev") document.write('<li><a href="http://scikit-learn.org/dev/documentation.html">Development version</a></li>')</script>
+                <li><a href="http://scikit-learn.org/dev/versions.html">All available versions</a></li>
+                <li><a href="../../_downloads/scikit-learn-docs.pdf">PDF documentation</a></li>
+              </ul>
+            </div>
+        </li>
+            <li><a href="../../auto_examples/index.html">Examples</a></li>
+            </ul>
+            <a href="javascript:void(0);" onclick="showMenu()">
+                <div class="nav-icon">
+                    <div class="hamburger-line"></div>
+                    <div class="hamburger-line"></div>
+                    <div class="hamburger-line"></div>
+                </div>
+            </a>
+            <div class="search_form">
+                <div class="gcse-search" id="cse" style="width: 100%;"></div>
+            </div>
+        </div> <!-- end navbar --></div>
+</div>
+
+
+<!-- GitHub "fork me" ribbon -->
+<a href="https://github.com/scikit-learn/scikit-learn">
+  <img class="fork-me"
+       style="position: absolute; top: 0; right: 0; border: 0;"
+       src="../../_static/img/forkme.png"
+       alt="Fork me on GitHub" />
+</a>
+
+<div class="content-wrapper">
+    <div class="sphinxsidebar">
+    <div class="sphinxsidebarwrapper">
+        <div class="rel">
+    
+        <div class="rellink">
+        <a href="sklearn.inspection.permutation_importance.html"
+        accesskey="P">Previous
+        <br/>
+        <span class="smallrellink">
+        sklearn.inspe...
+        </span>
+            <span class="hiddenrellink">
+            sklearn.inspection.permutation_importance
+            </span>
+        </a>
+        </div>
+            <div class="spacer">
+            &nbsp;
+            </div>
+        <div class="rellink">
+        <a href="sklearn.inspection.plot_partial_dependence.html"
+        accesskey="N">Next
+        <br/>
+        <span class="smallrellink">
+        sklearn.inspe...
+        </span>
+            <span class="hiddenrellink">
+            sklearn.inspection.plot_partial_dependence
+            </span>
+        </a>
+        </div>
+
+    <!-- Ad a link to the 'up' page -->
+        <div class="spacer">
+        &nbsp;
+        </div>
+        <div class="rellink">
+        <a href="../classes.html">
+        Up
+        <br/>
+        <span class="smallrellink">
+        API Reference
+        </span>
+            <span class="hiddenrellink">
+            API Reference
+            </span>
+            
+        </a>
+        </div>
+    </div>
+    
+      <p class="doc-version"><b>scikit-learn v0.22.dev0</b><br/>
+      <a href="http://scikit-learn.org/dev/versions.html">Other versions</a></p>
+    <p class="citing">Please <b><a href="../../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
+    <ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.inspection</span></code>.PartialDependenceDisplay</a></li>
+</ul>
+
+    </div>
+</div>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" checked />
+<label for="nav-trigger"></label>
+
+
+
+
+      <div class="content">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="sklearn-inspection-partialdependencedisplay">
+<h1><a class="reference internal" href="../classes.html#module-sklearn.inspection" title="sklearn.inspection"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.inspection</span></code></a>.PartialDependenceDisplay<a class="headerlink" href="#sklearn-inspection-partialdependencedisplay" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="sklearn.inspection.PartialDependenceDisplay">
+<em class="property">class </em><code class="sig-prename descclassname">sklearn.inspection.</code><code class="sig-name descname">PartialDependenceDisplay</code><span class="sig-paren">(</span><em class="sig-param">pd_results</em>, <em class="sig-param">features</em>, <em class="sig-param">feature_names</em>, <em class="sig-param">target_idx</em>, <em class="sig-param">pdp_lim</em>, <em class="sig-param">deciles</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e6a4dc97c/sklearn/inspection/partial_dependence.py#L657"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.inspection.PartialDependenceDisplay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Partial Dependence Plot (PDP) visualization.</p>
+<p>It is recommended to use
+<a class="reference internal" href="sklearn.inspection.plot_partial_dependence.html#sklearn.inspection.plot_partial_dependence" title="sklearn.inspection.plot_partial_dependence"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_partial_dependence</span></code></a> to create a
+<a class="reference internal" href="#sklearn.inspection.PartialDependenceDisplay" title="sklearn.inspection.PartialDependenceDisplay"><code class="xref py py-class docutils literal notranslate"><span class="pre">PartialDependenceDisplay</span></code></a>. All parameters are
+stored as attributes.</p>
+<p>Read more in
+<a class="reference internal" href="../../auto_examples/plot_partial_dependence_visualization_api.html#sphx-glr-auto-examples-plot-partial-dependence-visualization-api-py"><span class="std std-ref">Advanced Plotting With Partial Dependence</span></a>
+and the <a class="reference internal" href="../../visualizations.html#visualizations"><span class="std std-ref">User Guide</span></a>.</p>
+<blockquote>
+<div><div class="versionadded">
+<p><span class="versionmodified added">New in version 0.22.</span></p>
+</div>
+</div></blockquote>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>pd_results</strong><span class="classifier">list of (ndarray, ndarray)</span></dt><dd><p>Results of <a class="reference internal" href="sklearn.inspection.partial_dependence.html#sklearn.inspection.partial_dependence" title="sklearn.inspection.partial_dependence"><code class="xref py py-func docutils literal notranslate"><span class="pre">partial_dependence</span></code></a> for
+<code class="docutils literal notranslate"><span class="pre">features</span></code>. Each tuple corresponds to a (averaged_predictions, grid).</p>
+</dd>
+<dt><strong>features</strong><span class="classifier">list of (int,) or list of (int, int)</span></dt><dd><p>Indices of features for a given plot. A tuple of one integer will plot
+a partial dependence curve of one feature. A tuple of two integers will
+plot a two-way partial dependence curve as a contour plot.</p>
+</dd>
+<dt><strong>feature_names</strong><span class="classifier">list of str</span></dt><dd><p>Feature names corrsponding to the indicies in <code class="docutils literal notranslate"><span class="pre">features</span></code>.</p>
+</dd>
+<dt><strong>target_idx</strong><span class="classifier">int</span></dt><dd><ul class="simple">
+<li><p>In a multiclass setting, specifies the class for which the PDPs
+should be computed. Note that for binary classification, the
+positive class (index 1) is always used.</p></li>
+<li><p>In a multioutput setting, specifies the task for which the PDPs
+should be computed.</p></li>
+</ul>
+<p>Ignored in binary classification or classical regression settings.</p>
+</dd>
+<dt><strong>pdp_lim</strong><span class="classifier">dict</span></dt><dd><p>Global min and max average predictions, such that all plots will have
+the same scale and y limits. <code class="docutils literal notranslate"><span class="pre">pdp_lim[1]</span></code> is the global min and max for
+single partial dependence curves. <code class="docutils literal notranslate"><span class="pre">pdp_lim[2]</span></code> is the global min and
+max for two-way partial dependence curves.</p>
+</dd>
+<dt><strong>deciles</strong><span class="classifier">dict</span></dt><dd><p>Deciles for feature indices in <code class="docutils literal notranslate"><span class="pre">features</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>bounding_ax_</strong><span class="classifier">matplotlib Axes or None</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">ax</span></code> is an axes or None, the <code class="docutils literal notranslate"><span class="pre">bounding_ax_</span></code> is the axes where the
+grid of partial dependence plots are drawn. If <code class="docutils literal notranslate"><span class="pre">ax</span></code> is a list of axes
+or a numpy array of axes, <code class="docutils literal notranslate"><span class="pre">bounding_ax_</span></code> is None.</p>
+</dd>
+<dt><strong>axes_</strong><span class="classifier">ndarray of matplotlib Axes</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">ax</span></code> is an axes or None, <code class="docutils literal notranslate"><span class="pre">axes_[i,</span> <span class="pre">j]</span></code> is the axes on the i-th row
+and j-th column. If <code class="docutils literal notranslate"><span class="pre">ax</span></code> is a list of axes, <code class="docutils literal notranslate"><span class="pre">axes_[i]</span></code> is the i-th item
+in <code class="docutils literal notranslate"><span class="pre">ax</span></code>. Elements that are None corresponds to a nonexisting axes in
+that position.</p>
+</dd>
+<dt><strong>lines_</strong><span class="classifier">ndarray of matplotlib Artists</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">ax</span></code> is an axes or None, <code class="docutils literal notranslate"><span class="pre">line_[i,</span> <span class="pre">j]</span></code> is the partial dependence
+curve on the i-th row and j-th column. If <code class="docutils literal notranslate"><span class="pre">ax</span></code> is a list of axes,
+<code class="docutils literal notranslate"><span class="pre">lines_[i]</span></code> is the partial dependence curve corresponding to the i-th
+item in <code class="docutils literal notranslate"><span class="pre">ax</span></code>. Elements that are None corresponds to a nonexisting axes
+or an axes that does not include a line plot.</p>
+</dd>
+<dt><strong>contours_</strong><span class="classifier">ndarray of matplotlib Artists</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">ax</span></code> is an axes or None, <code class="docutils literal notranslate"><span class="pre">contours_[i,</span> <span class="pre">j]</span></code> is the partial dependence
+plot on the i-th row and j-th column. If <code class="docutils literal notranslate"><span class="pre">ax</span></code> is a list of axes,
+<code class="docutils literal notranslate"><span class="pre">contours_[i]</span></code> is the partial dependence plot corresponding to the i-th
+item in <code class="docutils literal notranslate"><span class="pre">ax</span></code>. Elements that are None corresponds to a nonexisting axes
+or an axes that does not include a contour plot.</p>
+</dd>
+<dt><strong>figure_</strong><span class="classifier">matplotlib Figure</span></dt><dd><p>Figure containing partial dependence plots.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sklearn.inspection.PartialDependenceDisplay.plot" title="sklearn.inspection.PartialDependenceDisplay.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>(self[, ax, n_cols, line_kw, contour_kw])</p></td>
+<td><p>Plot partial dependence plots.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="sklearn.inspection.PartialDependenceDisplay.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">pd_results</em>, <em class="sig-param">features</em>, <em class="sig-param">feature_names</em>, <em class="sig-param">target_idx</em>, <em class="sig-param">pdp_lim</em>, <em class="sig-param">deciles</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e6a4dc97c/sklearn/inspection/partial_dependence.py#L733"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.inspection.PartialDependenceDisplay.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sklearn.inspection.PartialDependenceDisplay.plot">
+<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">n_cols=3</em>, <em class="sig-param">line_kw=None</em>, <em class="sig-param">contour_kw=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e6a4dc97c/sklearn/inspection/partial_dependence.py#L742"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.inspection.PartialDependenceDisplay.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot partial dependence plots.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">Matplotlib axes or array-like of Matplotlib axes, default=None</span></dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>If a single axis is passed in, it is treated as a bounding axes</dt><dd><p>and a grid of partial depedendence plots will be drawn within
+these bounds. The <code class="docutils literal notranslate"><span class="pre">n_cols</span></code> parameter controls the number of
+columns in the grid.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>If an array-like of axes are passed in, the partial dependence</dt><dd><p>plots will be drawn directly into these axes.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>If <code class="docutils literal notranslate"><span class="pre">None</span></code>, a figure and a bounding axes is created and treated</dt><dd><p>as the single axes case.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt><strong>n_cols</strong><span class="classifier">int, default=3</span></dt><dd><p>The maximum number of columns in the grid plot. Only active when
+<code class="docutils literal notranslate"><span class="pre">ax</span></code> is a single axes or <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt><strong>line_kw</strong><span class="classifier">dict, default=None</span></dt><dd><p>Dict with keywords passed to the <code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot.plot</span></code> call.
+For one-way partial dependence plots.</p>
+</dd>
+<dt><strong>contour_kw</strong><span class="classifier">dict, default=None</span></dt><dd><p>Dict with keywords passed to the <code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot.contourf</span></code>
+call for two-way partial dependence plots.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>display: <a class="reference internal" href="#sklearn.inspection.PartialDependenceDisplay" title="sklearn.inspection.PartialDependenceDisplay"><code class="xref py py-class docutils literal notranslate"><span class="pre">PartialDependenceDisplay</span></code></a></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<div class="clearer"></div></div>
+
+
+          </div>
+        </div>
+      </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer">
+        &copy; 2007 - 2019, scikit-learn developers (BSD License).
+      <a href="../../_sources/modules/generated/sklearn.inspection.PartialDependenceDisplay.rst.txt" rel="nofollow">Show this page source</a>
+    </div>
+     <div class="rel">
+    
+    <div class="buttonPrevious">
+      <a href="sklearn.inspection.permutation_importance.html">Previous
+      </a>
+    </div>
+    <div class="buttonNext">
+      <a href="sklearn.inspection.plot_partial_dependence.html">Next
+      </a>
+    </div>
+    
+     </div>
+
+    
+    <script>
+        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+        ga('create', 'UA-22606712-2', 'auto');
+        ga('set', 'anonymizeIp', true);
+        ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    
+    <script>
+      (function() {
+        var cx = '016639176250731907682:tjtqbvtvij0';
+        var gcse = document.createElement('script'); gcse.type = 'text/javascript'; gcse.async = true;
+        gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gcse, s);
+      })();
+    </script>
+    <script src="https://scikit-learn.org/versionwarning.js"></script>
+  </body>
+</html>
