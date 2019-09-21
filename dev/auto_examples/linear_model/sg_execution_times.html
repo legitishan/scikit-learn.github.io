@@ -1,219 +1,357 @@
 
 
 <!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="Description" content="scikit-learn: machine learning in Python">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="utf-8" />
   
-    <title>Computation times &#8212; scikit-learn 0.22.dev0 documentation</title>
-  <!-- htmltitle is before nature.css - we use this hack to load bootstrap first -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="../../_static/css/bootstrap.min.css" media="screen" />
-  <link rel="stylesheet" href="../../_static/css/bootstrap-responsive.css"/>
-
-    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/gallery.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
-    <script type="text/javascript" src="../../_static/js/copybutton.js"></script>
-    <script type="text/javascript" src="../../_static/js/extra.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_SVG"></script>
-    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
-    <link rel="author" title="About these documents" href="../../about.html" />
-    <link rel="search" title="Search" href="../../search.html" />
+  <title>Computation times &mdash; scikit-learn 0.22.dev0 documentation</title>
   
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="../../_static/js/bootstrap.min.js" type="text/javascript"></script>
-  <script>
-     VERSION_SUBDIR = (function(groups) {
-         return groups ? groups[1] : null;
-     })(location.href.match(/^https?:\/\/scikit-learn.org\/([^\/]+)/));
-  </script>
   <link rel="canonical" href="http://scikit-learn.org/stable/auto_examples/linear_model/sg_execution_times.html" />
 
-  <script type="text/javascript">
-    $("div.buttonNext, div.buttonPrevious").hover(
-       function () {
-           $(this).css('background-color', '#FF9C34');
-       },
-       function () {
-           $(this).css('background-color', '#A7D6E2');
-       }
-    );
-    function showMenu() {
-      var topNav = document.getElementById("scikit-navbar");
-      if (topNav.className === "navbar") {
-          topNav.className += " responsive";
-      } else {
-          topNav.className = "navbar";
-      }
-    };
-  </script>
+  
+  <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
 
-  </head><body>
+  <link rel="stylesheet" href="../../_static/css/vendor/bootstrap.min.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" /> 
+</head>
+<body>
+<nav id="navbar" class="sk-docs-navbar navbar navbar-expand-md navbar-light bg-light py-0">
+  <div class="container-fluid sk-docs-container px-0">
+      <a class="navbar-brand py-0" href="../../index.html">
+        <img
+          class="sk-brand-img"
+          src="../../_static/scikit-learn-logo-small.png"
+          alt="logo"/>
+      </a>
+    <button
+      id="sk-navbar-toggler"
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-<div class="header-wrapper">
-    <div class="header">
-        <p class="logo"><a href="../../index.html">
-            <img src="../../_static/scikit-learn-logo-small.png" alt="Logo"/>
-        </a>
-        </p><div class="navbar" id="scikit-navbar">
-            <ul>
-                <li><a href="../../index.html">Home</a></li>
-                <li><a href="../../install.html">Installation</a></li>
-                <li class="btn-li"><div class="btn-group">
-              <a href="../../documentation.html">Documentation</a>
-              <a class="btn dropdown-toggle" data-toggle="dropdown">
-                 <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-            <li class="link-title">Scikit-learn <script>document.write(DOCUMENTATION_OPTIONS.VERSION + (VERSION_SUBDIR ? " (" + VERSION_SUBDIR + ")" : ""));</script></li>
-            <li><a href="../../tutorial/index.html">Tutorials</a></li>
-            <li><a href="../../user_guide.html">User guide</a></li>
-            <li><a href="../../modules/classes.html">API</a></li>
-            <li><a href="../../glossary.html">Glossary</a></li>
-            <li><a href="../../faq.html">FAQ</a></li>
-            <li><a href="../../developers/index.html">Development</a></li>
-            <li><a href="../../roadmap.html">Roadmap</a></li>
-            <li><a href="../../about.html">About us</a></li>
-            <li class="divider"></li>
-                <script>if (VERSION_SUBDIR != "stable") document.write('<li><a href="http://scikit-learn.org/stable/documentation.html">Stable version</a></li>')</script>
-                <script>if (VERSION_SUBDIR != "dev") document.write('<li><a href="http://scikit-learn.org/dev/documentation.html">Development version</a></li>')</script>
-                <li><a href="http://scikit-learn.org/dev/versions.html">All available versions</a></li>
-                <li><a href="../../_downloads/scikit-learn-docs.pdf">PDF documentation</a></li>
-              </ul>
-            </div>
+    <div class="sk-navbar-collapse collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="sk-nav-link nav-link" href="../../install.html">Install</a>
         </li>
-            <li><a href="../index.html">Examples</a></li>
-            </ul>
-            <a href="javascript:void(0);" onclick="showMenu()">
-                <div class="nav-icon">
-                    <div class="hamburger-line"></div>
-                    <div class="hamburger-line"></div>
-                    <div class="hamburger-line"></div>
-                </div>
-            </a>
-            <div class="search_form">
-                <div class="gcse-search" id="cse" style="width: 100%;"></div>
-            </div>
-        </div> <!-- end navbar --></div>
-</div>
-
-
-<!-- GitHub "fork me" ribbon -->
-<a href="https://github.com/scikit-learn/scikit-learn">
-  <img class="fork-me"
-       style="position: absolute; top: 0; right: 0; border: 0;"
-       src="../../_static/img/forkme.png"
-       alt="Fork me on GitHub" />
-</a>
-
-<div class="content-wrapper">
-    <div class="sphinxsidebar">
-    <div class="sphinxsidebarwrapper">
-      <p class="doc-version"><b>scikit-learn v0.22.dev0</b><br/>
-      <a href="http://scikit-learn.org/dev/versions.html">Other versions</a></p>
-    <p class="citing">Please <b><a href="../../about.html#citing-scikit-learn" style="font-size: 110%;">cite us </a></b>if you use the software.</p>
-    <ul>
+        <li class="nav-item">
+          <a class="sk-nav-link nav-link" href="../../user_guide.html">User Guide</a>
+        </li>
+        <li class="nav-item">
+          <a class="sk-nav-link nav-link" href="../../modules/classes.html">API</a>
+        </li>
+        <li class="nav-item">
+          <a class="sk-nav-link nav-link" href="../index.html">Examples</a>
+        </li>
+        <li class="nav-item">
+          <a class="sk-nav-link nav-link nav-more-item-mobile-items" href="../../getting_started.html">Getting Started</a>
+        </li>
+        <li class="nav-item">
+          <a class="sk-nav-link nav-link nav-more-item-mobile-items" href="../../tutorial/index.html">Tutorial</a>
+        </li>
+        <li class="nav-item">
+          <a class="sk-nav-link nav-link nav-more-item-mobile-items" href="../../glossary.html">Glossary</a>
+        </li>
+        <li class="nav-item">
+          <a class="sk-nav-link nav-link nav-more-item-mobile-items" href="../../developers/index.html">Development</a>
+        </li>
+        <li class="nav-item">
+          <a class="sk-nav-link nav-link nav-more-item-mobile-items" href="../../faq.html">FAQ</a>
+        </li>
+        <li class="nav-item">
+          <a class="sk-nav-link nav-link nav-more-item-mobile-items" href="../../related_projects.html">Related packages</a>
+        </li>
+        <li class="nav-item">
+          <a class="sk-nav-link nav-link nav-more-item-mobile-items" href="../../roadmap.html">Roadmap</a>
+        </li>
+        <li class="nav-item">
+          <a class="sk-nav-link nav-link nav-more-item-mobile-items" href="../../about.html">About us</a>
+        </li>
+        <li class="nav-item">
+          <a class="sk-nav-link nav-link nav-more-item-mobile-items" href="../../documentation.html">Documentation</a>
+        </li>
+        <li class="nav-item dropdown nav-more-item-dropdown">
+          <a class="sk-nav-link nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More</a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="sk-nav-dropdown-item dropdown-item" href="../../getting_started.html">Getting Started</a>
+              <a class="sk-nav-dropdown-item dropdown-item" href="../../tutorial/index.html">Tutorial</a>
+              <a class="sk-nav-dropdown-item dropdown-item" href="../../glossary.html">Glossary</a>
+              <a class="sk-nav-dropdown-item dropdown-item" href="../../developers/index.html">Development</a>
+              <a class="sk-nav-dropdown-item dropdown-item" href="../../faq.html">FAQ</a>
+              <a class="sk-nav-dropdown-item dropdown-item" href="../../related_projects.html">Related packages</a>
+              <a class="sk-nav-dropdown-item dropdown-item" href="../../roadmap.html">Roadmap</a>
+              <a class="sk-nav-dropdown-item dropdown-item" href="../../about.html">About us</a>
+              <a class="sk-nav-dropdown-item dropdown-item" href="../../documentation.html">Documentation</a>
+          </div>
+        </li>
+      </ul>
+      <div class="sk-search-form">
+          <div class="gcse-search" id="cse" data-linktarget="_parent"></div>
+      </div>
+    </div>
+  </div>
+</nav>
+<div class="d-flex" id="sk-doc-wrapper">
+    <input type="checkbox" name="sk-toggle-checkbox" id="sk-toggle-checkbox">
+    <label id="sk-sidemenu-toggle" class="sk-btn-toggle-toc btn sk-btn-primary" for="sk-toggle-checkbox">Toggle Menu</label>
+    <div id="sk-sidebar-wrapper" class="border-right">
+      <div class="sk-sidebar-toc-wrapper">
+        <div class="sk-sidebar-toc-logo">
+          <a href="../../index.html">
+            <img
+              class="sk-brand-img"
+              src="../../_static/scikit-learn-logo-small.png"
+              alt="logo"/>
+          </a>
+        </div>
+        <div class="btn-group w-100 mb-2" role="group" aria-label="rellinks">
+            <a href="#" role="button" class="btn sk-btn-rellink py-1 disabled"">Prev</a>
+            <a href="#" role="button" class="btn sk-btn-rellink disabled py-1">Up</a>
+            <a href="#" role="button" class="btn sk-btn-rellink py-1 disabled"">Next</a>
+        </div>
+        <div class="alert alert-danger p-1 mb-2" role="alert">
+          <p class="text-center mb-0">
+          <strong>scikit-learn 0.22.dev0</strong><br/>
+          <a href="http://scikit-learn.org/dev/versions.html">Other versions</a>
+          </p>
+        </div>
+        <div class="alert alert-warning p-1 mb-2" role="alert">
+          <p class="text-center mb-0">
+            Please <a class="font-weight-bold" href="../../about.html#citing-scikit-learn"><string>cite us</string></a> if you use the software.
+          </p>
+        </div>
+          <div class="sk-sidebar-toc">
+            <ul>
 <li><a class="reference internal" href="#">Computation times</a></li>
 </ul>
 
+          </div>
+      </div>
     </div>
-</div>
-
-<input type="checkbox" id="nav-trigger" class="nav-trigger" checked />
-<label for="nav-trigger"></label>
-
-
-
-
-      <div class="content">
-            
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
+    <div id="sk-page-content-wrapper">
+      <div class="sk-page-content container-fluid body px-md-3" role="main">
+        
   <div class="section" id="computation-times">
 <span id="sphx-glr-auto-examples-linear-model-sg-execution-times"></span><h1>Computation times<a class="headerlink" href="#computation-times" title="Permalink to this headline">¶</a></h1>
-<p><strong>02:01.727</strong> total execution time for <strong>auto_examples_linear_model</strong> files:</p>
+<p><strong>01:48.350</strong> total execution time for <strong>auto_examples_linear_model</strong> files:</p>
 <ul class="simple">
-<li><p><strong>00:35.217</strong>: <a class="reference internal" href="plot_sgd_early_stopping.html#sphx-glr-auto-examples-linear-model-plot-sgd-early-stopping-py"><span class="std std-ref">Early stopping of Stochastic Gradient Descent</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_sgd_early_stopping.py</span></code>)</p></li>
-<li><p><strong>00:22.334</strong>: <a class="reference internal" href="plot_sparse_logistic_regression_mnist.html#sphx-glr-auto-examples-linear-model-plot-sparse-logistic-regression-mnist-py"><span class="std std-ref">MNIST classfification using multinomial logistic + L1</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_sparse_logistic_regression_mnist.py</span></code>)</p></li>
-<li><p><strong>00:16.317</strong>: <a class="reference internal" href="plot_sgd_comparison.html#sphx-glr-auto-examples-linear-model-plot-sgd-comparison-py"><span class="std std-ref">Comparing various online solvers</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_sgd_comparison.py</span></code>)</p></li>
-<li><p><strong>00:12.294</strong>: <a class="reference internal" href="plot_sparse_logistic_regression_20newsgroups.html#sphx-glr-auto-examples-linear-model-plot-sparse-logistic-regression-20newsgroups-py"><span class="std std-ref">Multiclass sparse logisitic regression on newgroups20</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_sparse_logistic_regression_20newsgroups.py</span></code>)</p></li>
-<li><p><strong>00:04.077</strong>: <a class="reference internal" href="plot_robust_fit.html#sphx-glr-auto-examples-linear-model-plot-robust-fit-py"><span class="std std-ref">Robust linear estimator fitting</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_robust_fit.py</span></code>)</p></li>
-<li><p><strong>00:03.540</strong>: <a class="reference internal" href="plot_logistic_path.html#sphx-glr-auto-examples-linear-model-plot-logistic-path-py"><span class="std std-ref">Regularization path of L1- Logistic Regression</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_logistic_path.py</span></code>)</p></li>
-<li><p><strong>00:02.272</strong>: <a class="reference internal" href="plot_lasso_dense_vs_sparse_data.html#sphx-glr-auto-examples-linear-model-plot-lasso-dense-vs-sparse-data-py"><span class="std std-ref">Lasso on dense and sparse data</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_lasso_dense_vs_sparse_data.py</span></code>)</p></li>
-<li><p><strong>00:01.683</strong>: <a class="reference internal" href="plot_theilsen.html#sphx-glr-auto-examples-linear-model-plot-theilsen-py"><span class="std std-ref">Theil-Sen Regression</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_theilsen.py</span></code>)</p></li>
-<li><p><strong>00:01.218</strong>: <a class="reference internal" href="plot_ridge_coeffs.html#sphx-glr-auto-examples-linear-model-plot-ridge-coeffs-py"><span class="std std-ref">Plot Ridge coefficients as a function of the L2 regularization</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_ridge_coeffs.py</span></code>)</p></li>
-<li><p><strong>00:01.157</strong>: <a class="reference internal" href="plot_ols_3d.html#sphx-glr-auto-examples-linear-model-plot-ols-3d-py"><span class="std std-ref">Sparsity Example: Fitting only features 1  and 2</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_ols_3d.py</span></code>)</p></li>
-<li><p><strong>00:01.118</strong>: <a class="reference internal" href="plot_ard.html#sphx-glr-auto-examples-linear-model-plot-ard-py"><span class="std std-ref">Automatic Relevance Determination Regression (ARD)</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_ard.py</span></code>)</p></li>
-<li><p><strong>00:01.078</strong>: <a class="reference internal" href="plot_bayesian_ridge.html#sphx-glr-auto-examples-linear-model-plot-bayesian-ridge-py"><span class="std std-ref">Bayesian Ridge Regression</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_bayesian_ridge.py</span></code>)</p></li>
-<li><p><strong>00:01.076</strong>: <a class="reference internal" href="plot_lasso_model_selection.html#sphx-glr-auto-examples-linear-model-plot-lasso-model-selection-py"><span class="std std-ref">Lasso model selection: Cross-Validation / AIC / BIC</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_lasso_model_selection.py</span></code>)</p></li>
-<li><p><strong>00:00.997</strong>: <a class="reference internal" href="plot_huber_vs_ridge.html#sphx-glr-auto-examples-linear-model-plot-huber-vs-ridge-py"><span class="std std-ref">HuberRegressor vs Ridge on dataset with strong outliers</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_huber_vs_ridge.py</span></code>)</p></li>
-<li><p><strong>00:00.978</strong>: <a class="reference internal" href="plot_ransac.html#sphx-glr-auto-examples-linear-model-plot-ransac-py"><span class="std std-ref">Robust linear model estimation using RANSAC</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_ransac.py</span></code>)</p></li>
-<li><p><strong>00:00.960</strong>: <a class="reference internal" href="plot_lasso_coordinate_descent_path.html#sphx-glr-auto-examples-linear-model-plot-lasso-coordinate-descent-path-py"><span class="std std-ref">Lasso and Elastic Net</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_lasso_coordinate_descent_path.py</span></code>)</p></li>
-<li><p><strong>00:00.953</strong>: <a class="reference internal" href="plot_logistic_multinomial.html#sphx-glr-auto-examples-linear-model-plot-logistic-multinomial-py"><span class="std std-ref">Plot multinomial and One-vs-Rest Logistic Regression</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_logistic_multinomial.py</span></code>)</p></li>
-<li><p><strong>00:00.947</strong>: <a class="reference internal" href="plot_sgd_weighted_samples.html#sphx-glr-auto-examples-linear-model-plot-sgd-weighted-samples-py"><span class="std std-ref">SGD: Weighted samples</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_sgd_weighted_samples.py</span></code>)</p></li>
-<li><p><strong>00:00.946</strong>: <a class="reference internal" href="plot_iris_logistic.html#sphx-glr-auto-examples-linear-model-plot-iris-logistic-py"><span class="std std-ref">Logistic Regression 3-class Classifier</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_iris_logistic.py</span></code>)</p></li>
-<li><p><strong>00:00.931</strong>: <a class="reference internal" href="plot_logistic.html#sphx-glr-auto-examples-linear-model-plot-logistic-py"><span class="std std-ref">Logistic function</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_logistic.py</span></code>)</p></li>
-<li><p><strong>00:00.928</strong>: <a class="reference internal" href="plot_logistic_l1_l2_sparsity.html#sphx-glr-auto-examples-linear-model-plot-logistic-l1-l2-sparsity-py"><span class="std std-ref">L1 Penalty and Sparsity in Logistic Regression</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_logistic_l1_l2_sparsity.py</span></code>)</p></li>
-<li><p><strong>00:00.907</strong>: <a class="reference internal" href="plot_polynomial_interpolation.html#sphx-glr-auto-examples-linear-model-plot-polynomial-interpolation-py"><span class="std std-ref">Polynomial interpolation</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_polynomial_interpolation.py</span></code>)</p></li>
-<li><p><strong>00:00.897</strong>: <a class="reference internal" href="plot_ols.html#sphx-glr-auto-examples-linear-model-plot-ols-py"><span class="std std-ref">Linear Regression Example</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_ols.py</span></code>)</p></li>
-<li><p><strong>00:00.887</strong>: <a class="reference internal" href="plot_ols_ridge_variance.html#sphx-glr-auto-examples-linear-model-plot-ols-ridge-variance-py"><span class="std std-ref">Ordinary Least Squares and Ridge Regression Variance</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_ols_ridge_variance.py</span></code>)</p></li>
-<li><p><strong>00:00.883</strong>: <a class="reference internal" href="plot_omp.html#sphx-glr-auto-examples-linear-model-plot-omp-py"><span class="std std-ref">Orthogonal Matching Pursuit</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_omp.py</span></code>)</p></li>
-<li><p><strong>00:00.864</strong>: <a class="reference internal" href="plot_sgd_penalties.html#sphx-glr-auto-examples-linear-model-plot-sgd-penalties-py"><span class="std std-ref">SGD: Penalties</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_sgd_penalties.py</span></code>)</p></li>
-<li><p><strong>00:00.830</strong>: <a class="reference internal" href="plot_bayesian_ridge_curvefit.html#sphx-glr-auto-examples-linear-model-plot-bayesian-ridge-curvefit-py"><span class="std std-ref">Curve Fitting with Bayesian Ridge Regression</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_bayesian_ridge_curvefit.py</span></code>)</p></li>
-<li><p><strong>00:00.827</strong>: <a class="reference internal" href="plot_multi_task_lasso_support.html#sphx-glr-auto-examples-linear-model-plot-multi-task-lasso-support-py"><span class="std std-ref">Joint feature selection with multi-task Lasso</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_multi_task_lasso_support.py</span></code>)</p></li>
-<li><p><strong>00:00.801</strong>: <a class="reference internal" href="plot_lasso_lars.html#sphx-glr-auto-examples-linear-model-plot-lasso-lars-py"><span class="std std-ref">Lasso path using LARS</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_lasso_lars.py</span></code>)</p></li>
-<li><p><strong>00:00.799</strong>: <a class="reference internal" href="plot_ridge_path.html#sphx-glr-auto-examples-linear-model-plot-ridge-path-py"><span class="std std-ref">Plot Ridge coefficients as a function of the regularization</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_ridge_path.py</span></code>)</p></li>
-<li><p><strong>00:00.782</strong>: <a class="reference internal" href="plot_sgd_loss_functions.html#sphx-glr-auto-examples-linear-model-plot-sgd-loss-functions-py"><span class="std std-ref">SGD: convex loss functions</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_sgd_loss_functions.py</span></code>)</p></li>
-<li><p><strong>00:00.765</strong>: <a class="reference internal" href="plot_sgd_iris.html#sphx-glr-auto-examples-linear-model-plot-sgd-iris-py"><span class="std std-ref">Plot multi-class SGD on the iris dataset</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_sgd_iris.py</span></code>)</p></li>
-<li><p><strong>00:00.735</strong>: <a class="reference internal" href="plot_lasso_and_elasticnet.html#sphx-glr-auto-examples-linear-model-plot-lasso-and-elasticnet-py"><span class="std std-ref">Lasso and Elastic Net for Sparse Signals</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_lasso_and_elasticnet.py</span></code>)</p></li>
-<li><p><strong>00:00.728</strong>: <a class="reference internal" href="plot_sgd_separating_hyperplane.html#sphx-glr-auto-examples-linear-model-plot-sgd-separating-hyperplane-py"><span class="std std-ref">SGD: Maximum margin separating hyperplane</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_sgd_separating_hyperplane.py</span></code>)</p></li>
+<li><p><strong>00:32.936</strong>: <a class="reference internal" href="plot_sgd_early_stopping.html#sphx-glr-auto-examples-linear-model-plot-sgd-early-stopping-py"><span class="std std-ref">Early stopping of Stochastic Gradient Descent</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_sgd_early_stopping.py</span></code>)</p></li>
+<li><p><strong>00:17.827</strong>: <a class="reference internal" href="plot_sparse_logistic_regression_mnist.html#sphx-glr-auto-examples-linear-model-plot-sparse-logistic-regression-mnist-py"><span class="std std-ref">MNIST classfification using multinomial logistic + L1</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_sparse_logistic_regression_mnist.py</span></code>)</p></li>
+<li><p><strong>00:15.296</strong>: <a class="reference internal" href="plot_sgd_comparison.html#sphx-glr-auto-examples-linear-model-plot-sgd-comparison-py"><span class="std std-ref">Comparing various online solvers</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_sgd_comparison.py</span></code>)</p></li>
+<li><p><strong>00:11.300</strong>: <a class="reference internal" href="plot_sparse_logistic_regression_20newsgroups.html#sphx-glr-auto-examples-linear-model-plot-sparse-logistic-regression-20newsgroups-py"><span class="std std-ref">Multiclass sparse logisitic regression on newgroups20</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_sparse_logistic_regression_20newsgroups.py</span></code>)</p></li>
+<li><p><strong>00:04.145</strong>: <a class="reference internal" href="plot_robust_fit.html#sphx-glr-auto-examples-linear-model-plot-robust-fit-py"><span class="std std-ref">Robust linear estimator fitting</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_robust_fit.py</span></code>)</p></li>
+<li><p><strong>00:02.440</strong>: <a class="reference internal" href="plot_logistic_path.html#sphx-glr-auto-examples-linear-model-plot-logistic-path-py"><span class="std std-ref">Regularization path of L1- Logistic Regression</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_logistic_path.py</span></code>)</p></li>
+<li><p><strong>00:01.660</strong>: <a class="reference internal" href="plot_lasso_dense_vs_sparse_data.html#sphx-glr-auto-examples-linear-model-plot-lasso-dense-vs-sparse-data-py"><span class="std std-ref">Lasso on dense and sparse data</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_lasso_dense_vs_sparse_data.py</span></code>)</p></li>
+<li><p><strong>00:01.619</strong>: <a class="reference internal" href="plot_theilsen.html#sphx-glr-auto-examples-linear-model-plot-theilsen-py"><span class="std std-ref">Theil-Sen Regression</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_theilsen.py</span></code>)</p></li>
+<li><p><strong>00:01.070</strong>: <a class="reference internal" href="plot_ard.html#sphx-glr-auto-examples-linear-model-plot-ard-py"><span class="std std-ref">Automatic Relevance Determination Regression (ARD)</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_ard.py</span></code>)</p></li>
+<li><p><strong>00:01.024</strong>: <a class="reference internal" href="plot_bayesian_ridge.html#sphx-glr-auto-examples-linear-model-plot-bayesian-ridge-py"><span class="std std-ref">Bayesian Ridge Regression</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_bayesian_ridge.py</span></code>)</p></li>
+<li><p><strong>00:00.988</strong>: <a class="reference internal" href="plot_lasso_model_selection.html#sphx-glr-auto-examples-linear-model-plot-lasso-model-selection-py"><span class="std std-ref">Lasso model selection: Cross-Validation / AIC / BIC</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_lasso_model_selection.py</span></code>)</p></li>
+<li><p><strong>00:00.943</strong>: <a class="reference internal" href="plot_lasso_coordinate_descent_path.html#sphx-glr-auto-examples-linear-model-plot-lasso-coordinate-descent-path-py"><span class="std std-ref">Lasso and Elastic Net</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_lasso_coordinate_descent_path.py</span></code>)</p></li>
+<li><p><strong>00:00.940</strong>: <a class="reference internal" href="plot_ridge_coeffs.html#sphx-glr-auto-examples-linear-model-plot-ridge-coeffs-py"><span class="std std-ref">Plot Ridge coefficients as a function of the L2 regularization</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_ridge_coeffs.py</span></code>)</p></li>
+<li><p><strong>00:00.914</strong>: <a class="reference internal" href="plot_logistic_l1_l2_sparsity.html#sphx-glr-auto-examples-linear-model-plot-logistic-l1-l2-sparsity-py"><span class="std std-ref">L1 Penalty and Sparsity in Logistic Regression</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_logistic_l1_l2_sparsity.py</span></code>)</p></li>
+<li><p><strong>00:00.895</strong>: <a class="reference internal" href="plot_sgd_penalties.html#sphx-glr-auto-examples-linear-model-plot-sgd-penalties-py"><span class="std std-ref">SGD: Penalties</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_sgd_penalties.py</span></code>)</p></li>
+<li><p><strong>00:00.881</strong>: <a class="reference internal" href="plot_logistic_multinomial.html#sphx-glr-auto-examples-linear-model-plot-logistic-multinomial-py"><span class="std std-ref">Plot multinomial and One-vs-Rest Logistic Regression</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_logistic_multinomial.py</span></code>)</p></li>
+<li><p><strong>00:00.856</strong>: <a class="reference internal" href="plot_ols_ridge_variance.html#sphx-glr-auto-examples-linear-model-plot-ols-ridge-variance-py"><span class="std std-ref">Ordinary Least Squares and Ridge Regression Variance</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_ols_ridge_variance.py</span></code>)</p></li>
+<li><p><strong>00:00.837</strong>: <a class="reference internal" href="plot_omp.html#sphx-glr-auto-examples-linear-model-plot-omp-py"><span class="std std-ref">Orthogonal Matching Pursuit</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_omp.py</span></code>)</p></li>
+<li><p><strong>00:00.811</strong>: <a class="reference internal" href="plot_ols_3d.html#sphx-glr-auto-examples-linear-model-plot-ols-3d-py"><span class="std std-ref">Sparsity Example: Fitting only features 1  and 2</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_ols_3d.py</span></code>)</p></li>
+<li><p><strong>00:00.805</strong>: <a class="reference internal" href="plot_multi_task_lasso_support.html#sphx-glr-auto-examples-linear-model-plot-multi-task-lasso-support-py"><span class="std std-ref">Joint feature selection with multi-task Lasso</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_multi_task_lasso_support.py</span></code>)</p></li>
+<li><p><strong>00:00.792</strong>: <a class="reference internal" href="plot_bayesian_ridge_curvefit.html#sphx-glr-auto-examples-linear-model-plot-bayesian-ridge-curvefit-py"><span class="std std-ref">Curve Fitting with Bayesian Ridge Regression</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_bayesian_ridge_curvefit.py</span></code>)</p></li>
+<li><p><strong>00:00.782</strong>: <a class="reference internal" href="plot_ridge_path.html#sphx-glr-auto-examples-linear-model-plot-ridge-path-py"><span class="std std-ref">Plot Ridge coefficients as a function of the regularization</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_ridge_path.py</span></code>)</p></li>
+<li><p><strong>00:00.756</strong>: <a class="reference internal" href="plot_sgd_iris.html#sphx-glr-auto-examples-linear-model-plot-sgd-iris-py"><span class="std std-ref">Plot multi-class SGD on the iris dataset</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_sgd_iris.py</span></code>)</p></li>
+<li><p><strong>00:00.743</strong>: <a class="reference internal" href="plot_lasso_lars.html#sphx-glr-auto-examples-linear-model-plot-lasso-lars-py"><span class="std std-ref">Lasso path using LARS</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_lasso_lars.py</span></code>)</p></li>
+<li><p><strong>00:00.734</strong>: <a class="reference internal" href="plot_sgd_loss_functions.html#sphx-glr-auto-examples-linear-model-plot-sgd-loss-functions-py"><span class="std std-ref">SGD: convex loss functions</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_sgd_loss_functions.py</span></code>)</p></li>
+<li><p><strong>00:00.730</strong>: <a class="reference internal" href="plot_huber_vs_ridge.html#sphx-glr-auto-examples-linear-model-plot-huber-vs-ridge-py"><span class="std std-ref">HuberRegressor vs Ridge on dataset with strong outliers</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_huber_vs_ridge.py</span></code>)</p></li>
+<li><p><strong>00:00.718</strong>: <a class="reference internal" href="plot_iris_logistic.html#sphx-glr-auto-examples-linear-model-plot-iris-logistic-py"><span class="std std-ref">Logistic Regression 3-class Classifier</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_iris_logistic.py</span></code>)</p></li>
+<li><p><strong>00:00.714</strong>: <a class="reference internal" href="plot_sgd_weighted_samples.html#sphx-glr-auto-examples-linear-model-plot-sgd-weighted-samples-py"><span class="std std-ref">SGD: Weighted samples</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_sgd_weighted_samples.py</span></code>)</p></li>
+<li><p><strong>00:00.712</strong>: <a class="reference internal" href="plot_lasso_and_elasticnet.html#sphx-glr-auto-examples-linear-model-plot-lasso-and-elasticnet-py"><span class="std std-ref">Lasso and Elastic Net for Sparse Signals</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_lasso_and_elasticnet.py</span></code>)</p></li>
+<li><p><strong>00:00.711</strong>: <a class="reference internal" href="plot_polynomial_interpolation.html#sphx-glr-auto-examples-linear-model-plot-polynomial-interpolation-py"><span class="std std-ref">Polynomial interpolation</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_polynomial_interpolation.py</span></code>)</p></li>
+<li><p><strong>00:00.710</strong>: <a class="reference internal" href="plot_ransac.html#sphx-glr-auto-examples-linear-model-plot-ransac-py"><span class="std std-ref">Robust linear model estimation using RANSAC</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_ransac.py</span></code>)</p></li>
+<li><p><strong>00:00.696</strong>: <a class="reference internal" href="plot_sgd_separating_hyperplane.html#sphx-glr-auto-examples-linear-model-plot-sgd-separating-hyperplane-py"><span class="std std-ref">SGD: Maximum margin separating hyperplane</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_sgd_separating_hyperplane.py</span></code>)</p></li>
+<li><p><strong>00:00.690</strong>: <a class="reference internal" href="plot_logistic.html#sphx-glr-auto-examples-linear-model-plot-logistic-py"><span class="std std-ref">Logistic function</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_logistic.py</span></code>)</p></li>
+<li><p><strong>00:00.677</strong>: <a class="reference internal" href="plot_ols.html#sphx-glr-auto-examples-linear-model-plot-ols-py"><span class="std std-ref">Linear Regression Example</span></a> (<code class="docutils literal notranslate"><span class="pre">plot_ols.py</span></code>)</p></li>
 </ul>
 </div>
 
 
-          </div>
-        </div>
       </div>
-        <div class="clearer"></div>
-      </div>
+    <div class="container">
+      <footer class="sk-content-footer">
+            &copy; 2007 - 2019, scikit-learn developers (BSD License).
+          <a href="../../_sources/auto_examples/linear_model/sg_execution_times.rst.txt" rel="nofollow">Show this page source</a>
+      </footer>
     </div>
+  </div>
+</div>
+<script src="../../_static/js/vendor/jquery.min.js"></script>
+<script src="../../_static/js/vendor/bootstrap.min.js"></script>
 
-    <div class="footer">
-        &copy; 2007 - 2019, scikit-learn developers (BSD License).
-      <a href="../../_sources/auto_examples/linear_model/sg_execution_times.rst.txt" rel="nofollow">Show this page source</a>
-    </div>
-     <div class="rel rellarge">
-    
-    
-     </div>
 
-    
-    <script>
-        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-        ga('create', 'UA-22606712-2', 'auto');
-        ga('set', 'anonymizeIp', true);
-        ga('send', 'pageview');
-    </script>
-    <script async src='https://www.google-analytics.com/analytics.js'></script>
-    
-    <script>
-      (function() {
+<script>
+    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+    ga('create', 'UA-22606712-2', 'auto');
+    ga('set', 'anonymizeIp', true);
+    ga('send', 'pageview');
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<script>
+$(document).ready(function() {
+    /* Add a [>>>] button on the top-right corner of code samples to hide
+     * the >>> and ... prompts and the output and thus make the code
+     * copyable. */
+    var div = $('.highlight-python .highlight,' +
+                '.highlight-python3 .highlight,' +
+                '.highlight-pycon .highlight,' +
+		'.highlight-default .highlight')
+    var pre = div.find('pre');
+
+    // get the styles from the current theme
+    pre.parent().parent().css('position', 'relative');
+    var hide_text = 'Hide prompts and outputs';
+    var show_text = 'Show prompts and outputs';
+
+    // create and add the button to all the code blocks that contain >>>
+    div.each(function(index) {
+        var jthis = $(this);
+        if (jthis.find('.gp').length > 0) {
+            var button = $('<span class="copybutton">&gt;&gt;&gt;</span>');
+            button.attr('title', hide_text);
+            button.data('hidden', 'false');
+            jthis.prepend(button);
+        }
+        // tracebacks (.gt) contain bare text elements that need to be
+        // wrapped in a span to work with .nextUntil() (see later)
+        jthis.find('pre:has(.gt)').contents().filter(function() {
+            return ((this.nodeType == 3) && (this.data.trim().length > 0));
+        }).wrap('<span>');
+    });
+
+    // define the behavior of the button when it's clicked
+    $('.copybutton').click(function(e){
+        e.preventDefault();
+        var button = $(this);
+        if (button.data('hidden') === 'false') {
+            // hide the code output
+            button.parent().find('.go, .gp, .gt').hide();
+            button.next('pre').find('.gt').nextUntil('.gp, .go').css('visibility', 'hidden');
+            button.css('text-decoration', 'line-through');
+            button.attr('title', show_text);
+            button.data('hidden', 'true');
+        } else {
+            // show the code output
+            button.parent().find('.go, .gp, .gt').show();
+            button.next('pre').find('.gt').nextUntil('.gp, .go').css('visibility', 'visible');
+            button.css('text-decoration', 'none');
+            button.attr('title', hide_text);
+            button.data('hidden', 'false');
+        }
+    });
+
+	/*** Add permalink buttons next to glossary terms ***/
+	$('dl.glossary > dt[id]').append(function() {
+		return ('<a class="headerlink" href="#' +
+			    this.getAttribute('id') +
+			    '" title="Permalink to this term">¶</a>');
+	});
+  /*** Hide navbar when scrolling down ***/
+  // Returns true when headerlink target matches hash in url
+  (function() {
+    hashTargetOnTop = function() {
+        var hash = window.location.hash;
+        if ( hash.length < 2 ) { return false; }
+
+        var target = document.getElementById( hash.slice(1) );
+        if ( target === null ) { return false; }
+
+        var top = target.getBoundingClientRect().top;
+        return (top < 2) && (top > -2);
+    };
+
+    // Hide navbar on load if hash target is on top
+    var navBar = document.getElementById("navbar");
+    var navBarToggler = document.getElementById("sk-navbar-toggler");
+    var navBarHeightHidden = "-" + navBar.getBoundingClientRect().height + "px";
+    var $window = $(window);
+
+    hideNavBar = function() {
+        navBar.style.top = navBarHeightHidden;
+    };
+
+    showNavBar = function() {
+        navBar.style.top = "0";
+    }
+
+    if (hashTargetOnTop()) {
+        hideNavBar()
+    }
+
+    var prevScrollpos = window.pageYOffset;
+    hideOnScroll = function(lastScrollTop) {
+        if (($window.width() < 768) && (navBarToggler.getAttribute("aria-expanded") === 'true')) {
+            return;
+        }
+        if (lastScrollTop > 2 && (prevScrollpos <= lastScrollTop) || hashTargetOnTop()){
+            hideNavBar()
+        } else {
+            showNavBar()
+        }
+        prevScrollpos = lastScrollTop;
+    };
+
+    /*** high preformance scroll event listener***/
+    var raf = window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        window.oRequestAnimationFrame;
+    var lastScrollTop = $window.scrollTop();
+
+    if (raf) {
+        loop();
+    }
+
+    function loop() {
+        var scrollTop = $window.scrollTop();
+        if (lastScrollTop === scrollTop) {
+            raf(loop);
+            return;
+        } else {
+            lastScrollTop = scrollTop;
+            hideOnScroll(lastScrollTop);
+            raf(loop);
+        }
+    }
+  })();
+});
+
+</script>
+<script>
+    (function() {
         var cx = '016639176250731907682:tjtqbvtvij0';
         var gcse = document.createElement('script'); gcse.type = 'text/javascript'; gcse.async = true;
         gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gcse, s);
-      })();
-    </script>
+    })();
+</script>
+    
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    
     <script src="https://scikit-learn.org/versionwarning.js"></script>
-  </body>
+</body>
 </html>
