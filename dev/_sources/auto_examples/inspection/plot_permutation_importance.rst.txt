@@ -70,8 +70,9 @@ with the target variable (``survived``):
 .. code-block:: default
 
     X, y = fetch_openml("titanic", version=1, as_frame=True, return_X_y=True)
-    X['random_cat'] = np.random.randint(3, size=X.shape[0])
-    X['random_num'] = np.random.randn(X.shape[0])
+    rng = np.random.RandomState(seed=42)
+    X['random_cat'] = rng.randint(3, size=X.shape[0])
+    X['random_num'] = rng.randn(X.shape[0])
 
     categorical_columns = ['pclass', 'sex', 'embarked', 'random_cat']
     numerical_columns = ['age', 'sibsp', 'parch', 'fare', 'random_num']
@@ -144,7 +145,7 @@ unique values.
  .. code-block:: none
 
     RF train accuracy: 1.000
-    RF test accuracy: 0.814
+    RF test accuracy: 0.817
 
 
 Tree's Feature Importance from Mean Decrease in Impurity (MDI)
@@ -256,7 +257,7 @@ re-running this example with constrained RF with min_samples_leaf=10.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  13.301 seconds)
+   **Total running time of the script:** ( 0 minutes  14.197 seconds)
 
 **Estimated memory usage:**  14 MB
 
