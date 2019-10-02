@@ -120,8 +120,8 @@
           </a>
         </div>
         <div class="btn-group w-100 mb-2" role="group" aria-label="rellinks">
-            <a href="plot_roc_crossval.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Receiver Operating Characteristic (ROC) with cross validation">Prev</a><a href="../index.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Examples">Up</a>
-            <a href="plot_nested_cross_validation_iris.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Nested versus non-nested cross-validation">Next</a>
+            <a href="plot_grid_search_digits.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Parameter estimation using grid search with cross-validation">Prev</a><a href="../index.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Examples">Up</a>
+            <a href="plot_train_error_vs_test_error.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Train error vs Test error">Next</a>
         </div>
         <div class="alert alert-danger p-1 mb-2" role="alert">
           <p class="text-center mb-0">
@@ -158,36 +158,36 @@ All parameters that influence the learning are searched simultaneously
 <p>The randomized search and the grid search explore exactly the same space of
 parameters. The result in parameter settings is quite similar, while the run
 time for randomized search is drastically lower.</p>
-<p>The performance is slightly worse for the randomized search, though this
-is most likely a noise effect and would not carry over to a held-out test set.</p>
+<p>The performance is may slightly worse for the randomized search, and is likely
+due to a noise effect and would not carry over to a held-out test set.</p>
 <p>Note that in practice, one would not search over this many different parameters
 simultaneously using grid search, but pick only the ones deemed most important.</p>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>RandomizedSearchCV took 5.17 seconds for 20 candidates parameter settings.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>RandomizedSearchCV took 22.32 seconds for 20 candidates parameter settings.
 Model with rank: 1
-Mean validation score: 0.934 (std: 0.024)
-Parameters: {&#39;bootstrap&#39;: False, &#39;criterion&#39;: &#39;entropy&#39;, &#39;max_depth&#39;: None, &#39;max_features&#39;: 7, &#39;min_samples_split&#39;: 3}
+Mean validation score: 0.920 (std: 0.028)
+Parameters: {&#39;alpha&#39;: 0.07316411520495676, &#39;average&#39;: False, &#39;l1_ratio&#39;: 0.29007760721044407}
 
 Model with rank: 2
-Mean validation score: 0.932 (std: 0.024)
-Parameters: {&#39;bootstrap&#39;: False, &#39;criterion&#39;: &#39;gini&#39;, &#39;max_depth&#39;: None, &#39;max_features&#39;: 6, &#39;min_samples_split&#39;: 6}
+Mean validation score: 0.920 (std: 0.029)
+Parameters: {&#39;alpha&#39;: 0.0005223493320259539, &#39;average&#39;: True, &#39;l1_ratio&#39;: 0.7936977033574206}
 
 Model with rank: 3
-Mean validation score: 0.932 (std: 0.021)
-Parameters: {&#39;bootstrap&#39;: False, &#39;criterion&#39;: &#39;entropy&#39;, &#39;max_depth&#39;: None, &#39;max_features&#39;: 4, &#39;min_samples_split&#39;: 2}
+Mean validation score: 0.918 (std: 0.031)
+Parameters: {&#39;alpha&#39;: 0.00025790124268693137, &#39;average&#39;: True, &#39;l1_ratio&#39;: 0.5699649107012649}
 
-GridSearchCV took 15.73 seconds for 72 candidate parameter settings.
+GridSearchCV took 111.35 seconds for 100 candidate parameter settings.
 Model with rank: 1
-Mean validation score: 0.935 (std: 0.019)
-Parameters: {&#39;bootstrap&#39;: False, &#39;criterion&#39;: &#39;entropy&#39;, &#39;max_depth&#39;: None, &#39;max_features&#39;: 10, &#39;min_samples_split&#39;: 2}
+Mean validation score: 0.931 (std: 0.026)
+Parameters: {&#39;alpha&#39;: 0.0001, &#39;average&#39;: True, &#39;l1_ratio&#39;: 0.0}
 
 Model with rank: 2
-Mean validation score: 0.933 (std: 0.030)
-Parameters: {&#39;bootstrap&#39;: False, &#39;criterion&#39;: &#39;entropy&#39;, &#39;max_depth&#39;: None, &#39;max_features&#39;: 3, &#39;min_samples_split&#39;: 2}
+Mean validation score: 0.928 (std: 0.030)
+Parameters: {&#39;alpha&#39;: 0.0001, &#39;average&#39;: True, &#39;l1_ratio&#39;: 0.1111111111111111}
 
 Model with rank: 3
-Mean validation score: 0.930 (std: 0.025)
-Parameters: {&#39;bootstrap&#39;: True, &#39;criterion&#39;: &#39;gini&#39;, &#39;max_depth&#39;: None, &#39;max_features&#39;: 10, &#39;min_samples_split&#39;: 2}
+Mean validation score: 0.927 (std: 0.026)
+Parameters: {&#39;alpha&#39;: 0.0001, &#39;average&#39;: True, &#39;l1_ratio&#39;: 0.5555555555555556}
 </pre></div>
 </div>
 <div class="line-block">
@@ -198,18 +198,19 @@ Parameters: {&#39;bootstrap&#39;: True, &#39;criterion&#39;: &#39;gini&#39;, &#3
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span>
-<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">randint</span> <span class="k">as</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.randint.html#scipy.stats.randint" title="View documentation for scipy.stats.randint"><span class="n">sp_randint</span></a>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">stats</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils.fixes</span> <span class="k">import</span> <span class="n">loguniform</span>
 
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV" title="View documentation for sklearn.model_selection.GridSearchCV"><span class="n">GridSearchCV</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.model_selection.RandomizedSearchCV.html#sklearn.model_selection.RandomizedSearchCV" title="View documentation for sklearn.model_selection.RandomizedSearchCV"><span class="n">RandomizedSearchCV</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV" title="View documentation for sklearn.model_selection.GridSearchCV"><span class="n">GridSearchCV</span></a><span class="p">,</span> <a href="../../modules/generated/sklearn.model_selection.RandomizedSearchCV.html#sklearn.model_selection.RandomizedSearchCV" title="View documentation for sklearn.model_selection.RandomizedSearchCV"><span class="n">RandomizedSearchCV</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.datasets.load_digits.html#sklearn.datasets.load_digits" title="View documentation for sklearn.datasets.load_digits"><span class="n">load_digits</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier" title="View documentation for sklearn.ensemble.RandomForestClassifier"><span class="n">RandomForestClassifier</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.linear_model.SGDClassifier.html#sklearn.linear_model.SGDClassifier" title="View documentation for sklearn.linear_model.SGDClassifier"><span class="n">SGDClassifier</span></a>
 
 <span class="c1"># get some data</span>
 <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.load_digits.html#sklearn.datasets.load_digits" title="View documentation for sklearn.datasets.load_digits"><span class="n">load_digits</span></a><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># build a classifier</span>
-<span class="n">clf</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier" title="View documentation for sklearn.ensemble.RandomForestClassifier"><span class="n">RandomForestClassifier</span></a><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">clf</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.linear_model.SGDClassifier.html#sklearn.linear_model.SGDClassifier" title="View documentation for sklearn.linear_model.SGDClassifier"><span class="n">SGDClassifier</span></a><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;hinge&#39;</span><span class="p">,</span> <span class="n">penalty</span><span class="o">=</span><span class="s1">&#39;elasticnet&#39;</span><span class="p">,</span>
+                    <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 
 <span class="c1"># Utility function to report best scores</span>
@@ -218,19 +219,17 @@ Parameters: {&#39;bootstrap&#39;: True, &#39;criterion&#39;: &#39;gini&#39;, &#3
         <span class="n">candidates</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.flatnonzero.html#numpy.flatnonzero" title="View documentation for numpy.flatnonzero"><span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span></a><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;rank_test_score&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Model with rank: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mean validation score: </span><span class="si">{0:.3f}</span><span class="s2"> (std: </span><span class="si">{1:.3f}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                  <span class="n">results</span><span class="p">[</span><span class="s1">&#39;mean_test_score&#39;</span><span class="p">][</span><span class="n">candidate</span><span class="p">],</span>
-                  <span class="n">results</span><span class="p">[</span><span class="s1">&#39;std_test_score&#39;</span><span class="p">][</span><span class="n">candidate</span><span class="p">]))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mean validation score: </span><span class="si">{0:.3f}</span><span class="s2"> (std: </span><span class="si">{1:.3f}</span><span class="s2">)&quot;</span>
+                  <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;mean_test_score&#39;</span><span class="p">][</span><span class="n">candidate</span><span class="p">],</span>
+                          <span class="n">results</span><span class="p">[</span><span class="s1">&#39;std_test_score&#39;</span><span class="p">][</span><span class="n">candidate</span><span class="p">]))</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Parameters: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">][</span><span class="n">candidate</span><span class="p">]))</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 
 
 <span class="c1"># specify parameters and distributions to sample from</span>
-<span class="n">param_dist</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;max_depth&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
-              <span class="s2">&quot;max_features&quot;</span><span class="p">:</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.randint.html#scipy.stats.randint" title="View documentation for scipy.stats.randint"><span class="n">sp_randint</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
-              <span class="s2">&quot;min_samples_split&quot;</span><span class="p">:</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.randint.html#scipy.stats.randint" title="View documentation for scipy.stats.randint"><span class="n">sp_randint</span></a><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
-              <span class="s2">&quot;bootstrap&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">],</span>
-              <span class="s2">&quot;criterion&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;gini&quot;</span><span class="p">,</span> <span class="s2">&quot;entropy&quot;</span><span class="p">]}</span>
+<span class="n">param_dist</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;average&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">],</span>
+              <span class="s1">&#39;l1_ratio&#39;</span><span class="p">:</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.uniform.html#scipy.stats.uniform" title="View documentation for scipy.stats.uniform"><span class="n">stats</span><span class="o">.</span><span class="n">uniform</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+              <span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="n">loguniform</span><span class="p">(</span><span class="mf">1e-4</span><span class="p">,</span> <span class="mf">1e0</span><span class="p">)}</span>
 
 <span class="c1"># run randomized search</span>
 <span class="n">n_iter_search</span> <span class="o">=</span> <span class="mi">20</span>
@@ -244,11 +243,9 @@ Parameters: {&#39;bootstrap&#39;: True, &#39;criterion&#39;: &#39;gini&#39;, &#3
 <span class="n">report</span><span class="p">(</span><span class="n">random_search</span><span class="o">.</span><span class="n">cv_results_</span><span class="p">)</span>
 
 <span class="c1"># use a full grid over all parameters</span>
-<span class="n">param_grid</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;max_depth&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
-              <span class="s2">&quot;max_features&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
-              <span class="s2">&quot;min_samples_split&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
-              <span class="s2">&quot;bootstrap&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">],</span>
-              <span class="s2">&quot;criterion&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;gini&quot;</span><span class="p">,</span> <span class="s2">&quot;entropy&quot;</span><span class="p">]}</span>
+<span class="n">param_grid</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;average&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">],</span>
+              <span class="s1">&#39;l1_ratio&#39;</span><span class="p">:</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.linspace.html#numpy.linspace" title="View documentation for numpy.linspace"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span>
+              <span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.power.html#numpy.power" title="View documentation for numpy.power"><span class="n">np</span><span class="o">.</span><span class="n">power</span></a><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="View documentation for numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">))}</span>
 
 <span class="c1"># run grid search</span>
 <span class="n">grid_search</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV" title="View documentation for sklearn.model_selection.GridSearchCV"><span class="n">GridSearchCV</span></a><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">param_grid</span><span class="o">=</span><span class="n">param_grid</span><span class="p">)</span>
@@ -260,7 +257,7 @@ Parameters: {&#39;bootstrap&#39;: True, &#39;criterion&#39;: &#39;gini&#39;, &#3
 <span class="n">report</span><span class="p">(</span><span class="n">grid_search</span><span class="o">.</span><span class="n">cv_results_</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  21.322 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 2 minutes  14.202 seconds)</p>
 <p><strong>Estimated memory usage:</strong>  8 MB</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-model-selection-plot-randomized-search-py">
 <div class="binder-badge docutils container">
