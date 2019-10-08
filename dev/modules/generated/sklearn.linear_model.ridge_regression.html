@@ -149,7 +149,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.linear_model" title="sklearn.linear_model"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.linear_model</span></code></a>.ridge_regression<a class="headerlink" href="#sklearn-linear-model-ridge-regression" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.linear_model.ridge_regression">
-<code class="sig-prename descclassname">sklearn.linear_model.</code><code class="sig-name descname">ridge_regression</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">alpha</em>, <em class="sig-param">sample_weight=None</em>, <em class="sig-param">solver='auto'</em>, <em class="sig-param">max_iter=None</em>, <em class="sig-param">tol=0.001</em>, <em class="sig-param">verbose=0</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">return_n_iter=False</em>, <em class="sig-param">return_intercept=False</em>, <em class="sig-param">check_input=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/b9060780c/sklearn/linear_model/ridge.py#L238"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.ridge_regression" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sklearn.linear_model.</code><code class="sig-name descname">ridge_regression</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">alpha</em>, <em class="sig-param">sample_weight=None</em>, <em class="sig-param">solver='auto'</em>, <em class="sig-param">max_iter=None</em>, <em class="sig-param">tol=0.001</em>, <em class="sig-param">verbose=0</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">return_n_iter=False</em>, <em class="sig-param">return_intercept=False</em>, <em class="sig-param">check_input=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/45ac1ef99/sklearn/linear_model/ridge.py#L238"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.ridge_regression" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solve the ridge equation by the method of normal equations.</p>
 <p>Read more in the <a class="reference internal" href="../linear_model.html#ridge-regression"><span class="std std-ref">User Guide</span></a>.</p>
 <dl class="field-list">
@@ -169,7 +169,7 @@ LogisticRegression or LinearSVC. If an array is passed, penalties are
 assumed to be specific to the targets. Hence they must correspond in
 number.</p>
 </dd>
-<dt><strong>sample_weight</strong><span class="classifier">float or numpy array of shape [n_samples]</span></dt><dd><p>Individual weights for each sample. If sample_weight is not None and
+<dt><strong>sample_weight</strong><span class="classifier">float or numpy array of shape (n_samples,), default=None</span></dt><dd><p>Individual weights for each sample. If sample_weight is not None and
 solver=’auto’, the solver will be set to ‘cholesky’.</p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.17.</span></p>
@@ -214,9 +214,9 @@ For the ‘sparse_cg’ and ‘lsqr’ solvers, the default value is determined
 by scipy.sparse.linalg. For ‘sag’ and saga solver, the default value is
 1000.</p>
 </dd>
-<dt><strong>tol</strong><span class="classifier">float</span></dt><dd><p>Precision of the solution.</p>
+<dt><strong>tol</strong><span class="classifier">float, default=1e-3</span></dt><dd><p>Precision of the solution.</p>
 </dd>
-<dt><strong>verbose</strong><span class="classifier">int</span></dt><dd><p>Verbosity level. Setting verbose &gt; 0 will display additional
+<dt><strong>verbose</strong><span class="classifier">int, default=0</span></dt><dd><p>Verbosity level. Setting verbose &gt; 0 will display additional
 information depending on the solver used.</p>
 </dd>
 <dt><strong>random_state</strong><span class="classifier">int, RandomState instance or None, optional, default None</span></dt><dd><p>The seed of the pseudo random number generator to use when shuffling
@@ -225,13 +225,13 @@ generator; If RandomState instance, random_state is the random number
 generator; If None, the random number generator is the RandomState
 instance used by <code class="docutils literal notranslate"><span class="pre">np.random</span></code>. Used when <code class="docutils literal notranslate"><span class="pre">solver</span></code> == ‘sag’.</p>
 </dd>
-<dt><strong>return_n_iter</strong><span class="classifier">boolean, default False</span></dt><dd><p>If True, the method also returns <code class="docutils literal notranslate"><span class="pre">n_iter</span></code>, the actual number of
+<dt><strong>return_n_iter</strong><span class="classifier">bool, default=False</span></dt><dd><p>If True, the method also returns <code class="docutils literal notranslate"><span class="pre">n_iter</span></code>, the actual number of
 iteration performed by the solver.</p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.17.</span></p>
 </div>
 </dd>
-<dt><strong>return_intercept</strong><span class="classifier">boolean, default False</span></dt><dd><p>If True and if X is sparse, the method also returns the intercept,
+<dt><strong>return_intercept</strong><span class="classifier">bool, default=False</span></dt><dd><p>If True and if X is sparse, the method also returns the intercept,
 and the solver is automatically changed to ‘sag’. This is only a
 temporary fix for fitting the intercept with sparse data. For dense
 data, use sklearn.linear_model._preprocess_data before your regression.</p>
@@ -239,7 +239,7 @@ data, use sklearn.linear_model._preprocess_data before your regression.</p>
 <p><span class="versionmodified added">New in version 0.17.</span></p>
 </div>
 </dd>
-<dt><strong>check_input</strong><span class="classifier">boolean, default True</span></dt><dd><p>If False, the input arrays X and y will not be checked.</p>
+<dt><strong>check_input</strong><span class="classifier">bool, default=True</span></dt><dd><p>If False, the input arrays X and y will not be checked.</p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.21.</span></p>
 </div>
