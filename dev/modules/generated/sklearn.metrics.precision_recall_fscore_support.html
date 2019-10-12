@@ -149,7 +149,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.metrics" title="sklearn.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.metrics</span></code></a>.precision_recall_fscore_support<a class="headerlink" href="#sklearn-metrics-precision-recall-fscore-support" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.metrics.precision_recall_fscore_support">
-<code class="sig-prename descclassname">sklearn.metrics.</code><code class="sig-name descname">precision_recall_fscore_support</code><span class="sig-paren">(</span><em class="sig-param">y_true</em>, <em class="sig-param">y_pred</em>, <em class="sig-param">beta=1.0</em>, <em class="sig-param">labels=None</em>, <em class="sig-param">pos_label=1</em>, <em class="sig-param">average=None</em>, <em class="sig-param">warn_for=('precision'</em>, <em class="sig-param">'recall'</em>, <em class="sig-param">'f-score')</em>, <em class="sig-param">sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/6d53d067d/sklearn/metrics/classification.py#L1258"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.metrics.precision_recall_fscore_support" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sklearn.metrics.</code><code class="sig-name descname">precision_recall_fscore_support</code><span class="sig-paren">(</span><em class="sig-param">y_true</em>, <em class="sig-param">y_pred</em>, <em class="sig-param">beta=1.0</em>, <em class="sig-param">labels=None</em>, <em class="sig-param">pos_label=1</em>, <em class="sig-param">average=None</em>, <em class="sig-param">warn_for=('precision'</em>, <em class="sig-param">'recall'</em>, <em class="sig-param">'f-score')</em>, <em class="sig-param">sample_weight=None</em>, <em class="sig-param">zero_division='warn'</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7f079e337/sklearn/metrics/classification.py#L1305"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.metrics.precision_recall_fscore_support" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute precision, recall, F-measure and support for each class</p>
 <p>The precision is the ratio <code class="docutils literal notranslate"><span class="pre">tp</span> <span class="pre">/</span> <span class="pre">(tp</span> <span class="pre">+</span> <span class="pre">fp)</span></code> where <code class="docutils literal notranslate"><span class="pre">tp</span></code> is the number of
 true positives and <code class="docutils literal notranslate"><span class="pre">fp</span></code> the number of false positives. The precision is
@@ -218,6 +218,16 @@ function is being used to return only one of its metrics.</p>
 </dd>
 <dt><strong>sample_weight</strong><span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>Sample weights.</p>
 </dd>
+<dt><strong>zero_division</strong><span class="classifier">“warn”, 0 or 1, default=”warn”</span></dt><dd><dl class="simple">
+<dt>Sets the value to return when there is a zero division:</dt><dd><ul class="simple">
+<li><p>recall: when there are no positive labels</p></li>
+<li><p>precision: when there are no positive predictions</p></li>
+<li><p>f-score: both</p></li>
+</ul>
+</dd>
+</dl>
+<p>If set to “warn”, this acts as 0, but warnings are also raised.</p>
+</dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -233,8 +243,9 @@ function is being used to return only one of its metrics.</p>
 <p class="rubric">Notes</p>
 <p>When <code class="docutils literal notranslate"><span class="pre">true</span> <span class="pre">positive</span> <span class="pre">+</span> <span class="pre">false</span> <span class="pre">positive</span> <span class="pre">==</span> <span class="pre">0</span></code>, precision is undefined;
 When <code class="docutils literal notranslate"><span class="pre">true</span> <span class="pre">positive</span> <span class="pre">+</span> <span class="pre">false</span> <span class="pre">negative</span> <span class="pre">==</span> <span class="pre">0</span></code>, recall is undefined.
-In such cases, the metric will be set to 0, as will f-score, and
-<code class="docutils literal notranslate"><span class="pre">UndefinedMetricWarning</span></code> will be raised.</p>
+In such cases, by default the metric will be set to 0, as will f-score,
+and <code class="docutils literal notranslate"><span class="pre">UndefinedMetricWarning</span></code> will be raised. This behavior can be
+modified with <code class="docutils literal notranslate"><span class="pre">zero_division</span></code>.</p>
 <p class="rubric">References</p>
 <dl class="citation">
 <dt class="label" id="r623484488881-1"><span class="brackets">1</span></dt>
