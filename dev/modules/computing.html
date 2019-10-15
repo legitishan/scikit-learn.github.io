@@ -174,7 +174,13 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#parallelism-resource-management-and-configuration">8.3. Parallelism, resource management, and configuration</a><ul>
-<li><a class="reference internal" href="#parallel-and-distributed-computing">8.3.1. Parallel and distributed computing</a></li>
+<li><a class="reference internal" href="#parallelism">8.3.1. Parallelism</a><ul>
+<li><a class="reference internal" href="#joblib-based-parallelism">8.3.1.1. Joblib-based parallelism</a></li>
+<li><a class="reference internal" href="#openmp-based-parallelism">8.3.1.2. OpenMP-based parallelism</a></li>
+<li><a class="reference internal" href="#parallel-numpy-routines-from-numerical-libraries">8.3.1.3. Parallel Numpy routines from numerical libraries</a></li>
+<li><a class="reference internal" href="#oversubscription-spawning-too-many-threads">8.3.1.4. Oversubscription: spawning too many threads</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#configuration-switches">8.3.2. Configuration switches</a><ul>
 <li><a class="reference internal" href="#python-runtime">8.3.2.1. Python runtime</a></li>
 <li><a class="reference internal" href="#environment-variables">8.3.2.2. Environment variables</a></li>
@@ -639,14 +645,131 @@ sufficient to not generate the relevant features, leaving their columns empty.</
 </div>
 <div class="section" id="parallelism-resource-management-and-configuration">
 <h2>8.3. Parallelism, resource management, and configuration<a class="headerlink" href="#parallelism-resource-management-and-configuration" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="parallel-and-distributed-computing">
-<span id="parallelism"></span><h3>8.3.1. Parallel and distributed computing<a class="headerlink" href="#parallel-and-distributed-computing" title="Permalink to this headline">¶</a></h3>
-<p>Scikit-learn uses the <a class="reference external" href="https://joblib.readthedocs.io/en/latest/">joblib</a>
-library to enable parallel computing inside its estimators. See the
-joblib documentation for the switches to control parallel computing.</p>
-<p>Note that, by default, scikit-learn uses its embedded (vendored) version
-of joblib. A configuration switch (documented below) controls this
-behavior.</p>
+<div class="section" id="parallelism">
+<span id="id4"></span><h3>8.3.1. Parallelism<a class="headerlink" href="#parallelism" title="Permalink to this headline">¶</a></h3>
+<p>Some scikit-learn estimators and utilities can parallelize costly operations
+using multiple CPU cores, thanks to the following components:</p>
+<ul class="simple">
+<li><p>via the <a class="reference external" href="https://joblib.readthedocs.io/en/latest/">joblib</a> library. In
+this case the number of threads or processes can be controlled with the
+<code class="docutils literal notranslate"><span class="pre">n_jobs</span></code> parameter.</p></li>
+<li><p>via OpenMP, used in C or Cython code.</p></li>
+</ul>
+<p>In addition, some of the numpy routines that are used internally by
+scikit-learn may also be parallelized if numpy is installed with specific
+numerical libraries such as MKL, OpenBLAS, or BLIS.</p>
+<p>We describe these 3 scenarios in the following subsections.</p>
+<div class="section" id="joblib-based-parallelism">
+<h4>8.3.1.1. Joblib-based parallelism<a class="headerlink" href="#joblib-based-parallelism" title="Permalink to this headline">¶</a></h4>
+<p>When the underlying implementation uses joblib, the number of workers
+(threads or processes) that are spawned in parallel can be controled via the
+<code class="docutils literal notranslate"><span class="pre">n_jobs</span></code> parameter.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Where (and how) parallelization happens in the estimators is currently
+poorly documented. Please help us by improving our docs and tackle <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/14228">issue
+14228</a>!</p>
+</div>
+<p>Joblib is able to support both multi-processing and multi-threading. Whether
+joblib chooses to spawn a thread or a process depends on the <strong>backend</strong>
+that it’s using.</p>
+<p>Scikit-learn generally relies on the <code class="docutils literal notranslate"><span class="pre">loky</span></code> backend, which is joblib’s
+default backend. Loky is a multi-processing backend. When doing
+multi-processing, in order to avoid duplicating the memory in each process
+(which isn’t reasonable with big datasets), joblib will create a <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.memmap.html">memmap</a>
+that all processes can share, when the data is bigger than 1MB.</p>
+<p>In some specific cases (when the code that is run in parallel releases the
+GIL), scikit-learn will indicate to <code class="docutils literal notranslate"><span class="pre">joblib</span></code> that a multi-threading
+backend is preferable.</p>
+<p>As a user, you may control the backend that joblib will use (regardless of
+what scikit-learn recommends) by using a context manager:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">joblib</span> <span class="k">import</span> <span class="n">parallel_backend</span>
+
+<span class="k">with</span> <span class="n">parallel_backend</span><span class="p">(</span><span class="s1">&#39;threading&#39;</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="c1"># Your scikit-learn code here</span>
+</pre></div>
+</div>
+<p>Please refer to the <a class="reference external" href="https://joblib.readthedocs.io/en/latest/parallel.html#thread-based-parallelism-vs-process-based-parallelism">joblib’s docs</a>
+for more details.</p>
+<p>In practice, whether parallelism is helpful at improving runtime depends on
+many factors. It is usually a good idea to experiment rather than assuming
+that increasing the number of workers is always a good thing. In some cases
+it can be highly detrimental to performance to run multiple copies of some
+estimators or functions in parallel (see oversubscription below).</p>
+</div>
+<div class="section" id="openmp-based-parallelism">
+<h4>8.3.1.2. OpenMP-based parallelism<a class="headerlink" href="#openmp-based-parallelism" title="Permalink to this headline">¶</a></h4>
+<p>OpenMP is used to parallelize code written in Cython or C, relying on
+multi-threading exclusively. By default (and unless joblib is trying to
+avoid oversubscription), the implementation will use as many threads as
+possible.</p>
+<p>You can control the exact number of threads that are used via the
+<code class="docutils literal notranslate"><span class="pre">OMP_NUM_THREADS</span></code> environment variable:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OMP_NUM_THREADS</span><span class="o">=</span><span class="mi">4</span> <span class="n">python</span> <span class="n">my_script</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="parallel-numpy-routines-from-numerical-libraries">
+<h4>8.3.1.3. Parallel Numpy routines from numerical libraries<a class="headerlink" href="#parallel-numpy-routines-from-numerical-libraries" title="Permalink to this headline">¶</a></h4>
+<p>Scikit-learn relies heavily on NumPy and SciPy, which internally call
+multi-threaded linear algebra routines implemented in libraries such as MKL,
+OpenBLAS or BLIS.</p>
+<p>The number of threads used by the OpenBLAS, MKL or BLIS libraries can be set
+via the <code class="docutils literal notranslate"><span class="pre">MKL_NUM_THREADS</span></code>, <code class="docutils literal notranslate"><span class="pre">OPENBLAS_NUM_THREADS</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">BLIS_NUM_THREADS</span></code> environment variables.</p>
+<p>Please note that scikit-learn has no direct control over these
+implementations. Scikit-learn solely relies on Numpy and Scipy.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>At the time of writing (2019), NumPy and SciPy packages distributed on
+pypi.org (used by <code class="docutils literal notranslate"><span class="pre">pip</span></code>) and on the conda-forge channel are linked
+with OpenBLAS, while conda packages shipped on the “defaults” channel
+from anaconda.org are linked by default with MKL.</p>
+</div>
+</div>
+<div class="section" id="oversubscription-spawning-too-many-threads">
+<h4>8.3.1.4. Oversubscription: spawning too many threads<a class="headerlink" href="#oversubscription-spawning-too-many-threads" title="Permalink to this headline">¶</a></h4>
+<p>It is generally recommended to avoid using significantly more processes or
+threads than the number of CPUs on a machine. Over-subscription happens when
+a program is running too many threads at the same time.</p>
+<p>Suppose you have a machine with 8 CPUs. Consider a case where you’re running
+a <code class="xref py py-class docutils literal notranslate"><span class="pre">GridSearchCV</span></code> (parallelized with joblib) with <code class="docutils literal notranslate"><span class="pre">n_jobs=8</span></code> over
+a <code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingClassifier</span></code> (parallelized with OpenMP). Each
+instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingClassifier</span></code> will spawn 8 threads
+(since you have 8 CPUs). That’s a total of <code class="docutils literal notranslate"><span class="pre">8</span> <span class="pre">*</span> <span class="pre">8</span> <span class="pre">=</span> <span class="pre">64</span></code> threads, which
+leads to oversubscription of physical CPU resources and to scheduling
+overhead.</p>
+<p>Oversubscription can arise in the exact same fashion with parallelized
+routines from MKL, OpenBLAS or BLIS that are nested in joblib calls.</p>
+<p>Starting from <code class="docutils literal notranslate"><span class="pre">joblib</span> <span class="pre">&gt;=</span> <span class="pre">0.14</span></code>, when the <code class="docutils literal notranslate"><span class="pre">loky</span></code> backend is used (which
+is the default), joblib will tell its child <strong>processes</strong> to limit the
+number of threads they can use, so as to avoid oversubscription. In practice
+the heuristic that joblib uses is to tell the processes to use <code class="docutils literal notranslate"><span class="pre">max_threads</span>
+<span class="pre">=</span> <span class="pre">n_cpus</span> <span class="pre">//</span> <span class="pre">n_jobs</span></code>, via their corresponding environment variable. Back to
+our example from above, since the joblib backend of <code class="xref py py-class docutils literal notranslate"><span class="pre">GridSearchCV</span></code>
+is <code class="docutils literal notranslate"><span class="pre">loky</span></code>, each process will only be able to use 1 thread instead of 8,
+thus mitigating the oversubscription issue.</p>
+<p>Note that:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Manually setting one of the environment variables (<code class="docutils literal notranslate"><span class="pre">OMP_NUM_THREADS</span></code>,
+<code class="docutils literal notranslate"><span class="pre">MKL_NUM_THREADS</span></code>, <code class="docutils literal notranslate"><span class="pre">OPENBLAS_NUM_THREADS</span></code>, or <code class="docutils literal notranslate"><span class="pre">BLIS_NUM_THREADS</span></code>)
+will take precedence over what joblib tries to do. The total number of
+threads will be <code class="docutils literal notranslate"><span class="pre">n_jobs</span> <span class="pre">*</span> <span class="pre">&lt;LIB&gt;_NUM_THREADS</span></code>. Note that setting this
+limit will also impact your computations in the main process, which will
+only use <code class="docutils literal notranslate"><span class="pre">&lt;LIB&gt;_NUM_THREADS</span></code>. Joblib exposes a context manager for
+finer control over the number of threads in its workers (see joblib docs
+linked below).</p></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><p>Joblib is currently unable to avoid oversubscription in a
+multi-threading context. It can only do so with the <code class="docutils literal notranslate"><span class="pre">loky</span></code> backend
+(which spawns processes).</p></li>
+</ul>
+<p>You will find additional details about joblib mitigation of oversubscription
+in <a class="reference external" href="https://joblib.readthedocs.io/en/latest/parallel.html#avoiding-over-subscription-of-cpu-ressources">joblib documentation</a>.</p>
+</div>
 </div>
 <div class="section" id="configuration-switches">
 <h3>8.3.2. Configuration switches<a class="headerlink" href="#configuration-switches" title="Permalink to this headline">¶</a></h3>

@@ -548,7 +548,7 @@ and/or <a class="reference internal" href="#term-transform"><span class="xref st
 <dt id="term-joblib">joblib</dt><dd><p>A Python library (<a class="reference external" href="https://joblib.readthedocs.io">https://joblib.readthedocs.io</a>) used in Scikit-learn to
 facilite simple parallelism and caching.  Joblib is oriented towards
 efficiently working with numpy arrays, such as through use of
-<a class="reference internal" href="#term-memory-mapping"><span class="xref std std-term">memory mapping</span></a>. See <a class="reference internal" href="modules/computing.html#parallelism"><span class="std std-ref">Parallel and distributed computing</span></a> for more
+<a class="reference internal" href="#term-memory-mapping"><span class="xref std std-term">memory mapping</span></a>. See <a class="reference internal" href="modules/computing.html#parallelism"><span class="std std-ref">Parallelism</span></a> for more
 information.</p>
 </dd>
 <dt id="term-label-indicator-matrix">label indicator matrix</dt><dt id="term-multilabel-indicator-matrix">multilabel indicator matrix</dt><dt id="term-multilabel-indicator-matrices">multilabel indicator matrices</dt><dd><p>The format used to represent multilabel data, where each row of a 2d
@@ -1391,41 +1391,19 @@ iterative procedure. This is also known as a <em>patience</em> parameter. It
 is typically used with <a class="reference internal" href="#term-early-stopping"><span class="xref std std-term">early stopping</span></a> to avoid stopping too
 early.</p>
 </dd>
-<dt id="term-n-jobs"><code class="docutils literal notranslate"><span class="pre">n_jobs</span></code></dt><dd><p>This is used to specify how many concurrent processes/threads should be
-used for parallelized routines.  Scikit-learn uses one processor for
-its processing by default, although it also makes use of NumPy, which
-may be configured to use a threaded numerical processor library (like
-MKL; see <a class="reference internal" href="faq.html#faq-mkl-threading"><span class="std std-ref">FAQ</span></a>).</p>
-<p><code class="docutils literal notranslate"><span class="pre">n_jobs</span></code> is an int, specifying the maximum number of concurrently
-running jobs.  If set to -1, all CPUs are used. If 1 is given, no
-joblib level parallelism is used at all, which is useful for
-debugging. Even with <code class="docutils literal notranslate"><span class="pre">n_jobs</span> <span class="pre">=</span> <span class="pre">1</span></code>, parallelism may occur due to
-numerical processing libraries (see <a class="reference internal" href="faq.html#faq-mkl-threading"><span class="std std-ref">FAQ</span></a>).
-For n_jobs below -1, (n_cpus + 1 + n_jobs) are used. Thus for
-<code class="docutils literal notranslate"><span class="pre">n_jobs</span> <span class="pre">=</span> <span class="pre">-2</span></code>, all CPUs but one are used.</p>
-<p><code class="docutils literal notranslate"><span class="pre">n_jobs=None</span></code> means <em>unset</em>; it will generally be interpreted as
-<code class="docutils literal notranslate"><span class="pre">n_jobs=1</span></code>, unless the current <a class="reference external" href="https://joblib.readthedocs.io/en/latest/generated/joblib.Parallel.html#joblib.Parallel" title="(in joblib v0.14.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">joblib.Parallel</span></code></a> backend
-context specifies otherwise.</p>
-<p>The use of <code class="docutils literal notranslate"><span class="pre">n_jobs</span></code>-based parallelism in estimators varies:</p>
-<ul class="simple">
-<li><p>Most often parallelism happens in <a class="reference internal" href="#term-fit"><span class="xref std std-term">fitting</span></a>, but
-sometimes parallelism happens in prediction (e.g. in random forests).</p></li>
-<li><p>Some parallelism uses a multi-threading backend by default, some
-a multi-processing backend.  It is possible to override the default
-backend by using <a class="reference internal" href="modules/generated/sklearn.utils.parallel_backend.html#sklearn.utils.parallel_backend" title="sklearn.utils.parallel_backend"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.utils.parallel_backend</span></code></a>.</p></li>
-<li><p>Whether parallel processing is helpful at improving runtime depends
-on many factors, and it’s usually a good idea to experiment rather
-than assuming that increasing the number of jobs is always a good
-thing.  <em>It can be highly detrimental to performance to run multiple
-copies of some estimators or functions in parallel.</em></p></li>
-</ul>
-<p>Nested uses of <code class="docutils literal notranslate"><span class="pre">n_jobs</span></code>-based parallelism with the same backend will
-result in an exception.
-So <code class="docutils literal notranslate"><span class="pre">GridSearchCV(OneVsRestClassifier(SVC(),</span> <span class="pre">n_jobs=2),</span> <span class="pre">n_jobs=2)</span></code>
-won’t work.</p>
-<p>When <code class="docutils literal notranslate"><span class="pre">n_jobs</span></code> is not 1, the estimator being parallelized must be
-picklable.  This means, for instance, that lambdas cannot be used
-as estimator parameters.</p>
+<dt id="term-n-jobs"><code class="docutils literal notranslate"><span class="pre">n_jobs</span></code></dt><dd><p>This parameter is used to specify how many concurrent processes or
+threads should be used for routines that are parallelized with
+<a class="reference internal" href="#term-joblib"><span class="xref std std-term">joblib</span></a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">n_jobs</span></code> is an integer, specifying the maximum number of concurrently
+running workers. If 1 is given, no joblib parallelism is used at all,
+which is useful for debugging. If set to -1, all CPUs are used. For
+<code class="docutils literal notranslate"><span class="pre">n_jobs</span></code> below -1, (n_cpus + 1 + n_jobs) are used. For example with
+<code class="docutils literal notranslate"><span class="pre">n_jobs=-2</span></code>, all CPUs but one are used.</p>
+<p><code class="docutils literal notranslate"><span class="pre">n_jobs</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code> by default, which means <em>unset</em>; it will
+generally be interpreted as <code class="docutils literal notranslate"><span class="pre">n_jobs=1</span></code>, unless the current
+<a class="reference external" href="https://joblib.readthedocs.io/en/latest/generated/joblib.Parallel.html#joblib.Parallel" title="(in joblib v0.14.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">joblib.Parallel</span></code></a> backend context specifies otherwise.</p>
+<p>For more details on the use of <code class="docutils literal notranslate"><span class="pre">joblib</span></code> and its interactions with
+scikit-learn, please refer to our <a class="reference internal" href="modules/computing.html#parallelism"><span class="std std-ref">parallelism notes</span></a>.</p>
 </dd>
 <dt id="term-pos-label"><code class="docutils literal notranslate"><span class="pre">pos_label</span></code></dt><dd><p>Value with which positive labels must be encoded in binary
 classification problems in which the positive class is not assumed.
