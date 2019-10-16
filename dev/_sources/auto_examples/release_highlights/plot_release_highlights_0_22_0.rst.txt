@@ -187,6 +187,7 @@ properly handle datasets with heterogeneous data:
 
 
 
+
 .. rst-class:: sphx-glr-script-out
 
  Out:
@@ -201,10 +202,45 @@ properly handle datasets with heterogeneous data:
     4     1.0        S
 
 
+Precomputed sparse nearest neighbors graph
+------------------------------------------
+Most estimators based on nearest neighbors graphs now accept precomputed
+sparse graphs as input, to reuse the same graph for multiple estimator fits.
+To use this feature in a pipeline, one can use the `memory` parameter, along
+with one of the two new transformers,
+:class:`~sklearn.neighbors.KNeighborsTransformer` and
+:class:`~sklearn.neighbors.RadiusNeighborsTransformer`. The precomputation
+can also be performed by custom estimators to use alternative
+implementations, such as approximate nearest neighbors methods.
+See more details in the :ref:`User Guide <neighbors_transformer>`.
+
+
+.. code-block:: default
+
+
+    from sklearn.neighbors import KNeighborsTransformer
+    from sklearn.manifold import Isomap
+    from sklearn.pipeline import make_pipeline
+
+    estimator = make_pipeline(
+        KNeighborsTransformer(n_neighbors=10, mode='distance'),
+        Isomap(n_neighbors=10, metric='precomputed'),
+        memory='.')
+    estimator.fit(X)
+
+    # We can decrease the number of neighbors and the graph will not be recomputed.
+    estimator.set_params(isomap__n_neighbors=5)
+    estimator.fit(X)
+
+
+
+
+
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  3.427 seconds)
+   **Total running time of the script:** ( 0 minutes  3.658 seconds)
 
 **Estimated memory usage:**  8 MB
 
