@@ -145,7 +145,11 @@
 <li><a class="reference internal" href="#building-from-source">Building from source</a><ul>
 <li><a class="reference internal" href="#dependencies">Dependencies</a></li>
 <li><a class="reference internal" href="#retrieving-the-latest-code">Retrieving the latest code</a></li>
-<li><a class="reference internal" href="#mac-osx">Mac OSX</a></li>
+<li><a class="reference internal" href="#mac-osx">Mac OSX</a><ul>
+<li><a class="reference internal" href="#using-conda">Using conda</a></li>
+<li><a class="reference internal" href="#using-homebrew">Using homebrew</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#freebsd">FreeBSD</a></li>
 </ul>
 </li>
@@ -264,10 +268,59 @@ top-level folder. Have a look at the <code class="docutils literal notranslate">
 <div class="section" id="mac-osx">
 <h3>Mac OSX<a class="headerlink" href="#mac-osx" title="Permalink to this headline">¶</a></h3>
 <p>The default C compiler, Apple-clang, on Mac OSX does not directly support
-OpenMP. The first solution to build scikit-learn is to install another C
-compiler such as gcc or llvm-clang. Another solution is to enable OpenMP
-support on the default Apple-clang. In the following we present how to
-configure this second option.</p>
+OpenMP. We present two solutions to enable OpenMP support (you need to do only
+one).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>First, clean any previously built files in the source folder of
+scikit-learn:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">clean</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-conda">
+<h4>Using conda<a class="headerlink" href="#using-conda" title="Permalink to this headline">¶</a></h4>
+<p>One solution is to install another compiler which supports OpenMP. If you use
+the conda package manager, you can install the <code class="docutils literal notranslate"><span class="pre">compilers</span></code> meta-package from
+the conda-forge channel, which provides OpenMP-enabled C compilers.</p>
+<p>It is recommended to use a dedicated conda environment to build scikit-learn
+from source:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">sklearn</span><span class="o">-</span><span class="n">dev</span> <span class="n">python</span> <span class="n">numpy</span> <span class="n">scipy</span> <span class="n">cython</span> <span class="n">joblib</span> <span class="n">pytest</span> \
+    <span class="n">conda</span><span class="o">-</span><span class="n">forge</span><span class="p">::</span><span class="n">compilers</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span><span class="p">::</span><span class="n">llvm</span><span class="o">-</span><span class="n">openmp</span>
+<span class="n">conda</span> <span class="n">activate</span> <span class="n">sklearn</span><span class="o">-</span><span class="n">dev</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">verbose</span> <span class="o">--</span><span class="n">editable</span> <span class="o">.</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you get any conflicting dependency error message, try commenting out
+any custom conda configuration in the <code class="docutils literal notranslate"><span class="pre">$HOME/.condarc</span></code> file. In
+particular the <code class="docutils literal notranslate"><span class="pre">channel_priority:</span> <span class="pre">strict</span></code> directive is known to cause
+problems for this setup.</p>
+</div>
+<p>You can check that the custom compilers are properly installed from conda
+forge using the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="nb">list</span> <span class="n">compilers</span> <span class="n">llvm</span><span class="o">-</span><span class="n">openmp</span>
+</pre></div>
+</div>
+<p>The compilers meta-package will automatically set custom environment
+variables:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>echo $CC
+echo $CXX
+echo $CFLAGS
+echo $CXXFLAGS
+echo $LDFLAGS
+</pre></div>
+</div>
+<p>They point to files and folders from your sklearn-dev conda environment
+(in particular in the bin/, include/ and lib/ subfolders).</p>
+<p>The compiled extensions should be built with the clang and clang++ compilers
+with the <code class="docutils literal notranslate"><span class="pre">-fopenmp</span></code> command line flag.</p>
+</div>
+<div class="section" id="using-homebrew">
+<h4>Using homebrew<a class="headerlink" href="#using-homebrew" title="Permalink to this headline">¶</a></h4>
+<p>Another solution is to enable OpenMP support for the clang compiler shipped
+by default on macOS.</p>
 <p>You first need to install the OpenMP library:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">brew</span> <span class="n">install</span> <span class="n">libomp</span>
 </pre></div>
@@ -281,7 +334,11 @@ configure this second option.</p>
 <span class="n">export</span> <span class="n">LDFLAGS</span><span class="o">=</span><span class="s2">&quot;$LDFLAGS -Wl,-rpath,/usr/local/opt/libomp/lib -L/usr/local/opt/libomp/lib -lomp&quot;</span>
 </pre></div>
 </div>
-<p>Finally you can build the package using the standard command.</p>
+<p>Finally, build scikit-learn in verbose mode:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">verbose</span> <span class="o">--</span><span class="n">editable</span> <span class="o">.</span>
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="freebsd">
 <h3>FreeBSD<a class="headerlink" href="#freebsd" title="Permalink to this headline">¶</a></h3>
