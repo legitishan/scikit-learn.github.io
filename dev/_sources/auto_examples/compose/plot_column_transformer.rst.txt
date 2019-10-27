@@ -38,17 +38,17 @@ the technique.
 
  .. code-block:: none
 
-    [Pipeline] ....... (step 1 of 3) Processing subjectbody, total=   0.1s
-    [Pipeline] ............. (step 2 of 3) Processing union, total=   0.2s
+    [Pipeline] ....... (step 1 of 3) Processing subjectbody, total=   0.0s
+    [Pipeline] ............. (step 2 of 3) Processing union, total=   0.3s
     [Pipeline] ............... (step 3 of 3) Processing svc, total=   0.0s
                   precision    recall  f1-score   support
 
-               0       0.79      0.71      0.75       319
-               1       0.68      0.76      0.71       251
+               0       0.78      0.71      0.75       319
+               1       0.67      0.75      0.71       251
 
         accuracy                           0.73       570
-       macro avg       0.73      0.74      0.73       570
-    weighted avg       0.74      0.73      0.73       570
+       macro avg       0.73      0.73      0.73       570
+    weighted avg       0.73      0.73      0.73       570
 
 
 
@@ -67,8 +67,6 @@ the technique.
 
     from sklearn.base import BaseEstimator, TransformerMixin
     from sklearn.datasets import fetch_20newsgroups
-    from sklearn.datasets.twenty_newsgroups import strip_newsgroup_footer
-    from sklearn.datasets.twenty_newsgroups import strip_newsgroup_quoting
     from sklearn.decomposition import TruncatedSVD
     from sklearn.feature_extraction import DictVectorizer
     from sklearn.feature_extraction.text import TfidfVectorizer
@@ -105,8 +103,6 @@ the technique.
             features = np.empty(shape=(len(posts), 2), dtype=object)
             for i, text in enumerate(posts):
                 headers, _, bod = text.partition('\n\n')
-                bod = strip_newsgroup_footer(bod)
-                bod = strip_newsgroup_quoting(bod)
                 features[i, 1] = bod
 
                 prefix = 'Subject:'
@@ -160,10 +156,12 @@ the technique.
     X_train, y_train = fetch_20newsgroups(random_state=1,
                                           subset='train',
                                           categories=categories,
+                                          remove=('footers', 'quotes'),
                                           return_X_y=True)
     X_test, y_test = fetch_20newsgroups(random_state=1,
                                         subset='test',
                                         categories=categories,
+                                        remove=('footers', 'quotes'),
                                         return_X_y=True)
 
     pipeline.fit(X_train, y_train)
@@ -173,9 +171,9 @@ the technique.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.269 seconds)
+   **Total running time of the script:** ( 0 minutes  2.791 seconds)
 
-**Estimated memory usage:**  43 MB
+**Estimated memory usage:**  49 MB
 
 
 .. _sphx_glr_download_auto_examples_compose_plot_column_transformer.py:

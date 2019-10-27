@@ -66,7 +66,6 @@ the biclusters.
     from matplotlib import pyplot as plt
 
     from sklearn.datasets import make_biclusters
-    from sklearn.datasets import samples_generator as sg
     from sklearn.cluster import SpectralCoclustering
     from sklearn.metrics import consensus_score
 
@@ -77,7 +76,12 @@ the biclusters.
     plt.matshow(data, cmap=plt.cm.Blues)
     plt.title("Original dataset")
 
-    data, row_idx, col_idx = sg._shuffle(data, random_state=0)
+    # shuffle clusters
+    rng = np.random.RandomState(0)
+    row_idx = rng.permutation(data.shape[0])
+    col_idx = rng.permutation(data.shape[1])
+    data = data[row_idx][:, col_idx]
+
     plt.matshow(data, cmap=plt.cm.Blues)
     plt.title("Shuffled dataset")
 
@@ -99,7 +103,7 @@ the biclusters.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.568 seconds)
+   **Total running time of the script:** ( 0 minutes  0.605 seconds)
 
 **Estimated memory usage:**  8 MB
 

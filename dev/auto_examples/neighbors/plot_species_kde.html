@@ -207,7 +207,6 @@ S. J. Phillips, R. P. Anderson, R. E. Schapire - Ecological Modelling,
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.datasets.fetch_species_distributions.html#sklearn.datasets.fetch_species_distributions" title="View documentation for sklearn.datasets.fetch_species_distributions"><span class="n">fetch_species_distributions</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.datasets.species_distributions</span> <span class="k">import</span> <span class="n">construct_grids</span>
 <span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.neighbors.KernelDensity.html#sklearn.neighbors.KernelDensity" title="View documentation for sklearn.neighbors.KernelDensity"><span class="n">KernelDensity</span></a>
 
 <span class="c1"># if basemap is available, we&#39;ll use it.</span>
@@ -217,6 +216,34 @@ S. J. Phillips, R. P. Anderson, R. E. Schapire - Ecological Modelling,
     <span class="n">basemap</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="n">basemap</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+<span class="k">def</span> <span class="nf">construct_grids</span><span class="p">(</span><span class="n">batch</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Construct the map grid from the batch object</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    batch : Batch object</span>
+<span class="sd">        The object returned by :func:`fetch_species_distributions`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (xgrid, ygrid) : 1-D arrays</span>
+<span class="sd">        The grid corresponding to the values in batch.coverages</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># x,y coordinates for corner cells</span>
+    <span class="n">xmin</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">x_left_lower_corner</span> <span class="o">+</span> <span class="n">batch</span><span class="o">.</span><span class="n">grid_size</span>
+    <span class="n">xmax</span> <span class="o">=</span> <span class="n">xmin</span> <span class="o">+</span> <span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">Nx</span> <span class="o">*</span> <span class="n">batch</span><span class="o">.</span><span class="n">grid_size</span><span class="p">)</span>
+    <span class="n">ymin</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">y_left_lower_corner</span> <span class="o">+</span> <span class="n">batch</span><span class="o">.</span><span class="n">grid_size</span>
+    <span class="n">ymax</span> <span class="o">=</span> <span class="n">ymin</span> <span class="o">+</span> <span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">Ny</span> <span class="o">*</span> <span class="n">batch</span><span class="o">.</span><span class="n">grid_size</span><span class="p">)</span>
+
+    <span class="c1"># x coordinates of the grid cells</span>
+    <span class="n">xgrid</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="View documentation for numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">grid_size</span><span class="p">)</span>
+    <span class="c1"># y coordinates of the grid cells</span>
+    <span class="n">ygrid</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="View documentation for numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">grid_size</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">xgrid</span><span class="p">,</span> <span class="n">ygrid</span><span class="p">)</span>
+
 
 <span class="c1"># Get matrices/arrays of species IDs and locations</span>
 <span class="n">data</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.fetch_species_distributions.html#sklearn.datasets.fetch_species_distributions" title="View documentation for sklearn.datasets.fetch_species_distributions"><span class="n">fetch_species_distributions</span></a><span class="p">()</span>
@@ -280,7 +307,7 @@ S. J. Phillips, R. P. Anderson, R. E. Schapire - Ecological Modelling,
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  5.566 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  5.571 seconds)</p>
 <p><strong>Estimated memory usage:</strong>  8 MB</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-neighbors-plot-species-kde-py">
 <div class="binder-badge docutils container">

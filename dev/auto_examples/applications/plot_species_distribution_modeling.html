@@ -124,8 +124,8 @@
           </a>
         </div>
         <div class="btn-group w-100 mb-2" role="group" aria-label="rellinks">
-            <a href="plot_model_complexity_influence.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Model Complexity Influence">Prev</a><a href="../index.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Examples">Up</a>
-            <a href="plot_stock_market.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Visualizing the stock market structure">Next</a>
+            <a href="wikipedia_principal_eigenvector.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Wikipedia principal eigenvector">Prev</a><a href="../index.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Examples">Up</a>
+            <a href="svm_gui.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Libsvm GUI">Next</a>
         </div>
         <div class="alert alert-danger p-1 mb-2" role="alert">
           <p class="text-center mb-0">
@@ -205,7 +205,7 @@ Modeling distribution of species &#39;microryzomys minutus&#39;
 
  Area under the ROC curve : 0.993919
 
-time elapsed: 4.68s
+time elapsed: 4.79s
 </pre></div>
 </div>
 <div class="line-block">
@@ -221,9 +221,8 @@ time elapsed: 4.68s
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
-<span class="kn">from</span> <span class="nn">sklearn.datasets.base</span> <span class="k">import</span> <span class="n">Bunch</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="k">import</span> <span class="n">Bunch</span>
 <span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.datasets.fetch_species_distributions.html#sklearn.datasets.fetch_species_distributions" title="View documentation for sklearn.datasets.fetch_species_distributions"><span class="n">fetch_species_distributions</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.datasets.species_distributions</span> <span class="k">import</span> <span class="n">construct_grids</span>
 <span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">svm</span><span class="p">,</span> <span class="n">metrics</span>
 
 <span class="c1"># if basemap is available, we&#39;ll use it.</span>
@@ -235,6 +234,33 @@ time elapsed: 4.68s
     <span class="n">basemap</span> <span class="o">=</span> <span class="kc">False</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">construct_grids</span><span class="p">(</span><span class="n">batch</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Construct the map grid from the batch object</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    batch : Batch object</span>
+<span class="sd">        The object returned by :func:`fetch_species_distributions`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (xgrid, ygrid) : 1-D arrays</span>
+<span class="sd">        The grid corresponding to the values in batch.coverages</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># x,y coordinates for corner cells</span>
+    <span class="n">xmin</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">x_left_lower_corner</span> <span class="o">+</span> <span class="n">batch</span><span class="o">.</span><span class="n">grid_size</span>
+    <span class="n">xmax</span> <span class="o">=</span> <span class="n">xmin</span> <span class="o">+</span> <span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">Nx</span> <span class="o">*</span> <span class="n">batch</span><span class="o">.</span><span class="n">grid_size</span><span class="p">)</span>
+    <span class="n">ymin</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">y_left_lower_corner</span> <span class="o">+</span> <span class="n">batch</span><span class="o">.</span><span class="n">grid_size</span>
+    <span class="n">ymax</span> <span class="o">=</span> <span class="n">ymin</span> <span class="o">+</span> <span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">Ny</span> <span class="o">*</span> <span class="n">batch</span><span class="o">.</span><span class="n">grid_size</span><span class="p">)</span>
+
+    <span class="c1"># x coordinates of the grid cells</span>
+    <span class="n">xgrid</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="View documentation for numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">grid_size</span><span class="p">)</span>
+    <span class="c1"># y coordinates of the grid cells</span>
+    <span class="n">ygrid</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="View documentation for numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">grid_size</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">xgrid</span><span class="p">,</span> <span class="n">ygrid</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">create_species_bunch</span><span class="p">(</span><span class="n">species_name</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">coverages</span><span class="p">,</span> <span class="n">xgrid</span><span class="p">,</span> <span class="n">ygrid</span><span class="p">):</span>
@@ -380,8 +406,8 @@ time elapsed: 4.68s
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  5.095 seconds)</p>
-<p><strong>Estimated memory usage:</strong>  291 MB</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  5.246 seconds)</p>
+<p><strong>Estimated memory usage:</strong>  269 MB</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-applications-plot-species-distribution-modeling-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/scikit-learn/scikit-learn/master?urlpath=lab/tree/notebooks/auto_examples/applications/plot_species_distribution_modeling.ipynb"><img alt="https://mybinder.org/badge_logo.svg" src="https://mybinder.org/badge_logo.svg" width="150px" /></a>

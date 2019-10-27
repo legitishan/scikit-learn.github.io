@@ -173,17 +173,17 @@ combined set of features.</p>
 <p>The choice of features is not particularly helpful, but serves to illustrate
 the technique.</p>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[Pipeline] ....... (step 1 of 3) Processing subjectbody, total=   0.1s
-[Pipeline] ............. (step 2 of 3) Processing union, total=   0.2s
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[Pipeline] ....... (step 1 of 3) Processing subjectbody, total=   0.0s
+[Pipeline] ............. (step 2 of 3) Processing union, total=   0.3s
 [Pipeline] ............... (step 3 of 3) Processing svc, total=   0.0s
               precision    recall  f1-score   support
 
-           0       0.79      0.71      0.75       319
-           1       0.68      0.76      0.71       251
+           0       0.78      0.71      0.75       319
+           1       0.67      0.75      0.71       251
 
     accuracy                           0.73       570
-   macro avg       0.73      0.74      0.73       570
-weighted avg       0.74      0.73      0.73       570
+   macro avg       0.73      0.73      0.73       570
+weighted avg       0.73      0.73      0.73       570
 </pre></div>
 </div>
 <div class="line-block">
@@ -197,8 +197,6 @@ weighted avg       0.74      0.73      0.73       570
 
 <span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.base.BaseEstimator.html#sklearn.base.BaseEstimator" title="View documentation for sklearn.base.BaseEstimator"><span class="n">BaseEstimator</span></a><span class="p">,</span> <a href="../../modules/generated/sklearn.base.TransformerMixin.html#sklearn.base.TransformerMixin" title="View documentation for sklearn.base.TransformerMixin"><span class="n">TransformerMixin</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.datasets.fetch_20newsgroups.html#sklearn.datasets.fetch_20newsgroups" title="View documentation for sklearn.datasets.fetch_20newsgroups"><span class="n">fetch_20newsgroups</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.datasets.twenty_newsgroups</span> <span class="k">import</span> <span class="n">strip_newsgroup_footer</span>
-<span class="kn">from</span> <span class="nn">sklearn.datasets.twenty_newsgroups</span> <span class="k">import</span> <span class="n">strip_newsgroup_quoting</span>
 <span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.decomposition.TruncatedSVD.html#sklearn.decomposition.TruncatedSVD" title="View documentation for sklearn.decomposition.TruncatedSVD"><span class="n">TruncatedSVD</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.feature_extraction</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.feature_extraction.DictVectorizer.html#sklearn.feature_extraction.DictVectorizer" title="View documentation for sklearn.feature_extraction.DictVectorizer"><span class="n">DictVectorizer</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html#sklearn.feature_extraction.text.TfidfVectorizer" title="View documentation for sklearn.feature_extraction.text.TfidfVectorizer"><span class="n">TfidfVectorizer</span></a>
@@ -235,8 +233,6 @@ weighted avg       0.74      0.73      0.73       570
         <span class="n">features</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.empty.html#numpy.empty" title="View documentation for numpy.empty"><span class="n">np</span><span class="o">.</span><span class="n">empty</span></a><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">posts</span><span class="p">),</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">text</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">posts</span><span class="p">):</span>
             <span class="n">headers</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">bod</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
-            <span class="n">bod</span> <span class="o">=</span> <span class="n">strip_newsgroup_footer</span><span class="p">(</span><span class="n">bod</span><span class="p">)</span>
-            <span class="n">bod</span> <span class="o">=</span> <span class="n">strip_newsgroup_quoting</span><span class="p">(</span><span class="n">bod</span><span class="p">)</span>
             <span class="n">features</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">bod</span>
 
             <span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;Subject:&#39;</span>
@@ -290,10 +286,12 @@ weighted avg       0.74      0.73      0.73       570
 <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.fetch_20newsgroups.html#sklearn.datasets.fetch_20newsgroups" title="View documentation for sklearn.datasets.fetch_20newsgroups"><span class="n">fetch_20newsgroups</span></a><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                                       <span class="n">subset</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span>
                                       <span class="n">categories</span><span class="o">=</span><span class="n">categories</span><span class="p">,</span>
+                                      <span class="n">remove</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;footers&#39;</span><span class="p">,</span> <span class="s1">&#39;quotes&#39;</span><span class="p">),</span>
                                       <span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.fetch_20newsgroups.html#sklearn.datasets.fetch_20newsgroups" title="View documentation for sklearn.datasets.fetch_20newsgroups"><span class="n">fetch_20newsgroups</span></a><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                                     <span class="n">subset</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">,</span>
                                     <span class="n">categories</span><span class="o">=</span><span class="n">categories</span><span class="p">,</span>
+                                    <span class="n">remove</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;footers&#39;</span><span class="p">,</span> <span class="s1">&#39;quotes&#39;</span><span class="p">),</span>
                                     <span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">pipeline</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
@@ -301,8 +299,8 @@ weighted avg       0.74      0.73      0.73       570
 <span class="nb">print</span><span class="p">(</span><a href="../../modules/generated/sklearn.metrics.classification_report.html#sklearn.metrics.classification_report" title="View documentation for sklearn.metrics.classification_report"><span class="n">classification_report</span></a><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.269 seconds)</p>
-<p><strong>Estimated memory usage:</strong>  43 MB</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.791 seconds)</p>
+<p><strong>Estimated memory usage:</strong>  49 MB</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-compose-plot-column-transformer-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/scikit-learn/scikit-learn/master?urlpath=lab/tree/notebooks/auto_examples/compose/plot_column_transformer.ipynb"><img alt="https://mybinder.org/badge_logo.svg" src="https://mybinder.org/badge_logo.svg" width="150px" /></a>
