@@ -148,6 +148,8 @@
 <li><a class="reference internal" href="#tree-pruning">Tree pruning</a></li>
 <li><a class="reference internal" href="#retrieve-dataframes-from-openml">Retrieve dataframes from OpenML</a></li>
 <li><a class="reference internal" href="#precomputed-sparse-nearest-neighbors-graph">Precomputed sparse nearest neighbors graph</a></li>
+<li><a class="reference internal" href="#stacking-classifier-and-regressor">Stacking Classifier and Regressor</a></li>
+<li><a class="reference internal" href="#checking-scikit-learn-compatibility-of-an-estimator">Checking scikit-learn compatibility of an estimator</a></li>
 </ul>
 </li>
 </ul>
@@ -169,7 +171,7 @@ with many bug fixes and new features! We detail below a few of the major
 features of this release. For an exhaustive list of all the changes, please
 refer to the <a class="reference internal" href="../../whats_new/v0.22.html#changes-0-22"><span class="std std-ref">release notes</span></a>.</p>
 <p>To install the latest version (with pip):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">scikit</span><span class="o">-</span><span class="n">learn</span> <span class="o">--</span><span class="n">upgrade</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">upgrade</span> <span class="n">scikit</span><span class="o">-</span><span class="n">learn</span>
 </pre></div>
 </div>
 <p>or with conda:</p>
@@ -350,7 +352,64 @@ See more details in the <a class="reference internal" href="../../modules/neighb
     <span class="n">estimator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.746 seconds)</p>
+</div>
+<div class="section" id="stacking-classifier-and-regressor">
+<h2>Stacking Classifier and Regressor<a class="headerlink" href="#stacking-classifier-and-regressor" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="../../modules/generated/sklearn.ensemble.StackingClassifier.html#sklearn.ensemble.StackingClassifier" title="sklearn.ensemble.StackingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">StackingClassifier</span></code></a> and
+<a class="reference internal" href="../../modules/generated/sklearn.ensemble.StackingRegressor.html#sklearn.ensemble.StackingRegressor" title="sklearn.ensemble.StackingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">StackingRegressor</span></code></a>
+allow you to have a stack of estimators with a final classifier or
+a regressor.
+Stacked generalization consists in stacking the output of individual
+estimators and use a classifier to compute the final prediction. Stacking
+allows to use the strength of each individual estimator by using their output
+as input of a final estimator.
+Base estimators are fitted on the full <code class="docutils literal notranslate"><span class="pre">X</span></code> while
+the final estimator is trained using cross-validated predictions of the
+base estimators using <code class="docutils literal notranslate"><span class="pre">cross_val_predict</span></code>.</p>
+<p>Read more in the <a class="reference internal" href="../../modules/ensemble.html#stacking"><span class="std std-ref">User Guide</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.datasets.load_iris.html#sklearn.datasets.load_iris" title="View documentation for sklearn.datasets.load_iris"><span class="n">load_iris</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier" title="View documentation for sklearn.ensemble.RandomForestClassifier"><span class="n">RandomForestClassifier</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.svm.LinearSVC.html#sklearn.svm.LinearSVC" title="View documentation for sklearn.svm.LinearSVC"><span class="n">LinearSVC</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="View documentation for sklearn.linear_model.LogisticRegression"><span class="n">LogisticRegression</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler" title="View documentation for sklearn.preprocessing.StandardScaler"><span class="n">StandardScaler</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.pipeline.make_pipeline.html#sklearn.pipeline.make_pipeline" title="View documentation for sklearn.pipeline.make_pipeline"><span class="n">make_pipeline</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.ensemble.StackingClassifier.html#sklearn.ensemble.StackingClassifier" title="View documentation for sklearn.ensemble.StackingClassifier"><span class="n">StackingClassifier</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="View documentation for sklearn.model_selection.train_test_split"><span class="n">train_test_split</span></a>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.load_iris.html#sklearn.datasets.load_iris" title="View documentation for sklearn.datasets.load_iris"><span class="n">load_iris</span></a><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">estimators</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span> <a href="../../modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier" title="View documentation for sklearn.ensemble.RandomForestClassifier"><span class="n">RandomForestClassifier</span></a><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s1">&#39;svr&#39;</span><span class="p">,</span> <a href="../../modules/generated/sklearn.pipeline.make_pipeline.html#sklearn.pipeline.make_pipeline" title="View documentation for sklearn.pipeline.make_pipeline"><span class="n">make_pipeline</span></a><span class="p">(</span><a href="../../modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler" title="View documentation for sklearn.preprocessing.StandardScaler"><span class="n">StandardScaler</span></a><span class="p">(),</span>
+                          <a href="../../modules/generated/sklearn.svm.LinearSVC.html#sklearn.svm.LinearSVC" title="View documentation for sklearn.svm.LinearSVC"><span class="n">LinearSVC</span></a><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)))</span>
+<span class="p">]</span>
+<span class="n">clf</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.ensemble.StackingClassifier.html#sklearn.ensemble.StackingClassifier" title="View documentation for sklearn.ensemble.StackingClassifier"><span class="n">StackingClassifier</span></a><span class="p">(</span>
+    <span class="n">estimators</span><span class="o">=</span><span class="n">estimators</span><span class="p">,</span> <span class="n">final_estimator</span><span class="o">=</span><a href="../../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="View documentation for sklearn.linear_model.LogisticRegression"><span class="n">LogisticRegression</span></a><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="View documentation for sklearn.model_selection.train_test_split"><span class="n">train_test_split</span></a><span class="p">(</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
+<span class="p">)</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="checking-scikit-learn-compatibility-of-an-estimator">
+<h2>Checking scikit-learn compatibility of an estimator<a class="headerlink" href="#checking-scikit-learn-compatibility-of-an-estimator" title="Permalink to this headline">¶</a></h2>
+<p>Developers can check the compatibility of their scikit-learn compatible
+estimators using <a class="reference internal" href="../../modules/generated/sklearn.utils.estimator_checks.check_estimator.html#sklearn.utils.estimator_checks.check_estimator" title="sklearn.utils.estimator_checks.check_estimator"><code class="xref py py-func docutils literal notranslate"><span class="pre">check_estimator</span></code></a>. For
+instance, the <code class="docutils literal notranslate"><span class="pre">check_estimator(LinearSVC)</span></code> passes.</p>
+<p>We now provide a <code class="docutils literal notranslate"><span class="pre">pytest</span></code> specific decorator which allows the <code class="docutils literal notranslate"><span class="pre">pytest</span></code>
+ro run all checks independently and report the checks that are failing.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="View documentation for sklearn.linear_model.LogisticRegression"><span class="n">LogisticRegression</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.tree.DecisionTreeRegressor.html#sklearn.tree.DecisionTreeRegressor" title="View documentation for sklearn.tree.DecisionTreeRegressor"><span class="n">DecisionTreeRegressor</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.utils.estimator_checks</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.utils.estimator_checks.parametrize_with_checks.html#sklearn.utils.estimator_checks.parametrize_with_checks" title="View documentation for sklearn.utils.estimator_checks.parametrize_with_checks"><span class="n">parametrize_with_checks</span></a>
+
+
+<span class="nd">@parametrize_with_checks</span><span class="p">([</span><a href="../../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="View documentation for sklearn.linear_model.LogisticRegression"><span class="n">LogisticRegression</span></a><span class="p">,</span> <a href="../../modules/generated/sklearn.tree.DecisionTreeRegressor.html#sklearn.tree.DecisionTreeRegressor" title="View documentation for sklearn.tree.DecisionTreeRegressor"><span class="n">DecisionTreeRegressor</span></a><span class="p">])</span>
+<span class="k">def</span> <span class="nf">test_sklearn_compatible_estimator</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">check</span><span class="p">):</span>
+    <span class="n">check</span><span class="p">(</span><span class="n">estimator</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.236 seconds)</p>
 <p><strong>Estimated memory usage:</strong>  8 MB</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-release-highlights-plot-release-highlights-0-22-0-py">
 <div class="binder-badge docutils container">
