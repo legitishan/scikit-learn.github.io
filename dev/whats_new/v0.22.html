@@ -149,6 +149,7 @@
           <div class="sk-sidebar-toc">
             <ul>
 <li><a class="reference internal" href="#">Version 0.22.0</a><ul>
+<li><a class="reference internal" href="#clear-definition-of-the-public-api">Clear definition of the public API</a></li>
 <li><a class="reference internal" href="#deprecations-using-futurewarning-from-now-on">Deprecations: using <code class="docutils literal notranslate"><span class="pre">FutureWarning</span></code> from now on</a></li>
 <li><a class="reference internal" href="#changed-models">Changed models</a></li>
 <li><a class="reference internal" href="#changelog">Changelog</a><ul>
@@ -202,14 +203,49 @@
 <p>For a short description of the main highlights of the release, please
 refer to
 <a class="reference internal" href="../auto_examples/release_highlights/plot_release_highlights_0_22_0.html#sphx-glr-auto-examples-release-highlights-plot-release-highlights-0-22-0-py"><span class="std std-ref">Release Highlights for scikit-learn 0.22</span></a>.</p>
+<div class="section" id="clear-definition-of-the-public-api">
+<h2>Clear definition of the public API<a class="headerlink" href="#clear-definition-of-the-public-api" title="Permalink to this headline">¶</a></h2>
+<p>Scikit-learn has a public API, and a private API.</p>
+<p>We do our best not to break the public API, and to only introduce
+backward-compatible changes that do not require any user action. However, in
+cases where that’s not possible, any change to the public API is subject to
+a deprecation cycle of two minor versions. The private API isn’t publicly
+documented and isn’t subject to any deprecation cycle, so users should not
+rely on its stability.</p>
+<p>A function or object is public if it is documented in the <a class="reference external" href="https://scikit-learn.org/dev/modules/classes.html">API Reference</a> and if it can be
+imported with an import path without leading underscores. For example
+<code class="docutils literal notranslate"><span class="pre">sklearn.pipeline.make_pipeline</span></code> is public, while
+<code class="docutils literal notranslate"><span class="pre">sklearn.pipeline._name_estimators</span></code> is private.
+<code class="docutils literal notranslate"><span class="pre">sklearn.ensemble._gb.BaseEnsemble</span></code> is private too because the whole <code class="docutils literal notranslate"><span class="pre">_gb</span></code>
+module is private.</p>
+<p>Up to 0.22, some tools were de-facto public (no leading underscore), while
+they should have been private in the first place. In version 0.22, these
+tools have been made properly private, and the public API space has been
+cleaned. In addition, importing from most sub-modules is now deprecated: you
+should for example use <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">sklearn.cluster</span> <span class="pre">import</span> <span class="pre">Birch</span></code> instead of
+<code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">sklearn.cluster.birch</span> <span class="pre">import</span> <span class="pre">Birch</span></code> (in practice, <code class="docutils literal notranslate"><span class="pre">birch.py</span></code> has
+been moved to <code class="docutils literal notranslate"><span class="pre">_birch.py</span></code>).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All the tools in the public API should be documented in the <a class="reference external" href="https://scikit-learn.org/dev/modules/classes.html">API
+Reference</a>. If you
+find a public tool (without leading underscore) that isn’t in the API
+reference, that means it should either be private or documented. Please
+let us know by opening an issue!</p>
+</div>
+</div>
 <div class="section" id="deprecations-using-futurewarning-from-now-on">
 <h2>Deprecations: using <code class="docutils literal notranslate"><span class="pre">FutureWarning</span></code> from now on<a class="headerlink" href="#deprecations-using-futurewarning-from-now-on" title="Permalink to this headline">¶</a></h2>
 <p>When deprecating a feature, previous versions of scikit-learn used to raise
 a <code class="docutils literal notranslate"><span class="pre">DeprecationWarning</span></code>. Since the <code class="docutils literal notranslate"><span class="pre">DeprecationWarnings</span></code> aren’t shown by
 default by Python, scikit-learn needed to resort to a custom warning filter
-that would always show the warnings.</p>
-<p>This filter is now removed, and starting from 0.22 scikit-learn will show
-<code class="docutils literal notranslate"><span class="pre">FutureWarnings</span></code> for deprecations. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/15080">#15080</a> by <a class="reference external" href="https://github.com/NicolasHug">Nicolas Hug</a>.</p>
+to always show the warnings. That filter would sometimes interfere
+with users custom warning filters.</p>
+<p>Starting from version 0.22, scikit-learn will show <code class="docutils literal notranslate"><span class="pre">FutureWarnings</span></code> for
+deprecations, <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#FutureWarning">as recommended by the Python documentation</a>.
+<code class="docutils literal notranslate"><span class="pre">FutureWarnings</span></code> are always shown by default by Python, so the custom
+filter has been removed and scikit-learn no longer hinders with user
+filters. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/15080">#15080</a> by <a class="reference external" href="https://github.com/NicolasHug">Nicolas Hug</a>.</p>
 </div>
 <div class="section" id="changed-models">
 <h2>Changed models<a class="headerlink" href="#changed-models" title="Permalink to this headline">¶</a></h2>
@@ -278,6 +314,10 @@ producing Segmentation Fault on large arrays due to integer index overflow.
 default value of 300 instead of always using the default 300. It also now
 exposes an <code class="docutils literal notranslate"><span class="pre">n_iter_</span></code> indicating the maximum number of iterations performed
 on each seed. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/15120">#15120</a> by <a class="reference external" href="https://github.com/adrinjalali">Adrin Jalali</a>.</p></li>
+<li><p><span class="raw-html"><span class="badge badge-danger">Fix</span></span>  <a class="reference internal" href="../modules/generated/sklearn.cluster.AgglomerativeClustering.html#sklearn.cluster.AgglomerativeClustering" title="sklearn.cluster.AgglomerativeClustering"><code class="xref py py-class docutils literal notranslate"><span class="pre">cluster.AgglomerativeClustering</span></code></a> and
+<a class="reference internal" href="../modules/generated/sklearn.cluster.FeatureAgglomeration.html#sklearn.cluster.FeatureAgglomeration" title="sklearn.cluster.FeatureAgglomeration"><code class="xref py py-class docutils literal notranslate"><span class="pre">cluster.FeatureAgglomeration</span></code></a> now raise an error if
+<code class="docutils literal notranslate"><span class="pre">affinity='cosine'</span></code> and <code class="docutils literal notranslate"><span class="pre">X</span></code> has samples that are all-zeros. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/7943">#7943</a> by
+<a class="reference external" href="https://github.com/mthorrell">&#64;mthorrell</a>.</p></li>
 </ul>
 </div>
 <div class="section" id="sklearn-compose">
@@ -290,6 +330,11 @@ select the proper columns when using a boolean list, with NumPy older than
 <li><p><span class="raw-html"><span class="badge badge-danger">Fix</span></span>  Fixed a bug in <a class="reference internal" href="../modules/generated/sklearn.compose.TransformedTargetRegressor.html#sklearn.compose.TransformedTargetRegressor" title="sklearn.compose.TransformedTargetRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">compose.TransformedTargetRegressor</span></code></a> which did not
 pass <code class="docutils literal notranslate"><span class="pre">**fit_params</span></code> to the underlying regressor.
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/14890">#14890</a> by <a class="reference external" href="https://github.com/mfcabrera">Miguel Cabrera</a>.</p></li>
+<li><p><span class="raw-html"><span class="badge badge-danger">Fix</span></span>  The <a class="reference internal" href="../modules/generated/sklearn.compose.ColumnTransformer.html#sklearn.compose.ColumnTransformer" title="sklearn.compose.ColumnTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">compose.ColumnTransformer</span></code></a> now requires the number of
+features to be consistent between <code class="docutils literal notranslate"><span class="pre">fit</span></code> and <code class="docutils literal notranslate"><span class="pre">transform</span></code>. A <code class="docutils literal notranslate"><span class="pre">FutureWarning</span></code>
+is raised now, and this will raise an error in 0.24. If the number of
+features isn’t consistent and negative indexing is used, an error is
+raised. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/14544">#14544</a> by <a class="reference external" href="https://github.com/adrinjalali">Adrin Jalali</a>.</p></li>
 </ul>
 </div>
 <div class="section" id="sklearn-cross-decomposition">
@@ -521,6 +566,8 @@ respect to a given scoring function. <a class="reference external" href="https:/
 method for <a class="reference internal" href="../modules/generated/sklearn.ensemble.HistGradientBoostingClassifier.html#sklearn.ensemble.HistGradientBoostingClassifier" title="sklearn.ensemble.HistGradientBoostingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ensemble.HistGradientBoostingClassifier</span></code></a> and
 <a class="reference internal" href="../modules/generated/sklearn.ensemble.HistGradientBoostingRegressor.html#sklearn.ensemble.HistGradientBoostingRegressor" title="sklearn.ensemble.HistGradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">ensemble.HistGradientBoostingRegressor</span></code></a>. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/13769">#13769</a> by
 <a class="reference external" href="https://github.com/NicolasHug">Nicolas Hug</a>.</p></li>
+<li><p><span class="raw-html"><span class="badge badge-info">Enhancement</span></span>  <a class="reference internal" href="../modules/generated/sklearn.inspection.plot_partial_dependence.html#sklearn.inspection.plot_partial_dependence" title="sklearn.inspection.plot_partial_dependence"><code class="xref py py-func docutils literal notranslate"><span class="pre">inspection.plot_partial_dependence</span></code></a> has been extended to
+now support the new visualization API described in the <a class="reference internal" href="../visualizations.html#visualizations"><span class="std std-ref">User Guide</span></a>. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/14646">#14646</a> by <a class="reference external" href="https://github.com/thomasjpfan">Thomas Fan</a>.</p></li>
 <li><p><span class="raw-html"><span class="badge badge-info">Enhancement</span></span>  <a class="reference internal" href="../modules/generated/sklearn.inspection.partial_dependence.html#sklearn.inspection.partial_dependence" title="sklearn.inspection.partial_dependence"><code class="xref py py-func docutils literal notranslate"><span class="pre">inspection.partial_dependence</span></code></a> accepts pandas DataFrame
 and <a class="reference internal" href="../modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal notranslate"><span class="pre">pipeline.Pipeline</span></code></a> containing <a class="reference internal" href="../modules/generated/sklearn.compose.ColumnTransformer.html#sklearn.compose.ColumnTransformer" title="sklearn.compose.ColumnTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">compose.ColumnTransformer</span></code></a>.
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/14028">#14028</a> by <a class="reference external" href="https://github.com/glemaitre">Guillaume Lemaitre</a>.</p></li>
@@ -649,6 +696,9 @@ precomputed distance matrix contains non-zero diagonal entries.
 <li><p><span class="raw-html"><span class="badge badge-info">Enhancement</span></span>  <a class="reference internal" href="../modules/generated/sklearn.metrics.median_absolute_error.html#sklearn.metrics.median_absolute_error" title="sklearn.metrics.median_absolute_error"><code class="xref py py-func docutils literal notranslate"><span class="pre">metrics.median_absolute_error</span></code></a> now supports
 <code class="docutils literal notranslate"><span class="pre">multioutput</span></code> parameter.
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/14732">#14732</a> by <a class="reference external" href="https://github.com/agamemnonc">Agamemnon Krasoulis</a>.</p></li>
+<li><p><span class="raw-html"><span class="badge badge-info">Enhancement</span></span>  ‘roc_auc_ovr_weighted’ and ‘roc_auc_ovo_weighted’ can now be
+used as the <a class="reference internal" href="../glossary.html#term-scoring"><span class="xref std std-term">scoring</span></a> parameter of model-selection tools.
+<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/14417">#14417</a> by <a class="reference external" href="https://github.com/thomasjpfan">Thomas Fan</a>.</p></li>
 </ul>
 </div>
 <div class="section" id="sklearn-model-selection">
@@ -671,6 +721,10 @@ now be near-equally sized. <a class="reference external" href="https://github.co
 <a class="reference internal" href="../modules/generated/sklearn.model_selection.StratifiedKFold.html#sklearn.model_selection.StratifiedKFold" title="sklearn.model_selection.StratifiedKFold"><code class="xref py py-class docutils literal notranslate"><span class="pre">model_selection.StratifiedKFold</span></code></a> now raise a warning if
 <code class="docutils literal notranslate"><span class="pre">random_state</span></code> is set but <code class="docutils literal notranslate"><span class="pre">shuffle</span></code> is False. This will raise an error in
 0.24.</p></li>
+<li><p><span class="raw-html"><span class="badge badge-danger">Fix</span></span>  The <code class="docutils literal notranslate"><span class="pre">cv_results_</span></code> attribute of <a class="reference internal" href="../modules/generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV" title="sklearn.model_selection.GridSearchCV"><code class="xref py py-class docutils literal notranslate"><span class="pre">model_selection.GridSearchCV</span></code></a>
+and <a class="reference internal" href="../modules/generated/sklearn.model_selection.RandomizedSearchCV.html#sklearn.model_selection.RandomizedSearchCV" title="sklearn.model_selection.RandomizedSearchCV"><code class="xref py py-class docutils literal notranslate"><span class="pre">model_selection.RandomizedSearchCV</span></code></a> now only contains unfitted
+estimators. This potentially saves a lot of memory since the state of the
+estimators isn’t stored. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/#15096">##15096</a> by <a class="reference external" href="https://github.com/amueller">Andreas Müller</a>.</p></li>
 </ul>
 </div>
 <div class="section" id="sklearn-multioutput">
@@ -744,6 +798,8 @@ to pass to the underlying transformers. <a class="reference external" href="http
 <div class="section" id="sklearn-preprocessing">
 <h3><a class="reference internal" href="../modules/classes.html#module-sklearn.preprocessing" title="sklearn.preprocessing"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.preprocessing</span></code></a><a class="headerlink" href="#sklearn-preprocessing" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
+<li><p><span class="raw-html"><span class="badge badge-info">Efficiency</span></span>  <a class="reference internal" href="../modules/generated/sklearn.preprocessing.PolynomialFeatures.html#sklearn.preprocessing.PolynomialFeatures" title="sklearn.preprocessing.PolynomialFeatures"><code class="xref py py-class docutils literal notranslate"><span class="pre">preprocessing.PolynomialFeatures</span></code></a> is now faster when
+the input data is dense. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/13290">#13290</a> by <a class="reference external" href="https://github.com/sdpython">Xavier Dupré</a>.</p></li>
 <li><p><span class="raw-html"><span class="badge badge-info">Enhancement</span></span>  Avoid unnecessary data copy when fitting preprocessors
 <a class="reference internal" href="../modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler" title="sklearn.preprocessing.StandardScaler"><code class="xref py py-class docutils literal notranslate"><span class="pre">preprocessing.StandardScaler</span></code></a>, <a class="reference internal" href="../modules/generated/sklearn.preprocessing.MinMaxScaler.html#sklearn.preprocessing.MinMaxScaler" title="sklearn.preprocessing.MinMaxScaler"><code class="xref py py-class docutils literal notranslate"><span class="pre">preprocessing.MinMaxScaler</span></code></a>,
 <a class="reference internal" href="../modules/generated/sklearn.preprocessing.MaxAbsScaler.html#sklearn.preprocessing.MaxAbsScaler" title="sklearn.preprocessing.MaxAbsScaler"><code class="xref py py-class docutils literal notranslate"><span class="pre">preprocessing.MaxAbsScaler</span></code></a>, <a class="reference internal" href="../modules/generated/sklearn.preprocessing.RobustScaler.html#sklearn.preprocessing.RobustScaler" title="sklearn.preprocessing.RobustScaler"><code class="xref py py-class docutils literal notranslate"><span class="pre">preprocessing.RobustScaler</span></code></a>
@@ -892,7 +948,7 @@ using a non-fitted estimators are now more uniform.
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/13013">#13013</a> by <a class="reference external" href="https://github.com/agamemnonc">Agamemnon Krasoulis</a>.</p></li>
 <li><p><span class="raw-html"><span class="badge badge-danger">Fix</span></span>  Port <code class="docutils literal notranslate"><span class="pre">lobpcg</span></code> from SciPy which implement some bug fixes but only
 available in 1.3+.
-<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/13609">#13609</a> by <a class="reference external" href="https://github.com/glemaitre">Guillaume Lemaitre</a>.</p></li>
+<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/13609">#13609</a> and <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/14971">#14971</a> by <a class="reference external" href="https://github.com/glemaitre">Guillaume Lemaitre</a>.</p></li>
 </ul>
 </div>
 </div>
@@ -922,6 +978,8 @@ to make sure a proper error message is raised if X contains some negative entrie
 <code class="xref py py-func docutils literal notranslate"><span class="pre">check_regressor_multioutput</span></code>.
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/13392">#13392</a> by <a class="reference external" href="https://github.com/rok">Rok Mihevc</a>.</p></li>
 <li><p><span class="raw-html"><span class="badge badge-danger">Fix</span></span>  Added <code class="docutils literal notranslate"><span class="pre">check_transformer_data_not_an_array</span></code> to checks where missing</p></li>
+<li><p><span class="raw-html"><span class="badge badge-danger">Fix</span></span>  The estimators tags resolution now follows the regular MRO. They used
+to be overridable only once. <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/14884">#14884</a> by <a class="reference external" href="https://github.com/amueller">Andreas Müller</a>.</p></li>
 </ul>
 </div>
 </div>
