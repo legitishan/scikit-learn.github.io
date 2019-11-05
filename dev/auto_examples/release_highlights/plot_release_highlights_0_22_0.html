@@ -157,6 +157,7 @@
 <li><a class="reference internal" href="#precomputed-sparse-nearest-neighbors-graph">Precomputed sparse nearest neighbors graph</a></li>
 <li><a class="reference internal" href="#stacking-classifier-and-regressor">Stacking Classifier and Regressor</a></li>
 <li><a class="reference internal" href="#checking-scikit-learn-compatibility-of-an-estimator">Checking scikit-learn compatibility of an estimator</a></li>
+<li><a class="reference internal" href="#roc-auc-now-supports-multiclass-classification">ROC AUC now supports multiclass classification</a></li>
 </ul>
 </li>
 </ul>
@@ -404,8 +405,8 @@ base estimators using <code class="docutils literal notranslate"><span class="pr
 <p>Developers can check the compatibility of their scikit-learn compatible
 estimators using <a class="reference internal" href="../../modules/generated/sklearn.utils.estimator_checks.check_estimator.html#sklearn.utils.estimator_checks.check_estimator" title="sklearn.utils.estimator_checks.check_estimator"><code class="xref py py-func docutils literal notranslate"><span class="pre">check_estimator</span></code></a>. For
 instance, the <code class="docutils literal notranslate"><span class="pre">check_estimator(LinearSVC)</span></code> passes.</p>
-<p>We now provide a <code class="docutils literal notranslate"><span class="pre">pytest</span></code> specific decorator which allows the <code class="docutils literal notranslate"><span class="pre">pytest</span></code>
-ro run all checks independently and report the checks that are failing.</p>
+<p>We now provide a <code class="docutils literal notranslate"><span class="pre">pytest</span></code> specific decorator which allows <code class="docutils literal notranslate"><span class="pre">pytest</span></code>
+to run all checks independently and report the checks that are failing.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="View documentation for sklearn.linear_model.LogisticRegression"><span class="n">LogisticRegression</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.tree.DecisionTreeRegressor.html#sklearn.tree.DecisionTreeRegressor" title="View documentation for sklearn.tree.DecisionTreeRegressor"><span class="n">DecisionTreeRegressor</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.utils.estimator_checks</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.utils.estimator_checks.parametrize_with_checks.html#sklearn.utils.estimator_checks.parametrize_with_checks" title="View documentation for sklearn.utils.estimator_checks.parametrize_with_checks"><span class="n">parametrize_with_checks</span></a>
@@ -416,7 +417,34 @@ ro run all checks independently and report the checks that are failing.</p>
     <span class="n">check</span><span class="p">(</span><span class="n">estimator</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.013 seconds)</p>
+</div>
+<div class="section" id="roc-auc-now-supports-multiclass-classification">
+<h2>ROC AUC now supports multiclass classification<a class="headerlink" href="#roc-auc-now-supports-multiclass-classification" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="xref py py-func docutils literal notranslate"><span class="pre">roc_auc_score</span></code> function can also be used in multi-class
+classification. Two averaging strategies are currently supported: the
+one-vs-one algorithm computes the average of the pairwise ROC AUC scores, and
+the one-vs-rest algorithm computes the average of the ROC AUC scores for each
+class against all other classes. In both cases, the predicted labels are
+provided in an array with values from 0 to <code class="docutils literal notranslate"><span class="pre">n_classes</span></code>, and the scores
+correspond to the probability estimates that a sample belongs to a particular
+class. The OvO and OvR algorithms supports weighting uniformly
+(<code class="docutils literal notranslate"><span class="pre">average='macro'</span></code>) and weighting by the prevalence
+(<code class="docutils literal notranslate"><span class="pre">average='weighted'</span></code>).</p>
+<p>Read more in the <a class="reference internal" href="../../modules/model_evaluation.html#roc-metrics"><span class="std std-ref">User Guide</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.datasets.make_classification.html#sklearn.datasets.make_classification" title="View documentation for sklearn.datasets.make_classification"><span class="n">make_classification</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC" title="View documentation for sklearn.svm.SVC"><span class="n">SVC</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <a href="../../modules/generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score" title="View documentation for sklearn.metrics.roc_auc_score"><span class="n">roc_auc_score</span></a>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.make_classification.html#sklearn.datasets.make_classification" title="View documentation for sklearn.datasets.make_classification"><span class="n">make_classification</span></a><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">n_informative</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">clf</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC" title="View documentation for sklearn.svm.SVC"><span class="n">SVC</span></a><span class="p">(</span><span class="n">decision_function_shape</span><span class="o">=</span><span class="s1">&#39;ovo&#39;</span><span class="p">,</span> <span class="n">probability</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><a href="../../modules/generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score" title="View documentation for sklearn.metrics.roc_auc_score"><span class="n">roc_auc_score</span></a><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">multi_class</span><span class="o">=</span><span class="s1">&#39;ovo&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.9957333333333332
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.252 seconds)</p>
 <p><strong>Estimated memory usage:</strong>  8 MB</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-release-highlights-plot-release-highlights-0-22-0-py">
 <div class="binder-badge docutils container">
