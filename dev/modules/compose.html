@@ -604,8 +604,28 @@ However, <a class="reference internal" href="generated/sklearn.preprocessing.One
 as most of other transformers expects 2D data, therefore in that case you need
 to specify the column as a list of strings (<code class="docutils literal notranslate"><span class="pre">['city']</span></code>).</p>
 <p>Apart from a scalar or a single item list, the column selection can be specified
-as a list of multiple items, an integer array, a slice, or a boolean mask.
-Strings can reference columns if the input is a DataFrame, integers are always
+as a list of multiple items, an integer array, a slice, a boolean mask, or
+with a <a class="reference internal" href="generated/sklearn.compose.make_column_selector.html#sklearn.compose.make_column_selector" title="sklearn.compose.make_column_selector"><code class="xref py py-func docutils literal notranslate"><span class="pre">make_column_selector</span></code></a>. The
+<a class="reference internal" href="generated/sklearn.compose.make_column_selector.html#sklearn.compose.make_column_selector" title="sklearn.compose.make_column_selector"><code class="xref py py-func docutils literal notranslate"><span class="pre">make_column_selector</span></code></a> is used to select columns based
+on data type or column name:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">StandardScaler</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.compose</span> <span class="k">import</span> <span class="n">make_column_selector</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ct</span> <span class="o">=</span> <span class="n">ColumnTransformer</span><span class="p">([</span>
+</pre></div>
+</div>
+<p>…       (‘scale’, StandardScaler(),
+…       make_column_selector(dtype_include=np.number)),
+…       (‘onehot’,
+…       OneHotEncoder(),
+…       make_column_selector(pattern=’city’, dtype_include=object))])
+&gt;&gt;&gt; ct.fit_transform(X)
+array([[ 0.904…,  0.      ,  1. ,  0. ,  0. ],</p>
+<blockquote>
+<div><p>[-1.507…,  1.414…,  1. ,  0. ,  0. ],
+[-0.301…,  0.      ,  0. ,  1. ,  0. ],
+[ 0.904…, -1.414…,  0. ,  0. ,  1. ]])</p>
+</div></blockquote>
+<p>Strings can reference columns if the input is a DataFrame, integers are always
 interpreted as the positional columns.</p>
 <p>We can keep the remaining rating columns by setting
 <code class="docutils literal notranslate"><span class="pre">remainder='passthrough'</span></code>. The values are appended to the end of the
