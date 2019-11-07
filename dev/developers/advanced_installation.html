@@ -361,6 +361,10 @@ to enable OpenMP support:</p>
 <p>If you use the conda package manager, you can install the <code class="docutils literal notranslate"><span class="pre">compilers</span></code>
 meta-package from the conda-forge channel, which provides OpenMP-enabled C/C++
 compilers based on the llvm toolchain.</p>
+<p>First install the macOS command line tools:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">xcode</span><span class="o">-</span><span class="n">select</span> <span class="o">--</span><span class="n">install</span>
+</pre></div>
+</div>
 <p>It is recommended to use a dedicated <a class="reference external" href="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">conda environment</a> to build
 scikit-learn from source:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">sklearn</span><span class="o">-</span><span class="n">dev</span> <span class="n">python</span> <span class="n">numpy</span> <span class="n">scipy</span> <span class="n">cython</span> <span class="n">joblib</span> <span class="n">pytest</span> \
@@ -401,11 +405,16 @@ flag.</p>
 <h4>macOS compilers from Homebrew<a class="headerlink" href="#macos-compilers-from-homebrew" title="Permalink to this headline">¶</a></h4>
 <p>Another solution is to enable OpenMP support for the clang compiler shipped
 by default on macOS.</p>
-<p>You first need to install the OpenMP library using <a class="reference external" href="https://brew.sh">Homebrew</a>:</p>
+<p>First install the macOS command line tools:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">xcode</span><span class="o">-</span><span class="n">select</span> <span class="o">--</span><span class="n">install</span>
+</pre></div>
+</div>
+<p>Install the <a class="reference external" href="https://brew.sh">Homebrew</a> package manager for macOS.</p>
+<p>Install the LLVM OpenMP library:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">brew</span> <span class="n">install</span> <span class="n">libomp</span>
 </pre></div>
 </div>
-<p>Then you need to set the following environment variables:</p>
+<p>Set the following environment variables:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">CC</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">clang</span>
 <span class="n">export</span> <span class="n">CXX</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">clang</span><span class="o">++</span>
 <span class="n">export</span> <span class="n">CPPFLAGS</span><span class="o">=</span><span class="s2">&quot;$CPPFLAGS -Xpreprocessor -fopenmp&quot;</span>
