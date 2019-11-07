@@ -611,20 +611,18 @@ on data type or column name:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">StandardScaler</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.compose</span> <span class="k">import</span> <span class="n">make_column_selector</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ct</span> <span class="o">=</span> <span class="n">ColumnTransformer</span><span class="p">([</span>
+<span class="gp">... </span>      <span class="p">(</span><span class="s1">&#39;scale&#39;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">(),</span>
+<span class="gp">... </span>      <span class="n">make_column_selector</span><span class="p">(</span><span class="n">dtype_include</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">)),</span>
+<span class="gp">... </span>      <span class="p">(</span><span class="s1">&#39;onehot&#39;</span><span class="p">,</span>
+<span class="gp">... </span>      <span class="n">OneHotEncoder</span><span class="p">(),</span>
+<span class="gp">... </span>      <span class="n">make_column_selector</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="s1">&#39;city&#39;</span><span class="p">,</span> <span class="n">dtype_include</span><span class="o">=</span><span class="nb">object</span><span class="p">))])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ct</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="go">array([[ 0.904...,  0.      ,  1. ,  0. ,  0. ],</span>
+<span class="go">       [-1.507...,  1.414...,  1. ,  0. ,  0. ],</span>
+<span class="go">       [-0.301...,  0.      ,  0. ,  1. ,  0. ],</span>
+<span class="go">       [ 0.904..., -1.414...,  0. ,  0. ,  1. ]])</span>
 </pre></div>
 </div>
-<p>…       (‘scale’, StandardScaler(),
-…       make_column_selector(dtype_include=np.number)),
-…       (‘onehot’,
-…       OneHotEncoder(),
-…       make_column_selector(pattern=’city’, dtype_include=object))])
-&gt;&gt;&gt; ct.fit_transform(X)
-array([[ 0.904…,  0.      ,  1. ,  0. ,  0. ],</p>
-<blockquote>
-<div><p>[-1.507…,  1.414…,  1. ,  0. ,  0. ],
-[-0.301…,  0.      ,  0. ,  1. ,  0. ],
-[ 0.904…, -1.414…,  0. ,  0. ,  1. ]])</p>
-</div></blockquote>
 <p>Strings can reference columns if the input is a DataFrame, integers are always
 interpreted as the positional columns.</p>
 <p>We can keep the remaining rating columns by setting
