@@ -10,7 +10,7 @@
   <meta name="Description" content="scikit-learn: machine learning in Python">
 
   
-  <title>sklearn.linear_model.ridge_regression &mdash; scikit-learn 0.22rc1 documentation</title>
+  <title>sklearn.linear_model.ridge_regression &mdash; scikit-learn 0.22rc2 documentation</title>
   
   <link rel="canonical" href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.ridge_regression.html" />
 
@@ -160,19 +160,17 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.linear_model" title="sklearn.linear_model"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.linear_model</span></code></a>.ridge_regression<a class="headerlink" href="#sklearn-linear-model-ridge-regression" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.linear_model.ridge_regression">
-<code class="sig-prename descclassname">sklearn.linear_model.</code><code class="sig-name descname">ridge_regression</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">alpha</em>, <em class="sig-param">sample_weight=None</em>, <em class="sig-param">solver='auto'</em>, <em class="sig-param">max_iter=None</em>, <em class="sig-param">tol=0.001</em>, <em class="sig-param">verbose=0</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">return_n_iter=False</em>, <em class="sig-param">return_intercept=False</em>, <em class="sig-param">check_input=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/97b8b0941/sklearn/linear_model/_ridge.py#L238"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.ridge_regression" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sklearn.linear_model.</code><code class="sig-name descname">ridge_regression</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">alpha</em>, <em class="sig-param">sample_weight=None</em>, <em class="sig-param">solver='auto'</em>, <em class="sig-param">max_iter=None</em>, <em class="sig-param">tol=0.001</em>, <em class="sig-param">verbose=0</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">return_n_iter=False</em>, <em class="sig-param">return_intercept=False</em>, <em class="sig-param">check_input=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/d39134bc7/sklearn/linear_model/_ridge.py#L238"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.ridge_regression" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solve the ridge equation by the method of normal equations.</p>
 <p>Read more in the <a class="reference internal" href="../linear_model.html#ridge-regression"><span class="std std-ref">User Guide</span></a>.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix, LinearOperator},</span></dt><dd><p>shape = [n_samples, n_features]
-Training data</p>
+<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix, LinearOperator} of shape         (n_samples, n_features)</span></dt><dd><p>Training data</p>
 </dd>
 <dt><strong>y</strong><span class="classifier">array-like of shape (n_samples,) or (n_samples, n_targets)</span></dt><dd><p>Target values</p>
 </dd>
-<dt><strong>alpha</strong><span class="classifier">{float, array-like},</span></dt><dd><p>shape = [n_targets] if array-like
-Regularization strength; must be a positive float. Regularization
+<dt><strong>alpha</strong><span class="classifier">float or array-like of shape (n_targets,)</span></dt><dd><p>Regularization strength; must be a positive float. Regularization
 improves the conditioning of the problem and reduces the variance of
 the estimates. Larger values specify stronger regularization.
 Alpha corresponds to <code class="docutils literal notranslate"><span class="pre">C^-1</span></code> in other linear models such as
@@ -180,7 +178,8 @@ LogisticRegression or LinearSVC. If an array is passed, penalties are
 assumed to be specific to the targets. Hence they must correspond in
 number.</p>
 </dd>
-<dt><strong>sample_weight</strong><span class="classifier">float or numpy array of shape (n_samples,), default=None</span></dt><dd><p>Individual weights for each sample. If sample_weight is not None and
+<dt><strong>sample_weight</strong><span class="classifier">float or array-like of shape (n_samples,), default=None</span></dt><dd><p>Individual weights for each sample. If given a float, every sample
+will have the same weight. If sample_weight is not None and
 solver=’auto’, the solver will be set to ‘cholesky’.</p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.17.</span></p>
@@ -259,12 +258,12 @@ data, use sklearn.linear_model._preprocess_data before your regression.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>coef</strong><span class="classifier">array, shape = [n_features] or [n_targets, n_features]</span></dt><dd><p>Weight vector(s).</p>
+<dt><strong>coef</strong><span class="classifier">array of shape (n_features,) or (n_targets, n_features)</span></dt><dd><p>Weight vector(s).</p>
 </dd>
 <dt><strong>n_iter</strong><span class="classifier">int, optional</span></dt><dd><p>The actual number of iteration performed by the solver.
 Only returned if <code class="docutils literal notranslate"><span class="pre">return_n_iter</span></code> is True.</p>
 </dd>
-<dt><strong>intercept</strong><span class="classifier">float or array, shape = [n_targets]</span></dt><dd><p>The intercept of the model. Only returned if <code class="docutils literal notranslate"><span class="pre">return_intercept</span></code>
+<dt><strong>intercept</strong><span class="classifier">float or array of shape (n_targets,)</span></dt><dd><p>The intercept of the model. Only returned if <code class="docutils literal notranslate"><span class="pre">return_intercept</span></code>
 is True and if X is a scipy sparse array.</p>
 </dd>
 </dl>

@@ -10,7 +10,7 @@
   <meta name="Description" content="scikit-learn: machine learning in Python">
 
   
-  <title>sklearn.inspection.plot_partial_dependence &mdash; scikit-learn 0.22rc1 documentation</title>
+  <title>sklearn.inspection.plot_partial_dependence &mdash; scikit-learn 0.22rc2 documentation</title>
   
   <link rel="canonical" href="http://scikit-learn.org/stable/modules/generated/sklearn.inspection.plot_partial_dependence.html" />
 
@@ -163,12 +163,29 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.inspection" title="sklearn.inspection"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.inspection</span></code></a>.plot_partial_dependence<a class="headerlink" href="#sklearn-inspection-plot-partial-dependence" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.inspection.plot_partial_dependence">
-<code class="sig-prename descclassname">sklearn.inspection.</code><code class="sig-name descname">plot_partial_dependence</code><span class="sig-paren">(</span><em class="sig-param">estimator</em>, <em class="sig-param">X</em>, <em class="sig-param">features</em>, <em class="sig-param">feature_names=None</em>, <em class="sig-param">target=None</em>, <em class="sig-param">response_method='auto'</em>, <em class="sig-param">n_cols=3</em>, <em class="sig-param">grid_resolution=100</em>, <em class="sig-param">percentiles=(0.05</em>, <em class="sig-param">0.95)</em>, <em class="sig-param">method='auto'</em>, <em class="sig-param">n_jobs=None</em>, <em class="sig-param">verbose=0</em>, <em class="sig-param">fig=None</em>, <em class="sig-param">line_kw=None</em>, <em class="sig-param">contour_kw=None</em>, <em class="sig-param">ax=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/97b8b0941/sklearn/inspection/_partial_dependence.py#L416"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.inspection.plot_partial_dependence" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sklearn.inspection.</code><code class="sig-name descname">plot_partial_dependence</code><span class="sig-paren">(</span><em class="sig-param">estimator</em>, <em class="sig-param">X</em>, <em class="sig-param">features</em>, <em class="sig-param">feature_names=None</em>, <em class="sig-param">target=None</em>, <em class="sig-param">response_method='auto'</em>, <em class="sig-param">n_cols=3</em>, <em class="sig-param">grid_resolution=100</em>, <em class="sig-param">percentiles=(0.05</em>, <em class="sig-param">0.95)</em>, <em class="sig-param">method='auto'</em>, <em class="sig-param">n_jobs=None</em>, <em class="sig-param">verbose=0</em>, <em class="sig-param">fig=None</em>, <em class="sig-param">line_kw=None</em>, <em class="sig-param">contour_kw=None</em>, <em class="sig-param">ax=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/d39134bc7/sklearn/inspection/_partial_dependence.py#L416"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.inspection.plot_partial_dependence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Partial dependence plots.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">len(features)</span></code> plots are arranged in a grid with <code class="docutils literal notranslate"><span class="pre">n_cols</span></code>
 columns. Two-way partial dependence plots are plotted as contour plots. The
 deciles of the feature values will be shown with tick marks on the x-axes
 for one-way plots, and on both axes for two-way plots.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sklearn.inspection.plot_partial_dependence" title="sklearn.inspection.plot_partial_dependence"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_partial_dependence</span></code></a> does not support using the same axes
+with multiple calls. To plot the the partial dependence for multiple
+estimators, please pass the axes created by the first call to the
+second call:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.inspection</span> <span class="k">import</span> <span class="n">plot_partial_dependence</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">make_friedman1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LinearRegression</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_friedman1</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">est</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">disp1</span> <span class="o">=</span> <span class="n">plot_partial_dependence</span><span class="p">(</span><span class="n">est</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">disp2</span> <span class="o">=</span> <span class="n">plot_partial_dependence</span><span class="p">(</span><span class="n">est</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span>
+<span class="gp">... </span>                                <span class="n">ax</span><span class="o">=</span><span class="n">disp1</span><span class="o">.</span><span class="n">axes_</span><span class="p">)</span>  
+</pre></div>
+</div>
+</div>
 <p>Read more in the <a class="reference internal" href="../partial_dependence.html#partial-dependence"><span class="std std-ref">User Guide</span></a>.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>

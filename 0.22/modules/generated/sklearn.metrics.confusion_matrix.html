@@ -10,7 +10,7 @@
   <meta name="Description" content="scikit-learn: machine learning in Python">
 
   
-  <title>sklearn.metrics.confusion_matrix &mdash; scikit-learn 0.22rc1 documentation</title>
+  <title>sklearn.metrics.confusion_matrix &mdash; scikit-learn 0.22rc2 documentation</title>
   
   <link rel="canonical" href="http://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html" />
 
@@ -163,8 +163,8 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.metrics" title="sklearn.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.metrics</span></code></a>.confusion_matrix<a class="headerlink" href="#sklearn-metrics-confusion-matrix" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.metrics.confusion_matrix">
-<code class="sig-prename descclassname">sklearn.metrics.</code><code class="sig-name descname">confusion_matrix</code><span class="sig-paren">(</span><em class="sig-param">y_true</em>, <em class="sig-param">y_pred</em>, <em class="sig-param">labels=None</em>, <em class="sig-param">sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/97b8b0941/sklearn/metrics/_classification.py#L196"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.metrics.confusion_matrix" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute confusion matrix to evaluate the accuracy of a classification</p>
+<code class="sig-prename descclassname">sklearn.metrics.</code><code class="sig-name descname">confusion_matrix</code><span class="sig-paren">(</span><em class="sig-param">y_true</em>, <em class="sig-param">y_pred</em>, <em class="sig-param">labels=None</em>, <em class="sig-param">sample_weight=None</em>, <em class="sig-param">normalize=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/d39134bc7/sklearn/metrics/_classification.py#L196"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.metrics.confusion_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute confusion matrix to evaluate the accuracy of a classification.</p>
 <p>By definition a confusion matrix <span class="math notranslate nohighlight">\(C\)</span> is such that <span class="math notranslate nohighlight">\(C_{i, j}\)</span>
 is equal to the number of observations known to be in group <span class="math notranslate nohighlight">\(i\)</span> and
 predicted to be in group <span class="math notranslate nohighlight">\(j\)</span>.</p>
@@ -175,22 +175,26 @@ predicted to be in group <span class="math notranslate nohighlight">\(j\)</span>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>y_true</strong><span class="classifier">array, shape = [n_samples]</span></dt><dd><p>Ground truth (correct) target values.</p>
+<dt><strong>y_true</strong><span class="classifier">array-like of shape (n_samples,)</span></dt><dd><p>Ground truth (correct) target values.</p>
 </dd>
-<dt><strong>y_pred</strong><span class="classifier">array, shape = [n_samples]</span></dt><dd><p>Estimated targets as returned by a classifier.</p>
+<dt><strong>y_pred</strong><span class="classifier">array-like of shape (n_samples,)</span></dt><dd><p>Estimated targets as returned by a classifier.</p>
 </dd>
-<dt><strong>labels</strong><span class="classifier">array, shape = [n_classes], optional</span></dt><dd><p>List of labels to index the matrix. This may be used to reorder
+<dt><strong>labels</strong><span class="classifier">array-like of shape (n_classes), default=None</span></dt><dd><p>List of labels to index the matrix. This may be used to reorder
 or select a subset of labels.
-If none is given, those that appear at least once
+If <code class="docutils literal notranslate"><span class="pre">None</span></code> is given, those that appear at least once
 in <code class="docutils literal notranslate"><span class="pre">y_true</span></code> or <code class="docutils literal notranslate"><span class="pre">y_pred</span></code> are used in sorted order.</p>
 </dd>
 <dt><strong>sample_weight</strong><span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>Sample weights.</p>
+</dd>
+<dt><strong>normalize</strong><span class="classifier">{‘true’, ‘pred’, ‘all’}, default=None</span></dt><dd><p>Normalizes confusion matrix over the true (rows), predicted (columns)
+conditions or all the population. If None, confusion matrix will not be
+normalized.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>C</strong><span class="classifier">ndarray of shape (n_classes, n_classes)</span></dt><dd><p>Confusion matrix</p>
+<dt><strong>C</strong><span class="classifier">ndarray of shape (n_classes, n_classes)</span></dt><dd><p>Confusion matrix.</p>
 </dd>
 </dl>
 </dd>
@@ -231,29 +235,21 @@ convention for axes)</p>
 
 <div class="section" id="examples-using-sklearn-metrics-confusion-matrix">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">sklearn.metrics.confusion_matrix</span></code><a class="headerlink" href="#examples-using-sklearn-metrics-confusion-matrix" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="An example showing how the scikit-learn can be used to recognize images of hand-written digits."><div class="figure align-default" id="id2">
-<img alt="../../_images/sphx_glr_plot_digits_classification_thumb.png" src="../../_images/sphx_glr_plot_digits_classification_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/classification/plot_digits_classification.html#sphx-glr-auto-examples-classification-plot-digits-classification-py"><span class="std std-ref">Recognizing hand-written digits</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="The dataset used in this example is a preprocessed excerpt of the &quot;Labeled Faces in the Wild&quot;, ..."><div class="figure align-default" id="id3">
+<div class="sphx-glr-thumbcontainer" tooltip="The dataset used in this example is a preprocessed excerpt of the &quot;Labeled Faces in the Wild&quot;, ..."><div class="figure align-default" id="id2">
 <img alt="../../_images/sphx_glr_plot_face_recognition_thumb.png" src="../../_images/sphx_glr_plot_face_recognition_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/applications/plot_face_recognition.html#sphx-glr-auto-examples-applications-plot-face-recognition-py"><span class="std std-ref">Faces recognition example using eigenfaces and SVMs</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/applications/plot_face_recognition.html#sphx-glr-auto-examples-applications-plot-face-recognition-py"><span class="std std-ref">Faces recognition example using eigenfaces and SVMs</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Example of confusion matrix usage to evaluate the quality of the output of a classifier on the ..."><div class="figure align-default" id="id4">
-<img alt="../../_images/sphx_glr_plot_confusion_matrix_thumb.png" src="../../_images/sphx_glr_plot_confusion_matrix_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/model_selection/plot_confusion_matrix.html#sphx-glr-auto-examples-model-selection-plot-confusion-matrix-py"><span class="std std-ref">Confusion matrix</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the power of semisupervised learning by training a Label Spreading mo..."><div class="figure align-default" id="id5">
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the power of semisupervised learning by training a Label Spreading mo..."><div class="figure align-default" id="id3">
 <img alt="../../_images/sphx_glr_plot_label_propagation_digits_thumb.png" src="../../_images/sphx_glr_plot_label_propagation_digits_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/semi_supervised/plot_label_propagation_digits.html#sphx-glr-auto-examples-semi-supervised-plot-label-propagation-digits-py"><span class="std std-ref">Label Propagation digits: Demonstrating performance</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/semi_supervised/plot_label_propagation_digits.html#sphx-glr-auto-examples-semi-supervised-plot-label-propagation-digits-py"><span class="std std-ref">Label Propagation digits: Demonstrating performance</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Demonstrates an active learning technique to learn handwritten digits using label propagation."><div class="figure align-default" id="id6">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Demonstrates an active learning technique to learn handwritten digits using label propagation."><div class="figure align-default" id="id4">
 <img alt="../../_images/sphx_glr_plot_label_propagation_digits_active_learning_thumb.png" src="../../_images/sphx_glr_plot_label_propagation_digits_active_learning_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/semi_supervised/plot_label_propagation_digits_active_learning.html#sphx-glr-auto-examples-semi-supervised-plot-label-propagation-digits-active-learning-py"><span class="std std-ref">Label Propagation digits active learning</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/semi_supervised/plot_label_propagation_digits_active_learning.html#sphx-glr-auto-examples-semi-supervised-plot-label-propagation-digits-active-learning-py"><span class="std std-ref">Label Propagation digits active learning</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="This is an example showing how scikit-learn can be used to classify documents by topics using a..."><div class="figure align-default" id="id7">
+</div><div class="sphx-glr-thumbcontainer" tooltip="This is an example showing how scikit-learn can be used to classify documents by topics using a..."><div class="figure align-default" id="id5">
 <img alt="../../_images/sphx_glr_plot_document_classification_20newsgroups_thumb.png" src="../../_images/sphx_glr_plot_document_classification_20newsgroups_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/text/plot_document_classification_20newsgroups.html#sphx-glr-auto-examples-text-plot-document-classification-20newsgroups-py"><span class="std std-ref">Classification of text documents using sparse features</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/text/plot_document_classification_20newsgroups.html#sphx-glr-auto-examples-text-plot-document-classification-20newsgroups-py"><span class="std std-ref">Classification of text documents using sparse features</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="clearer"></div></div>
 </div>

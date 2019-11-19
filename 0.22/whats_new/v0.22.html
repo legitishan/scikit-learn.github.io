@@ -10,7 +10,7 @@
   <meta name="Description" content="scikit-learn: machine learning in Python">
 
   
-  <title>Version 0.22.0 &mdash; scikit-learn 0.22rc1 documentation</title>
+  <title>Version 0.22.0 &mdash; scikit-learn 0.22rc2 documentation</title>
   
   <link rel="canonical" href="http://scikit-learn.org/stable/whats_new/v0.22.html" />
 
@@ -200,7 +200,7 @@
         
   <div class="section" id="version-0-22-0">
 <span id="changes-0-22"></span><h1>Version 0.22.0<a class="headerlink" href="#version-0-22-0" title="Permalink to this headline">¶</a></h1>
-<p><strong>In Development</strong></p>
+<p><strong>November 29 2019</strong></p>
 <p>For a short description of the main highlights of the release, please
 refer to
 <a class="reference internal" href="../auto_examples/release_highlights/plot_release_highlights_0_22_0.html#sphx-glr-auto-examples-release-highlights-plot-release-highlights-0-22-0-py"><span class="std std-ref">Release Highlights for scikit-learn 0.22</span></a>.</p>
@@ -365,6 +365,12 @@ raised. <a class="reference external" href="https://github.com/scikit-learn/scik
 <div class="section" id="sklearn-cross-decomposition">
 <h3><a class="reference internal" href="../modules/classes.html#module-sklearn.cross_decomposition" title="sklearn.cross_decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.cross_decomposition</span></code></a><a class="headerlink" href="#sklearn-cross-decomposition" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
+<li><p><span class="raw-html"><span class="badge badge-info">Enhancement</span></span>  <a class="reference internal" href="../modules/generated/sklearn.decomposition.KernelPCA.html#sklearn.decomposition.KernelPCA" title="sklearn.decomposition.KernelPCA"><code class="xref py py-class docutils literal notranslate"><span class="pre">decomposition.KernelPCA</span></code></a> now properly checks the
+eigenvalues found by the solver for numerical or conditioning issues. This
+ensures consistency of results across solvers (different choices for
+<code class="docutils literal notranslate"><span class="pre">eigen_solver</span></code>), including approximate solvers such as <code class="docutils literal notranslate"><span class="pre">'randomized'</span></code> and
+<code class="docutils literal notranslate"><span class="pre">'lobpcg'</span></code> (see <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/issues/12068">#12068</a>).
+<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/12145">#12145</a> by <a class="reference external" href="https://github.com/smarie">Sylvain Marié</a></p></li>
 <li><p><span class="raw-html"><span class="badge badge-danger">Fix</span></span>  Fixed a bug where <a class="reference internal" href="../modules/generated/sklearn.cross_decomposition.PLSCanonical.html#sklearn.cross_decomposition.PLSCanonical" title="sklearn.cross_decomposition.PLSCanonical"><code class="xref py py-class docutils literal notranslate"><span class="pre">cross_decomposition.PLSCanonical</span></code></a> and
 <a class="reference internal" href="../modules/generated/sklearn.cross_decomposition.PLSRegression.html#sklearn.cross_decomposition.PLSRegression" title="sklearn.cross_decomposition.PLSRegression"><code class="xref py py-class docutils literal notranslate"><span class="pre">cross_decomposition.PLSRegression</span></code></a> were raising an error when fitted
 with a target matrix <code class="docutils literal notranslate"><span class="pre">Y</span></code> in which the first column was constant.
@@ -575,6 +581,14 @@ the kernel attribute is modified, but may result in a performance improvement.
 <code class="docutils literal notranslate"><span class="pre">AttributeError</span></code> rather than return <code class="docutils literal notranslate"><span class="pre">None</span></code> for parameters that are in the
 estimator’s constructor but not stored as attributes on the instance.
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/14464">#14464</a> by <a class="reference external" href="https://joelnothman.com/">Joel Nothman</a>.</p></li>
+<li><p><span class="raw-html"><span class="badge badge-success">Feature</span></span>  Gaussian process models on structured data: <a class="reference internal" href="../modules/generated/sklearn.gaussian_process.GaussianProcessRegressor.html#sklearn.gaussian_process.GaussianProcessRegressor" title="sklearn.gaussian_process.GaussianProcessRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">gaussian_process.GaussianProcessRegressor</span></code></a>
+and <a class="reference internal" href="../modules/generated/sklearn.gaussian_process.GaussianProcessClassifier.html#sklearn.gaussian_process.GaussianProcessClassifier" title="sklearn.gaussian_process.GaussianProcessClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">gaussian_process.GaussianProcessClassifier</span></code></a> can now accept a list
+of generic objects (e.g. strings, trees, graphs, etc.) as the <code class="docutils literal notranslate"><span class="pre">X</span></code> argument
+to their training/prediction methods.
+A user-defined kernel should be provided for computing the kernel matrix among
+the generic objects, and should inherit from <code class="xref py py-class docutils literal notranslate"><span class="pre">gaussian_process.kernels.GenericKernelMixin</span></code>
+to notify the GPR/GPC model that it handles non-vectorial samples.
+<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/15557">#15557</a> by <a class="reference external" href="https://github.com/yhtang">Yu-Hang Tang</a>.</p></li>
 </ul>
 </div>
 <div class="section" id="sklearn-impute">
@@ -749,6 +763,10 @@ precomputed distance matrix contains non-zero diagonal entries.
 <li><p><span class="raw-html"><span class="badge badge-info">Enhancement</span></span>  ‘roc_auc_ovr_weighted’ and ‘roc_auc_ovo_weighted’ can now be
 used as the <a class="reference internal" href="../glossary.html#term-scoring"><span class="xref std std-term">scoring</span></a> parameter of model-selection tools.
 <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/14417">#14417</a> by <a class="reference external" href="https://github.com/thomasjpfan">Thomas Fan</a>.</p></li>
+<li><p><span class="raw-html"><span class="badge badge-info">Enhancement</span></span>  <a class="reference internal" href="../modules/generated/sklearn.metrics.confusion_matrix.html#sklearn.metrics.confusion_matrix" title="sklearn.metrics.confusion_matrix"><code class="xref py py-func docutils literal notranslate"><span class="pre">metrics.confusion_matrix</span></code></a> accepts a parameters
+<code class="docutils literal notranslate"><span class="pre">normalize</span></code> allowing to normalize the confusion matrix by column, rows, or
+overall.
+<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/pull/15625">#15625</a> by <code class="docutils literal notranslate"><span class="pre">Guillaume</span> <span class="pre">Lemaitre</span> <span class="pre">&lt;glemaitre&gt;</span></code>.</p></li>
 </ul>
 </div>
 <div class="section" id="sklearn-model-selection">

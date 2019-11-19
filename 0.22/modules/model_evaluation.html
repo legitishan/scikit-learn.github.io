@@ -10,7 +10,7 @@
   <meta name="Description" content="scikit-learn: machine learning in Python">
 
   
-  <title>3.3. Metrics and scoring: quantifying the quality of predictions &mdash; scikit-learn 0.22rc1 documentation</title>
+  <title>3.3. Metrics and scoring: quantifying the quality of predictions &mdash; scikit-learn 0.22rc2 documentation</title>
   
   <link rel="canonical" href="http://scikit-learn.org/stable/modules/model_evaluation.html" />
 
@@ -637,7 +637,7 @@ to the overall score, through the <code class="docutils literal notranslate"><sp
 <td><p>Cohen’s kappa: a statistic that measures inter-annotator agreement.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/sklearn.metrics.confusion_matrix.html#sklearn.metrics.confusion_matrix" title="sklearn.metrics.confusion_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">confusion_matrix</span></code></a>(y_true, y_pred[, labels, …])</p></td>
-<td><p>Compute confusion matrix to evaluate the accuracy of a classification</p></td>
+<td><p>Compute confusion matrix to evaluate the accuracy of a classification.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/sklearn.metrics.hinge_loss.html#sklearn.metrics.hinge_loss" title="sklearn.metrics.hinge_loss"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hinge_loss</span></code></a>(y_true, pred_decision[, labels, …])</p></td>
 <td><p>Average hinge loss (non-regularized)</p></td>
@@ -905,9 +905,22 @@ predicted to be in group <span class="math notranslate nohighlight">\(j\)</span>
 <span class="go">       [1, 0, 2]])</span>
 </pre></div>
 </div>
-<p>Here is a visual representation of such a confusion matrix (this figure comes
-from the <a class="reference internal" href="../auto_examples/model_selection/plot_confusion_matrix.html#sphx-glr-auto-examples-model-selection-plot-confusion-matrix-py"><span class="std std-ref">Confusion matrix</span></a> example):</p>
+<p><a class="reference internal" href="generated/sklearn.metrics.plot_confusion_matrix.html#sklearn.metrics.plot_confusion_matrix" title="sklearn.metrics.plot_confusion_matrix"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_confusion_matrix</span></code></a> can be used to visually represent a confusion
+matrix as shown in the
+<a class="reference internal" href="../auto_examples/model_selection/plot_confusion_matrix.html#sphx-glr-auto-examples-model-selection-plot-confusion-matrix-py"><span class="std std-ref">Confusion matrix</span></a>
+example, which creates the following figure:</p>
 <a class="reference external image-reference" href="../auto_examples/model_selection/plot_confusion_matrix.html"><img alt="../_images/sphx_glr_plot_confusion_matrix_0011.png" class="align-center" src="../_images/sphx_glr_plot_confusion_matrix_0011.png" style="width: 480.0px; height: 360.0px;" /></a>
+<p>The parameter <code class="docutils literal notranslate"><span class="pre">normalize</span></code> allows to report ratios instead of counts. The
+confusion matrix can be normalized in 3 different ways: <code class="docutils literal notranslate"><span class="pre">'pred'</span></code>, <code class="docutils literal notranslate"><span class="pre">'true'</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">'all'</span></code> which will divide the counts by the sum of each columns, rows, or
+the entire matrix, respectively.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y_true</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_pred</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+<span class="go">array([[0.25 , 0.125],</span>
+<span class="go">       [0.25 , 0.375]])</span>
+</pre></div>
+</div>
 <p>For binary problems, we can get counts of true negatives, false positives,
 false negatives and true positives as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y_true</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
