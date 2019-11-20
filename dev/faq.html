@@ -170,6 +170,7 @@
 <li><a class="reference internal" href="#how-do-i-set-a-random-state-for-an-entire-execution">How do I set a <code class="docutils literal notranslate"><span class="pre">random_state</span></code> for an entire execution?</a></li>
 <li><a class="reference internal" href="#why-do-categorical-variables-need-preprocessing-in-scikit-learn-compared-to-other-tools">Why do categorical variables need preprocessing in scikit-learn, compared to other tools?</a></li>
 <li><a class="reference internal" href="#why-does-scikit-learn-not-directly-work-with-for-example-pandas-dataframe">Why does Scikit-learn not directly work with, for example, pandas.DataFrame?</a></li>
+<li><a class="reference internal" href="#do-you-plan-to-implement-transform-for-target-y-in-a-pipeline">Do you plan to implement transform for target y in a pipeline?</a></li>
 </ul>
 </li>
 </ul>
@@ -506,6 +507,26 @@ efficient to process for most operations. Extensive work would also be needed
 to support Pandas categorical types. Restricting input to homogeneous
 types therefore reduces maintenance cost and encourages usage of efficient
 data structures.</p>
+</div>
+<div class="section" id="do-you-plan-to-implement-transform-for-target-y-in-a-pipeline">
+<h2>Do you plan to implement transform for target y in a pipeline?<a class="headerlink" href="#do-you-plan-to-implement-transform-for-target-y-in-a-pipeline" title="Permalink to this headline">¶</a></h2>
+<p>Currently transform only works for features X in a pipeline.
+There’s a long-standing discussion about
+not being able to transform y in a pipeline.
+Follow on github issue
+<a href="#id1"><span class="problematic" id="id2">`#4143&lt;https://github.com/scikit-learn/scikit-learn/issues/4143&gt;`_</span></a>.
+Meanwhile check out
+<a class="reference internal" href="modules/generated/sklearn.compose.TransformedTargetRegressor.html#sklearn.compose.TransformedTargetRegressor" title="sklearn.compose.TransformedTargetRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.compose.TransformedTargetRegressor</span></code></a>,
+<a href="#id3"><span class="problematic" id="id4">`pipegraph&lt;https://github.com/mcasl/PipeGraph&gt;`_</span></a>,
+<a href="#id5"><span class="problematic" id="id6">`imbalanced-learn&lt;https://github.com/scikit-learn-contrib/imbalanced-learn&gt;`_</span></a>.
+Note that Scikit-learn solved for the case where y
+has an invertible transformation applied before training
+and inverted after prediction. Scikit-learn intends to solve for
+use cases where y should be transformed at training time
+and not at test time, for resampling and similar uses,
+like at imbalanced learn.
+In general, these use cases can be solved
+with a custom meta estimator rather than a Pipeline</p>
 </div>
 </div>
 
