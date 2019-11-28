@@ -10,7 +10,7 @@
   <meta name="Description" content="scikit-learn: machine learning in Python">
 
   
-  <title>Wikipedia principal eigenvector &mdash; scikit-learn 0.22rc2.post1 documentation</title>
+  <title>Wikipedia principal eigenvector &mdash; scikit-learn 0.22rc3 documentation</title>
   
   <link rel="canonical" href="http://scikit-learn.org/stable/auto_examples/applications/wikipedia_principal_eigenvector.html" />
 
@@ -158,7 +158,7 @@
         
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-applications-wikipedia-principal-eigenvector-py"><span class="std std-ref">here</span></a> to download the full example code or run this example in your browser via Binder</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-applications-wikipedia-principal-eigenvector-py"><span class="std std-ref">here</span></a> to download the full example code or to run this example in your browser via Binder</p>
 </div>
 <div class="sphx-glr-example-title section" id="wikipedia-principal-eigenvector">
 <span id="sphx-glr-auto-examples-applications-wikipedia-principal-eigenvector-py"></span><h1>Wikipedia principal eigenvector<a class="headerlink" href="#wikipedia-principal-eigenvector" title="Permalink to this headline">¶</a></h1>
@@ -186,11 +186,11 @@ of the latent structured data of the Wikipedia content.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: Olivier Grisel &lt;olivier.grisel@ensta.org&gt;</span>
 <span class="c1"># License: BSD 3 clause</span>
 
-<span class="kn">from</span> <span class="nn">bz2</span> <span class="k">import</span> <span class="n">BZ2File</span>
+<span class="kn">from</span> <span class="nn">bz2</span> <span class="k">import</span> <a href="https://docs.python.org/3/library/bz2.html#bz2.BZ2File" title="View documentation for bz2.BZ2File"><span class="n">BZ2File</span></a>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
-<span class="kn">from</span> <span class="nn">pprint</span> <span class="k">import</span> <span class="n">pprint</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="k">import</span> <a href="https://docs.python.org/3/library/pprint.html#pprint.pprint" title="View documentation for pprint.pprint"><span class="n">pprint</span></a>
+<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="View documentation for time.time"><span class="n">time</span></a>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -199,7 +199,7 @@ of the latent structured data of the Wikipedia content.</p>
 <span class="kn">from</span> <span class="nn">joblib</span> <span class="k">import</span> <a href="https://joblib.readthedocs.io/en/latest/generated/joblib.Memory.html#joblib.Memory" title="View documentation for joblib.Memory"><span class="n">Memory</span></a>
 
 <span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="k">import</span> <span class="n">randomized_svd</span>
-<span class="kn">from</span> <span class="nn">urllib.request</span> <span class="k">import</span> <span class="n">urlopen</span>
+<span class="kn">from</span> <span class="nn">urllib.request</span> <span class="k">import</span> <a href="https://docs.python.org/3/library/urllib.request.html#urllib.request.urlopen" title="View documentation for urllib.request.urlopen"><span class="n">urlopen</span></a>
 
 
 <span class="nb">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
@@ -218,9 +218,9 @@ of the latent structured data of the Wikipedia content.</p>
 <span class="p">]</span>
 
 <span class="k">for</span> <span class="n">url</span><span class="p">,</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">resources</span><span class="p">:</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <a href="https://docs.python.org/3/library/os.path.html#os.path.exists" title="View documentation for os.path.exists"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span></a><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Downloading data from &#39;</span><span class="si">%s</span><span class="s2">&#39;, please wait...&quot;</span> <span class="o">%</span> <span class="n">url</span><span class="p">)</span>
-        <span class="n">opener</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">opener</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/urllib.request.html#urllib.request.urlopen" title="View documentation for urllib.request.urlopen"><span class="n">urlopen</span></a><span class="p">(</span><span class="n">url</span><span class="p">)</span>
         <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">opener</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
         <span class="nb">print</span><span class="p">()</span>
 
@@ -250,7 +250,7 @@ of the latent structured data of the Wikipedia content.</p>
     <span class="sd">&quot;&quot;&quot;Parse the redirections and build a transitively closed map out of it&quot;&quot;&quot;</span>
     <span class="n">redirects</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Parsing the NT redirect file&quot;</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">BZ2File</span><span class="p">(</span><span class="n">redirects_filename</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><a href="https://docs.python.org/3/library/bz2.html#bz2.BZ2File" title="View documentation for bz2.BZ2File"><span class="n">BZ2File</span></a><span class="p">(</span><span class="n">redirects_filename</span><span class="p">)):</span>
         <span class="n">split</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">split</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ignoring malformed line: &quot;</span> <span class="o">+</span> <span class="n">line</span><span class="p">)</span>
@@ -296,7 +296,7 @@ of the latent structured data of the Wikipedia content.</p>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computing the integer index map&quot;</span><span class="p">)</span>
     <span class="n">index_map</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="n">links</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">BZ2File</span><span class="p">(</span><span class="n">page_links_filename</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><a href="https://docs.python.org/3/library/bz2.html#bz2.BZ2File" title="View documentation for bz2.BZ2File"><span class="n">BZ2File</span></a><span class="p">(</span><span class="n">page_links_filename</span><span class="p">)):</span>
         <span class="n">split</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">split</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ignoring malformed line: &quot;</span> <span class="o">+</span> <span class="n">line</span><span class="p">)</span>
@@ -327,15 +327,15 @@ of the latent structured data of the Wikipedia content.</p>
 <span class="n">names</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">name</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">index_map</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computing the principal singular vectors using randomized_svd&quot;</span><span class="p">)</span>
-<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">t0</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="View documentation for time.time"><span class="n">time</span></a><span class="p">()</span>
 <span class="n">U</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">randomized_svd</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">n_iter</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;done in </span><span class="si">%0.3f</span><span class="s2">s&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;done in </span><span class="si">%0.3f</span><span class="s2">s&quot;</span> <span class="o">%</span> <span class="p">(</span><a href="https://docs.python.org/3/library/time.html#time.time" title="View documentation for time.time"><span class="n">time</span></a><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">))</span>
 
 <span class="c1"># print the names of the wikipedia related strongest components of the</span>
 <span class="c1"># principal singular vector which should be similar to the highest eigenvector</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Top wikipedia pages according to principal singular vectors&quot;</span><span class="p">)</span>
-<span class="n">pprint</span><span class="p">([</span><span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[</span><span class="o">-</span><span class="mi">10</span><span class="p">:]])</span>
-<span class="n">pprint</span><span class="p">([</span><span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[</span><span class="o">-</span><span class="mi">10</span><span class="p">:]])</span>
+<a href="https://docs.python.org/3/library/pprint.html#pprint.pprint" title="View documentation for pprint.pprint"><span class="n">pprint</span></a><span class="p">([</span><span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[</span><span class="o">-</span><span class="mi">10</span><span class="p">:]])</span>
+<a href="https://docs.python.org/3/library/pprint.html#pprint.pprint" title="View documentation for pprint.pprint"><span class="n">pprint</span></a><span class="p">([</span><span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[</span><span class="o">-</span><span class="mi">10</span><span class="p">:]])</span>
 
 
 <span class="k">def</span> <span class="nf">centrality_scores</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">):</span>
@@ -377,10 +377,10 @@ of the latent structured data of the Wikipedia content.</p>
     <span class="k">return</span> <span class="n">scores</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computing principal eigenvector score using a power iteration method&quot;</span><span class="p">)</span>
-<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">t0</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="View documentation for time.time"><span class="n">time</span></a><span class="p">()</span>
 <span class="n">scores</span> <span class="o">=</span> <span class="n">centrality_scores</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;done in </span><span class="si">%0.3f</span><span class="s2">s&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">))</span>
-<span class="n">pprint</span><span class="p">([</span><span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[</span><span class="o">-</span><span class="mi">10</span><span class="p">:]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;done in </span><span class="si">%0.3f</span><span class="s2">s&quot;</span> <span class="o">%</span> <span class="p">(</span><a href="https://docs.python.org/3/library/time.html#time.time" title="View documentation for time.time"><span class="n">time</span></a><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">))</span>
+<a href="https://docs.python.org/3/library/pprint.html#pprint.pprint" title="View documentation for pprint.pprint"><span class="n">pprint</span></a><span class="p">([</span><span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[</span><span class="o">-</span><span class="mi">10</span><span class="p">:]])</span>
 </pre></div>
 </div>
 <p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
@@ -396,7 +396,7 @@ of the latent structured data of the Wikipedia content.</p>
 <p><a class="reference download internal" download="" href="../../_downloads/add893ef60503007c442db9f9ff7b6e5/wikipedia_principal_eigenvector.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">wikipedia_principal_eigenvector.ipynb</span></code></a></p>
 </div>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
 
 
