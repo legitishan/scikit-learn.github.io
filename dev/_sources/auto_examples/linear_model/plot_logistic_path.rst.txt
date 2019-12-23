@@ -21,7 +21,7 @@ path": on the left-hand side of the figure (strong regularizers), all the
 coefficients are exactly 0. When regularization gets progressively looser,
 coefficients can get non-zero values one after the other.
 
-Here we choose the SAGA solver because it can efficiently optimize for the
+Here we choose the liblinear solver because it can efficiently optimize for the
 Logistic Regression loss with a non-smooth, sparsity inducing l1 penalty.
 
 Also note that we set a low value for the tolerance to make sure that the model
@@ -45,7 +45,7 @@ full-path.
 
 
     Computing regularization path ...
-    This took 2.063s
+    This took 0.057s
 
 
 
@@ -87,9 +87,10 @@ full-path.
 
     print("Computing regularization path ...")
     start = time()
-    clf = linear_model.LogisticRegression(penalty='l1', solver='saga',
+    clf = linear_model.LogisticRegression(penalty='l1', solver='liblinear',
                                           tol=1e-6, max_iter=int(1e6),
-                                          warm_start=True)
+                                          warm_start=True,
+                                          intercept_scaling=10000.)
     coefs_ = []
     for c in cs:
         clf.set_params(C=c)
@@ -109,7 +110,7 @@ full-path.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.379 seconds)
+   **Total running time of the script:** ( 0 minutes  0.623 seconds)
 
 **Estimated memory usage:**  8 MB
 
