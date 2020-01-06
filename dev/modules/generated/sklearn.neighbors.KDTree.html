@@ -171,7 +171,7 @@ n_features is the dimension of the parameter space.
 Note: if X is a C-contiguous array of doubles then data will
 not be copied. Otherwise, an internal copy will be made.</p>
 </dd>
-<dt><strong>leaf_size</strong><span class="classifier">positive integer (default = 40)</span></dt><dd><p>Number of points at which to switch to brute-force. Changing
+<dt><strong>leaf_size</strong><span class="classifier">positive int, default=40</span></dt><dd><p>Number of points at which to switch to brute-force. Changing
 leaf_size will not affect the results of a query, but can
 significantly impact the speed of a query and the memory required
 to store the constructed tree.  The amount of memory needed to
@@ -180,7 +180,7 @@ For a specified <code class="docutils literal notranslate"><span class="pre">lea
 satisfy <code class="docutils literal notranslate"><span class="pre">leaf_size</span> <span class="pre">&lt;=</span> <span class="pre">n_points</span> <span class="pre">&lt;=</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">leaf_size</span></code>, except in
 the case that <code class="docutils literal notranslate"><span class="pre">n_samples</span> <span class="pre">&lt;</span> <span class="pre">leaf_size</span></code>.</p>
 </dd>
-<dt><strong>metric</strong><span class="classifier">string or DistanceMetric object</span></dt><dd><p>the distance metric to use for the tree.  Default=’minkowski’
+<dt><strong>metric</strong><span class="classifier">str or DistanceMetric object</span></dt><dd><p>the distance metric to use for the tree.  Default=’minkowski’
 with p=2 (that is, a euclidean metric). See the documentation
 of the DistanceMetric class for a list of available metrics.
 kd_tree.valid_metrics gives a list of the metrics which
@@ -318,7 +318,7 @@ of training data.</p>
 </dd>
 <dt><strong>h</strong><span class="classifier">float</span></dt><dd><p>the bandwidth of the kernel</p>
 </dd>
-<dt><strong>kernel</strong><span class="classifier">string</span></dt><dd><p>specify the kernel to use.  Options are
+<dt><strong>kernel</strong><span class="classifier">str, default=”gaussian”</span></dt><dd><p>specify the kernel to use.  Options are
 - ‘gaussian’
 - ‘tophat’
 - ‘epanechnikov’
@@ -327,23 +327,23 @@ of training data.</p>
 - ‘cosine’
 Default is kernel = ‘gaussian’</p>
 </dd>
-<dt><strong>atol, rtol</strong><span class="classifier">float (default = 0)</span></dt><dd><p>Specify the desired relative and absolute tolerance of the result.
+<dt><strong>atol, rtol</strong><span class="classifier">float, default=0, 1e-8</span></dt><dd><p>Specify the desired relative and absolute tolerance of the result.
 If the true result is K_true, then the returned result K_ret
 satisfies <code class="docutils literal notranslate"><span class="pre">abs(K_true</span> <span class="pre">-</span> <span class="pre">K_ret)</span> <span class="pre">&lt;</span> <span class="pre">atol</span> <span class="pre">+</span> <span class="pre">rtol</span> <span class="pre">*</span> <span class="pre">K_ret</span></code>
 The default is zero (i.e. machine precision) for both.</p>
 </dd>
-<dt><strong>breadth_first</strong><span class="classifier">boolean (default = False)</span></dt><dd><p>if True, use a breadth-first search.  If False (default) use a
+<dt><strong>breadth_first</strong><span class="classifier">bool, default=False</span></dt><dd><p>If True, use a breadth-first search.  If False (default) use a
 depth-first search.  Breadth-first is generally faster for
 compact kernels and/or high tolerances.</p>
 </dd>
-<dt><strong>return_log</strong><span class="classifier">boolean (default = False)</span></dt><dd><p>return the logarithm of the result.  This can be more accurate
+<dt><strong>return_log</strong><span class="classifier">bool, default=False</span></dt><dd><p>Return the logarithm of the result.  This can be more accurate
 than returning the result itself for narrow kernels.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>density</strong><span class="classifier">ndarray</span></dt><dd><p>The array of (log)-density evaluations, shape = X.shape[:-1]</p>
+<dt><strong>density</strong><span class="classifier">ndarray of shape X.shape[:-1]</span></dt><dd><p>The array of (log)-density evaluations</p>
 </dd>
 </dl>
 </dd>
@@ -359,20 +359,20 @@ than returning the result itself for narrow kernels.</p>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>An array of points to query</p>
 </dd>
-<dt><strong>k</strong><span class="classifier">integer  (default = 1)</span></dt><dd><p>The number of nearest neighbors to return</p>
+<dt><strong>k</strong><span class="classifier">int, default=1</span></dt><dd><p>The number of nearest neighbors to return</p>
 </dd>
-<dt><strong>return_distance</strong><span class="classifier">boolean (default = True)</span></dt><dd><p>if True, return a tuple (d, i) of distances and indices
+<dt><strong>return_distance</strong><span class="classifier">bool, default=True</span></dt><dd><p>if True, return a tuple (d, i) of distances and indices
 if False, return array i</p>
 </dd>
-<dt><strong>dualtree</strong><span class="classifier">boolean (default = False)</span></dt><dd><p>if True, use the dual tree formalism for the query: a tree is
+<dt><strong>dualtree</strong><span class="classifier">bool, default=False</span></dt><dd><p>if True, use the dual tree formalism for the query: a tree is
 built for the query points, and the pair of trees is used to
 efficiently search this space.  This can lead to better
 performance as the number of points grows large.</p>
 </dd>
-<dt><strong>breadth_first</strong><span class="classifier">boolean (default = False)</span></dt><dd><p>if True, then query the nodes in a breadth-first manner.
+<dt><strong>breadth_first</strong><span class="classifier">bool, default=False</span></dt><dd><p>if True, then query the nodes in a breadth-first manner.
 Otherwise, query the nodes in a depth-first manner.</p>
 </dd>
-<dt><strong>sort_results</strong><span class="classifier">boolean (default = True)</span></dt><dd><p>if True, then distances and indices of each point are sorted
+<dt><strong>sort_results</strong><span class="classifier">bool, default=True</span></dt><dd><p>if True, then distances and indices of each point are sorted
 on return, so that the first column contains the closest points.
 Otherwise, neighbors are returned in an arbitrary order.</p>
 </dd>
@@ -382,11 +382,11 @@ Otherwise, neighbors are returned in an arbitrary order.</p>
 <dd class="field-even"><dl class="simple">
 <dt><strong>i</strong><span class="classifier">if return_distance == False</span></dt><dd></dd>
 <dt><strong>(d,i)</strong><span class="classifier">if return_distance == True</span></dt><dd></dd>
-<dt><strong>d</strong><span class="classifier">array of doubles - shape: x.shape[:-1] + (k,)</span></dt><dd><p>each entry gives the list of distances to the
-neighbors of the corresponding point</p>
+<dt><strong>d</strong><span class="classifier">ndarray of shape X.shape[:-1] + k, dtype=double</span></dt><dd><p>Each entry gives the list of distances to the neighbors of the
+corresponding point.</p>
 </dd>
-<dt><strong>i</strong><span class="classifier">array of integers - shape: x.shape[:-1] + (k,)</span></dt><dd><p>each entry gives the list of indices of
-neighbors of the corresponding point</p>
+<dt><strong>i</strong><span class="classifier">ndarray of shape X.shape[:-1] + k, dtype=int</span></dt><dd><p>Each entry gives the list of indices of neighbors of the
+corresponding point.</p>
 </dd>
 </dl>
 </dd>
@@ -406,19 +406,19 @@ neighbors of the corresponding point</p>
 <dt><strong>r</strong><span class="classifier">distance within which neighbors are returned</span></dt><dd><p>r can be a single value, or an array of values of shape
 x.shape[:-1] if different radii are desired for each point.</p>
 </dd>
-<dt><strong>return_distance</strong><span class="classifier">boolean (default = False)</span></dt><dd><p>if True,  return distances to neighbors of each point
+<dt><strong>return_distance</strong><span class="classifier">bool, default=False</span></dt><dd><p>if True,  return distances to neighbors of each point
 if False, return only neighbors
 Note that unlike the query() method, setting return_distance=True
 here adds to the computation time.  Not all distances need to be
 calculated explicitly for return_distance=False.  Results are
 not sorted by default: see <code class="docutils literal notranslate"><span class="pre">sort_results</span></code> keyword.</p>
 </dd>
-<dt><strong>count_only</strong><span class="classifier">boolean (default = False)</span></dt><dd><p>if True,  return only the count of points within distance r
+<dt><strong>count_only</strong><span class="classifier">bool, default=False</span></dt><dd><p>if True,  return only the count of points within distance r
 if False, return the indices of all points within distance r
 If return_distance==True, setting count_only=True will
 result in an error.</p>
 </dd>
-<dt><strong>sort_results</strong><span class="classifier">boolean (default = False)</span></dt><dd><p>if True, the distances and indices will be sorted before being
+<dt><strong>sort_results</strong><span class="classifier">bool, default=False</span></dt><dd><p>if True, the distances and indices will be sorted before being
 returned.  If False, the results will not be sorted.  If
 return_distance == False, setting sort_results = True will
 result in an error.</p>
@@ -430,16 +430,16 @@ result in an error.</p>
 <dt><strong>count</strong><span class="classifier">if count_only == True</span></dt><dd></dd>
 <dt><strong>ind</strong><span class="classifier">if count_only == False and return_distance == False</span></dt><dd></dd>
 <dt><strong>(ind, dist)</strong><span class="classifier">if count_only == False and return_distance == True</span></dt><dd></dd>
-<dt><strong>count</strong><span class="classifier">array of integers, shape = X.shape[:-1]</span></dt><dd><p>each entry gives the number of neighbors within
-a distance r of the corresponding point.</p>
+<dt><strong>count</strong><span class="classifier">ndarray of shape X.shape[:-1], dtype=int</span></dt><dd><p>Each entry gives the number of neighbors within a distance r of the
+corresponding point.</p>
 </dd>
-<dt><strong>ind</strong><span class="classifier">array of objects, shape = X.shape[:-1]</span></dt><dd><p>each element is a numpy integer array listing the indices of
+<dt><strong>ind</strong><span class="classifier">ndarray of shape X.shape[:-1], dtype=object</span></dt><dd><p>Each element is a numpy integer array listing the indices of
 neighbors of the corresponding point.  Note that unlike
 the results of a k-neighbors query, the returned neighbors
 are not sorted by distance by default.</p>
 </dd>
-<dt><strong>dist</strong><span class="classifier">array of objects, shape = X.shape[:-1]</span></dt><dd><p>each element is a numpy double array
-listing the distances corresponding to indices in i.</p>
+<dt><strong>dist</strong><span class="classifier">ndarray of shape X.shape[:-1], dtype=object</span></dt><dd><p>Each element is a numpy double array listing the distances
+corresponding to indices in i.</p>
 </dd>
 </dl>
 </dd>
@@ -456,9 +456,9 @@ listing the distances corresponding to indices in i.</p>
 <dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>An array of points to query.  Last dimension should match dimension
 of training data.</p>
 </dd>
-<dt><strong>r</strong><span class="classifier">array_like</span></dt><dd><p>A one-dimensional array of distances</p>
+<dt><strong>r</strong><span class="classifier">array-like</span></dt><dd><p>A one-dimensional array of distances</p>
 </dd>
-<dt><strong>dualtree</strong><span class="classifier">boolean (default = False)</span></dt><dd><p>If true, use a dualtree algorithm.  Otherwise, use a single-tree
+<dt><strong>dualtree</strong><span class="classifier">bool, default=False</span></dt><dd><p>If True, use a dualtree algorithm.  Otherwise, use a single-tree
 algorithm.  Dual tree algorithms can have better scaling for
 large N.</p>
 </dd>

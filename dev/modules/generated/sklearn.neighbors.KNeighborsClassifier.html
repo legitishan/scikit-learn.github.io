@@ -163,15 +163,15 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.neighbors" title="sklearn.neighbors"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.neighbors</span></code></a>.KNeighborsClassifier<a class="headerlink" href="#sklearn-neighbors-kneighborsclassifier" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="sklearn.neighbors.KNeighborsClassifier">
-<em class="property">class </em><code class="sig-prename descclassname">sklearn.neighbors.</code><code class="sig-name descname">KNeighborsClassifier</code><span class="sig-paren">(</span><em class="sig-param">n_neighbors=5</em>, <em class="sig-param">weights='uniform'</em>, <em class="sig-param">algorithm='auto'</em>, <em class="sig-param">leaf_size=30</em>, <em class="sig-param">p=2</em>, <em class="sig-param">metric='minkowski'</em>, <em class="sig-param">metric_params=None</em>, <em class="sig-param">n_jobs=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/00f391067/sklearn/neighbors/_classification.py#L25"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.KNeighborsClassifier" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sklearn.neighbors.</code><code class="sig-name descname">KNeighborsClassifier</code><span class="sig-paren">(</span><em class="sig-param">n_neighbors=5</em>, <em class="sig-param">weights='uniform'</em>, <em class="sig-param">algorithm='auto'</em>, <em class="sig-param">leaf_size=30</em>, <em class="sig-param">p=2</em>, <em class="sig-param">metric='minkowski'</em>, <em class="sig-param">metric_params=None</em>, <em class="sig-param">n_jobs=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1fa28a7ed/sklearn/neighbors/_classification.py#L25"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.KNeighborsClassifier" title="Permalink to this definition">¶</a></dt>
 <dd><p>Classifier implementing the k-nearest neighbors vote.</p>
 <p>Read more in the <a class="reference internal" href="../neighbors.html#classification"><span class="std std-ref">User Guide</span></a>.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>n_neighbors</strong><span class="classifier">int, optional (default = 5)</span></dt><dd><p>Number of neighbors to use by default for <a class="reference internal" href="#sklearn.neighbors.KNeighborsClassifier.kneighbors" title="sklearn.neighbors.KNeighborsClassifier.kneighbors"><code class="xref py py-meth docutils literal notranslate"><span class="pre">kneighbors</span></code></a> queries.</p>
+<dt><strong>n_neighbors</strong><span class="classifier">int, default=5</span></dt><dd><p>Number of neighbors to use by default for <a class="reference internal" href="#sklearn.neighbors.KNeighborsClassifier.kneighbors" title="sklearn.neighbors.KNeighborsClassifier.kneighbors"><code class="xref py py-meth docutils literal notranslate"><span class="pre">kneighbors</span></code></a> queries.</p>
 </dd>
-<dt><strong>weights</strong><span class="classifier">str or callable, optional (default = ‘uniform’)</span></dt><dd><p>weight function used in prediction.  Possible values:</p>
+<dt><strong>weights</strong><span class="classifier">{‘uniform’, ‘distance’} or callable, default=’uniform’</span></dt><dd><p>weight function used in prediction.  Possible values:</p>
 <ul class="simple">
 <li><p>‘uniform’ : uniform weights.  All points in each neighborhood
 are weighted equally.</p></li>
@@ -183,7 +183,7 @@ array of distances, and returns an array of the same shape
 containing the weights.</p></li>
 </ul>
 </dd>
-<dt><strong>algorithm</strong><span class="classifier">{‘auto’, ‘ball_tree’, ‘kd_tree’, ‘brute’}, optional</span></dt><dd><p>Algorithm used to compute the nearest neighbors:</p>
+<dt><strong>algorithm</strong><span class="classifier">{‘auto’, ‘ball_tree’, ‘kd_tree’, ‘brute’}, default=’auto’</span></dt><dd><p>Algorithm used to compute the nearest neighbors:</p>
 <ul class="simple">
 <li><p>‘ball_tree’ will use <a class="reference internal" href="sklearn.neighbors.BallTree.html#sklearn.neighbors.BallTree" title="sklearn.neighbors.BallTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">BallTree</span></code></a></p></li>
 <li><p>‘kd_tree’ will use <a class="reference internal" href="sklearn.neighbors.KDTree.html#sklearn.neighbors.KDTree" title="sklearn.neighbors.KDTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">KDTree</span></code></a></p></li>
@@ -194,16 +194,16 @@ based on the values passed to <a class="reference internal" href="#sklearn.neigh
 <p>Note: fitting on sparse input will override the setting of
 this parameter, using brute force.</p>
 </dd>
-<dt><strong>leaf_size</strong><span class="classifier">int, optional (default = 30)</span></dt><dd><p>Leaf size passed to BallTree or KDTree.  This can affect the
+<dt><strong>leaf_size</strong><span class="classifier">int, default=30</span></dt><dd><p>Leaf size passed to BallTree or KDTree.  This can affect the
 speed of the construction and query, as well as the memory
 required to store the tree.  The optimal value depends on the
 nature of the problem.</p>
 </dd>
-<dt><strong>p</strong><span class="classifier">integer, optional (default = 2)</span></dt><dd><p>Power parameter for the Minkowski metric. When p = 1, this is
+<dt><strong>p</strong><span class="classifier">int, default=2</span></dt><dd><p>Power parameter for the Minkowski metric. When p = 1, this is
 equivalent to using manhattan_distance (l1), and euclidean_distance
 (l2) for p = 2. For arbitrary p, minkowski_distance (l_p) is used.</p>
 </dd>
-<dt><strong>metric</strong><span class="classifier">string or callable, default ‘minkowski’</span></dt><dd><p>the distance metric to use for the tree.  The default metric is
+<dt><strong>metric</strong><span class="classifier">str or callable, default=’minkowski’</span></dt><dd><p>the distance metric to use for the tree.  The default metric is
 minkowski, and with p=2 is equivalent to the standard Euclidean
 metric. See the documentation of the DistanceMetric class for a
 list of available metrics.
@@ -211,9 +211,9 @@ If metric is “precomputed”, X is assumed to be a distance matrix and
 must be square during fit. X may be a <a class="reference internal" href="../../glossary.html#term-sparse-graph"><span class="xref std std-term">Glossary</span></a>,
 in which case only “nonzero” elements may be considered neighbors.</p>
 </dd>
-<dt><strong>metric_params</strong><span class="classifier">dict, optional (default = None)</span></dt><dd><p>Additional keyword arguments for the metric function.</p>
+<dt><strong>metric_params</strong><span class="classifier">dict, default=None</span></dt><dd><p>Additional keyword arguments for the metric function.</p>
 </dd>
-<dt><strong>n_jobs</strong><span class="classifier">int or None, optional (default=None)</span></dt><dd><p>The number of parallel jobs to run for neighbors search.
+<dt><strong>n_jobs</strong><span class="classifier">int, default=None</span></dt><dd><p>The number of parallel jobs to run for neighbors search.
 <code class="docutils literal notranslate"><span class="pre">None</span></code> means 1 unless in a <a class="reference external" href="https://joblib.readthedocs.io/en/latest/parallel.html#joblib.parallel_backend" title="(in joblib v0.14.1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">joblib.parallel_backend</span></code></a> context.
 <code class="docutils literal notranslate"><span class="pre">-1</span></code> means using all processors. See <a class="reference internal" href="../../glossary.html#term-n-jobs"><span class="xref std std-term">Glossary</span></a>
 for more details.
@@ -225,7 +225,7 @@ Doesn’t affect <a class="reference internal" href="#sklearn.neighbors.KNeighbo
 <dd class="field-even"><dl class="simple">
 <dt><strong>classes_</strong><span class="classifier">array of shape (n_classes,)</span></dt><dd><p>Class labels known to the classifier</p>
 </dd>
-<dt><strong>effective_metric_</strong><span class="classifier">string or callble</span></dt><dd><p>The distance metric used. It will be same as the <code class="docutils literal notranslate"><span class="pre">metric</span></code> parameter
+<dt><strong>effective_metric_</strong><span class="classifier">str or callble</span></dt><dd><p>The distance metric used. It will be same as the <code class="docutils literal notranslate"><span class="pre">metric</span></code> parameter
 or a synonym of it, e.g. ‘euclidean’ if the <code class="docutils literal notranslate"><span class="pre">metric</span></code> parameter set to
 ‘minkowski’ and <code class="docutils literal notranslate"><span class="pre">p</span></code> parameter set to 2.</p>
 </dd>
@@ -308,13 +308,13 @@ training data.</p>
 </table>
 <dl class="method">
 <dt id="sklearn.neighbors.KNeighborsClassifier.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">n_neighbors=5</em>, <em class="sig-param">weights='uniform'</em>, <em class="sig-param">algorithm='auto'</em>, <em class="sig-param">leaf_size=30</em>, <em class="sig-param">p=2</em>, <em class="sig-param">metric='minkowski'</em>, <em class="sig-param">metric_params=None</em>, <em class="sig-param">n_jobs=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/00f391067/sklearn/neighbors/_classification.py#L145"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.KNeighborsClassifier.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">n_neighbors=5</em>, <em class="sig-param">weights='uniform'</em>, <em class="sig-param">algorithm='auto'</em>, <em class="sig-param">leaf_size=30</em>, <em class="sig-param">p=2</em>, <em class="sig-param">metric='minkowski'</em>, <em class="sig-param">metric_params=None</em>, <em class="sig-param">n_jobs=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1fa28a7ed/sklearn/neighbors/_classification.py#L145"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.KNeighborsClassifier.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="sklearn.neighbors.KNeighborsClassifier.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/00f391067/sklearn/neighbors/_base.py#L1116"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.KNeighborsClassifier.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1fa28a7ed/sklearn/neighbors/_base.py#L1116"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.KNeighborsClassifier.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the model using X as training data and y as target values</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -331,7 +331,7 @@ or [n_samples, n_samples] if metric=’precomputed’.</p>
 
 <dl class="method">
 <dt id="sklearn.neighbors.KNeighborsClassifier.get_params">
-<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/00f391067/sklearn/base.py#L173"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.KNeighborsClassifier.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1fa28a7ed/sklearn/base.py#L173"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.KNeighborsClassifier.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -352,7 +352,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.neighbors.KNeighborsClassifier.kneighbors">
-<code class="sig-name descname">kneighbors</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X=None</em>, <em class="sig-param">n_neighbors=None</em>, <em class="sig-param">return_distance=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/00f391067/sklearn/neighbors/_base.py#L531"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.KNeighborsClassifier.kneighbors" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">kneighbors</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X=None</em>, <em class="sig-param">n_neighbors=None</em>, <em class="sig-param">return_distance=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1fa28a7ed/sklearn/neighbors/_base.py#L531"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.KNeighborsClassifier.kneighbors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the K-neighbors of a point.
 Returns indices of and distances to the neighbors of each point.</p>
 <dl class="field-list simple">
@@ -405,7 +405,7 @@ element is at distance 0.5 and is the third element of samples
 
 <dl class="method">
 <dt id="sklearn.neighbors.KNeighborsClassifier.kneighbors_graph">
-<code class="sig-name descname">kneighbors_graph</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X=None</em>, <em class="sig-param">n_neighbors=None</em>, <em class="sig-param">mode='connectivity'</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/00f391067/sklearn/neighbors/_base.py#L705"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.KNeighborsClassifier.kneighbors_graph" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">kneighbors_graph</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X=None</em>, <em class="sig-param">n_neighbors=None</em>, <em class="sig-param">mode='connectivity'</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1fa28a7ed/sklearn/neighbors/_base.py#L705"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.KNeighborsClassifier.kneighbors_graph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the (weighted) graph of k-Neighbors for points in X</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -454,18 +454,18 @@ A[i, j] is assigned the weight of edge that connects i to j.</p>
 
 <dl class="method">
 <dt id="sklearn.neighbors.KNeighborsClassifier.predict">
-<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/00f391067/sklearn/neighbors/_classification.py#L157"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.KNeighborsClassifier.predict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1fa28a7ed/sklearn/neighbors/_classification.py#L157"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.KNeighborsClassifier.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Predict the class labels for the provided data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like, shape (n_queries, n_features),                 or (n_queries, n_indexed) if metric == ‘precomputed’</span></dt><dd><p>Test samples.</p>
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_queries, n_features),                 or (n_queries, n_indexed) if metric == ‘precomputed’</span></dt><dd><p>Test samples.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>y</strong><span class="classifier">array of shape [n_queries] or [n_queries, n_outputs]</span></dt><dd><p>Class labels for each data sample.</p>
+<dt><strong>y</strong><span class="classifier">ndarray of shape (n_queries,) or (n_queries, n_outputs)</span></dt><dd><p>Class labels for each data sample.</p>
 </dd>
 </dl>
 </dd>
@@ -474,18 +474,18 @@ A[i, j] is assigned the weight of edge that connects i to j.</p>
 
 <dl class="method">
 <dt id="sklearn.neighbors.KNeighborsClassifier.predict_proba">
-<code class="sig-name descname">predict_proba</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/00f391067/sklearn/neighbors/_classification.py#L199"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.KNeighborsClassifier.predict_proba" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">predict_proba</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1fa28a7ed/sklearn/neighbors/_classification.py#L199"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.KNeighborsClassifier.predict_proba" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return probability estimates for the test data X.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like, shape (n_queries, n_features),                 or (n_queries, n_indexed) if metric == ‘precomputed’</span></dt><dd><p>Test samples.</p>
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_queries, n_features),                 or (n_queries, n_indexed) if metric == ‘precomputed’</span></dt><dd><p>Test samples.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>p</strong><span class="classifier">array of shape = [n_queries, n_classes], or a list of n_outputs</span></dt><dd><p>of such arrays if n_outputs &gt; 1.
+<dt><strong>p</strong><span class="classifier">ndarray of shape (n_queries, n_classes), or a list of n_outputs</span></dt><dd><p>of such arrays if n_outputs &gt; 1.
 The class probabilities of the input samples. Classes are ordered
 by lexicographic order.</p>
 </dd>
@@ -496,7 +496,7 @@ by lexicographic order.</p>
 
 <dl class="method">
 <dt id="sklearn.neighbors.KNeighborsClassifier.score">
-<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/00f391067/sklearn/base.py#L344"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.KNeighborsClassifier.score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1fa28a7ed/sklearn/base.py#L344"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.KNeighborsClassifier.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the mean accuracy on the given test data and labels.</p>
 <p>In multi-label classification, this is the subset accuracy
 which is a harsh metric since you require for each sample that
@@ -523,7 +523,7 @@ each label set be correctly predicted.</p>
 
 <dl class="method">
 <dt id="sklearn.neighbors.KNeighborsClassifier.set_params">
-<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/00f391067/sklearn/base.py#L205"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.KNeighborsClassifier.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1fa28a7ed/sklearn/base.py#L205"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.neighbors.KNeighborsClassifier.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
