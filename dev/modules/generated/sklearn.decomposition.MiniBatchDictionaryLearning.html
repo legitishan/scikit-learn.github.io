@@ -228,10 +228,11 @@ the reconstruction error targeted. In this case, it overrides
 its negative part and its positive part. This can improve the
 performance of downstream classifiers.</p>
 </dd>
-<dt><strong>random_state</strong><span class="classifier">int, RandomState instance or None, optional (default=None)</span></dt><dd><p>If int, random_state is the seed used by the random number generator;
-If RandomState instance, random_state is the random number generator;
-If None, the random number generator is the RandomState instance used
-by <code class="docutils literal notranslate"><span class="pre">np.random</span></code>.</p>
+<dt><strong>random_state</strong><span class="classifier">int, RandomState instance or None, optional (default=None)</span></dt><dd><p>Used for initializing the dictionary when <code class="docutils literal notranslate"><span class="pre">dict_init</span></code> is not
+specified, randomly shuffling the data when <code class="docutils literal notranslate"><span class="pre">shuffle</span></code> is set to
+<code class="docutils literal notranslate"><span class="pre">True</span></code>, and updating the dictionary. Pass an int for reproducible
+results across multiple function calls.
+See <a class="reference internal" href="../../glossary.html#term-random-state"><span class="xref std std-term">Glossary</span></a>.</p>
 </dd>
 <dt><strong>positive_code</strong><span class="classifier">bool</span></dt><dd><p>Whether to enforce positivity when finding the code.</p>
 <div class="versionadded">
@@ -315,13 +316,13 @@ for sparse coding (<a class="reference external" href="https://www.di.ens.fr/sie
 </table>
 <dl class="method">
 <dt id="sklearn.decomposition.MiniBatchDictionaryLearning.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">n_components=None</em>, <em class="sig-param">alpha=1</em>, <em class="sig-param">n_iter=1000</em>, <em class="sig-param">fit_algorithm='lars'</em>, <em class="sig-param">n_jobs=None</em>, <em class="sig-param">batch_size=3</em>, <em class="sig-param">shuffle=True</em>, <em class="sig-param">dict_init=None</em>, <em class="sig-param">transform_algorithm='omp'</em>, <em class="sig-param">transform_n_nonzero_coefs=None</em>, <em class="sig-param">transform_alpha=None</em>, <em class="sig-param">verbose=False</em>, <em class="sig-param">split_sign=False</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">positive_code=False</em>, <em class="sig-param">positive_dict=False</em>, <em class="sig-param">transform_max_iter=1000</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/cd6e4d52d/sklearn/decomposition/_dict_learning.py#L1386"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.MiniBatchDictionaryLearning.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">n_components=None</em>, <em class="sig-param">alpha=1</em>, <em class="sig-param">n_iter=1000</em>, <em class="sig-param">fit_algorithm='lars'</em>, <em class="sig-param">n_jobs=None</em>, <em class="sig-param">batch_size=3</em>, <em class="sig-param">shuffle=True</em>, <em class="sig-param">dict_init=None</em>, <em class="sig-param">transform_algorithm='omp'</em>, <em class="sig-param">transform_n_nonzero_coefs=None</em>, <em class="sig-param">transform_alpha=None</em>, <em class="sig-param">verbose=False</em>, <em class="sig-param">split_sign=False</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">positive_code=False</em>, <em class="sig-param">positive_dict=False</em>, <em class="sig-param">transform_max_iter=1000</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/cd6e4d52d/sklearn/decomposition/_dict_learning.py#L1387"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.MiniBatchDictionaryLearning.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="sklearn.decomposition.MiniBatchDictionaryLearning.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/cd6e4d52d/sklearn/decomposition/_dict_learning.py#L1409"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.MiniBatchDictionaryLearning.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/cd6e4d52d/sklearn/decomposition/_dict_learning.py#L1410"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.MiniBatchDictionaryLearning.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the model from data in X.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -390,7 +391,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.decomposition.MiniBatchDictionaryLearning.partial_fit">
-<code class="sig-name descname">partial_fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y=None</em>, <em class="sig-param">iter_offset=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/cd6e4d52d/sklearn/decomposition/_dict_learning.py#L1447"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.MiniBatchDictionaryLearning.partial_fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">partial_fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y=None</em>, <em class="sig-param">iter_offset=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/cd6e4d52d/sklearn/decomposition/_dict_learning.py#L1448"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.MiniBatchDictionaryLearning.partial_fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates the model using the data in X as a mini-batch.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -441,7 +442,7 @@ component of a nested object.</p>
 
 <dl class="method">
 <dt id="sklearn.decomposition.MiniBatchDictionaryLearning.transform">
-<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/cd6e4d52d/sklearn/decomposition/_dict_learning.py#L896"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.MiniBatchDictionaryLearning.transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/cd6e4d52d/sklearn/decomposition/_dict_learning.py#L895"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.MiniBatchDictionaryLearning.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Encode the data as a sparse combination of the dictionary atoms.</p>
 <p>Coding method is determined by the object parameter
 <code class="docutils literal notranslate"><span class="pre">transform_algorithm</span></code>.</p>
