@@ -163,22 +163,40 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.inspection" title="sklearn.inspection"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.inspection</span></code></a>.partial_dependence<a class="headerlink" href="#sklearn-inspection-partial-dependence" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.inspection.partial_dependence">
-<code class="sig-prename descclassname">sklearn.inspection.</code><code class="sig-name descname">partial_dependence</code><span class="sig-paren">(</span><em class="sig-param">estimator</em>, <em class="sig-param">X</em>, <em class="sig-param">features</em>, <em class="sig-param">response_method='auto'</em>, <em class="sig-param">percentiles=(0.05</em>, <em class="sig-param">0.95)</em>, <em class="sig-param">grid_resolution=100</em>, <em class="sig-param">method='auto'</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/b84428e79/sklearn/inspection/_partial_dependence.py#L180"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.inspection.partial_dependence" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sklearn.inspection.</code><code class="sig-name descname">partial_dependence</code><span class="sig-paren">(</span><em class="sig-param">estimator</em>, <em class="sig-param">X</em>, <em class="sig-param">features</em>, <em class="sig-param">response_method='auto'</em>, <em class="sig-param">percentiles=(0.05</em>, <em class="sig-param">0.95)</em>, <em class="sig-param">grid_resolution=100</em>, <em class="sig-param">method='auto'</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/88eadf00a/sklearn/inspection/_partial_dependence.py#L180"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.inspection.partial_dependence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Partial dependence of <code class="docutils literal notranslate"><span class="pre">features</span></code>.</p>
 <p>Partial dependence of a feature (or a set of features) corresponds to
 the average response of an estimator for each possible value of the
 feature.</p>
 <p>Read more in the <a class="reference internal" href="../partial_dependence.html#partial-dependence"><span class="std std-ref">User Guide</span></a>.</p>
-<dl class="field-list simple">
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>For <a class="reference internal" href="sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier" title="sklearn.ensemble.GradientBoostingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradientBoostingClassifier</span></code></a> and
+<a class="reference internal" href="sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor" title="sklearn.ensemble.GradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradientBoostingRegressor</span></code></a>, the
+‘recursion’ method (used by default) will not account for the <code class="docutils literal notranslate"><span class="pre">init</span></code>
+predictor of the boosting process. In practice, this will produce
+the same values as ‘brute’ up to a constant offset in the target
+response, provided that <code class="docutils literal notranslate"><span class="pre">init</span></code> is a constant estimator (which is the
+default). However, if <code class="docutils literal notranslate"><span class="pre">init</span></code> is not a constant estimator, the
+partial dependence values are incorrect for ‘recursion’ because the
+offset will be sample-dependent. It is preferable to use the ‘brute’
+method. Note that this only applies to
+<a class="reference internal" href="sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier" title="sklearn.ensemble.GradientBoostingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradientBoostingClassifier</span></code></a> and
+<a class="reference internal" href="sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor" title="sklearn.ensemble.GradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradientBoostingRegressor</span></code></a>, not to
+<a class="reference internal" href="sklearn.ensemble.HistGradientBoostingClassifier.html#sklearn.ensemble.HistGradientBoostingClassifier" title="sklearn.ensemble.HistGradientBoostingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingClassifier</span></code></a> and
+<a class="reference internal" href="sklearn.ensemble.HistGradientBoostingRegressor.html#sklearn.ensemble.HistGradientBoostingRegressor" title="sklearn.ensemble.HistGradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingRegressor</span></code></a>.</p>
+</div>
+<dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>estimator</strong><span class="classifier">BaseEstimator</span></dt><dd><p>A fitted estimator object implementing <a class="reference internal" href="../../glossary.html#term-predict"><span class="xref std std-term">predict</span></a>,
 <a class="reference internal" href="../../glossary.html#term-predict-proba"><span class="xref std std-term">predict_proba</span></a>, or <a class="reference internal" href="../../glossary.html#term-decision-function"><span class="xref std std-term">decision_function</span></a>.
 Multioutput-multiclass classifiers are not supported.</p>
 </dd>
-<dt><strong>X</strong><span class="classifier">{array-like or dataframe} of shape (n_samples, n_features)</span></dt><dd><p><code class="docutils literal notranslate"><span class="pre">X</span></code> is used both to generate a grid of values for the
-<code class="docutils literal notranslate"><span class="pre">features</span></code>, and to compute the averaged predictions when
-method is ‘brute’.</p>
+<dt><strong>X</strong><span class="classifier">{array-like or dataframe} of shape (n_samples, n_features)</span></dt><dd><p><code class="docutils literal notranslate"><span class="pre">X</span></code> is used to generate a grid of values for the target
+<code class="docutils literal notranslate"><span class="pre">features</span></code> (where the partial dependence will be evaluated), and
+also to generate values for the complement features when the
+<code class="docutils literal notranslate"><span class="pre">method</span></code> is ‘brute’.</p>
 </dd>
 <dt><strong>features</strong><span class="classifier">array-like of {int, str}</span></dt><dd><p>The feature (e.g. <code class="docutils literal notranslate"><span class="pre">[0]</span></code>) or pair of interacting features
 (e.g. <code class="docutils literal notranslate"><span class="pre">[(0,</span> <span class="pre">1)]</span></code>) for which the partial dependency should be computed.</p>
@@ -199,35 +217,22 @@ feature.</p>
 </dd>
 <dt><strong>method</strong><span class="classifier">str, optional (default=’auto’)</span></dt><dd><p>The method used to calculate the averaged predictions:</p>
 <ul class="simple">
-<li><p>‘recursion’ is only supported for gradient boosting estimator (namely
+<li><p>‘recursion’ is only supported for some tree-based estimators (namely
 <a class="reference internal" href="sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier" title="sklearn.ensemble.GradientBoostingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradientBoostingClassifier</span></code></a>,
 <a class="reference internal" href="sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor" title="sklearn.ensemble.GradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradientBoostingRegressor</span></code></a>,
 <a class="reference internal" href="sklearn.ensemble.HistGradientBoostingClassifier.html#sklearn.ensemble.HistGradientBoostingClassifier" title="sklearn.ensemble.HistGradientBoostingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingClassifier</span></code></a>,
 <a class="reference internal" href="sklearn.ensemble.HistGradientBoostingRegressor.html#sklearn.ensemble.HistGradientBoostingRegressor" title="sklearn.ensemble.HistGradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingRegressor</span></code></a>)
 but is more efficient in terms of speed.
-With this method, <code class="docutils literal notranslate"><span class="pre">X</span></code> is only used to build the
-grid and the partial dependences are computed using the training
-data. This method does not account for the <code class="docutils literal notranslate"><span class="pre">init</span></code> predictor of
-the boosting process, which may lead to incorrect values (see
-warning below). With this method, the target response of a
+With this method, the target response of a
 classifier is always the decision function, not the predicted
 probabilities.</p></li>
 <li><p>‘brute’ is supported for any estimator, but is more
 computationally intensive.</p></li>
-<li><p>‘auto’:</p>
-<ul>
-<li><p>‘recursion’ is used for
-<a class="reference internal" href="sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier" title="sklearn.ensemble.GradientBoostingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradientBoostingClassifier</span></code></a>
-and
-<a class="reference internal" href="sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor" title="sklearn.ensemble.GradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradientBoostingRegressor</span></code></a>
-if <code class="docutils literal notranslate"><span class="pre">init=None</span></code>, and for
-<a class="reference internal" href="sklearn.ensemble.HistGradientBoostingClassifier.html#sklearn.ensemble.HistGradientBoostingClassifier" title="sklearn.ensemble.HistGradientBoostingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingClassifier</span></code></a>
-and
-<a class="reference internal" href="sklearn.ensemble.HistGradientBoostingRegressor.html#sklearn.ensemble.HistGradientBoostingRegressor" title="sklearn.ensemble.HistGradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingRegressor</span></code></a>.</p></li>
-<li><p>‘brute’ is used for all other estimators.</p></li>
+<li><p>‘auto’: the ‘recursion’ is used for estimators that support it,
+and ‘brute’ is used otherwise.</p></li>
 </ul>
-</li>
-</ul>
+<p>Please see <a class="reference internal" href="../partial_dependence.html#pdp-method-differences"><span class="std std-ref">this note</span></a> for
+differences between the ‘brute’ and ‘recursion’ method.</p>
 </dd>
 </dl>
 </dd>
@@ -250,19 +255,6 @@ whichever is smaller.</p>
 </dl>
 </dd>
 </dl>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>The ‘recursion’ method only works for gradient boosting estimators, and
-unlike the ‘brute’ method, it does not account for the <code class="docutils literal notranslate"><span class="pre">init</span></code>
-predictor of the boosting process. In practice this will produce the
-same values as ‘brute’ up to a constant offset in the target response,
-provided that <code class="docutils literal notranslate"><span class="pre">init</span></code> is a consant estimator (which is the default).
-However, as soon as <code class="docutils literal notranslate"><span class="pre">init</span></code> is not a constant estimator, the partial
-dependence values are incorrect for ‘recursion’. This is not relevant for
-<a class="reference internal" href="sklearn.ensemble.HistGradientBoostingClassifier.html#sklearn.ensemble.HistGradientBoostingClassifier" title="sklearn.ensemble.HistGradientBoostingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingClassifier</span></code></a> and
-<a class="reference internal" href="sklearn.ensemble.HistGradientBoostingRegressor.html#sklearn.ensemble.HistGradientBoostingRegressor" title="sklearn.ensemble.HistGradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingRegressor</span></code></a>, which do not have an
-<code class="docutils literal notranslate"><span class="pre">init</span></code> parameter.</p>
-</div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
