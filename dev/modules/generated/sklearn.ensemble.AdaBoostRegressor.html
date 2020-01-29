@@ -163,7 +163,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.ensemble" title="sklearn.ensemble"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.ensemble</span></code></a>.AdaBoostRegressor<a class="headerlink" href="#sklearn-ensemble-adaboostregressor" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="sklearn.ensemble.AdaBoostRegressor">
-<em class="property">class </em><code class="sig-prename descclassname">sklearn.ensemble.</code><code class="sig-name descname">AdaBoostRegressor</code><span class="sig-paren">(</span><em class="sig-param">base_estimator=None</em>, <em class="sig-param">n_estimators=50</em>, <em class="sig-param">learning_rate=1.0</em>, <em class="sig-param">loss='linear'</em>, <em class="sig-param">random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7d10be4c3/sklearn/ensemble/_weight_boosting.py#L865"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.ensemble.AdaBoostRegressor" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sklearn.ensemble.</code><code class="sig-name descname">AdaBoostRegressor</code><span class="sig-paren">(</span><em class="sig-param">base_estimator=None</em>, <em class="sig-param">n_estimators=50</em>, <em class="sig-param">learning_rate=1.0</em>, <em class="sig-param">loss='linear'</em>, <em class="sig-param">random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7d10be4c3/sklearn/ensemble/_weight_boosting.py#L869"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.ensemble.AdaBoostRegressor" title="Permalink to this definition">¶</a></dt>
 <dd><p>An AdaBoost regressor.</p>
 <p>An AdaBoost [1] regressor is a meta-estimator that begins by fitting a
 regressor on the original dataset and then fits additional copies of the
@@ -192,10 +192,13 @@ In case of perfect fit, the learning procedure is stopped early.</p>
 <dt><strong>loss</strong><span class="classifier">{‘linear’, ‘square’, ‘exponential’}, default=’linear’</span></dt><dd><p>The loss function to use when updating the weights after each
 boosting iteration.</p>
 </dd>
-<dt><strong>random_state</strong><span class="classifier">int, RandomState instance, default=None</span></dt><dd><p>If int, random_state is the seed used by the random number generator;
-If RandomState instance, random_state is the random number generator;
-If None, the random number generator is the RandomState instance used
-by <code class="docutils literal notranslate"><span class="pre">np.random</span></code>.</p>
+<dt><strong>random_state</strong><span class="classifier">int, RandomState instance, default=None</span></dt><dd><p>Controls the random seed given at each <code class="docutils literal notranslate"><span class="pre">base_estimator</span></code> at each
+boosting iteration.
+Thus, it is only used when <code class="docutils literal notranslate"><span class="pre">base_estimator</span></code> exposes a <code class="docutils literal notranslate"><span class="pre">random_state</span></code>.
+In addition, it controls the bootstrap of the weights used to train the
+<code class="docutils literal notranslate"><span class="pre">base_estimator</span></code> at each boosting iteration.
+Pass an int for reproducible output across multiple function calls.
+See <a class="reference internal" href="../../glossary.html#term-random-state"><span class="xref std std-term">Glossary</span></a>.</p>
 </dd>
 </dl>
 </dd>
@@ -281,7 +284,7 @@ on-Line Learning and an Application to Boosting”, 1995.</p>
 </table>
 <dl class="method">
 <dt id="sklearn.ensemble.AdaBoostRegressor.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">base_estimator=None</em>, <em class="sig-param">n_estimators=50</em>, <em class="sig-param">learning_rate=1.0</em>, <em class="sig-param">loss='linear'</em>, <em class="sig-param">random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7d10be4c3/sklearn/ensemble/_weight_boosting.py#L952"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.ensemble.AdaBoostRegressor.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">base_estimator=None</em>, <em class="sig-param">n_estimators=50</em>, <em class="sig-param">learning_rate=1.0</em>, <em class="sig-param">loss='linear'</em>, <em class="sig-param">random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7d10be4c3/sklearn/ensemble/_weight_boosting.py#L959"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.ensemble.AdaBoostRegressor.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
@@ -304,7 +307,7 @@ on-Line Learning and an Application to Boosting”, 1995.</p>
 
 <dl class="method">
 <dt id="sklearn.ensemble.AdaBoostRegressor.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7d10be4c3/sklearn/ensemble/_weight_boosting.py#L968"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.ensemble.AdaBoostRegressor.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7d10be4c3/sklearn/ensemble/_weight_boosting.py#L975"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.ensemble.AdaBoostRegressor.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build a boosted regressor from the training set (X, y).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -350,7 +353,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.ensemble.AdaBoostRegressor.predict">
-<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7d10be4c3/sklearn/ensemble/_weight_boosting.py#L1111"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.ensemble.AdaBoostRegressor.predict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7d10be4c3/sklearn/ensemble/_weight_boosting.py#L1122"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.ensemble.AdaBoostRegressor.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Predict regression value for X.</p>
 <p>The predicted regression value of an input sample is computed
 as the weighted median prediction of the classifiers in the ensemble.</p>
@@ -439,7 +442,7 @@ component of a nested object.</p>
 
 <dl class="method">
 <dt id="sklearn.ensemble.AdaBoostRegressor.staged_predict">
-<code class="sig-name descname">staged_predict</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7d10be4c3/sklearn/ensemble/_weight_boosting.py#L1133"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.ensemble.AdaBoostRegressor.staged_predict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">staged_predict</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7d10be4c3/sklearn/ensemble/_weight_boosting.py#L1144"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.ensemble.AdaBoostRegressor.staged_predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return staged predictions for X.</p>
 <p>The predicted regression value of an input sample is computed
 as the weighted median prediction of the classifiers in the ensemble.</p>
@@ -464,7 +467,7 @@ determine the prediction on a test set after each boost.</p>
 
 <dl class="method">
 <dt id="sklearn.ensemble.AdaBoostRegressor.staged_score">
-<code class="sig-name descname">staged_score</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7d10be4c3/sklearn/ensemble/_weight_boosting.py#L207"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.ensemble.AdaBoostRegressor.staged_score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">staged_score</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7d10be4c3/sklearn/ensemble/_weight_boosting.py#L209"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.ensemble.AdaBoostRegressor.staged_score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return staged scores for X, y.</p>
 <p>This generator method yields the ensemble score after each iteration of
 boosting and therefore allows monitoring, such as to determine the
