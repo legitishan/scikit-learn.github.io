@@ -484,6 +484,19 @@ trees one can <strong>reduce the variance</strong> of such an estimate and use i
 for feature selection. This is known as the mean decrease in impurity, or MDI.
 Refer to <a class="reference internal" href="#l2014" id="id7"><span>[L2014]</span></a> for more information on MDI and feature importance
 evaluation with Random Forests.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The impurity-based feature importances computed on tree-based models suffer
+from two flaws that can lead to misleading conclusions. First they are
+computed on statistics derived from the training dataset and therefore <strong>do
+not necessarily inform us on which features are most important to make good
+predictions on held-out dataset</strong>. Secondly, <strong>they favor high cardinality
+features</strong>, that is features with many unique values.
+<a class="reference internal" href="permutation_importance.html#permutation-importance"><span class="std std-ref">Permutation feature importance</span></a> is an alternative to impurity-based feature
+importance that does not suffer from these flaws. These two methods of
+obtaining feature importance are explored in:
+<a class="reference internal" href="../auto_examples/inspection/plot_permutation_importance.html#sphx-glr-auto-examples-inspection-plot-permutation-importance-py"><span class="std std-ref">Permutation Importance vs Random Forest Feature Importance (MDI)</span></a>.</p>
+</div>
 <p>The following example shows a color-coded representation of the relative
 importances of each individual pixel for a face recognition task using
 a <a class="reference internal" href="generated/sklearn.ensemble.ExtraTreesClassifier.html#sklearn.ensemble.ExtraTreesClassifier" title="sklearn.ensemble.ExtraTreesClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExtraTreesClassifier</span></code></a> model.</p>
@@ -495,12 +508,6 @@ a <a class="reference internal" href="generated/sklearn.ensemble.ExtraTreesClass
 <code class="docutils literal notranslate"><span class="pre">(n_features,)</span></code> whose values are positive and sum to 1.0. The higher
 the value, the more important is the contribution of the matching feature
 to the prediction function.</p>
-<p>The impurity-based feature importance for trees suffers from being computed
-on statistics derived from the training dataset
-and favors high cardinality features.
-<a class="reference internal" href="permutation_importance.html#permutation-importance"><span class="std std-ref">Permutation feature importance</span></a> is a nice alternative impurity-based feature importance.
-These two methods of obtaining feature importance are explored in:
-<a class="reference internal" href="../auto_examples/inspection/plot_permutation_importance.html#sphx-glr-auto-examples-inspection-plot-permutation-importance-py"><span class="std std-ref">Permutation Importance vs Random Forest Feature Importance (MDI)</span></a>.</p>
 <div class="topic">
 <p class="topic-title">Examples:</p>
 <ul class="simple">
@@ -532,8 +539,9 @@ The size and sparsity of the code can be influenced by choosing the number of
 trees and the maximum depth per tree. For each tree in the ensemble, the coding
 contains one entry of one. The size of the coding is at most <code class="docutils literal notranslate"><span class="pre">n_estimators</span> <span class="pre">*</span> <span class="pre">2</span>
 <span class="pre">**</span> <span class="pre">max_depth</span></code>, the maximum number of leaves in the forest.</p>
-<p>As neighboring data points are more likely to lie within the same leaf of a tree,
-the transformation performs an implicit, non-parametric density estimation.</p>
+<p>As neighboring data points are more likely to lie within the same leaf of a
+tree, the transformation performs an implicit, non-parametric density
+estimation.</p>
 <div class="topic">
 <p class="topic-title">Examples:</p>
 <ul class="simple">
