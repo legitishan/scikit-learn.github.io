@@ -12,7 +12,7 @@
   
   <title>Feature selection using SelectFromModel and LassoCV &mdash; scikit-learn 0.23.dev0 documentation</title>
   
-  <link rel="canonical" href="http://scikit-learn.org/stable/auto_examples/feature_selection/plot_select_from_model_boston.html" />
+  <link rel="canonical" href="http://scikit-learn.org/stable/auto_examples/feature_selection/plot_select_from_model_diabetes.html" />
 
   
   <link rel="shortcut icon" href="../../_static/favicon.ico"/>
@@ -147,7 +147,13 @@
         </div>
           <div class="sk-sidebar-toc">
             <ul>
-<li><a class="reference internal" href="#">Feature selection using SelectFromModel and LassoCV</a></li>
+<li><a class="reference internal" href="#">Feature selection using SelectFromModel and LassoCV</a><ul>
+<li><a class="reference internal" href="#load-the-data">Load the data</a></li>
+<li><a class="reference internal" href="#find-importance-of-the-features">Find importance of the features</a></li>
+<li><a class="reference internal" href="#select-from-the-model-features-with-the-higest-score">Select from the model features with the higest score</a></li>
+<li><a class="reference internal" href="#plot-the-two-most-important-features">Plot the two most important features</a></li>
+</ul>
+</li>
 </ul>
 
           </div>
@@ -158,71 +164,127 @@
         
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-feature-selection-plot-select-from-model-boston-py"><span class="std std-ref">here</span></a> to download the full example code or to run this example in your browser via Binder</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-feature-selection-plot-select-from-model-diabetes-py"><span class="std std-ref">here</span></a> to download the full example code or to run this example in your browser via Binder</p>
 </div>
 <div class="sphx-glr-example-title section" id="feature-selection-using-selectfrommodel-and-lassocv">
-<span id="sphx-glr-auto-examples-feature-selection-plot-select-from-model-boston-py"></span><h1>Feature selection using SelectFromModel and LassoCV<a class="headerlink" href="#feature-selection-using-selectfrommodel-and-lassocv" title="Permalink to this headline">¶</a></h1>
+<span id="sphx-glr-auto-examples-feature-selection-plot-select-from-model-diabetes-py"></span><h1>Feature selection using SelectFromModel and LassoCV<a class="headerlink" href="#feature-selection-using-selectfrommodel-and-lassocv" title="Permalink to this headline">¶</a></h1>
 <p>Use SelectFromModel meta-transformer along with Lasso to select the best
-couple of features from the Boston dataset.</p>
-<img alt="../../_images/sphx_glr_plot_select_from_model_boston_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_select_from_model_boston_001.png" />
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: Manoj Kumar &lt;mks542@nyu.edu&gt;</span>
-<span class="c1"># License: BSD 3 clause</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
+couple of features from the diabetes dataset.</p>
+<p>Since the L1 norm promotes sparsity of features we might be interested in
+selecting only a subset of the most interesting features from the dataset. This
+example shows how to select two the most interesting features from the diabetes
+dataset.</p>
+<p>Diabetes dataset consists of 10 variables (features) collected from 442
+diabetes patients. This example shows how to use SelectFromModel and LassoCv to
+find the best two features predicting disease progression after one year from
+the baseline.</p>
+<dl class="simple">
+<dt>Authors: Manoj Kumar &lt;<a class="reference external" href="mailto:mks542&#37;&#52;&#48;nyu&#46;edu">mks542<span>&#64;</span>nyu<span>&#46;</span>edu</a>&gt;</dt><dd><p>Maria Telenczuk &lt;<a class="reference external" href="https://github.com/maikia">https://github.com/maikia</a>&gt;</p>
+</dd>
+</dl>
+<p>License: BSD 3 clause</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.datasets.load_boston.html#sklearn.datasets.load_boston" title="View documentation for sklearn.datasets.load_boston"><span class="n">load_boston</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.datasets.load_diabetes.html#sklearn.datasets.load_diabetes" title="View documentation for sklearn.datasets.load_diabetes"><span class="n">load_diabetes</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.feature_selection.SelectFromModel.html#sklearn.feature_selection.SelectFromModel" title="View documentation for sklearn.feature_selection.SelectFromModel"><span class="n">SelectFromModel</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.linear_model.LassoCV.html#sklearn.linear_model.LassoCV" title="View documentation for sklearn.linear_model.LassoCV"><span class="n">LassoCV</span></a>
+</pre></div>
+</div>
+<div class="section" id="load-the-data">
+<h2>Load the data<a class="headerlink" href="#load-the-data" title="Permalink to this headline">¶</a></h2>
+<p>First, let’s load the diabetes dataset which is available from within
+sklearn. Then, we will look what features are collected for the diabates
+patients:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">diabetes</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.load_diabetes.html#sklearn.datasets.load_diabetes" title="View documentation for sklearn.datasets.load_diabetes"><span class="n">load_diabetes</span></a><span class="p">()</span>
 
-<span class="c1"># Load the boston dataset.</span>
-<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.load_boston.html#sklearn.datasets.load_boston" title="View documentation for sklearn.datasets.load_boston"><span class="n">load_boston</span></a><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">diabetes</span><span class="o">.</span><span class="n">data</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">diabetes</span><span class="o">.</span><span class="n">target</span>
 
-<span class="c1"># We use the base estimator LassoCV since the L1 norm promotes sparsity of features.</span>
-<span class="n">clf</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.linear_model.LassoCV.html#sklearn.linear_model.LassoCV" title="View documentation for sklearn.linear_model.LassoCV"><span class="n">LassoCV</span></a><span class="p">()</span>
+<span class="n">feature_names</span> <span class="o">=</span> <span class="n">diabetes</span><span class="o">.</span><span class="n">feature_names</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">feature_names</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;age&#39;, &#39;sex&#39;, &#39;bmi&#39;, &#39;bp&#39;, &#39;s1&#39;, &#39;s2&#39;, &#39;s3&#39;, &#39;s4&#39;, &#39;s5&#39;, &#39;s6&#39;]
+</pre></div>
+</div>
+</div>
+<div class="section" id="find-importance-of-the-features">
+<h2>Find importance of the features<a class="headerlink" href="#find-importance-of-the-features" title="Permalink to this headline">¶</a></h2>
+<p>To decide on the importance of the features we are going to use LassoCV
+estimator. The features with the highest absolute <a href="#id1"><span class="problematic" id="id2">coef_</span></a> value are considered
+the most important</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">clf</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.linear_model.LassoCV.html#sklearn.linear_model.LassoCV" title="View documentation for sklearn.linear_model.LassoCV"><span class="n">LassoCV</span></a><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">importance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">importance</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[  6.49684455 235.99640534 521.73854261 321.06689245 569.4426838
+ 302.45627915   0.         143.6995665  669.92633112  66.83430445]
+</pre></div>
+</div>
+</div>
+<div class="section" id="select-from-the-model-features-with-the-higest-score">
+<h2>Select from the model features with the higest score<a class="headerlink" href="#select-from-the-model-features-with-the-higest-score" title="Permalink to this headline">¶</a></h2>
+<p>Now we want to select the two features which are the most important.
+SelectFromModel() allows for setting the threshold. Only the features with
+the <a href="#id3"><span class="problematic" id="id4">coef_</span></a> higher than the threshold will remain. Here, we want to set the
+threshold slightly above the third highest <a href="#id5"><span class="problematic" id="id6">coef_</span></a> calculated by LassoCV() from
+our data.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">idx_third</span> <span class="o">=</span> <span class="n">importance</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
+<span class="n">threshold</span> <span class="o">=</span> <span class="n">importance</span><span class="p">[</span><span class="n">idx_third</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.01</span>
 
-<span class="c1"># Set a minimum threshold of 0.25</span>
-<span class="n">sfm</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.feature_selection.SelectFromModel.html#sklearn.feature_selection.SelectFromModel" title="View documentation for sklearn.feature_selection.SelectFromModel"><span class="n">SelectFromModel</span></a><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">idx_features</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">importance</span><span class="p">)</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[:</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">name_features</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">feature_names</span><span class="p">)[</span><span class="n">idx_features</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Selected features: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name_features</span><span class="p">))</span>
+
+<span class="n">sfm</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.feature_selection.SelectFromModel.html#sklearn.feature_selection.SelectFromModel" title="View documentation for sklearn.feature_selection.SelectFromModel"><span class="n">SelectFromModel</span></a><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="n">threshold</span><span class="p">)</span>
 <span class="n">sfm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">X_transform</span> <span class="o">=</span> <span class="n">sfm</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
 <span class="n">n_features</span> <span class="o">=</span> <span class="n">sfm</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-
-<span class="c1"># Reset the threshold till the number of features equals two.</span>
-<span class="c1"># Note that the attribute can be set directly instead of repeatedly</span>
-<span class="c1"># fitting the metatransformer.</span>
-<span class="k">while</span> <span class="n">n_features</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
-    <span class="n">sfm</span><span class="o">.</span><span class="n">threshold</span> <span class="o">+=</span> <span class="mf">0.1</span>
-    <span class="n">X_transform</span> <span class="o">=</span> <span class="n">sfm</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-    <span class="n">n_features</span> <span class="o">=</span> <span class="n">X_transform</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-
-<span class="c1"># Plot the selected two features from X.</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="View documentation for matplotlib.pyplot.title"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span>
-    <span class="s2">&quot;Features selected from Boston using SelectFromModel with &quot;</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Selected features: [&#39;s5&#39; &#39;s1&#39;]
+</pre></div>
+</div>
+</div>
+<div class="section" id="plot-the-two-most-important-features">
+<h2>Plot the two most important features<a class="headerlink" href="#plot-the-two-most-important-features" title="Permalink to this headline">¶</a></h2>
+<p>Finally we will plot the selected two features from the data.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="View documentation for matplotlib.pyplot.title"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span>
+    <span class="s2">&quot;Features from diabets using SelectFromModel with &quot;</span>
     <span class="s2">&quot;threshold </span><span class="si">%0.3f</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="n">sfm</span><span class="o">.</span><span class="n">threshold</span><span class="p">)</span>
 <span class="n">feature1</span> <span class="o">=</span> <span class="n">X_transform</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
 <span class="n">feature2</span> <span class="o">=</span> <span class="n">X_transform</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">feature1</span><span class="p">,</span> <span class="n">feature2</span><span class="p">,</span> <span class="s1">&#39;r.&#39;</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="View documentation for matplotlib.pyplot.xlabel"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s2">&quot;Feature number 1&quot;</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="View documentation for matplotlib.pyplot.ylabel"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="s2">&quot;Feature number 2&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="View documentation for matplotlib.pyplot.xlabel"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s2">&quot;First feature: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name_features</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="View documentation for matplotlib.pyplot.ylabel"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="s2">&quot;Second feature: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name_features</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylim.html#matplotlib.pyplot.ylim" title="View documentation for matplotlib.pyplot.ylim"><span class="n">plt</span><span class="o">.</span><span class="n">ylim</span></a><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">feature2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">feature2</span><span class="p">)])</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.479 seconds)</p>
+<img alt="../../_images/sphx_glr_plot_select_from_model_diabetes_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_select_from_model_diabetes_001.png" />
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.531 seconds)</p>
 <p><strong>Estimated memory usage:</strong>  8 MB</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-feature-selection-plot-select-from-model-boston-py">
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-feature-selection-plot-select-from-model-diabetes-py">
 <div class="binder-badge docutils container">
-<a class="reference external image-reference" href="https://mybinder.org/v2/gh/scikit-learn/scikit-learn/master?urlpath=lab/tree/notebooks/auto_examples/feature_selection/plot_select_from_model_boston.ipynb"><img alt="https://mybinder.org/badge_logo.svg" src="https://mybinder.org/badge_logo.svg" width="150px" /></a>
+<a class="reference external image-reference" href="https://mybinder.org/v2/gh/scikit-learn/scikit-learn/master?urlpath=lab/tree/notebooks/auto_examples/feature_selection/plot_select_from_model_diabetes.ipynb"><img alt="https://mybinder.org/badge_logo.svg" src="https://mybinder.org/badge_logo.svg" width="150px" /></a>
 </div>
 <div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/ec16caf0c2a5d196169a662373beba02/plot_select_from_model_boston.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_select_from_model_boston.py</span></code></a></p>
+<p><a class="reference download internal" download="" href="../../_downloads/9a690c19be1584e1c965a01a1e733b2b/plot_select_from_model_diabetes.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_select_from_model_diabetes.py</span></code></a></p>
 </div>
 <div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/c65d78a64b1ce8a1acbf28e24f9f348c/plot_select_from_model_boston.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_select_from_model_boston.ipynb</span></code></a></p>
+<p><a class="reference download internal" download="" href="../../_downloads/a992071b7848e988f9122ebc928e2988/plot_select_from_model_diabetes.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_select_from_model_diabetes.ipynb</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
 </div>
 
 
@@ -230,7 +292,7 @@ couple of features from the Boston dataset.</p>
     <div class="container">
       <footer class="sk-content-footer">
             &copy; 2007 - 2019, scikit-learn developers (BSD License).
-          <a href="../../_sources/auto_examples/feature_selection/plot_select_from_model_boston.rst.txt" rel="nofollow">Show this page source</a>
+          <a href="../../_sources/auto_examples/feature_selection/plot_select_from_model_diabetes.rst.txt" rel="nofollow">Show this page source</a>
       </footer>
     </div>
   </div>
