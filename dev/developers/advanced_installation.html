@@ -226,7 +226,7 @@ and <a class="reference internal" href="#compiler-freebsd"><span class="std std-
 or <a class="reference external" href="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">conda environment</a>.</p></li>
 <li><p>Install <a class="reference external" href="https://cython.org">Cython</a> and build the project with pip in <a class="reference internal" href="#editable-mode"><span class="std std-ref">Editable mode</span></a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">cython</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">verbose</span> <span class="o">--</span><span class="n">editable</span> <span class="o">.</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">verbose</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">build</span><span class="o">-</span><span class="n">isolation</span> <span class="o">--</span><span class="n">editable</span> <span class="o">.</span>
 </pre></div>
 </div>
 </li>
@@ -241,8 +241,11 @@ the tests on the module of your choice.</p></li>
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>You will have to re-run the <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--editable</span> <span class="pre">.</span></code> command every time
-the source code of a Cython file is updated (ending in <code class="docutils literal notranslate"><span class="pre">.pyx</span></code> or <code class="docutils literal notranslate"><span class="pre">.pxd</span></code>).</p>
+<p>You will have to run the <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--no-build-isolation</span> <span class="pre">--editable</span> <span class="pre">.</span></code>
+command every time the source code of a Cython file is updated
+(ending in <code class="docutils literal notranslate"><span class="pre">.pyx</span></code> or <code class="docutils literal notranslate"><span class="pre">.pxd</span></code>). Use the <code class="docutils literal notranslate"><span class="pre">--no-build-isolation</span></code> flag to
+avoid compiling the whole project each time, only the files you have
+modified.</p>
 </div>
 <div class="section" id="dependencies">
 <h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h3>
@@ -305,9 +308,9 @@ the version from github.</p>
 <span id="id1"></span><h3>Editable mode<a class="headerlink" href="#editable-mode" title="Permalink to this headline">¶</a></h3>
 <p>If you run the development version, it is cumbersome to reinstall the package
 each time you update the sources. Therefore it is recommended that you install
-in with the <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--editable</span> <span class="pre">.</span></code> command, which allows you to edit the
-code in-place. This builds the extension in place and creates a link to the
-development directory (see <a class="reference external" href="https://pip.pypa.io/en/stable/reference/pip_install/#editable-installs">the pip docs</a>).</p>
+in with the <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--no-build-isolation</span> <span class="pre">--editable</span> <span class="pre">.</span></code> command, which
+allows you to edit the code in-place. This builds the extension in place and
+creates a link to the development directory (see <a class="reference external" href="https://pip.pypa.io/en/stable/reference/pip_install/#editable-installs">the pip docs</a>).</p>
 <p>This is fundamentally similar to using the command <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">develop</span></code>
 (see <a class="reference external" href="https://setuptools.readthedocs.io/en/latest/setuptools.html#development-mode">the setuptool docs</a>).
 It is however preferred to use pip.</p>
@@ -345,7 +348,7 @@ console:</p>
 aim is to point to the “vcvarsall.bat” file that will set the necessary
 environment variables in the current command prompt.</p>
 <p>Finally, build scikit-learn from this command prompt:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">verbose</span> <span class="o">--</span><span class="n">editable</span> <span class="o">.</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">verbose</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">build</span><span class="o">-</span><span class="n">isolation</span> <span class="o">--</span><span class="n">editable</span> <span class="o">.</span>
 </pre></div>
 </div>
 </div>
@@ -373,7 +376,7 @@ scikit-learn from source:</p>
     <span class="s2">&quot;conda-forge::compilers&gt;=1.0.4&quot;</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span><span class="p">::</span><span class="n">llvm</span><span class="o">-</span><span class="n">openmp</span>
 <span class="n">conda</span> <span class="n">activate</span> <span class="n">sklearn</span><span class="o">-</span><span class="n">dev</span>
 <span class="n">make</span> <span class="n">clean</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">verbose</span> <span class="o">--</span><span class="n">editable</span> <span class="o">.</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">verbose</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">build</span><span class="o">-</span><span class="n">isolation</span> <span class="o">--</span><span class="n">editable</span> <span class="o">.</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -430,7 +433,7 @@ by default on macOS.</p>
 <p>Finally, build scikit-learn in verbose mode (to check for the presence of the
 <code class="docutils literal notranslate"><span class="pre">-fopenmp</span></code> flag in the compiler commands):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">clean</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">verbose</span> <span class="o">--</span><span class="n">editable</span> <span class="o">.</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">verbose</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">build</span><span class="o">-</span><span class="n">isolation</span> <span class="o">--</span><span class="n">editable</span> <span class="o">.</span>
 </pre></div>
 </div>
 </div>
@@ -475,7 +478,7 @@ architecture (e.g. ARM), you can install the system versions:</p>
 in the user folder using conda:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">sklearn</span><span class="o">-</span><span class="n">dev</span> <span class="n">numpy</span> <span class="n">scipy</span> <span class="n">joblib</span> <span class="n">cython</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span><span class="p">::</span><span class="n">compilers</span>
 <span class="n">conda</span> <span class="n">activate</span> <span class="n">sklearn</span><span class="o">-</span><span class="n">dev</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">verbose</span> <span class="o">--</span><span class="n">editable</span> <span class="o">.</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">verbose</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">build</span><span class="o">-</span><span class="n">isolation</span> <span class="o">--</span><span class="n">editable</span> <span class="o">.</span>
 </pre></div>
 </div>
 </div>
@@ -497,7 +500,7 @@ can set the environment variables to these locations:</p>
 </pre></div>
 </div>
 <p>Finally, build the package using the standard command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">verbose</span> <span class="o">--</span><span class="n">editable</span> <span class="o">.</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">verbose</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">build</span><span class="o">-</span><span class="n">isolation</span> <span class="o">--</span><span class="n">editable</span> <span class="o">.</span>
 </pre></div>
 </div>
 <p>For the upcoming FreeBSD 12.1 and 11.3 versions, OpenMP will be included in
