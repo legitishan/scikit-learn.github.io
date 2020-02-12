@@ -163,7 +163,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.gaussian_process" title="sklearn.gaussian_process"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.gaussian_process</span></code></a>.GaussianProcessRegressor<a class="headerlink" href="#sklearn-gaussian-process-gaussianprocessregressor" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="sklearn.gaussian_process.GaussianProcessRegressor">
-<em class="property">class </em><code class="sig-prename descclassname">sklearn.gaussian_process.</code><code class="sig-name descname">GaussianProcessRegressor</code><span class="sig-paren">(</span><em class="sig-param">kernel=None</em>, <em class="sig-param">alpha=1e-10</em>, <em class="sig-param">optimizer='fmin_l_bfgs_b'</em>, <em class="sig-param">n_restarts_optimizer=0</em>, <em class="sig-param">normalize_y=False</em>, <em class="sig-param">copy_X_train=True</em>, <em class="sig-param">random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/db85b1264/sklearn/gaussian_process/_gpr.py#L22"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.gaussian_process.GaussianProcessRegressor" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sklearn.gaussian_process.</code><code class="sig-name descname">GaussianProcessRegressor</code><span class="sig-paren">(</span><em class="sig-param">kernel=None</em>, <em class="sig-param">alpha=1e-10</em>, <em class="sig-param">optimizer='fmin_l_bfgs_b'</em>, <em class="sig-param">n_restarts_optimizer=0</em>, <em class="sig-param">normalize_y=False</em>, <em class="sig-param">copy_X_train=True</em>, <em class="sig-param">random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/62ce1bad3/sklearn/gaussian_process/_gpr.py#L22"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.gaussian_process.GaussianProcessRegressor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gaussian process regression (GPR).</p>
 <p>The implementation is based on Algorithm 2.1 of Gaussian Processes
 for Machine Learning (GPML) by Rasmussen and Williams.</p>
@@ -186,11 +186,11 @@ Markov chain Monte Carlo.</p></li>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>kernel</strong><span class="classifier">kernel object</span></dt><dd><p>The kernel specifying the covariance function of the GP. If None is
+<dt><strong>kernel</strong><span class="classifier">kernel instance, default=None</span></dt><dd><p>The kernel specifying the covariance function of the GP. If None is
 passed, the kernel “1.0 * RBF(1.0)” is used as default. Note that
 the kernel’s hyperparameters are optimized during fitting.</p>
 </dd>
-<dt><strong>alpha</strong><span class="classifier">float or array-like, optional (default: 1e-10)</span></dt><dd><p>Value added to the diagonal of the kernel matrix during fitting.
+<dt><strong>alpha</strong><span class="classifier">float or array-like of shape (n_samples), default=1e-10</span></dt><dd><p>Value added to the diagonal of the kernel matrix during fitting.
 Larger values correspond to increased noise level in the observations.
 This can also prevent a potential numerical issue during fitting, by
 ensuring that the calculated values form a positive definite matrix.
@@ -200,7 +200,7 @@ Note that this is equivalent to adding a WhiteKernel with c=alpha.
 Allowing to specify the noise level directly as a parameter is mainly
 for convenience and for consistency with Ridge.</p>
 </dd>
-<dt><strong>optimizer</strong><span class="classifier">string or callable, optional (default: “fmin_l_bfgs_b”)</span></dt><dd><p>Can either be one of the internally supported optimizers for optimizing
+<dt><strong>optimizer</strong><span class="classifier">“fmin_l_bfgs_b” or callable, default=”fmin_l_bfgs_b”</span></dt><dd><p>Can either be one of the internally supported optimizers for optimizing
 the kernel’s parameters, specified by a string, or an externally
 defined optimizer passed as a callable. If a callable is passed, it
 must have the signature:</p>
@@ -225,7 +225,7 @@ Available internal optimizers are:</p>
 </pre></div>
 </div>
 </dd>
-<dt><strong>n_restarts_optimizer</strong><span class="classifier">int, optional (default: 0)</span></dt><dd><p>The number of restarts of the optimizer for finding the kernel’s
+<dt><strong>n_restarts_optimizer</strong><span class="classifier">int, default=0</span></dt><dd><p>The number of restarts of the optimizer for finding the kernel’s
 parameters which maximize the log-marginal likelihood. The first run
 of the optimizer is performed from the kernel’s initial parameters,
 the remaining ones (if any) from thetas sampled log-uniform randomly
@@ -233,19 +233,19 @@ from the space of allowed theta-values. If greater than 0, all bounds
 must be finite. Note that n_restarts_optimizer == 0 implies that one
 run is performed.</p>
 </dd>
-<dt><strong>normalize_y</strong><span class="classifier">boolean, optional (default: False)</span></dt><dd><p>Whether the target values y are normalized, i.e., the mean of the
+<dt><strong>normalize_y</strong><span class="classifier">bool, default=False</span></dt><dd><p>Whether the target values y are normalized, i.e., the mean of the
 observed target values become zero. This parameter should be set to
 True if the target values’ mean is expected to differ considerable from
 zero. When enabled, the normalization effectively modifies the GP’s
 prior based on the data, which contradicts the likelihood principle;
 normalization is thus disabled per default.</p>
 </dd>
-<dt><strong>copy_X_train</strong><span class="classifier">bool, optional (default: True)</span></dt><dd><p>If True, a persistent copy of the training data is stored in the
+<dt><strong>copy_X_train</strong><span class="classifier">bool, default=True</span></dt><dd><p>If True, a persistent copy of the training data is stored in the
 object. Otherwise, just a reference to the training data is stored,
 which might cause predictions to change if the data is modified
 externally.</p>
 </dd>
-<dt><strong>random_state</strong><span class="classifier">int, RandomState instance, default=None</span></dt><dd><p>Determines random number generation used to initialize the centers.
+<dt><strong>random_state</strong><span class="classifier">int or RandomState, default=None</span></dt><dd><p>Determines random number generation used to initialize the centers.
 Pass an int for reproducible results across multiple function calls.
 See :term: <code class="docutils literal notranslate"><span class="pre">Glossary</span> <span class="pre">&lt;random_state&gt;</span></code>.</p>
 </dd>
@@ -253,13 +253,12 @@ See :term: <code class="docutils literal notranslate"><span class="pre">Glossary
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>X_train_</strong><span class="classifier">sequence of length n_samples</span></dt><dd><p>Feature vectors or other representations of training data (also
-required for prediction). Could either be array-like with shape =
-(n_samples, n_features) or a list of objects.</p>
+<dt><strong>X_train_</strong><span class="classifier">array-like of shape (n_samples, n_features) or list of object</span></dt><dd><p>Feature vectors or other representations of training data (also
+required for prediction).</p>
 </dd>
 <dt><strong>y_train_</strong><span class="classifier">array-like of shape (n_samples,) or (n_samples, n_targets)</span></dt><dd><p>Target values in training data (also required for prediction)</p>
 </dd>
-<dt><strong>kernel_</strong><span class="classifier">kernel object</span></dt><dd><p>The kernel used for prediction. The structure of the kernel is the
+<dt><strong>kernel_</strong><span class="classifier">kernel instance</span></dt><dd><p>The kernel used for prediction. The structure of the kernel is the
 same as the one passed as parameter but with optimized hyperparameters</p>
 </dd>
 <dt><strong>L_</strong><span class="classifier">array-like of shape (n_samples, n_samples)</span></dt><dd><p>Lower-triangular Cholesky decomposition of the kernel in <code class="docutils literal notranslate"><span class="pre">X_train_</span></code></p>
@@ -317,20 +316,18 @@ same as the one passed as parameter but with optimized hyperparameters</p>
 </table>
 <dl class="method">
 <dt id="sklearn.gaussian_process.GaussianProcessRegressor.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">kernel=None</em>, <em class="sig-param">alpha=1e-10</em>, <em class="sig-param">optimizer='fmin_l_bfgs_b'</em>, <em class="sig-param">n_restarts_optimizer=0</em>, <em class="sig-param">normalize_y=False</em>, <em class="sig-param">copy_X_train=True</em>, <em class="sig-param">random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/db85b1264/sklearn/gaussian_process/_gpr.py#L152"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.gaussian_process.GaussianProcessRegressor.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">kernel=None</em>, <em class="sig-param">alpha=1e-10</em>, <em class="sig-param">optimizer='fmin_l_bfgs_b'</em>, <em class="sig-param">n_restarts_optimizer=0</em>, <em class="sig-param">normalize_y=False</em>, <em class="sig-param">copy_X_train=True</em>, <em class="sig-param">random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/62ce1bad3/sklearn/gaussian_process/_gpr.py#L151"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.gaussian_process.GaussianProcessRegressor.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="sklearn.gaussian_process.GaussianProcessRegressor.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/db85b1264/sklearn/gaussian_process/_gpr.py#L163"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.gaussian_process.GaussianProcessRegressor.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/62ce1bad3/sklearn/gaussian_process/_gpr.py#L162"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.gaussian_process.GaussianProcessRegressor.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit Gaussian process regression model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">sequence of length n_samples</span></dt><dd><p>Feature vectors or other representations of training data.
-Could either be array-like with shape = (n_samples, n_features)
-or a list of objects.</p>
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features) or list of object</span></dt><dd><p>Feature vectors or other representations of training data.</p>
 </dd>
 <dt><strong>y</strong><span class="classifier">array-like of shape (n_samples,) or (n_samples, n_targets)</span></dt><dd><p>Target values</p>
 </dd>
@@ -346,7 +343,7 @@ or a list of objects.</p>
 
 <dl class="method">
 <dt id="sklearn.gaussian_process.GaussianProcessRegressor.get_params">
-<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/db85b1264/sklearn/base.py#L180"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.gaussian_process.GaussianProcessRegressor.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/62ce1bad3/sklearn/base.py#L180"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.gaussian_process.GaussianProcessRegressor.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -367,16 +364,16 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.gaussian_process.GaussianProcessRegressor.log_marginal_likelihood">
-<code class="sig-name descname">log_marginal_likelihood</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">theta=None</em>, <em class="sig-param">eval_gradient=False</em>, <em class="sig-param">clone_kernel=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/db85b1264/sklearn/gaussian_process/_gpr.py#L406"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.gaussian_process.GaussianProcessRegressor.log_marginal_likelihood" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">log_marginal_likelihood</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">theta=None</em>, <em class="sig-param">eval_gradient=False</em>, <em class="sig-param">clone_kernel=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/62ce1bad3/sklearn/gaussian_process/_gpr.py#L399"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.gaussian_process.GaussianProcessRegressor.log_marginal_likelihood" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns log-marginal likelihood of theta for training data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>theta</strong><span class="classifier">array-like of shape (n_kernel_params,) or None</span></dt><dd><p>Kernel hyperparameters for which the log-marginal likelihood is
+<dt><strong>theta</strong><span class="classifier">array-like of shape (n_kernel_params,) default=None</span></dt><dd><p>Kernel hyperparameters for which the log-marginal likelihood is
 evaluated. If None, the precomputed log_marginal_likelihood
 of <code class="docutils literal notranslate"><span class="pre">self.kernel_.theta</span></code> is returned.</p>
 </dd>
-<dt><strong>eval_gradient</strong><span class="classifier">bool, default: False</span></dt><dd><p>If True, the gradient of the log-marginal likelihood with respect
+<dt><strong>eval_gradient</strong><span class="classifier">bool, default=False</span></dt><dd><p>If True, the gradient of the log-marginal likelihood with respect
 to the kernel hyperparameters at position theta is returned
 additionally. If True, theta must not be None.</p>
 </dd>
@@ -389,7 +386,7 @@ attribute is modified, but may result in a performance improvement.</p>
 <dd class="field-even"><dl class="simple">
 <dt><strong>log_likelihood</strong><span class="classifier">float</span></dt><dd><p>Log-marginal likelihood of theta for training data.</p>
 </dd>
-<dt><strong>log_likelihood_gradient</strong><span class="classifier">array, shape = (n_kernel_params,), optional</span></dt><dd><p>Gradient of the log-marginal likelihood with respect to the kernel
+<dt><strong>log_likelihood_gradient</strong><span class="classifier">ndarray of shape (n_kernel_params,), optional</span></dt><dd><p>Gradient of the log-marginal likelihood with respect to the kernel
 hyperparameters at position theta.
 Only returned when eval_gradient is True.</p>
 </dd>
@@ -400,7 +397,7 @@ Only returned when eval_gradient is True.</p>
 
 <dl class="method">
 <dt id="sklearn.gaussian_process.GaussianProcessRegressor.predict">
-<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">return_std=False</em>, <em class="sig-param">return_cov=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/db85b1264/sklearn/gaussian_process/_gpr.py#L274"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.gaussian_process.GaussianProcessRegressor.predict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">return_std=False</em>, <em class="sig-param">return_cov=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/62ce1bad3/sklearn/gaussian_process/_gpr.py#L271"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.gaussian_process.GaussianProcessRegressor.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Predict using the Gaussian process regression model</p>
 <p>We can also predict based on an unfitted model by using the GP prior.
 In addition to the mean of the predictive distribution, also its
@@ -409,27 +406,25 @@ Note that at most one of the two can be requested.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">sequence of length n_samples</span></dt><dd><p>Query points where the GP is evaluated.
-Could either be array-like with shape = (n_samples, n_features)
-or a list of objects.</p>
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features) or list of object</span></dt><dd><p>Query points where the GP is evaluated.</p>
 </dd>
-<dt><strong>return_std</strong><span class="classifier">bool, default: False</span></dt><dd><p>If True, the standard-deviation of the predictive distribution at
+<dt><strong>return_std</strong><span class="classifier">bool, default=False</span></dt><dd><p>If True, the standard-deviation of the predictive distribution at
 the query points is returned along with the mean.</p>
 </dd>
-<dt><strong>return_cov</strong><span class="classifier">bool, default: False</span></dt><dd><p>If True, the covariance of the joint predictive distribution at
+<dt><strong>return_cov</strong><span class="classifier">bool, default=False</span></dt><dd><p>If True, the covariance of the joint predictive distribution at
 the query points is returned along with the mean</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>y_mean</strong><span class="classifier">array, shape = (n_samples, [n_output_dims])</span></dt><dd><p>Mean of predictive distribution a query points</p>
+<dt><strong>y_mean</strong><span class="classifier">ndarray of shape (n_samples, [n_output_dims])</span></dt><dd><p>Mean of predictive distribution a query points</p>
 </dd>
-<dt><strong>y_std</strong><span class="classifier">array, shape = (n_samples,), optional</span></dt><dd><p>Standard deviation of predictive distribution at query points.
-Only returned when return_std is True.</p>
+<dt><strong>y_std</strong><span class="classifier">ndarray of shape (n_samples,), optional</span></dt><dd><p>Standard deviation of predictive distribution at query points.
+Only returned when <code class="docutils literal notranslate"><span class="pre">return_std</span></code> is True.</p>
 </dd>
-<dt><strong>y_cov</strong><span class="classifier">array, shape = (n_samples, n_samples), optional</span></dt><dd><p>Covariance of joint predictive distribution a query points.
-Only returned when return_cov is True.</p>
+<dt><strong>y_cov</strong><span class="classifier">ndarray of shape (n_samples, n_samples), optional</span></dt><dd><p>Covariance of joint predictive distribution a query points.
+Only returned when <code class="docutils literal notranslate"><span class="pre">return_cov</span></code> is True.</p>
 </dd>
 </dl>
 </dd>
@@ -438,18 +433,16 @@ Only returned when return_cov is True.</p>
 
 <dl class="method">
 <dt id="sklearn.gaussian_process.GaussianProcessRegressor.sample_y">
-<code class="sig-name descname">sample_y</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">n_samples=1</em>, <em class="sig-param">random_state=0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/db85b1264/sklearn/gaussian_process/_gpr.py#L368"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.gaussian_process.GaussianProcessRegressor.sample_y" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">sample_y</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">n_samples=1</em>, <em class="sig-param">random_state=0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/62ce1bad3/sklearn/gaussian_process/_gpr.py#L363"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.gaussian_process.GaussianProcessRegressor.sample_y" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw samples from Gaussian process and evaluate at X.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">sequence of length n_samples</span></dt><dd><p>Query points where the GP is evaluated.
-Could either be array-like with shape = (n_samples, n_features)
-or a list of objects.</p>
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features) or list of object</span></dt><dd><p>Query points where the GP is evaluated.</p>
 </dd>
-<dt><strong>n_samples</strong><span class="classifier">int, default: 1</span></dt><dd><p>The number of samples drawn from the Gaussian process</p>
+<dt><strong>n_samples</strong><span class="classifier">int, default=1</span></dt><dd><p>The number of samples drawn from the Gaussian process</p>
 </dd>
-<dt><strong>random_state</strong><span class="classifier">int, RandomState instance, default=0</span></dt><dd><p>Determines random number generation to randomly draw samples.
+<dt><strong>random_state</strong><span class="classifier">int, RandomState, default=0</span></dt><dd><p>Determines random number generation to randomly draw samples.
 Pass an int for reproducible results across multiple function
 calls.
 See :term: <code class="docutils literal notranslate"><span class="pre">Glossary</span> <span class="pre">&lt;random_state&gt;</span></code>.</p>
@@ -458,7 +451,7 @@ See :term: <code class="docutils literal notranslate"><span class="pre">Glossary
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>y_samples</strong><span class="classifier">array, shape = (n_samples_X, [n_output_dims], n_samples)</span></dt><dd><p>Values of n_samples samples drawn from Gaussian process and
+<dt><strong>y_samples</strong><span class="classifier">ndarray of shape (n_samples_X, [n_output_dims], n_samples)</span></dt><dd><p>Values of n_samples samples drawn from Gaussian process and
 evaluated at query points.</p>
 </dd>
 </dl>
@@ -468,7 +461,7 @@ evaluated at query points.</p>
 
 <dl class="method">
 <dt id="sklearn.gaussian_process.GaussianProcessRegressor.score">
-<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/db85b1264/sklearn/base.py#L383"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.gaussian_process.GaussianProcessRegressor.score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/62ce1bad3/sklearn/base.py#L383"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.gaussian_process.GaussianProcessRegressor.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the coefficient of determination R^2 of the prediction.</p>
 <p>The coefficient R^2 is defined as (1 - u/v), where u is the residual
 sum of squares ((y_true - y_pred) ** 2).sum() and v is the total
@@ -510,7 +503,7 @@ regressors (except for
 
 <dl class="method">
 <dt id="sklearn.gaussian_process.GaussianProcessRegressor.set_params">
-<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/db85b1264/sklearn/base.py#L212"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.gaussian_process.GaussianProcessRegressor.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/62ce1bad3/sklearn/base.py#L212"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.gaussian_process.GaussianProcessRegressor.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
