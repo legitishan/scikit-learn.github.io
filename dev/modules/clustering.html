@@ -150,7 +150,8 @@
 <li><a class="reference internal" href="#">2.3. Clustering</a><ul>
 <li><a class="reference internal" href="#overview-of-clustering-methods">2.3.1. Overview of clustering methods</a></li>
 <li><a class="reference internal" href="#k-means">2.3.2. K-means</a><ul>
-<li><a class="reference internal" href="#mini-batch-k-means">2.3.2.1. Mini Batch K-Means</a></li>
+<li><a class="reference internal" href="#low-level-parallelism">2.3.2.1. Low-level parallelism</a></li>
+<li><a class="reference internal" href="#mini-batch-k-means">2.3.2.2. Mini Batch K-Means</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#affinity-propagation">2.3.3. Affinity Propagation</a></li>
@@ -409,12 +410,12 @@ random initialization, as shown in the reference.</p>
 computing cluster centers and values of inertia. For example, assigning a
 weight of 2 to a sample is equivalent to adding a duplicate of that sample
 to the dataset <span class="math notranslate nohighlight">\(X\)</span>.</p>
-<p>A parameter can be given to allow K-means to be run in parallel, called
-<code class="docutils literal notranslate"><span class="pre">n_jobs</span></code>. Giving this parameter a positive value uses that many processors
-(default: 1). A value of -1 uses all available processors, with -2 using one
-less, and so on. Parallelization generally speeds up computation at the cost of
-memory (in this case, multiple copies of centroids need to be stored, one for
-each job).</p>
+<div class="section" id="low-level-parallelism">
+<h3>2.3.2.1. Low-level parallelism<a class="headerlink" href="#low-level-parallelism" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="generated/sklearn.cluster.KMeans.html#sklearn.cluster.KMeans" title="sklearn.cluster.KMeans"><code class="xref py py-class docutils literal notranslate"><span class="pre">KMeans</span></code></a> benefits from OpenMP based parallelism through Cython. Small
+chunks of data (256 samples) are processed in parallel, which in addition
+yields a low memory footprint. For more details on how to control the number of
+threads, please refer to our <a class="reference internal" href="computing.html#parallelism"><span class="std std-ref">Parallelism</span></a> notes.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>The parallel version of K-Means is broken on OS X when <code class="docutils literal notranslate"><span class="pre">numpy</span></code> uses the
@@ -441,8 +442,9 @@ Arthur, David, and Sergei Vassilvitskii,
 algorithms</em>, Society for Industrial and Applied Mathematics (2007)</p></li>
 </ul>
 </div>
+</div>
 <div class="section" id="mini-batch-k-means">
-<span id="mini-batch-kmeans"></span><h3>2.3.2.1. Mini Batch K-Means<a class="headerlink" href="#mini-batch-k-means" title="Permalink to this headline">¶</a></h3>
+<span id="mini-batch-kmeans"></span><h3>2.3.2.2. Mini Batch K-Means<a class="headerlink" href="#mini-batch-k-means" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="generated/sklearn.cluster.MiniBatchKMeans.html#sklearn.cluster.MiniBatchKMeans" title="sklearn.cluster.MiniBatchKMeans"><code class="xref py py-class docutils literal notranslate"><span class="pre">MiniBatchKMeans</span></code></a> is a variant of the <a class="reference internal" href="generated/sklearn.cluster.KMeans.html#sklearn.cluster.KMeans" title="sklearn.cluster.KMeans"><code class="xref py py-class docutils literal notranslate"><span class="pre">KMeans</span></code></a> algorithm
 which uses mini-batches to reduce the computation time, while still attempting
 to optimise the same objective function. Mini-batches are subsets of the input
