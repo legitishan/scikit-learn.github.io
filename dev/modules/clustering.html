@@ -410,21 +410,14 @@ random initialization, as shown in the reference.</p>
 computing cluster centers and values of inertia. For example, assigning a
 weight of 2 to a sample is equivalent to adding a duplicate of that sample
 to the dataset <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<p>K-means can be used for vector quantization. This is achieved using the
+transform method of a trained model of <a class="reference internal" href="generated/sklearn.cluster.KMeans.html#sklearn.cluster.KMeans" title="sklearn.cluster.KMeans"><code class="xref py py-class docutils literal notranslate"><span class="pre">KMeans</span></code></a>.</p>
 <div class="section" id="low-level-parallelism">
 <h3>2.3.2.1. Low-level parallelism<a class="headerlink" href="#low-level-parallelism" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference internal" href="generated/sklearn.cluster.KMeans.html#sklearn.cluster.KMeans" title="sklearn.cluster.KMeans"><code class="xref py py-class docutils literal notranslate"><span class="pre">KMeans</span></code></a> benefits from OpenMP based parallelism through Cython. Small
 chunks of data (256 samples) are processed in parallel, which in addition
 yields a low memory footprint. For more details on how to control the number of
 threads, please refer to our <a class="reference internal" href="computing.html#parallelism"><span class="std std-ref">Parallelism</span></a> notes.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>The parallel version of K-Means is broken on OS X when <code class="docutils literal notranslate"><span class="pre">numpy</span></code> uses the
-<code class="docutils literal notranslate"><span class="pre">Accelerate</span></code> Framework. This is expected behavior: <code class="docutils literal notranslate"><span class="pre">Accelerate</span></code> can be called
-after a fork but you need to execv the subprocess with the Python binary
-(which multiprocessing does not do under posix).</p>
-</div>
-<p>K-means can be used for vector quantization. This is achieved using the
-transform method of a trained model of <a class="reference internal" href="generated/sklearn.cluster.KMeans.html#sklearn.cluster.KMeans" title="sklearn.cluster.KMeans"><code class="xref py py-class docutils literal notranslate"><span class="pre">KMeans</span></code></a>.</p>
 <div class="topic">
 <p class="topic-title">Examples:</p>
 <ul class="simple">
