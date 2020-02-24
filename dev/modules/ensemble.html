@@ -185,8 +185,9 @@
 <li><a class="reference internal" href="#histogram-based-gradient-boosting">1.11.5. Histogram-Based Gradient Boosting</a><ul>
 <li><a class="reference internal" href="#id23">1.11.5.1. Usage</a></li>
 <li><a class="reference internal" href="#missing-values-support">1.11.5.2. Missing values support</a></li>
-<li><a class="reference internal" href="#low-level-parallelism">1.11.5.3. Low-level parallelism</a></li>
-<li><a class="reference internal" href="#why-it-s-faster">1.11.5.4. Why it’s faster</a></li>
+<li><a class="reference internal" href="#sample-weight-support">1.11.5.3. Sample weight support</a></li>
+<li><a class="reference internal" href="#low-level-parallelism">1.11.5.4. Low-level parallelism</a></li>
+<li><a class="reference internal" href="#why-it-s-faster">1.11.5.5. Why it’s faster</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#voting-classifier">1.11.6. Voting Classifier</a><ul>
@@ -1019,8 +1020,7 @@ leverage integer-based data structures (histograms) instead of relying on
 sorted continuous values when building the trees. The API of these
 estimators is slightly different, and some of the features from
 <a class="reference internal" href="generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier" title="sklearn.ensemble.GradientBoostingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradientBoostingClassifier</span></code></a> and <a class="reference internal" href="generated/sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor" title="sklearn.ensemble.GradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradientBoostingRegressor</span></code></a>
-are not yet supported: in particular sample weights, and some loss
-functions.</p>
+are not yet supported, for instance some loss functions.</p>
 <p>These estimators are still <strong>experimental</strong>: their predictions
 and their API might change without any deprecation cycle. To use them, you
 need to explicitly import <code class="docutils literal notranslate"><span class="pre">enable_hist_gradient_boosting</span></code>:</p>
@@ -1114,8 +1114,38 @@ whether the feature value is missing or not:</p>
 then samples with missing values are mapped to whichever child has the most
 samples.</p>
 </div>
+<div class="section" id="sample-weight-support">
+<h3>1.11.5.3. Sample weight support<a class="headerlink" href="#sample-weight-support" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="generated/sklearn.ensemble.HistGradientBoostingClassifier.html#sklearn.ensemble.HistGradientBoostingClassifier" title="sklearn.ensemble.HistGradientBoostingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingClassifier</span></code></a> and
+<a class="reference internal" href="generated/sklearn.ensemble.HistGradientBoostingRegressor.html#sklearn.ensemble.HistGradientBoostingRegressor" title="sklearn.ensemble.HistGradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingRegressor</span></code></a> sample support weights during
+<a class="reference internal" href="../glossary.html#term-fit"><span class="xref std std-term">fit</span></a>.</p>
+<p>The following toy example demonstrates how the model ignores the samples with
+zero sample weights:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>     <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>     <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>     <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># ignore the first 2 training samples by setting their weight to 0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample_weight</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gb</span> <span class="o">=</span> <span class="n">HistGradientBoostingClassifier</span><span class="p">(</span><span class="n">min_samples_leaf</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gb</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">sample_weight</span><span class="p">)</span>
+<span class="go">HistGradientBoostingClassifier(...)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gb</span><span class="o">.</span><span class="n">predict</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="go">array([1])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gb</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="go">0.99...</span>
+</pre></div>
+</div>
+<p>As you can see, the <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">0]</span></code> is comfortably classified as <code class="docutils literal notranslate"><span class="pre">1</span></code> since the first
+two samples are ignored due to their sample weights.</p>
+<p>Implementation detail: taking sample weights into account amounts to
+multiplying the gradients (and the hessians) by the sample weights. Note that
+the binning stage (specifically the quantiles computation) does not take the
+weights into account.</p>
+</div>
 <div class="section" id="low-level-parallelism">
-<h3>1.11.5.3. Low-level parallelism<a class="headerlink" href="#low-level-parallelism" title="Permalink to this headline">¶</a></h3>
+<h3>1.11.5.4. Low-level parallelism<a class="headerlink" href="#low-level-parallelism" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference internal" href="generated/sklearn.ensemble.HistGradientBoostingClassifier.html#sklearn.ensemble.HistGradientBoostingClassifier" title="sklearn.ensemble.HistGradientBoostingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingClassifier</span></code></a> and
 <a class="reference internal" href="generated/sklearn.ensemble.HistGradientBoostingRegressor.html#sklearn.ensemble.HistGradientBoostingRegressor" title="sklearn.ensemble.HistGradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingRegressor</span></code></a> have implementations that use OpenMP
 for parallelization through Cython. For more details on how to control the
@@ -1133,7 +1163,7 @@ parallelized over samples</p></li>
 </ul>
 </div>
 <div class="section" id="why-it-s-faster">
-<h3>1.11.5.4. Why it’s faster<a class="headerlink" href="#why-it-s-faster" title="Permalink to this headline">¶</a></h3>
+<h3>1.11.5.5. Why it’s faster<a class="headerlink" href="#why-it-s-faster" title="Permalink to this headline">¶</a></h3>
 <p>The bottleneck of a gradient boosting procedure is building the decision
 trees. Building a traditional decision tree (as in the other GBDTs
 <a class="reference internal" href="generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier" title="sklearn.ensemble.GradientBoostingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradientBoostingClassifier</span></code></a> and <a class="reference internal" href="generated/sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor" title="sklearn.ensemble.GradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradientBoostingRegressor</span></code></a>)
