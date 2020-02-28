@@ -168,22 +168,18 @@
 <li><a class="reference internal" href="#fitting-additional-weak-learners">1.11.4.3. Fitting additional weak-learners</a></li>
 <li><a class="reference internal" href="#controlling-the-tree-size">1.11.4.4. Controlling the tree size</a></li>
 <li><a class="reference internal" href="#mathematical-formulation">1.11.4.5. Mathematical formulation</a><ul>
-<li><a class="reference internal" href="#loss-functions">1.11.4.5.1. Loss Functions</a></li>
+<li><a class="reference internal" href="#id16">1.11.4.5.1. Regression</a></li>
+<li><a class="reference internal" href="#id17">1.11.4.5.2. Classification</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#regularization">1.11.4.6. Regularization</a><ul>
-<li><a class="reference internal" href="#shrinkage">1.11.4.6.1. Shrinkage</a></li>
-<li><a class="reference internal" href="#subsampling">1.11.4.6.2. Subsampling</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#interpretation">1.11.4.7. Interpretation</a><ul>
-<li><a class="reference internal" href="#feature-importance">1.11.4.7.1. Feature importance</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#loss-functions">1.11.4.6. Loss Functions</a></li>
+<li><a class="reference internal" href="#shrinkage-via-learning-rate">1.11.4.7. Shrinkage via learning rate</a></li>
+<li><a class="reference internal" href="#subsampling">1.11.4.8. Subsampling</a></li>
+<li><a class="reference internal" href="#interpretation-with-feature-importance">1.11.4.9. Interpretation with feature importance</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#histogram-based-gradient-boosting">1.11.5. Histogram-Based Gradient Boosting</a><ul>
-<li><a class="reference internal" href="#id23">1.11.5.1. Usage</a></li>
+<li><a class="reference internal" href="#id25">1.11.5.1. Usage</a></li>
 <li><a class="reference internal" href="#missing-values-support">1.11.5.2. Missing values support</a></li>
 <li><a class="reference internal" href="#sample-weight-support">1.11.5.3. Sample weight support</a></li>
 <li><a class="reference internal" href="#low-level-parallelism">1.11.5.4. Low-level parallelism</a></li>
@@ -191,19 +187,15 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#voting-classifier">1.11.6. Voting Classifier</a><ul>
-<li><a class="reference internal" href="#majority-class-labels-majority-hard-voting">1.11.6.1. Majority Class Labels (Majority/Hard Voting)</a><ul>
-<li><a class="reference internal" href="#id26">1.11.6.1.1. Usage</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#weighted-average-probabilities-soft-voting">1.11.6.2. Weighted Average Probabilities (Soft Voting)</a></li>
-<li><a class="reference internal" href="#using-the-votingclassifier-with-gridsearchcv">1.11.6.3. Using the <code class="docutils literal notranslate"><span class="pre">VotingClassifier</span></code> with <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code></a><ul>
-<li><a class="reference internal" href="#id27">1.11.6.3.1. Usage</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#majority-class-labels-majority-hard-voting">1.11.6.1. Majority Class Labels (Majority/Hard Voting)</a></li>
+<li><a class="reference internal" href="#id28">1.11.6.2. Usage</a></li>
+<li><a class="reference internal" href="#weighted-average-probabilities-soft-voting">1.11.6.3. Weighted Average Probabilities (Soft Voting)</a></li>
+<li><a class="reference internal" href="#using-the-votingclassifier-with-gridsearchcv">1.11.6.4. Using the <code class="docutils literal notranslate"><span class="pre">VotingClassifier</span></code> with <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code></a></li>
+<li><a class="reference internal" href="#id29">1.11.6.5. Usage</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#voting-regressor">1.11.7. Voting Regressor</a><ul>
-<li><a class="reference internal" href="#id29">1.11.7.1. Usage</a></li>
+<li><a class="reference internal" href="#id31">1.11.7.1. Usage</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#stacked-generalization">1.11.8. Stacked generalization</a></li>
@@ -646,7 +638,7 @@ On-Line Learning and an Application to Boosting”, 1997.</p>
 <li><p>Drucker. “Improving Regressors using Boosting Techniques”, 1997.</p></li>
 </ol>
 </dd>
-<dt class="label" id="htf"><span class="brackets">HTF</span><span class="fn-backref">(<a href="#id10">1</a>,<a href="#id18">2</a>,<a href="#id31">3</a>)</span></dt>
+<dt class="label" id="htf"><span class="brackets">HTF</span><span class="fn-backref">(<a href="#id10">1</a>,<a href="#id20">2</a>,<a href="#id33">3</a>)</span></dt>
 <dd><p>T. Hastie, R. Tibshirani and J. Friedman, “Elements of
 Statistical Learning Ed. 2”, Springer, 2009.</p>
 </dd>
@@ -685,6 +677,9 @@ for an imputer.</p>
 sample sizes since binning may lead to split points that are too approximate
 in this setting.</p>
 </div>
+<p>The usage and the parameters of <a class="reference internal" href="generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier" title="sklearn.ensemble.GradientBoostingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradientBoostingClassifier</span></code></a> and
+<a class="reference internal" href="generated/sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor" title="sklearn.ensemble.GradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradientBoostingRegressor</span></code></a> are described below. The 2 most important
+parameters of these estimators are <code class="docutils literal notranslate"><span class="pre">n_estimators</span></code> and <code class="docutils literal notranslate"><span class="pre">learning_rate</span></code>.</p>
 <div class="section" id="classification">
 <h3>1.11.4.1. Classification<a class="headerlink" href="#classification" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference internal" href="generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier" title="sklearn.ensemble.GradientBoostingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradientBoostingClassifier</span></code></a> supports both binary and multi-class
@@ -704,7 +699,11 @@ with 100 decision stumps as weak learners:</p>
 <span class="go">0.913...</span>
 </pre></div>
 </div>
-<p>The number of weak learners (i.e. regression trees) is controlled by the parameter <code class="docutils literal notranslate"><span class="pre">n_estimators</span></code>; <a class="reference internal" href="#gradient-boosting-tree-size"><span class="std std-ref">The size of each tree</span></a> can be controlled either by setting the tree depth via <code class="docutils literal notranslate"><span class="pre">max_depth</span></code> or by setting the number of leaf nodes via <code class="docutils literal notranslate"><span class="pre">max_leaf_nodes</span></code>. The <code class="docutils literal notranslate"><span class="pre">learning_rate</span></code> is a hyper-parameter in the range (0.0, 1.0] that controls overfitting via <a class="reference internal" href="#gradient-boosting-shrinkage"><span class="std std-ref">shrinkage</span></a> .</p>
+<p>The number of weak learners (i.e. regression trees) is controlled by the
+parameter <code class="docutils literal notranslate"><span class="pre">n_estimators</span></code>; <a class="reference internal" href="#gradient-boosting-tree-size"><span class="std std-ref">The size of each tree</span></a> can be controlled either by setting the tree
+depth via <code class="docutils literal notranslate"><span class="pre">max_depth</span></code> or by setting the number of leaf nodes via
+<code class="docutils literal notranslate"><span class="pre">max_leaf_nodes</span></code>. The <code class="docutils literal notranslate"><span class="pre">learning_rate</span></code> is a hyper-parameter in the range
+(0.0, 1.0] that controls overfitting via <a class="reference internal" href="#gradient-boosting-shrinkage"><span class="std std-ref">shrinkage</span></a> .</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Classification with more than 2 classes requires the induction
@@ -796,57 +795,101 @@ chapter on gradient boosting in <a class="reference internal" href="model_evalua
 </div>
 <div class="section" id="mathematical-formulation">
 <h3>1.11.4.5. Mathematical formulation<a class="headerlink" href="#mathematical-formulation" title="Permalink to this headline">¶</a></h3>
-<p>GBRT considers additive models of the following form:</p>
+<p>We first present GBRT for regression, and then detail the classification
+case.</p>
+<div class="section" id="id16">
+<h4>1.11.4.5.1. Regression<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h4>
+<p>GBRT regressors are additive models whose prediction <span class="math notranslate nohighlight">\(y_i\)</span> for a
+given input <span class="math notranslate nohighlight">\(x_i\)</span> is of the following form:</p>
 <blockquote>
 <div><div class="math notranslate nohighlight">
-\[F(x) = \sum_{m=1}^{M} \gamma_m h_m(x)\]</div>
+\[\hat{y_i} = F_M(x_i) = \sum_{m=1}^{M} h_m(x_i)\]</div>
 </div></blockquote>
-<p>where <span class="math notranslate nohighlight">\(h_m(x)\)</span> are the basis functions which are usually called
-<em>weak learners</em> in the context of boosting. Gradient Tree Boosting
-uses <a class="reference internal" href="tree.html#tree"><span class="std std-ref">decision trees</span></a> of fixed size as weak
-learners. Decision trees have a number of abilities that make them
-valuable for boosting, namely the ability to handle data of mixed type
-and the ability to model complex functions.</p>
-<p>Similar to other boosting algorithms, GBRT builds the additive model in
-a greedy fashion:</p>
+<p>where the <span class="math notranslate nohighlight">\(h_m\)</span> are estimators called <em>weak learners</em> in the context
+of boosting. Gradient Tree Boosting uses <a class="reference internal" href="tree.html#tree"><span class="std std-ref">decision tree regressors</span></a> of fixed size as weak learners. The constant M corresponds to the
+<code class="docutils literal notranslate"><span class="pre">n_estimators</span></code> parameter.</p>
+<p>Similar to other boosting algorithms, a GBRT is built in a greedy fashion:</p>
 <blockquote>
 <div><div class="math notranslate nohighlight">
-\[F_m(x) = F_{m-1}(x) + \gamma_m h_m(x),\]</div>
+\[F_m(x) = F_{m-1}(x) + h_m(x),\]</div>
 </div></blockquote>
-<p>where the newly added tree <span class="math notranslate nohighlight">\(h_m\)</span> tries to minimize the loss <span class="math notranslate nohighlight">\(L\)</span>,
-given the previous ensemble <span class="math notranslate nohighlight">\(F_{m-1}\)</span>:</p>
+<p>where the newly added tree <span class="math notranslate nohighlight">\(h_m\)</span> is fitted in order to minimize a sum
+of losses <span class="math notranslate nohighlight">\(L_m\)</span>, given the previous ensemble <span class="math notranslate nohighlight">\(F_{m-1}\)</span>:</p>
 <blockquote>
 <div><div class="math notranslate nohighlight">
-\[h_m =  \arg\min_{h} \sum_{i=1}^{n} L(y_i,
-F_{m-1}(x_i) + h(x_i)).\]</div>
+\[h_m =  \arg\min_{h} L_m = \arg\min_{h} \sum_{i=1}^{n}
+l(y_i, F_{m-1}(x_i) + h(x_i)),\]</div>
 </div></blockquote>
-<p>The initial model <span class="math notranslate nohighlight">\(F_{0}\)</span> is problem specific, for least-squares
-regression one usually chooses the mean of the target values.</p>
+<p>where <span class="math notranslate nohighlight">\(l(y_i, F(x_i))\)</span> is defined by the <code class="docutils literal notranslate"><span class="pre">loss</span></code> parameter, detailed
+in the next section.</p>
+<p>By default, the initial model <span class="math notranslate nohighlight">\(F_{0}\)</span> is chosen as the constant that
+minimizes the loss: for a least-squares loss, this is the empirical mean of
+the target values. The initial model can also be specified via the <code class="docutils literal notranslate"><span class="pre">init</span></code>
+argument.</p>
+<p>Using a first-order Taylor approximation, the value of <span class="math notranslate nohighlight">\(l\)</span> can be
+approximated as follows:</p>
+<blockquote>
+<div><div class="math notranslate nohighlight">
+\[l(y_i, F_{m-1}(x_i) + h_m(x_i)) \approx
+l(y_i, F_{m-1}(x_i))
++ h_m(x_i)
+\left[ \frac{\partial l(y_i, F(x_i))}{\partial F(x_i)} \right]_{F=F_{m - 1}}.\]</div>
+</div></blockquote>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The initial model can also be specified via the <code class="docutils literal notranslate"><span class="pre">init</span></code>
-argument. The passed object has to implement <code class="docutils literal notranslate"><span class="pre">fit</span></code> and <code class="docutils literal notranslate"><span class="pre">predict</span></code>.</p>
+<p>Briefly, a first-order Taylor approximation says that
+<span class="math notranslate nohighlight">\(l(z) \approx l(a) + (z - a) \frac{\partial l(a)}{\partial a}\)</span>.
+Here, <span class="math notranslate nohighlight">\(z\)</span> corresponds to <span class="math notranslate nohighlight">\(F_{m - 1}(x_i) + h_m(x_i)\)</span>, and
+<span class="math notranslate nohighlight">\(a\)</span> corresponds to <span class="math notranslate nohighlight">\(F_{m-1}(x_i)\)</span></p>
 </div>
-<p>Gradient Boosting attempts to solve this minimization problem
-numerically via steepest descent: The steepest descent direction is
-the negative gradient of the loss function evaluated at the current
-model <span class="math notranslate nohighlight">\(F_{m-1}\)</span> which can be calculated for any differentiable
-loss function:</p>
+<p>The quantity <span class="math notranslate nohighlight">\(\left[ \frac{\partial l(y_i, F(x_i))}{\partial F(x_i)}
+\right]_{F=F_{m - 1}}\)</span> is the derivative of the loss with respect to its
+second parameter, evaluated at <span class="math notranslate nohighlight">\(F_{m-1}(x)\)</span>. It is easy to compute for
+any given <span class="math notranslate nohighlight">\(F_{m - 1}(x_i)\)</span> in a closed form since the loss is
+differentiable. We will denote it by <span class="math notranslate nohighlight">\(g_i\)</span>.</p>
+<p>Removing the constant terms, we have:</p>
 <blockquote>
 <div><div class="math notranslate nohighlight">
-\[F_m(x) = F_{m-1}(x) - \gamma_m \sum_{i=1}^{n} \nabla_F L(y_i,
-F_{m-1}(x_i))\]</div>
+\[h_m \approx \arg\min_{h} \sum_{i=1}^{n} h(x_i) g_i\]</div>
 </div></blockquote>
-<p>Where the step length <span class="math notranslate nohighlight">\(\gamma_m\)</span> is chosen using line search:</p>
-<blockquote>
-<div><div class="math notranslate nohighlight">
-\[\gamma_m = \arg\min_{\gamma} \sum_{i=1}^{n} L(y_i, F_{m-1}(x_i)
-- \gamma \frac{\partial L(y_i, F_{m-1}(x_i))}{\partial F_{m-1}(x_i)})\]</div>
-</div></blockquote>
-<p>The algorithms for regression and classification
-only differ in the concrete loss function used.</p>
+<p>This is minimized if <span class="math notranslate nohighlight">\(h(x_i)\)</span> is fitted to predict a value that is
+proportional to the negative gradient <span class="math notranslate nohighlight">\(-g_i\)</span>. Therefore, at each
+iteration, <strong>the estimator</strong> <span class="math notranslate nohighlight">\(h_m\)</span> <strong>is fitted to predict the negative
+gradients of the samples</strong>. The gradients are updated at each iteration.
+This can be considered as some kind of gradient descent in a functional
+space.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For some losses, e.g. the least absolute deviation (LAD) where the gradients
+are <span class="math notranslate nohighlight">\(\pm 1\)</span>, the values predicted by a fitted <span class="math notranslate nohighlight">\(h_m\)</span> are not
+accurate enough: the tree can only output integer values. As a result, the
+leaves values of the tree <span class="math notranslate nohighlight">\(h_m\)</span> are modified once the tree is
+fitted, such that the leaves values minimize the loss <span class="math notranslate nohighlight">\(L_m\)</span>. The
+update is loss-dependent: for the LAD loss, the value of a leaf is updated
+to the median of the samples in that leaf.</p>
+</div>
+</div>
+<div class="section" id="id17">
+<h4>1.11.4.5.2. Classification<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h4>
+<p>Gradient boosting for classification is very similar to the regression case.
+However, the sum of the trees <span class="math notranslate nohighlight">\(F_M(x_i) = \sum_m h_m(x_i)\)</span> is not
+homogeneous to a prediction: it cannot be a class, since the trees predict
+continuous values.</p>
+<p>The mapping from the value <span class="math notranslate nohighlight">\(F_M(x_i)\)</span> to a class or a probability is
+loss-dependent. For the deviance (or log-loss), the probability that
+<span class="math notranslate nohighlight">\(x_i\)</span> belongs to the positive class is modeled as <span class="math notranslate nohighlight">\(p(y_i = 1 |
+x_i) = \sigma(F_M(x_i))\)</span> where <span class="math notranslate nohighlight">\(\sigma\)</span> is the sigmoid function.</p>
+<p>For multiclass classification, K trees (for K classes) are built at each of
+the <span class="math notranslate nohighlight">\(M\)</span> iterations. The probability that <span class="math notranslate nohighlight">\(x_i\)</span> belongs to class
+k is modeled as a softmax of the <span class="math notranslate nohighlight">\(F_{M,k}(x_i)\)</span> values.</p>
+<p>Note that even for a classification task, the <span class="math notranslate nohighlight">\(h_m\)</span> sub-estimator is
+still a regressor, not a classifier. This is because the sub-estimators are
+trained to predict (negative) <em>gradients</em>, which are always continuous
+quantities.</p>
+</div>
+</div>
 <div class="section" id="loss-functions">
-<span id="gradient-boosting-loss"></span><h4>1.11.4.5.1. Loss Functions<a class="headerlink" href="#loss-functions" title="Permalink to this headline">¶</a></h4>
+<span id="gradient-boosting-loss"></span><h3>1.11.4.6. Loss Functions<a class="headerlink" href="#loss-functions" title="Permalink to this headline">¶</a></h3>
 <p>The following loss functions are supported and can be specified using
 the parameter <code class="docutils literal notranslate"><span class="pre">loss</span></code>:</p>
 <blockquote>
@@ -861,7 +904,7 @@ regression. The initial model is given by the median of the
 target values.</p></li>
 <li><p>Huber (<code class="docutils literal notranslate"><span class="pre">'huber'</span></code>): Another robust loss function that combines
 least squares and least absolute deviation; use <code class="docutils literal notranslate"><span class="pre">alpha</span></code> to
-control the sensitivity with regards to outliers (see <a class="reference internal" href="model_evaluation.html#f2001" id="id16"><span>[F2001]</span></a> for
+control the sensitivity with regards to outliers (see <a class="reference internal" href="model_evaluation.html#f2001" id="id18"><span>[F2001]</span></a> for
 more details).</p></li>
 <li><p>Quantile (<code class="docutils literal notranslate"><span class="pre">'quantile'</span></code>): A loss function for quantile regression.
 Use <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">&lt;</span> <span class="pre">alpha</span> <span class="pre">&lt;</span> <span class="pre">1</span></code> to specify the quantile. This loss function
@@ -891,15 +934,12 @@ classification.</p></li>
 </ul>
 </div></blockquote>
 </div>
-</div>
-<div class="section" id="regularization">
-<h3>1.11.4.6. Regularization<a class="headerlink" href="#regularization" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="shrinkage">
-<span id="gradient-boosting-shrinkage"></span><h4>1.11.4.6.1. Shrinkage<a class="headerlink" href="#shrinkage" title="Permalink to this headline">¶</a></h4>
-<p><a class="reference internal" href="model_evaluation.html#f2001" id="id17"><span>[F2001]</span></a> proposed a simple regularization strategy that scales
-the contribution of each weak learner by a factor <span class="math notranslate nohighlight">\(\nu\)</span>:</p>
+<div class="section" id="shrinkage-via-learning-rate">
+<span id="gradient-boosting-shrinkage"></span><h3>1.11.4.7. Shrinkage via learning rate<a class="headerlink" href="#shrinkage-via-learning-rate" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="model_evaluation.html#f2001" id="id19"><span>[F2001]</span></a> proposed a simple regularization strategy that scales
+the contribution of each weak learner by a constant factor <span class="math notranslate nohighlight">\(\nu\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[F_m(x) = F_{m-1}(x) + \nu \gamma_m h_m(x)\]</div>
+\[F_m(x) = F_{m-1}(x) + \nu h_m(x)\]</div>
 <p>The parameter <span class="math notranslate nohighlight">\(\nu\)</span> is also called the <strong>learning rate</strong> because
 it scales the step length the gradient descent procedure; it can
 be set via the <code class="docutils literal notranslate"><span class="pre">learning_rate</span></code> parameter.</p>
@@ -907,15 +947,15 @@ be set via the <code class="docutils literal notranslate"><span class="pre">lear
 <code class="docutils literal notranslate"><span class="pre">n_estimators</span></code>, the number of weak learners to fit. Smaller values
 of <code class="docutils literal notranslate"><span class="pre">learning_rate</span></code> require larger numbers of weak learners to maintain
 a constant training error. Empirical evidence suggests that small
-values of <code class="docutils literal notranslate"><span class="pre">learning_rate</span></code> favor better test error. <a class="reference internal" href="#htf" id="id18"><span>[HTF]</span></a>
+values of <code class="docutils literal notranslate"><span class="pre">learning_rate</span></code> favor better test error. <a class="reference internal" href="#htf" id="id20"><span>[HTF]</span></a>
 recommend to set the learning rate to a small constant
 (e.g. <code class="docutils literal notranslate"><span class="pre">learning_rate</span> <span class="pre">&lt;=</span> <span class="pre">0.1</span></code>) and choose <code class="docutils literal notranslate"><span class="pre">n_estimators</span></code> by early
 stopping. For a more detailed discussion of the interaction between
-<code class="docutils literal notranslate"><span class="pre">learning_rate</span></code> and <code class="docutils literal notranslate"><span class="pre">n_estimators</span></code> see <a class="reference internal" href="#r2007" id="id19"><span>[R2007]</span></a>.</p>
+<code class="docutils literal notranslate"><span class="pre">learning_rate</span></code> and <code class="docutils literal notranslate"><span class="pre">n_estimators</span></code> see <a class="reference internal" href="#r2007" id="id21"><span>[R2007]</span></a>.</p>
 </div>
 <div class="section" id="subsampling">
-<h4>1.11.4.6.2. Subsampling<a class="headerlink" href="#subsampling" title="Permalink to this headline">¶</a></h4>
-<p><a class="reference internal" href="#f1999" id="id20"><span>[F1999]</span></a> proposed stochastic gradient boosting, which combines gradient
+<h3>1.11.4.8. Subsampling<a class="headerlink" href="#subsampling" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="#f1999" id="id22"><span>[F1999]</span></a> proposed stochastic gradient boosting, which combines gradient
 boosting with bootstrap averaging (bagging). At each iteration
 the base classifier is trained on a fraction <code class="docutils literal notranslate"><span class="pre">subsample</span></code> of
 the available training data. The subsample is drawn without replacement.
@@ -956,17 +996,14 @@ is too time consuming.</p>
 </ul>
 </div>
 </div>
-</div>
-<div class="section" id="interpretation">
-<h3>1.11.4.7. Interpretation<a class="headerlink" href="#interpretation" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="interpretation-with-feature-importance">
+<h3>1.11.4.9. Interpretation with feature importance<a class="headerlink" href="#interpretation-with-feature-importance" title="Permalink to this headline">¶</a></h3>
 <p>Individual decision trees can be interpreted easily by simply
 visualizing the tree structure. Gradient boosting models, however,
 comprise hundreds of regression trees thus they cannot be easily
 interpreted by visual inspection of the individual trees. Fortunately,
 a number of techniques have been proposed to summarize and interpret
 gradient boosting models.</p>
-<div class="section" id="feature-importance">
-<h4>1.11.4.7.1. Feature importance<a class="headerlink" href="#feature-importance" title="Permalink to this headline">¶</a></h4>
 <p>Often features do not contribute equally to predict the target
 response; in many situations the majority of the features are in fact
 irrelevant.
@@ -992,6 +1029,9 @@ accessed via the <code class="docutils literal notranslate"><span class="pre">fe
 <span class="go">array([0.10..., 0.10..., 0.11..., ...</span>
 </pre></div>
 </div>
+<p>Note that this computation of feature importance is based on entropy, and it
+is distinct from <a class="reference internal" href="generated/sklearn.inspection.permutation_importance.html#sklearn.inspection.permutation_importance" title="sklearn.inspection.permutation_importance"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.inspection.permutation_importance</span></code></a> which is
+based on permutation of the features.</p>
 <div class="topic">
 <p class="topic-title">Examples:</p>
 <ul class="simple">
@@ -1000,13 +1040,12 @@ accessed via the <code class="docutils literal notranslate"><span class="pre">fe
 </div>
 </div>
 </div>
-</div>
 <div class="section" id="histogram-based-gradient-boosting">
-<span id="id21"></span><h2>1.11.5. Histogram-Based Gradient Boosting<a class="headerlink" href="#histogram-based-gradient-boosting" title="Permalink to this headline">¶</a></h2>
+<span id="id23"></span><h2>1.11.5. Histogram-Based Gradient Boosting<a class="headerlink" href="#histogram-based-gradient-boosting" title="Permalink to this headline">¶</a></h2>
 <p>Scikit-learn 0.21 introduces two new experimental implementations of
 gradient boosting trees, namely <a class="reference internal" href="generated/sklearn.ensemble.HistGradientBoostingClassifier.html#sklearn.ensemble.HistGradientBoostingClassifier" title="sklearn.ensemble.HistGradientBoostingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingClassifier</span></code></a>
 and <a class="reference internal" href="generated/sklearn.ensemble.HistGradientBoostingRegressor.html#sklearn.ensemble.HistGradientBoostingRegressor" title="sklearn.ensemble.HistGradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingRegressor</span></code></a>, inspired by
-<a class="reference external" href="https://github.com/Microsoft/LightGBM">LightGBM</a> (See <a class="reference internal" href="#lightgbm" id="id22"><span>[LightGBM]</span></a>).</p>
+<a class="reference external" href="https://github.com/Microsoft/LightGBM">LightGBM</a> (See <a class="reference internal" href="#lightgbm" id="id24"><span>[LightGBM]</span></a>).</p>
 <p>These histogram-based estimators can be <strong>orders of magnitude faster</strong>
 than <a class="reference internal" href="generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier" title="sklearn.ensemble.GradientBoostingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradientBoostingClassifier</span></code></a> and
 <a class="reference internal" href="generated/sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor" title="sklearn.ensemble.GradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradientBoostingRegressor</span></code></a> when the number of samples is larger
@@ -1036,8 +1075,8 @@ need to explicitly import <code class="docutils literal notranslate"><span class
 <li><p><a class="reference internal" href="../auto_examples/inspection/plot_partial_dependence.html#sphx-glr-auto-examples-inspection-plot-partial-dependence-py"><span class="std std-ref">Partial Dependence Plots</span></a></p></li>
 </ul>
 </div>
-<div class="section" id="id23">
-<h3>1.11.5.1. Usage<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id25">
+<h3>1.11.5.1. Usage<a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h3>
 <p>Most of the parameters are unchanged from
 <a class="reference internal" href="generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier" title="sklearn.ensemble.GradientBoostingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradientBoostingClassifier</span></code></a> and <a class="reference internal" href="generated/sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor" title="sklearn.ensemble.GradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradientBoostingRegressor</span></code></a>.
 One exception is the <code class="docutils literal notranslate"><span class="pre">max_iter</span></code> parameter that replaces <code class="docutils literal notranslate"><span class="pre">n_estimators</span></code>, and
@@ -1067,7 +1106,7 @@ the loss is ‘auto’ and will select the appropriate loss depending on
 parameter. Using less bins acts as a form of regularization. It is
 generally recommended to use as many bins as possible, which is the default.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">l2_regularization</span></code> parameter is a regularizer on the loss function and
-corresponds to <span class="math notranslate nohighlight">\(\lambda\)</span> in equation (2) of <a class="reference internal" href="#xgboost" id="id24"><span>[XGBoost]</span></a>.</p>
+corresponds to <span class="math notranslate nohighlight">\(\lambda\)</span> in equation (2) of <a class="reference internal" href="#xgboost" id="id26"><span>[XGBoost]</span></a>.</p>
 <p>Note that <strong>early-stopping is enabled by default if the number of samples is
 larger than 10,000</strong>. The early-stopping behaviour is controlled via the
 <code class="docutils literal notranslate"><span class="pre">early-stopping</span></code>, <code class="docutils literal notranslate"><span class="pre">scoring</span></code>, <code class="docutils literal notranslate"><span class="pre">validation_fraction</span></code>,
@@ -1192,18 +1231,18 @@ values, but it only happens once at the very beginning of the boosting process
 <div class="topic">
 <p class="topic-title">References</p>
 <dl class="citation">
-<dt class="label" id="f1999"><span class="brackets"><a class="fn-backref" href="#id20">F1999</a></span></dt>
+<dt class="label" id="f1999"><span class="brackets"><a class="fn-backref" href="#id22">F1999</a></span></dt>
 <dd><p>Friedmann, Jerome H., 2007, <a class="reference external" href="https://statweb.stanford.edu/~jhf/ftp/stobst.pdf">“Stochastic Gradient Boosting”</a></p>
 </dd>
-<dt class="label" id="r2007"><span class="brackets"><a class="fn-backref" href="#id19">R2007</a></span></dt>
+<dt class="label" id="r2007"><span class="brackets"><a class="fn-backref" href="#id21">R2007</a></span></dt>
 <dd><p>G. Ridgeway, “Generalized Boosted Models: A guide to the gbm
 package”, 2007</p>
 </dd>
-<dt class="label" id="xgboost"><span class="brackets"><a class="fn-backref" href="#id24">XGBoost</a></span></dt>
+<dt class="label" id="xgboost"><span class="brackets"><a class="fn-backref" href="#id26">XGBoost</a></span></dt>
 <dd><p>Tianqi Chen, Carlos Guestrin, <a class="reference external" href="https://arxiv.org/abs/1603.02754">“XGBoost: A Scalable Tree
 Boosting System”</a></p>
 </dd>
-<dt class="label" id="lightgbm"><span class="brackets">LightGBM</span><span class="fn-backref">(<a href="#id14">1</a>,<a href="#id22">2</a>)</span></dt>
+<dt class="label" id="lightgbm"><span class="brackets">LightGBM</span><span class="fn-backref">(<a href="#id14">1</a>,<a href="#id24">2</a>)</span></dt>
 <dd><p>Ke et. al. <a class="reference external" href="https://papers.nips.cc/paper/6907-lightgbm-a-highly-efficient-gradient-boosting-decision-tree">“LightGBM: A Highly Efficient Gradient
 BoostingDecision Tree”</a></p>
 </dd>
@@ -1212,7 +1251,7 @@ BoostingDecision Tree”</a></p>
 </div>
 </div>
 <div class="section" id="voting-classifier">
-<span id="id25"></span><h2>1.11.6. Voting Classifier<a class="headerlink" href="#voting-classifier" title="Permalink to this headline">¶</a></h2>
+<span id="id27"></span><h2>1.11.6. Voting Classifier<a class="headerlink" href="#voting-classifier" title="Permalink to this headline">¶</a></h2>
 <p>The idea behind the <a class="reference internal" href="generated/sklearn.ensemble.VotingClassifier.html#sklearn.ensemble.VotingClassifier" title="sklearn.ensemble.VotingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">VotingClassifier</span></code></a> is to combine
 conceptually different machine learning classifiers and use a majority vote
 or the average predicted probabilities (soft vote) to predict the class labels.
@@ -1238,8 +1277,9 @@ based on the ascending sort order. E.g., in the following scenario</p>
 <li><p>classifier 2 -&gt; class 1</p></li>
 </ul>
 <p>the class label 1 will be assigned to the sample.</p>
-<div class="section" id="id26">
-<h4>1.11.6.1.1. Usage<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="id28">
+<h3>1.11.6.2. Usage<a class="headerlink" href="#id28" title="Permalink to this headline">¶</a></h3>
 <p>The following example shows how to fit the majority rule classifier:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_val_score</span>
@@ -1269,9 +1309,8 @@ based on the ascending sort order. E.g., in the following scenario</p>
 </pre></div>
 </div>
 </div>
-</div>
 <div class="section" id="weighted-average-probabilities-soft-voting">
-<h3>1.11.6.2. Weighted Average Probabilities (Soft Voting)<a class="headerlink" href="#weighted-average-probabilities-soft-voting" title="Permalink to this headline">¶</a></h3>
+<h3>1.11.6.3. Weighted Average Probabilities (Soft Voting)<a class="headerlink" href="#weighted-average-probabilities-soft-voting" title="Permalink to this headline">¶</a></h3>
 <p>In contrast to majority voting (hard voting), soft voting
 returns the class label as argmax of the sum of predicted probabilities.</p>
 <p>Specific weights can be assigned to each classifier via the <code class="docutils literal notranslate"><span class="pre">weights</span></code>
@@ -1356,7 +1395,7 @@ Vector Machine, a Decision Tree, and a K-nearest neighbor classifier:</p>
 </div>
 </div>
 <div class="section" id="using-the-votingclassifier-with-gridsearchcv">
-<h3>1.11.6.3. Using the <code class="docutils literal notranslate"><span class="pre">VotingClassifier</span></code> with <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code><a class="headerlink" href="#using-the-votingclassifier-with-gridsearchcv" title="Permalink to this headline">¶</a></h3>
+<h3>1.11.6.4. Using the <code class="docutils literal notranslate"><span class="pre">VotingClassifier</span></code> with <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code><a class="headerlink" href="#using-the-votingclassifier-with-gridsearchcv" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="generated/sklearn.ensemble.VotingClassifier.html#sklearn.ensemble.VotingClassifier" title="sklearn.ensemble.VotingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">VotingClassifier</span></code></a> can also be used together with
 <a class="reference internal" href="generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV" title="sklearn.model_selection.GridSearchCV"><code class="xref py py-class docutils literal notranslate"><span class="pre">GridSearchCV</span></code></a> in order to tune the
 hyperparameters of the individual estimators:</p>
@@ -1375,8 +1414,9 @@ hyperparameters of the individual estimators:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="section" id="id27">
-<h4>1.11.6.3.1. Usage<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="id29">
+<h3>1.11.6.5. Usage<a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h3>
 <p>In order to predict the class labels based on the predicted
 class-probabilities (scikit-learn estimators in the VotingClassifier
 must support <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code> method):</p>
@@ -1395,15 +1435,14 @@ must support <code class="docutils literal notranslate"><span class="pre">predic
 </div>
 </div>
 </div>
-</div>
 <div class="section" id="voting-regressor">
-<span id="id28"></span><h2>1.11.7. Voting Regressor<a class="headerlink" href="#voting-regressor" title="Permalink to this headline">¶</a></h2>
+<span id="id30"></span><h2>1.11.7. Voting Regressor<a class="headerlink" href="#voting-regressor" title="Permalink to this headline">¶</a></h2>
 <p>The idea behind the <a class="reference internal" href="generated/sklearn.ensemble.VotingRegressor.html#sklearn.ensemble.VotingRegressor" title="sklearn.ensemble.VotingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">VotingRegressor</span></code></a> is to combine conceptually
 different machine learning regressors and return the average predicted values.
 Such a regressor can be useful for a set of equally well performing models
 in order to balance out their individual weaknesses.</p>
-<div class="section" id="id29">
-<h3>1.11.7.1. Usage<a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id31">
+<h3>1.11.7.1. Usage<a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h3>
 <p>The following example shows how to fit the VotingRegressor:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_boston</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">GradientBoostingRegressor</span>
@@ -1436,7 +1475,7 @@ in order to balance out their individual weaknesses.</p>
 <div class="section" id="stacked-generalization">
 <span id="stacking"></span><h2>1.11.8. Stacked generalization<a class="headerlink" href="#stacked-generalization" title="Permalink to this headline">¶</a></h2>
 <p>Stacked generalization is a method for combining estimators to reduce their
-biases <a class="reference internal" href="#w1992" id="id30"><span>[W1992]</span></a> <a class="reference internal" href="#htf" id="id31"><span>[HTF]</span></a>. More precisely, the predictions of each individual
+biases <a class="reference internal" href="#w1992" id="id32"><span>[W1992]</span></a> <a class="reference internal" href="#htf" id="id33"><span>[HTF]</span></a>. More precisely, the predictions of each individual
 estimator are stacked together and used as input to a final estimator to
 compute the prediction. This final estimator is trained through
 cross-validation.</p>
@@ -1539,7 +1578,7 @@ a <a class="reference internal" href="generated/sklearn.ensemble.StackingClassif
 <div class="topic">
 <p class="topic-title">References</p>
 <dl class="citation">
-<dt class="label" id="w1992"><span class="brackets"><a class="fn-backref" href="#id30">W1992</a></span></dt>
+<dt class="label" id="w1992"><span class="brackets"><a class="fn-backref" href="#id32">W1992</a></span></dt>
 <dd><p>Wolpert, David H. “Stacked generalization.” Neural networks 5.2
 (1992): 241-259.</p>
 </dd>
