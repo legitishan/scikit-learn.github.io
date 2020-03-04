@@ -183,24 +183,29 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#logistic-regression">1.1.11. Logistic regression</a></li>
-<li><a class="reference internal" href="#stochastic-gradient-descent-sgd">1.1.12. Stochastic Gradient Descent - SGD</a></li>
-<li><a class="reference internal" href="#perceptron">1.1.13. Perceptron</a></li>
-<li><a class="reference internal" href="#passive-aggressive-algorithms">1.1.14. Passive Aggressive Algorithms</a></li>
-<li><a class="reference internal" href="#robustness-regression-outliers-and-modeling-errors">1.1.15. Robustness regression: outliers and modeling errors</a><ul>
-<li><a class="reference internal" href="#different-scenario-and-useful-concepts">1.1.15.1. Different scenario and useful concepts</a></li>
-<li><a class="reference internal" href="#ransac-random-sample-consensus">1.1.15.2. RANSAC: RANdom SAmple Consensus</a><ul>
-<li><a class="reference internal" href="#details-of-the-algorithm">1.1.15.2.1. Details of the algorithm</a></li>
+<li><a class="reference internal" href="#generalized-linear-regression">1.1.12. Generalized Linear Regression</a><ul>
+<li><a class="reference internal" href="#usage">1.1.12.1. Usage</a></li>
+<li><a class="reference internal" href="#practical-considerations">1.1.12.2. Practical considerations</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#theil-sen-estimator-generalized-median-based-estimator">1.1.15.3. Theil-Sen estimator: generalized-median-based estimator</a><ul>
-<li><a class="reference internal" href="#theoretical-considerations">1.1.15.3.1. Theoretical considerations</a></li>
+<li><a class="reference internal" href="#stochastic-gradient-descent-sgd">1.1.13. Stochastic Gradient Descent - SGD</a></li>
+<li><a class="reference internal" href="#perceptron">1.1.14. Perceptron</a></li>
+<li><a class="reference internal" href="#passive-aggressive-algorithms">1.1.15. Passive Aggressive Algorithms</a></li>
+<li><a class="reference internal" href="#robustness-regression-outliers-and-modeling-errors">1.1.16. Robustness regression: outliers and modeling errors</a><ul>
+<li><a class="reference internal" href="#different-scenario-and-useful-concepts">1.1.16.1. Different scenario and useful concepts</a></li>
+<li><a class="reference internal" href="#ransac-random-sample-consensus">1.1.16.2. RANSAC: RANdom SAmple Consensus</a><ul>
+<li><a class="reference internal" href="#details-of-the-algorithm">1.1.16.2.1. Details of the algorithm</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#huber-regression">1.1.15.4. Huber Regression</a></li>
-<li><a class="reference internal" href="#notes">1.1.15.5. Notes</a></li>
+<li><a class="reference internal" href="#theil-sen-estimator-generalized-median-based-estimator">1.1.16.3. Theil-Sen estimator: generalized-median-based estimator</a><ul>
+<li><a class="reference internal" href="#theoretical-considerations">1.1.16.3.1. Theoretical considerations</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#polynomial-regression-extending-linear-models-with-basis-functions">1.1.16. Polynomial regression: extending linear models with basis functions</a></li>
+<li><a class="reference internal" href="#huber-regression">1.1.16.4. Huber Regression</a></li>
+<li><a class="reference internal" href="#notes">1.1.16.5. Notes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#polynomial-regression-extending-linear-models-with-basis-functions">1.1.17. Polynomial regression: extending linear models with basis functions</a></li>
 </ul>
 </li>
 </ul>
@@ -659,11 +664,11 @@ on the number of non-zero coefficients (ie. the <span class="math notranslate no
 orthogonal matching pursuit can approximate the optimum solution vector with a
 fixed number of non-zero elements:</p>
 <div class="math notranslate nohighlight">
-\[\underset{\gamma}{\operatorname{arg\,min\,}}  ||y - X\gamma||_2^2 \text{ subject to } ||\gamma||_0 \leq n_{\text{nonzero\_coefs}}\]</div>
+\[\underset{w}{\operatorname{arg\,min\,}}  ||y - Xw||_2^2 \text{ subject to } ||w||_0 \leq n_{\text{nonzero\_coefs}}\]</div>
 <p>Alternatively, orthogonal matching pursuit can target a specific error instead
 of a specific number of non-zero coefficients. This can be expressed as:</p>
 <div class="math notranslate nohighlight">
-\[\underset{\gamma}{\operatorname{arg\,min\,}} ||\gamma||_0 \text{ subject to } ||y-X\gamma||_2^2 \leq \text{tol}\]</div>
+\[\underset{w}{\operatorname{arg\,min\,}} ||w||_0 \text{ subject to } ||y-Xw||_2^2 \leq \text{tol}\]</div>
 <p>OMP is based on a greedy algorithm that includes at each step the atom most
 highly correlated with the current residual. It is similar to the simpler
 matching pursuit (MP) method, but better in that at each iteration, the
@@ -1061,8 +1066,162 @@ to warm-starting (see <a class="reference internal" href="../glossary.html#term-
 </dl>
 </div>
 </div>
+<div class="section" id="generalized-linear-regression">
+<span id="id30"></span><h2>1.1.12. Generalized Linear Regression<a class="headerlink" href="#generalized-linear-regression" title="Permalink to this headline">¶</a></h2>
+<p>Generalized Linear Models (GLM) extend linear models in two ways
+<a class="footnote-reference brackets" href="#id33" id="id31">10</a>. First, the predicted values <span class="math notranslate nohighlight">\(\hat{y}\)</span> are linked to a linear
+combination of the input variables <span class="math notranslate nohighlight">\(X\)</span> via an inverse link function
+<span class="math notranslate nohighlight">\(h\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[\hat{y}(w, X) = h(Xw).\]</div>
+<p>Secondly, the squared loss function is replaced by the unit deviance
+<span class="math notranslate nohighlight">\(d\)</span> of a distribution in the exponential family (or more precisely, a
+reproductive exponential dispersion model (EDM) <a class="footnote-reference brackets" href="#id34" id="id32">11</a>).</p>
+<p>The minimization problem becomes:</p>
+<div class="math notranslate nohighlight">
+\[\min_{w} \frac{1}{2 n_{\text{samples}}} \sum_i d(y_i, \hat{y}_i) + \frac{\alpha}{2} ||w||_2,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\alpha\)</span> is the L2 regularization penalty. When sample weights are
+provided, the average becomes a weighted average.</p>
+<p>The following table lists some specific EDMs and their unit deviance (all of
+these are instances of the Tweedie family):</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 31%" />
+<col style="width: 52%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Distribution</p></th>
+<th class="head"><p>Target Domain</p></th>
+<th class="head"><p>Unit Deviance <span class="math notranslate nohighlight">\(d(y, \hat{y})\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Normal</p></td>
+<td><p><span class="math notranslate nohighlight">\(y \in (-\infty, \infty)\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((y-\hat{y})^2\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>Poisson</p></td>
+<td><p><span class="math notranslate nohighlight">\(y \in [0, \infty)\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(2(y\log\frac{y}{\hat{y}}-y+\hat{y})\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>Gamma</p></td>
+<td><p><span class="math notranslate nohighlight">\(y \in (0, \infty)\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(2(\log\frac{\hat{y}}{y}+\frac{y}{\hat{y}}-1)\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>Inverse Gaussian</p></td>
+<td><p><span class="math notranslate nohighlight">\(y \in (0, \infty)\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\frac{(y-\hat{y})^2}{y\hat{y}^2}\)</span></p></td>
+</tr>
+</tbody>
+</table>
+<p>The Probability Density Functions (PDF) of these distributions are illustrated
+in the following figure,</p>
+<div class="figure align-center" id="id39">
+<a class="reference internal image-reference" href="../_images/poisson_gamma_tweedie_distributions.png"><img alt="../_images/poisson_gamma_tweedie_distributions.png" src="../_images/poisson_gamma_tweedie_distributions.png" style="width: 1200.0px; height: 350.0px;" /></a>
+<p class="caption"><span class="caption-text">PDF of a random variable Y following Poisson, Tweedie (power=1.5) and Gamma
+distributions with different mean values (<span class="math notranslate nohighlight">\(\mu\)</span>). Observe the point
+mass at <span class="math notranslate nohighlight">\(Y=0\)</span> for the Poisson distribution and the Tweedie (power=1.5)
+distribution, but not for the Gamma distribution which has a strictly
+positive target domain.</span><a class="headerlink" href="#id39" title="Permalink to this image">¶</a></p>
+</div>
+<p>The choice of the distribution depends on the problem at hand:</p>
+<ul class="simple">
+<li><p>If the target values <span class="math notranslate nohighlight">\(y\)</span> are counts (non-negative integer valued) or
+relative frequencies (non-negative), you might use a Poisson deviance
+with log-link.</p></li>
+<li><p>If the target values are positive valued and skewed, you might try a
+Gamma deviance with log-link.</p></li>
+<li><p>If the target values seem to be heavier tailed than a Gamma distribution,
+you might try an Inverse Gaussian deviance (or even higher variance powers
+of the Tweedie family).</p></li>
+</ul>
+<p>Examples of use cases include:</p>
+<ul class="simple">
+<li><p>Agriculture / weather modeling:  number of rain events per year (Poisson),
+amount of rainfall per event (Gamma), total rainfall per year (Tweedie /
+Compound Poisson Gamma).</p></li>
+<li><p>Risk modeling / insurance policy pricing:  number of claim events /
+policyholder per year (Poisson), cost per event (Gamma), total cost per
+policyholder per year (Tweedie / Compound Poisson Gamma).</p></li>
+<li><p>Predictive maintenance: number of production interruption events per year:
+Poisson, duration of interruption: Gamma, total interruption time per year
+(Tweedie / Compound Poisson Gamma).</p></li>
+</ul>
+<div class="topic">
+<p class="topic-title">References:</p>
+<dl class="footnote brackets">
+<dt class="label" id="id33"><span class="brackets"><a class="fn-backref" href="#id31">10</a></span></dt>
+<dd><p>McCullagh, Peter; Nelder, John (1989). Generalized Linear Models,
+Second Edition. Boca Raton: Chapman and Hall/CRC. ISBN 0-412-31760-5.</p>
+</dd>
+<dt class="label" id="id34"><span class="brackets"><a class="fn-backref" href="#id32">11</a></span></dt>
+<dd><p>Jørgensen, B. (1992). The theory of exponential dispersion models
+and analysis of deviance. Monografias de matemática, no. 51.  See also
+<a class="reference external" href="https://en.wikipedia.org/wiki/Exponential_dispersion_model">Exponential dispersion model.</a></p>
+</dd>
+</dl>
+</div>
+<div class="section" id="usage">
+<h3>1.1.12.1. Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="generated/sklearn.linear_model.TweedieRegressor.html#sklearn.linear_model.TweedieRegressor" title="sklearn.linear_model.TweedieRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">TweedieRegressor</span></code></a> implements a generalized linear model for the
+Tweedie distribution, that allows to model any of the above mentioned
+distributions using the appropriate <code class="docutils literal notranslate"><span class="pre">power</span></code> parameter. In particular:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">power</span> <span class="pre">=</span> <span class="pre">0</span></code>: Normal distribution. Specific estimators such as
+<a class="reference internal" href="generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge" title="sklearn.linear_model.Ridge"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ridge</span></code></a>, <a class="reference internal" href="generated/sklearn.linear_model.ElasticNet.html#sklearn.linear_model.ElasticNet" title="sklearn.linear_model.ElasticNet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ElasticNet</span></code></a> are generally more appropriate in
+this case.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">power</span> <span class="pre">=</span> <span class="pre">1</span></code>: Poisson distribution. <a class="reference internal" href="generated/sklearn.linear_model.PoissonRegressor.html#sklearn.linear_model.PoissonRegressor" title="sklearn.linear_model.PoissonRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">PoissonRegressor</span></code></a> is exposed
+for convenience. However, it is strictly equivalent to
+<code class="docutils literal notranslate"><span class="pre">TweedieRegressor(power=1,</span> <span class="pre">link='log')</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">power</span> <span class="pre">=</span> <span class="pre">2</span></code>: Gamma distribution. <a class="reference internal" href="generated/sklearn.linear_model.GammaRegressor.html#sklearn.linear_model.GammaRegressor" title="sklearn.linear_model.GammaRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">GammaRegressor</span></code></a> is exposed for
+convenience. However, it is strictly equivalent to
+<code class="docutils literal notranslate"><span class="pre">TweedieRegressor(power=2,</span> <span class="pre">link='log')</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">power</span> <span class="pre">=</span> <span class="pre">3</span></code>: Inverse Gaussian distribution.</p></li>
+</ul>
+<p>The link function is determined by the <code class="docutils literal notranslate"><span class="pre">link</span></code> parameter.</p>
+<p>Usage example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">TweedieRegressor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reg</span> <span class="o">=</span> <span class="n">TweedieRegressor</span><span class="p">(</span><span class="n">power</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">link</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reg</span><span class="o">.</span><span class="n">fit</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="go">TweedieRegressor(alpha=0.5, link=&#39;log&#39;, power=1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reg</span><span class="o">.</span><span class="n">coef_</span>
+<span class="go">array([0.2463..., 0.4337...])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reg</span><span class="o">.</span><span class="n">intercept_</span>
+<span class="go">-0.7638...</span>
+</pre></div>
+</div>
+<div class="topic">
+<p class="topic-title">Examples:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../auto_examples/linear_model/plot_poisson_regression_non_normal_loss.html#sphx-glr-auto-examples-linear-model-plot-poisson-regression-non-normal-loss-py"><span class="std std-ref">Poisson regression and non-normal loss</span></a></p></li>
+<li><p><a class="reference internal" href="../auto_examples/linear_model/plot_tweedie_regression_insurance_claims.html#sphx-glr-auto-examples-linear-model-plot-tweedie-regression-insurance-claims-py"><span class="std std-ref">Tweedie regression on insurance claims</span></a></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="practical-considerations">
+<h3>1.1.12.2. Practical considerations<a class="headerlink" href="#practical-considerations" title="Permalink to this headline">¶</a></h3>
+<p>The feature matrix <code class="docutils literal notranslate"><span class="pre">X</span></code> should be standardized before fitting. This ensures
+that the penalty treats features equally.</p>
+<p>Since the linear predictor <span class="math notranslate nohighlight">\(Xw\)</span> can be negative and Poisson,
+Gamma and Inverse Gaussian distributions don’t support negative values, it
+is necessary to apply an inverse link function that guarantees the
+non-negativeness. For example with <code class="docutils literal notranslate"><span class="pre">link='log'</span></code>, the inverse link function
+becomes <span class="math notranslate nohighlight">\(h(Xw)=\exp(Xw)\)</span>.</p>
+<p>If you want to model a relative frequency, i.e. counts per exposure (time,
+volume, …) you can do so by using a Poisson distribution and passing
+<span class="math notranslate nohighlight">\(y=\frac{\mathrm{counts}}{\mathrm{exposure}}\)</span> as target values
+together with <span class="math notranslate nohighlight">\(\mathrm{exposure}\)</span> as sample weights. For a concrete
+example see e.g.
+<a class="reference internal" href="../auto_examples/linear_model/plot_tweedie_regression_insurance_claims.html#sphx-glr-auto-examples-linear-model-plot-tweedie-regression-insurance-claims-py"><span class="std std-ref">Tweedie regression on insurance claims</span></a>.</p>
+<p>When performing cross-validation for the <code class="docutils literal notranslate"><span class="pre">power</span></code> parameter of
+<code class="docutils literal notranslate"><span class="pre">TweedieRegressor</span></code>, it is advisable to specify an explicit <code class="docutils literal notranslate"><span class="pre">scoring</span></code> function,
+because the default scorer <a class="reference internal" href="generated/sklearn.linear_model.TweedieRegressor.html#sklearn.linear_model.TweedieRegressor.score" title="sklearn.linear_model.TweedieRegressor.score"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TweedieRegressor.score</span></code></a> is a function of
+<code class="docutils literal notranslate"><span class="pre">power</span></code> itself.</p>
+</div>
+</div>
 <div class="section" id="stochastic-gradient-descent-sgd">
-<h2>1.1.12. Stochastic Gradient Descent - SGD<a class="headerlink" href="#stochastic-gradient-descent-sgd" title="Permalink to this headline">¶</a></h2>
+<h2>1.1.13. Stochastic Gradient Descent - SGD<a class="headerlink" href="#stochastic-gradient-descent-sgd" title="Permalink to this headline">¶</a></h2>
 <p>Stochastic gradient descent is a simple yet very efficient approach
 to fit linear models. It is particularly useful when the number of samples
 (and the number of features) is very large.
@@ -1081,7 +1240,7 @@ while with <code class="docutils literal notranslate"><span class="pre">loss=&qu
 </div>
 </div>
 <div class="section" id="perceptron">
-<span id="id30"></span><h2>1.1.13. Perceptron<a class="headerlink" href="#perceptron" title="Permalink to this headline">¶</a></h2>
+<span id="id35"></span><h2>1.1.14. Perceptron<a class="headerlink" href="#perceptron" title="Permalink to this headline">¶</a></h2>
 <p>The <a class="reference internal" href="generated/sklearn.linear_model.Perceptron.html#sklearn.linear_model.Perceptron" title="sklearn.linear_model.Perceptron"><code class="xref py py-class docutils literal notranslate"><span class="pre">Perceptron</span></code></a> is another simple classification algorithm suitable for
 large scale learning. By default:</p>
 <blockquote>
@@ -1096,7 +1255,7 @@ train than SGD with the hinge loss and that the resulting models are
 sparser.</p>
 </div>
 <div class="section" id="passive-aggressive-algorithms">
-<span id="passive-aggressive"></span><h2>1.1.14. Passive Aggressive Algorithms<a class="headerlink" href="#passive-aggressive-algorithms" title="Permalink to this headline">¶</a></h2>
+<span id="passive-aggressive"></span><h2>1.1.15. Passive Aggressive Algorithms<a class="headerlink" href="#passive-aggressive-algorithms" title="Permalink to this headline">¶</a></h2>
 <p>The passive-aggressive algorithms are a family of algorithms for large-scale
 learning. They are similar to the Perceptron in that they do not require a
 learning rate. However, contrary to the Perceptron, they include a
@@ -1115,14 +1274,14 @@ K. Crammer, O. Dekel, J. Keshat, S. Shalev-Shwartz, Y. Singer - JMLR 7 (2006)</p
 </div>
 </div>
 <div class="section" id="robustness-regression-outliers-and-modeling-errors">
-<h2>1.1.15. Robustness regression: outliers and modeling errors<a class="headerlink" href="#robustness-regression-outliers-and-modeling-errors" title="Permalink to this headline">¶</a></h2>
+<h2>1.1.16. Robustness regression: outliers and modeling errors<a class="headerlink" href="#robustness-regression-outliers-and-modeling-errors" title="Permalink to this headline">¶</a></h2>
 <p>Robust regression aims to fit a regression model in the
 presence of corrupt data: either outliers, or error in the model.</p>
 <div class="figure align-center">
 <a class="reference external image-reference" href="../auto_examples/linear_model/plot_theilsen.html"><img alt="../_images/sphx_glr_plot_theilsen_0011.png" src="../_images/sphx_glr_plot_theilsen_0011.png" style="width: 320.0px; height: 240.0px;" /></a>
 </div>
 <div class="section" id="different-scenario-and-useful-concepts">
-<h3>1.1.15.1. Different scenario and useful concepts<a class="headerlink" href="#different-scenario-and-useful-concepts" title="Permalink to this headline">¶</a></h3>
+<h3>1.1.16.1. Different scenario and useful concepts<a class="headerlink" href="#different-scenario-and-useful-concepts" title="Permalink to this headline">¶</a></h3>
 <p>There are different things to keep in mind when dealing with data
 corrupted by outliers:</p>
 <ul>
@@ -1199,7 +1358,7 @@ disappear in high-dimensional settings.</p></li>
 </div>
 </div>
 <div class="section" id="ransac-random-sample-consensus">
-<span id="ransac-regression"></span><h3>1.1.15.2. RANSAC: RANdom SAmple Consensus<a class="headerlink" href="#ransac-random-sample-consensus" title="Permalink to this headline">¶</a></h3>
+<span id="ransac-regression"></span><h3>1.1.16.2. RANSAC: RANdom SAmple Consensus<a class="headerlink" href="#ransac-random-sample-consensus" title="Permalink to this headline">¶</a></h3>
 <p>RANSAC (RANdom SAmple Consensus) fits a model from random subsets of
 inliers from the complete data set.</p>
 <p>RANSAC is a non-deterministic algorithm producing only a reasonable result with
@@ -1215,7 +1374,7 @@ estimated only from the determined inliers.</p>
 <a class="reference external image-reference" href="../auto_examples/linear_model/plot_ransac.html"><img alt="../_images/sphx_glr_plot_ransac_0011.png" src="../_images/sphx_glr_plot_ransac_0011.png" style="width: 320.0px; height: 240.0px;" /></a>
 </div>
 <div class="section" id="details-of-the-algorithm">
-<h4>1.1.15.2.1. Details of the algorithm<a class="headerlink" href="#details-of-the-algorithm" title="Permalink to this headline">¶</a></h4>
+<h4>1.1.16.2.1. Details of the algorithm<a class="headerlink" href="#details-of-the-algorithm" title="Permalink to this headline">¶</a></h4>
 <p>Each iteration performs the following steps:</p>
 <ol class="arabic simple">
 <li><p>Select <code class="docutils literal notranslate"><span class="pre">min_samples</span></code> random samples from the original data and check
@@ -1260,7 +1419,7 @@ Sunglok Choi, Taemin Kim and Wonpil Yu - BMVC (2009)</p></li>
 </div>
 </div>
 <div class="section" id="theil-sen-estimator-generalized-median-based-estimator">
-<span id="theil-sen-regression"></span><h3>1.1.15.3. Theil-Sen estimator: generalized-median-based estimator<a class="headerlink" href="#theil-sen-estimator-generalized-median-based-estimator" title="Permalink to this headline">¶</a></h3>
+<span id="theil-sen-regression"></span><h3>1.1.16.3. Theil-Sen estimator: generalized-median-based estimator<a class="headerlink" href="#theil-sen-estimator-generalized-median-based-estimator" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="generated/sklearn.linear_model.TheilSenRegressor.html#sklearn.linear_model.TheilSenRegressor" title="sklearn.linear_model.TheilSenRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">TheilSenRegressor</span></code></a> estimator uses a generalization of the median in
 multiple dimensions. It is thus robust to multivariate outliers. Note however
 that the robustness of the estimator decreases quickly with the dimensionality
@@ -1280,7 +1439,7 @@ better than an ordinary least squares in high dimension.</p>
 </ul>
 </div>
 <div class="section" id="theoretical-considerations">
-<h4>1.1.15.3.1. Theoretical considerations<a class="headerlink" href="#theoretical-considerations" title="Permalink to this headline">¶</a></h4>
+<h4>1.1.16.3.1. Theoretical considerations<a class="headerlink" href="#theoretical-considerations" title="Permalink to this headline">¶</a></h4>
 <p><a class="reference internal" href="generated/sklearn.linear_model.TheilSenRegressor.html#sklearn.linear_model.TheilSenRegressor" title="sklearn.linear_model.TheilSenRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">TheilSenRegressor</span></code></a> is comparable to the <a class="reference internal" href="#ordinary-least-squares"><span class="std std-ref">Ordinary Least Squares
 (OLS)</span></a> in terms of asymptotic efficiency and as an
 unbiased estimator. In contrast to OLS, Theil-Sen is a non-parametric
@@ -1294,9 +1453,9 @@ corrupted data of up to 29.3%.</p>
 <a class="reference external image-reference" href="../auto_examples/linear_model/plot_theilsen.html"><img alt="../_images/sphx_glr_plot_theilsen_0011.png" src="../_images/sphx_glr_plot_theilsen_0011.png" style="width: 320.0px; height: 240.0px;" /></a>
 </div>
 <p>The implementation of <a class="reference internal" href="generated/sklearn.linear_model.TheilSenRegressor.html#sklearn.linear_model.TheilSenRegressor" title="sklearn.linear_model.TheilSenRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">TheilSenRegressor</span></code></a> in scikit-learn follows a
-generalization to a multivariate linear regression model <a class="footnote-reference brackets" href="#f1" id="id31">10</a> using the
+generalization to a multivariate linear regression model <a class="footnote-reference brackets" href="#f1" id="id36">12</a> using the
 spatial median which is a generalization of the median to multiple
-dimensions <a class="footnote-reference brackets" href="#f2" id="id32">11</a>.</p>
+dimensions <a class="footnote-reference brackets" href="#f2" id="id37">13</a>.</p>
 <p>In terms of time and space complexity, Theil-Sen scales according to</p>
 <div class="math notranslate nohighlight">
 \[\binom{n_{\text{samples}}}{n_{\text{subsamples}}}\]</div>
@@ -1313,10 +1472,10 @@ considering only a random subset of all possible combinations.</p>
 <div class="topic">
 <p class="topic-title">References:</p>
 <dl class="footnote brackets">
-<dt class="label" id="f1"><span class="brackets"><a class="fn-backref" href="#id31">10</a></span></dt>
+<dt class="label" id="f1"><span class="brackets"><a class="fn-backref" href="#id36">12</a></span></dt>
 <dd><p>Xin Dang, Hanxiang Peng, Xueqin Wang and Heping Zhang: <a class="reference external" href="http://home.olemiss.edu/~xdang/papers/MTSE.pdf">Theil-Sen Estimators in a Multiple Linear Regression Model.</a></p>
 </dd>
-<dt class="label" id="f2"><span class="brackets"><a class="fn-backref" href="#id32">11</a></span></dt>
+<dt class="label" id="f2"><span class="brackets"><a class="fn-backref" href="#id37">13</a></span></dt>
 <dd><ol class="upperalpha simple" start="20">
 <li><p>Kärkkäinen and S. Äyrämö: <a class="reference external" href="http://users.jyu.fi/~samiayr/pdf/ayramo_eurogen05.pdf">On Computation of Spatial Median for Robust Data Mining.</a></p></li>
 </ol>
@@ -1326,7 +1485,7 @@ considering only a random subset of all possible combinations.</p>
 </div>
 </div>
 <div class="section" id="huber-regression">
-<span id="id33"></span><h3>1.1.15.4. Huber Regression<a class="headerlink" href="#huber-regression" title="Permalink to this headline">¶</a></h3>
+<span id="id38"></span><h3>1.1.16.4. Huber Regression<a class="headerlink" href="#huber-regression" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="generated/sklearn.linear_model.HuberRegressor.html#sklearn.linear_model.HuberRegressor" title="sklearn.linear_model.HuberRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">HuberRegressor</span></code></a> is different to <a class="reference internal" href="generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge" title="sklearn.linear_model.Ridge"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ridge</span></code></a> because it applies a
 linear loss to samples that are classified as outliers.
 A sample is classified as an inlier if the absolute error of that sample is
@@ -1348,7 +1507,7 @@ but gives a lesser weight to them.</p>
 <p>It is advised to set the parameter <code class="docutils literal notranslate"><span class="pre">epsilon</span></code> to 1.35 to achieve 95% statistical efficiency.</p>
 </div>
 <div class="section" id="notes">
-<h3>1.1.15.5. Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h3>
+<h3>1.1.16.5. Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="generated/sklearn.linear_model.HuberRegressor.html#sklearn.linear_model.HuberRegressor" title="sklearn.linear_model.HuberRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">HuberRegressor</span></code></a> differs from using <a class="reference internal" href="generated/sklearn.linear_model.SGDRegressor.html#sklearn.linear_model.SGDRegressor" title="sklearn.linear_model.SGDRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">SGDRegressor</span></code></a> with loss set to <code class="docutils literal notranslate"><span class="pre">huber</span></code>
 in the following ways.</p>
 <ul class="simple">
@@ -1379,7 +1538,7 @@ greater than a certain threshold.</p>
 </div>
 </div>
 <div class="section" id="polynomial-regression-extending-linear-models-with-basis-functions">
-<span id="polynomial-regression"></span><h2>1.1.16. Polynomial regression: extending linear models with basis functions<a class="headerlink" href="#polynomial-regression-extending-linear-models-with-basis-functions" title="Permalink to this headline">¶</a></h2>
+<span id="polynomial-regression"></span><h2>1.1.17. Polynomial regression: extending linear models with basis functions<a class="headerlink" href="#polynomial-regression-extending-linear-models-with-basis-functions" title="Permalink to this headline">¶</a></h2>
 <p>One common pattern within machine learning is to use linear models trained
 on nonlinear functions of the data.  This approach maintains the generally
 fast performance of linear methods, while allowing them to fit a much wider
