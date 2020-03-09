@@ -612,7 +612,7 @@ ranking problem rather than a regression problem.
 
 To compare the 3 models within this perspective, one can plot the fraction of
 the number of claims vs the fraction of exposure for test samples ordered by
-the model predictions, from riskiest to safest according to each model:
+the model predictions, from safest to riskiest  according to each model:
 
 
 .. code-block:: default
@@ -620,7 +620,7 @@ the model predictions, from riskiest to safest according to each model:
 
 
     def _cumulated_claims(y_true, y_pred, exposure):
-        idx_sort = np.argsort(y_pred)[::-1]  # from riskiest to safest
+        idx_sort = np.argsort(y_pred)  # from safest to riskiest
         sorted_exposure = exposure[idx_sort]
         sorted_frequencies = y_true[idx_sort]
         cumulated_exposure = np.cumsum(sorted_exposure)
@@ -657,10 +657,10 @@ the model predictions, from riskiest to safest according to each model:
             label="Random baseline")
     ax.set(
         title="Cumulated number of claims by model",
-        xlabel='Fraction of exposure (from riskiest to safest)',
+        xlabel='Fraction of exposure (from safest to riskiest)',
         ylabel='Fraction of number of claims'
     )
-    ax.legend(loc="lower right")
+    ax.legend(loc="upper left")
 
 
 
@@ -676,7 +676,7 @@ the model predictions, from riskiest to safest according to each model:
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7f699d952040>
+    <matplotlib.legend.Legend object at 0x7ff71b27ffa0>
 
 
 
@@ -707,9 +707,7 @@ captured in the columns of the dataset or that are indeed random.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  59.093 seconds)
-
-**Estimated memory usage:**  578 MB
+   **Total running time of the script:** ( 0 minutes  52.445 seconds)
 
 
 .. _sphx_glr_download_auto_examples_linear_model_plot_poisson_regression_non_normal_loss.py:
