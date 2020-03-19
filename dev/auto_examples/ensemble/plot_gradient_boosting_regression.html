@@ -131,8 +131,8 @@
           </a>
         </div>
         <div class="btn-group w-100 mb-2" role="group" aria-label="rellinks">
-            <a href="plot_ensemble_oob.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="OOB Errors for Random Forests">Prev</a><a href="../index.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Examples">Up</a>
-            <a href="plot_adaboost_twoclass.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Two-class AdaBoost">Next</a>
+            <a href="plot_gradient_boosting_regularization.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Gradient Boosting regularization">Prev</a><a href="../index.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Examples">Up</a>
+            <a href="plot_voting_probas.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Plot class probabilities calculated by the VotingClassifier">Next</a>
         </div>
         <div class="alert alert-danger p-1 mb-2" role="alert">
           <p class="text-center mb-0">
@@ -147,7 +147,14 @@
         </div>
           <div class="sk-sidebar-toc">
             <ul>
-<li><a class="reference internal" href="#">Gradient Boosting regression</a></li>
+<li><a class="reference internal" href="#">Gradient Boosting regression</a><ul>
+<li><a class="reference internal" href="#load-the-data">Load the data</a></li>
+<li><a class="reference internal" href="#data-preprocessing">Data preprocessing</a></li>
+<li><a class="reference internal" href="#fit-regression-model">Fit regression model</a></li>
+<li><a class="reference internal" href="#plot-training-deviance">Plot training deviance</a></li>
+<li><a class="reference internal" href="#plot-impurity-based-feature-importance">Plot impurity-based feature importance</a></li>
+</ul>
+</li>
 </ul>
 
           </div>
@@ -162,20 +169,17 @@
 </div>
 <div class="sphx-glr-example-title section" id="gradient-boosting-regression">
 <span id="sphx-glr-auto-examples-ensemble-plot-gradient-boosting-regression-py"></span><h1>Gradient Boosting regression<a class="headerlink" href="#gradient-boosting-regression" title="Permalink to this headline">¶</a></h1>
-<p>Demonstrate Gradient Boosting on the Boston housing dataset.</p>
-<p>This example fits a Gradient Boosting model with least squares loss and
-500 regression trees of depth 4.</p>
-<img alt="../../_images/sphx_glr_plot_gradient_boosting_regression_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_gradient_boosting_regression_001.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>MSE: 6.4961
-</pre></div>
-</div>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
+<p>This example demonstrates Gradient Boosting to produce a predictive
+model from an ensemble of weak predictive models. Gradient boosting can be used
+for regression and classification problems. Here, we will train a model to
+tackle a diabetes regression task.</p>
+<p>We will obtain the results from
+<a class="reference internal" href="../../modules/generated/sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor" title="sklearn.ensemble.GradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradientBoostingRegressor</span></code></a> with least squares loss
+and 500 regression trees of depth 4.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
 
 <span class="c1"># Author: Peter Prettenhofer &lt;peter.prettenhofer@gmail.com&gt;</span>
+<span class="c1">#         Maria Telenczuk &lt;https://github.com/maikia&gt;</span>
 <span class="c1">#</span>
 <span class="c1"># License: BSD 3 clause</span>
 
@@ -184,38 +188,83 @@
 
 <span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">ensemble</span>
 <span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
-<span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.utils.shuffle.html#sklearn.utils.shuffle" title="View documentation for sklearn.utils.shuffle"><span class="n">shuffle</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.metrics.mean_squared_error.html#sklearn.metrics.mean_squared_error" title="View documentation for sklearn.metrics.mean_squared_error"><span class="n">mean_squared_error</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="View documentation for sklearn.model_selection.train_test_split"><span class="n">train_test_split</span></a>
+</pre></div>
+</div>
+<div class="section" id="load-the-data">
+<h2>Load the data<a class="headerlink" href="#load-the-data" title="Permalink to this headline">¶</a></h2>
+<p>First we need to load the data. We set random state to be consistent with the
+result.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">diabetes</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.load_diabetes.html#sklearn.datasets.load_diabetes" title="View documentation for sklearn.datasets.load_diabetes"><span class="n">datasets</span><span class="o">.</span><span class="n">load_diabetes</span></a><span class="p">()</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">diabetes</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">diabetes</span><span class="o">.</span><span class="n">target</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="data-preprocessing">
+<h2>Data preprocessing<a class="headerlink" href="#data-preprocessing" title="Permalink to this headline">¶</a></h2>
+<p>Next, we will split our dataset to use 90% for training and leave the rest
+for testing. We will also prepare the parameters we want to use to fit our
+regression model. You can play with those parameters to see how the
+results change:</p>
+<p>Here:
+n_estimators : is the number of boosting stages which will be performed.</p>
+<blockquote>
+<div><p>Later, we will plot and see how the deviance changes with those boosting
+operations.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>max_depth<span class="classifier">this limits the number of nodes in the tree. The best value</span></dt><dd><p>depends on the interaction of the input variables.</p>
+</dd>
+<dt>min_samples_split<span class="classifier">is the minimum number of samples required to split an</span></dt><dd><p>internal node.</p>
+</dd>
+</dl>
+<p>learning_rate: tells how much the contribution of each tree will shrink
+loss: here, we decided to use least squeares as a loss function, however</p>
+<blockquote>
+<div><p>there are many other options (check
+<a class="reference internal" href="../../modules/generated/sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor" title="sklearn.ensemble.GradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradientBoostingRegressor</span></code></a> to see what are
+other possibilities)</p>
+</div></blockquote>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="View documentation for sklearn.model_selection.train_test_split"><span class="n">train_test_split</span></a><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>
+                                                    <span class="n">test_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                                                    <span class="n">random_state</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
 
-<span class="c1"># #############################################################################</span>
-<span class="c1"># Load data</span>
-<span class="n">boston</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.load_boston.html#sklearn.datasets.load_boston" title="View documentation for sklearn.datasets.load_boston"><span class="n">datasets</span><span class="o">.</span><span class="n">load_boston</span></a><span class="p">()</span>
-<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.utils.shuffle.html#sklearn.utils.shuffle" title="View documentation for sklearn.utils.shuffle"><span class="n">shuffle</span></a><span class="p">(</span><span class="n">boston</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">boston</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-<span class="n">offset</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">)</span>
-<span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:</span><span class="n">offset</span><span class="p">],</span> <span class="n">y</span><span class="p">[:</span><span class="n">offset</span><span class="p">]</span>
-<span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">offset</span><span class="p">:],</span> <span class="n">y</span><span class="p">[</span><span class="n">offset</span><span class="p">:]</span>
-
-<span class="c1"># #############################################################################</span>
-<span class="c1"># Fit regression model</span>
-<span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;n_estimators&#39;</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span> <span class="s1">&#39;max_depth&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;min_samples_split&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-          <span class="s1">&#39;learning_rate&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span> <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="s1">&#39;ls&#39;</span><span class="p">}</span>
-<span class="n">clf</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor" title="View documentation for sklearn.ensemble.GradientBoostingRegressor"><span class="n">ensemble</span><span class="o">.</span><span class="n">GradientBoostingRegressor</span></a><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
-
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;n_estimators&#39;</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
+          <span class="s1">&#39;max_depth&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+          <span class="s1">&#39;min_samples_split&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+          <span class="s1">&#39;learning_rate&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+          <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="s1">&#39;ls&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="fit-regression-model">
+<h2>Fit regression model<a class="headerlink" href="#fit-regression-model" title="Permalink to this headline">¶</a></h2>
+<p>Now we will initiate the gradient boosting regressors and fit it with our
+training data. Let’s also look and the mean squared error on the test data.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">clf</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor" title="View documentation for sklearn.ensemble.GradientBoostingRegressor"><span class="n">ensemble</span><span class="o">.</span><span class="n">GradientBoostingRegressor</span></a><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
 <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
 <span class="n">mse</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.metrics.mean_squared_error.html#sklearn.metrics.mean_squared_error" title="View documentation for sklearn.metrics.mean_squared_error"><span class="n">mean_squared_error</span></a><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MSE: </span><span class="si">%.4f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">mse</span><span class="p">)</span>
-
-<span class="c1"># #############################################################################</span>
-<span class="c1"># Plot training deviance</span>
-
-<span class="c1"># compute test set deviance</span>
-<span class="n">test_score</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.zeros.html#numpy.zeros" title="View documentation for numpy.zeros"><span class="n">np</span><span class="o">.</span><span class="n">zeros</span></a><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;n_estimators&#39;</span><span class="p">],),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The mean squared error (MSE) on test set: </span><span class="si">{:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mse</span><span class="p">))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The mean squared error (MSE) on test set: 3017.9419
+</pre></div>
+</div>
+</div>
+<div class="section" id="plot-training-deviance">
+<h2>Plot training deviance<a class="headerlink" href="#plot-training-deviance" title="Permalink to this headline">¶</a></h2>
+<p>Finally, we will visualize the results. To do that we will first compute the
+test set deviance and then plot it.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">test_score</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.zeros.html#numpy.zeros" title="View documentation for numpy.zeros"><span class="n">np</span><span class="o">.</span><span class="n">zeros</span></a><span class="p">((</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;n_estimators&#39;</span><span class="p">],),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">y_pred</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">staged_predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)):</span>
     <span class="n">test_score</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">loss_</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
 
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplot.html#matplotlib.pyplot.subplot" title="View documentation for matplotlib.pyplot.subplot"><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="View documentation for matplotlib.pyplot.title"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s1">&#39;Deviance&#39;</span><span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="View documentation for numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;n_estimators&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">clf</span><span class="o">.</span><span class="n">train_score_</span><span class="p">,</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span>
@@ -225,28 +274,36 @@
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.legend.html#matplotlib.pyplot.legend" title="View documentation for matplotlib.pyplot.legend"><span class="n">plt</span><span class="o">.</span><span class="n">legend</span></a><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="View documentation for matplotlib.pyplot.xlabel"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s1">&#39;Boosting Iterations&#39;</span><span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="View documentation for matplotlib.pyplot.ylabel"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="s1">&#39;Deviance&#39;</span><span class="p">)</span>
-
-<span class="c1"># #############################################################################</span>
-<span class="c1"># Plot impurity-based feature importance</span>
-<span class="c1">#</span>
-<span class="c1"># Warning: impurity-based feature importances can be misleading for</span>
-<span class="c1"># high cardinality features (many unique values). See</span>
-<span class="c1"># :func:`sklearn.inspection.permutation_importance` as an alternative.</span>
-
-<span class="n">feature_importance</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">feature_importances_</span>
+</pre></div>
+</div>
+<img alt="../../_images/sphx_glr_plot_gradient_boosting_regression_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_gradient_boosting_regression_001.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;Deviance&#39;)
+</pre></div>
+</div>
+</div>
+<div class="section" id="plot-impurity-based-feature-importance">
+<h2>Plot impurity-based feature importance<a class="headerlink" href="#plot-impurity-based-feature-importance" title="Permalink to this headline">¶</a></h2>
+<p>Careful, impurity-based feature importances can be misleading for
+high cardinality features (many unique values). See
+<a class="reference internal" href="../../modules/generated/sklearn.inspection.permutation_importance.html#sklearn.inspection.permutation_importance" title="sklearn.inspection.permutation_importance"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.inspection.permutation_importance</span></code></a> as an alternative.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">feature_importance</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">feature_importances_</span>
 <span class="c1"># make importances relative to max importance</span>
 <span class="n">feature_importance</span> <span class="o">=</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">feature_importance</span> <span class="o">/</span> <span class="n">feature_importance</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
 <span class="n">sorted_idx</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.argsort.html#numpy.argsort" title="View documentation for numpy.argsort"><span class="n">np</span><span class="o">.</span><span class="n">argsort</span></a><span class="p">(</span><span class="n">feature_importance</span><span class="p">)</span>
 <span class="n">pos</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="View documentation for numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="n">sorted_idx</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="o">.</span><span class="mi">5</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplot.html#matplotlib.pyplot.subplot" title="View documentation for matplotlib.pyplot.subplot"><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.barh.html#matplotlib.pyplot.barh" title="View documentation for matplotlib.pyplot.barh"><span class="n">plt</span><span class="o">.</span><span class="n">barh</span></a><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">feature_importance</span><span class="p">[</span><span class="n">sorted_idx</span><span class="p">],</span> <span class="n">align</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.yticks.html#matplotlib.pyplot.yticks" title="View documentation for matplotlib.pyplot.yticks"><span class="n">plt</span><span class="o">.</span><span class="n">yticks</span></a><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">boston</span><span class="o">.</span><span class="n">feature_names</span><span class="p">[</span><span class="n">sorted_idx</span><span class="p">])</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.yticks.html#matplotlib.pyplot.yticks" title="View documentation for matplotlib.pyplot.yticks"><span class="n">plt</span><span class="o">.</span><span class="n">yticks</span></a><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">diabetes</span><span class="o">.</span><span class="n">feature_names</span><span class="p">)[</span><span class="n">sorted_idx</span><span class="p">])</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="View documentation for matplotlib.pyplot.xlabel"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s1">&#39;Relative Importance&#39;</span><span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="View documentation for matplotlib.pyplot.title"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s1">&#39;Variable Importance&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.830 seconds)</p>
+<img alt="../../_images/sphx_glr_plot_gradient_boosting_regression_002.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_gradient_boosting_regression_002.png" />
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.774 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-ensemble-plot-gradient-boosting-regression-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/scikit-learn/scikit-learn/master?urlpath=lab/tree/notebooks/auto_examples/ensemble/plot_gradient_boosting_regression.ipynb"><img alt="https://mybinder.org/badge_logo.svg" src="https://mybinder.org/badge_logo.svg" width="150px" /></a>
@@ -259,6 +316,7 @@
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
 </div>
 
 
