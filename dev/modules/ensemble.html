@@ -182,8 +182,9 @@
 <li><a class="reference internal" href="#id25">1.11.5.1. Usage</a></li>
 <li><a class="reference internal" href="#missing-values-support">1.11.5.2. Missing values support</a></li>
 <li><a class="reference internal" href="#sample-weight-support">1.11.5.3. Sample weight support</a></li>
-<li><a class="reference internal" href="#low-level-parallelism">1.11.5.4. Low-level parallelism</a></li>
-<li><a class="reference internal" href="#why-it-s-faster">1.11.5.5. Why it’s faster</a></li>
+<li><a class="reference internal" href="#monotonic-constraints">1.11.5.4. Monotonic Constraints</a></li>
+<li><a class="reference internal" href="#low-level-parallelism">1.11.5.5. Low-level parallelism</a></li>
+<li><a class="reference internal" href="#why-it-s-faster">1.11.5.6. Why it’s faster</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#voting-classifier">1.11.6. Voting Classifier</a><ul>
@@ -1042,7 +1043,7 @@ based on permutation of the features.</p>
 </div>
 <div class="section" id="histogram-based-gradient-boosting">
 <span id="id23"></span><h2>1.11.5. Histogram-Based Gradient Boosting<a class="headerlink" href="#histogram-based-gradient-boosting" title="Permalink to this headline">¶</a></h2>
-<p>Scikit-learn 0.21 introduces two new experimental implementations of
+<p>Scikit-learn 0.21 introduced two new experimental implementations of
 gradient boosting trees, namely <a class="reference internal" href="generated/sklearn.ensemble.HistGradientBoostingClassifier.html#sklearn.ensemble.HistGradientBoostingClassifier" title="sklearn.ensemble.HistGradientBoostingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingClassifier</span></code></a>
 and <a class="reference internal" href="generated/sklearn.ensemble.HistGradientBoostingRegressor.html#sklearn.ensemble.HistGradientBoostingRegressor" title="sklearn.ensemble.HistGradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingRegressor</span></code></a>, inspired by
 <a class="reference external" href="https://github.com/Microsoft/LightGBM">LightGBM</a> (See <a class="reference internal" href="#lightgbm" id="id24"><span>[LightGBM]</span></a>).</p>
@@ -1183,8 +1184,46 @@ multiplying the gradients (and the hessians) by the sample weights. Note that
 the binning stage (specifically the quantiles computation) does not take the
 weights into account.</p>
 </div>
+<div class="section" id="monotonic-constraints">
+<span id="monotonic-cst-gbdt"></span><h3>1.11.5.4. Monotonic Constraints<a class="headerlink" href="#monotonic-constraints" title="Permalink to this headline">¶</a></h3>
+<p>Depending on the problem at hand, you may have prior knowledge indicating
+that a given feature should in general have a positive (or negative) effect
+on the target value. For example, all else being equal, a higher credit
+score should increase the probability of getting approved for a loan.
+Monotonic constraints allow you to incorporate such prior knowledge into the
+model.</p>
+<p>A positive monotonic constraint is a constraint of the form:</p>
+<p><span class="math notranslate nohighlight">\(x_1 \leq x_1' \implies F(x_1, x_2) \leq F(x_1', x_2)\)</span>,
+where <span class="math notranslate nohighlight">\(F\)</span> is the predictor with two features.</p>
+<p>Similarly, a negative monotonic constraint is of the form:</p>
+<p><span class="math notranslate nohighlight">\(x_1 \leq x_1' \implies F(x_1, x_2) \geq F(x_1', x_2)\)</span>.</p>
+<p>Note that monotonic constraints only constraint the output “all else being
+equal”. Indeed, the following relation <strong>is not enforced</strong> by a positive
+constraint: <span class="math notranslate nohighlight">\(x_1 \leq x_1' \implies F(x_1, x_2) \leq F(x_1', x_2')\)</span>.</p>
+<p>You can specify a monotonic constraint on each feature using the
+<code class="docutils literal notranslate"><span class="pre">monotonic_cst</span></code> parameter. For each feature, a value of 0 indicates no
+constraint, while -1 and 1 indicate a negative and positive constraint,
+respectively:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.experimental</span> <span class="kn">import</span> <span class="n">enable_hist_gradient_boosting</span>  <span class="c1"># noqa</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">HistGradientBoostingRegressor</span>
+
+<span class="gp">... </span><span class="c1"># positive, negative, and no constraint on the 3 features</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gbdt</span> <span class="o">=</span> <span class="n">HistGradientBoostingRegressor</span><span class="p">(</span><span class="n">monotonic_cst</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>In a binary classification context, imposing a monotonic constraint means
+that the feature is supposed to have a positive / negative effect on the
+probability to belong to the positive class. Monotonic constraints are not
+supported for multiclass context.</p>
+<div class="topic">
+<p class="topic-title">Examples:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../auto_examples/ensemble/plot_monotonic_constraints.html#sphx-glr-auto-examples-ensemble-plot-monotonic-constraints-py"><span class="std std-ref">Monotonic Constraints</span></a></p></li>
+</ul>
+</div>
+</div>
 <div class="section" id="low-level-parallelism">
-<h3>1.11.5.4. Low-level parallelism<a class="headerlink" href="#low-level-parallelism" title="Permalink to this headline">¶</a></h3>
+<h3>1.11.5.5. Low-level parallelism<a class="headerlink" href="#low-level-parallelism" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference internal" href="generated/sklearn.ensemble.HistGradientBoostingClassifier.html#sklearn.ensemble.HistGradientBoostingClassifier" title="sklearn.ensemble.HistGradientBoostingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingClassifier</span></code></a> and
 <a class="reference internal" href="generated/sklearn.ensemble.HistGradientBoostingRegressor.html#sklearn.ensemble.HistGradientBoostingRegressor" title="sklearn.ensemble.HistGradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingRegressor</span></code></a> have implementations that use OpenMP
 for parallelization through Cython. For more details on how to control the
@@ -1202,7 +1241,7 @@ parallelized over samples</p></li>
 </ul>
 </div>
 <div class="section" id="why-it-s-faster">
-<h3>1.11.5.5. Why it’s faster<a class="headerlink" href="#why-it-s-faster" title="Permalink to this headline">¶</a></h3>
+<h3>1.11.5.6. Why it’s faster<a class="headerlink" href="#why-it-s-faster" title="Permalink to this headline">¶</a></h3>
 <p>The bottleneck of a gradient boosting procedure is building the decision
 trees. Building a traditional decision tree (as in the other GBDTs
 <a class="reference internal" href="generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier" title="sklearn.ensemble.GradientBoostingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradientBoostingClassifier</span></code></a> and <a class="reference internal" href="generated/sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor" title="sklearn.ensemble.GradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradientBoostingRegressor</span></code></a>)
