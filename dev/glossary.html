@@ -1423,22 +1423,26 @@ metrics such as precision and recall.</p>
 generator used.  Note that the mere presence of <code class="docutils literal notranslate"><span class="pre">random_state</span></code> doesn’t
 mean that randomization is always used, as it may be dependent on
 another parameter, e.g. <code class="docutils literal notranslate"><span class="pre">shuffle</span></code>, being set.</p>
-<p><code class="docutils literal notranslate"><span class="pre">random_state</span></code>’s value may be:</p>
+<p>The passed value will have an effect on the reproducibility of the
+results returned by the function (<a class="reference internal" href="#term-fit"><span class="xref std std-term">fit</span></a>, <a class="reference internal" href="#term-split"><span class="xref std std-term">split</span></a>, or any
+other function like <a class="reference internal" href="modules/generated/sklearn.cluster.k_means.html#sklearn.cluster.k_means" title="sklearn.cluster.k_means"><code class="xref py py-func docutils literal notranslate"><span class="pre">k_means</span></code></a>). <code class="docutils literal notranslate"><span class="pre">random_state</span></code>’s
+value may be:</p>
 <dl class="simple">
-<dt>None (default)</dt><dd><p>Use the global random state from <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/random/index.html#module-numpy.random" title="(in NumPy v1.17)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy.random</span></code></a>.</p>
+<dt>None (default)</dt><dd><p>Use the global random state instance from <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/random/index.html#module-numpy.random" title="(in NumPy v1.17)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy.random</span></code></a>.
+Calling the function multiple times will reuse
+the same instance, and will produce different results.</p>
 </dd>
 <dt>An integer</dt><dd><p>Use a new random number generator seeded by the given integer.
-To make a randomized algorithm deterministic (i.e. running it
-multiple times will produce the same result), an arbitrary
-integer <code class="docutils literal notranslate"><span class="pre">random_state</span></code> can be used. However, it may be
+Using an int will produce the same results across different calls.
+However, it may be
 worthwhile checking that your results are stable across a
 number of different distinct random seeds. Popular integer
 random seeds are 0 and <a class="reference external" href="https://en.wikipedia.org/wiki/Answer_to_the_Ultimate_Question_of_Life%2C_the_Universe%2C_and_Everything">42</a>.</p>
 </dd>
 <dt>A <code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.random.RandomState</span></code> instance</dt><dd><p>Use the provided random state, only affecting other users
-of the same random state instance. Calling fit multiple times
-will reuse the same instance, and will produce different
-results.</p>
+of that same random state instance. Calling the function
+multiple times will reuse the same instance, and
+will produce different results.</p>
 </dd>
 </dl>
 <p><a class="reference internal" href="modules/generated/sklearn.utils.check_random_state.html#sklearn.utils.check_random_state" title="sklearn.utils.check_random_state"><code class="xref py py-func docutils literal notranslate"><span class="pre">utils.check_random_state</span></code></a> is used internally to validate the
