@@ -367,7 +367,7 @@ $ cd scikit-learn
 </div>
 </li>
 <li><p>Install the development dependencies:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install cython pytest pytest-cov flake8
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install cython pytest pytest-cov flake8 mypy
 </pre></div>
 </div>
 </li>
@@ -551,6 +551,22 @@ $ pytest --cov sklearn path/to/tests_for_package
 </pre></div>
 </div>
 <p>see also <a class="reference internal" href="#testing-coverage"><span class="std std-ref">Testing and improving test coverage</span></a></p>
+</li>
+<li><p>A moderate use of type annotations is encouraged but is not mandatory. See
+[mypy quickstart](<a class="reference external" href="https://mypy.readthedocs.io/en/latest/getting_started.html">https://mypy.readthedocs.io/en/latest/getting_started.html</a>)
+for an introduction, as well as [pandas contributing documentation](
+<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/development/contributing.html#type-hints">https://pandas.pydata.org/pandas-docs/stable/development/contributing.html#type-hints</a>)
+for style guidelines. Whether you add type annotation or not:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mypy</span> <span class="o">--</span><span class="n">ignore</span><span class="o">-</span><span class="n">missing</span><span class="o">-</span><span class="kn">import</span> <span class="nn">sklearn</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt>must not produce new errors in your pull request. Using <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">type:</span> <span class="pre">ignore</span></code> annotation can be a workaround for a few cases that are not supported by mypy, in particular,</dt><dd><ul class="simple">
+<li><p>when importing C or Cython modules</p></li>
+<li><p>on properties with decorators</p></li>
+</ul>
+</dd>
+</dl>
 </li>
 </ul>
 <p>Bonus points for contributions that include a performance analysis with
