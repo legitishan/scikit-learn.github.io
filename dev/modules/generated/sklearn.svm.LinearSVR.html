@@ -162,7 +162,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.svm" title="sklearn.svm"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.svm</span></code></a>.LinearSVR<a class="headerlink" href="#sklearn-svm-linearsvr" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="sklearn.svm.LinearSVR">
-<em class="property">class </em><code class="sig-prename descclassname">sklearn.svm.</code><code class="sig-name descname">LinearSVR</code><span class="sig-paren">(</span><em class="sig-param">epsilon=0.0</em>, <em class="sig-param">tol=0.0001</em>, <em class="sig-param">C=1.0</em>, <em class="sig-param">loss='epsilon_insensitive'</em>, <em class="sig-param">fit_intercept=True</em>, <em class="sig-param">intercept_scaling=1.0</em>, <em class="sig-param">dual=True</em>, <em class="sig-param">verbose=0</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">max_iter=1000</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/fc3601eac/sklearn/svm/_classes.py#L239"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.LinearSVR" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sklearn.svm.</code><code class="sig-name descname">LinearSVR</code><span class="sig-paren">(</span><em class="sig-param">epsilon=0.0</em>, <em class="sig-param">tol=0.0001</em>, <em class="sig-param">C=1.0</em>, <em class="sig-param">loss='epsilon_insensitive'</em>, <em class="sig-param">fit_intercept=True</em>, <em class="sig-param">intercept_scaling=1.0</em>, <em class="sig-param">dual=True</em>, <em class="sig-param">verbose=0</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">max_iter=1000</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e3e913781/sklearn/svm/_classes.py#L245"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.LinearSVR" title="Permalink to this definition">¶</a></dt>
 <dd><p>Linear Support Vector Regression.</p>
 <p>Similar to SVR with parameter kernel=’linear’, but implemented in terms of
 liblinear rather than libsvm, so it has more flexibility in the choice of
@@ -245,17 +245,23 @@ follows the internal memory layout of liblinear.</p>
 </div>
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">LinearSVR</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">make_pipeline</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_regression</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_regression</span><span class="p">(</span><span class="n">n_features</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">regr</span> <span class="o">=</span> <span class="n">LinearSVR</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">regr</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">(),</span>
+<span class="gp">... </span>                     <span class="n">LinearSVR</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">regr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="go">LinearSVR(random_state=0, tol=1e-05)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">regr</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span>
-<span class="go">[16.35... 26.91... 42.30... 60.47...]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">regr</span><span class="o">.</span><span class="n">intercept_</span><span class="p">)</span>
-<span class="go">[-4.29...]</span>
+<span class="go">Pipeline(steps=[(&#39;standardscaler&#39;, StandardScaler()),</span>
+<span class="go">                (&#39;linearsvr&#39;, LinearSVR(random_state=0, tol=1e-05))])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">regr</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s1">&#39;linearsvr&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span>
+<span class="go">[18.582... 27.023... 44.357... 64.522...]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">regr</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s1">&#39;linearsvr&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">intercept_</span><span class="p">)</span>
+<span class="go">[-4...]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">regr</span><span class="o">.</span><span class="n">predict</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]))</span>
-<span class="go">[-4.29...]</span>
+<span class="go">[-2.384...]</span>
 </pre></div>
 </div>
 <p class="rubric">Methods</p>
@@ -284,13 +290,13 @@ follows the internal memory layout of liblinear.</p>
 </table>
 <dl class="method">
 <dt id="sklearn.svm.LinearSVR.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">epsilon=0.0</em>, <em class="sig-param">tol=0.0001</em>, <em class="sig-param">C=1.0</em>, <em class="sig-param">loss='epsilon_insensitive'</em>, <em class="sig-param">fit_intercept=True</em>, <em class="sig-param">intercept_scaling=1.0</em>, <em class="sig-param">dual=True</em>, <em class="sig-param">verbose=0</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">max_iter=1000</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/fc3601eac/sklearn/svm/_classes.py#L355"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.LinearSVR.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">epsilon=0.0</em>, <em class="sig-param">tol=0.0001</em>, <em class="sig-param">C=1.0</em>, <em class="sig-param">loss='epsilon_insensitive'</em>, <em class="sig-param">fit_intercept=True</em>, <em class="sig-param">intercept_scaling=1.0</em>, <em class="sig-param">dual=True</em>, <em class="sig-param">verbose=0</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">max_iter=1000</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e3e913781/sklearn/svm/_classes.py#L367"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.LinearSVR.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="sklearn.svm.LinearSVR.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/fc3601eac/sklearn/svm/_classes.py#L370"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.LinearSVR.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e3e913781/sklearn/svm/_classes.py#L382"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.LinearSVR.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the model according to the given training data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -317,7 +323,7 @@ then each sample is given unit weight.</p>
 
 <dl class="method">
 <dt id="sklearn.svm.LinearSVR.get_params">
-<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/fc3601eac/sklearn/base.py#L183"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.LinearSVR.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e3e913781/sklearn/base.py#L183"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.LinearSVR.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -338,7 +344,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.svm.LinearSVR.predict">
-<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/fc3601eac/sklearn/linear_model/_base.py#L221"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.LinearSVR.predict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e3e913781/sklearn/linear_model/_base.py#L221"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.LinearSVR.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Predict using the linear model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -358,7 +364,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.svm.LinearSVR.score">
-<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/fc3601eac/sklearn/base.py#L452"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.LinearSVR.score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e3e913781/sklearn/base.py#L452"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.LinearSVR.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the coefficient of determination R^2 of the prediction.</p>
 <p>The coefficient R^2 is defined as (1 - u/v), where u is the residual
 sum of squares ((y_true - y_pred) ** 2).sum() and v is the total
@@ -400,7 +406,7 @@ regressors (except for
 
 <dl class="method">
 <dt id="sklearn.svm.LinearSVR.set_params">
-<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/fc3601eac/sklearn/base.py#L215"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.LinearSVR.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e3e913781/sklearn/base.py#L215"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.LinearSVR.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form

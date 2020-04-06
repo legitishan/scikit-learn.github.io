@@ -165,7 +165,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.svm" title="sklearn.svm"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.svm</span></code></a>.NuSVC<a class="headerlink" href="#sklearn-svm-nusvc" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="sklearn.svm.NuSVC">
-<em class="property">class </em><code class="sig-prename descclassname">sklearn.svm.</code><code class="sig-name descname">NuSVC</code><span class="sig-paren">(</span><em class="sig-param">nu=0.5</em>, <em class="sig-param">kernel='rbf'</em>, <em class="sig-param">degree=3</em>, <em class="sig-param">gamma='scale'</em>, <em class="sig-param">coef0=0.0</em>, <em class="sig-param">shrinking=True</em>, <em class="sig-param">probability=False</em>, <em class="sig-param">tol=0.001</em>, <em class="sig-param">cache_size=200</em>, <em class="sig-param">class_weight=None</em>, <em class="sig-param">verbose=False</em>, <em class="sig-param">max_iter=-1</em>, <em class="sig-param">decision_function_shape='ovr'</em>, <em class="sig-param">break_ties=False</em>, <em class="sig-param">random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/fc3601eac/sklearn/svm/_classes.py#L627"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.NuSVC" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sklearn.svm.</code><code class="sig-name descname">NuSVC</code><span class="sig-paren">(</span><em class="sig-param">nu=0.5</em>, <em class="sig-param">kernel='rbf'</em>, <em class="sig-param">degree=3</em>, <em class="sig-param">gamma='scale'</em>, <em class="sig-param">coef0=0.0</em>, <em class="sig-param">shrinking=True</em>, <em class="sig-param">probability=False</em>, <em class="sig-param">tol=0.001</em>, <em class="sig-param">cache_size=200</em>, <em class="sig-param">class_weight=None</em>, <em class="sig-param">verbose=False</em>, <em class="sig-param">max_iter=-1</em>, <em class="sig-param">decision_function_shape='ovr'</em>, <em class="sig-param">break_ties=False</em>, <em class="sig-param">random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e3e913781/sklearn/svm/_classes.py#L647"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.NuSVC" title="Permalink to this definition">¶</a></dt>
 <dd><p>Nu-Support Vector Classification.</p>
 <p>Similar to SVC but uses a parameter to control the number of support
 vectors.</p>
@@ -174,9 +174,8 @@ vectors.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>nu</strong><span class="classifier">float, default=0.5</span></dt><dd><p>An upper bound on the fraction of training errors and a lower
-bound of the fraction of support vectors. Should be in the
-interval (0, 1].</p>
+<dt><strong>nu</strong><span class="classifier">float, default=0.5</span></dt><dd><p>An upper bound on the fraction of margin errors (see <a class="reference internal" href="../svm.html#nu-svc"><span class="std std-ref">User Guide</span></a>) and a lower bound of the fraction of support vectors.
+Should be in the interval (0, 1].</p>
 </dd>
 <dt><strong>kernel</strong><span class="classifier">{‘linear’, ‘poly’, ‘rbf’, ‘sigmoid’, ‘precomputed’}, default=’rbf’</span></dt><dd><p>Specifies the kernel type to be used in the algorithm.
 It must be one of ‘linear’, ‘poly’, ‘rbf’, ‘sigmoid’, ‘precomputed’ or
@@ -200,7 +199,8 @@ Ignored by all other kernels.</p>
 <dt><strong>coef0</strong><span class="classifier">float, default=0.0</span></dt><dd><p>Independent term in kernel function.
 It is only significant in ‘poly’ and ‘sigmoid’.</p>
 </dd>
-<dt><strong>shrinking</strong><span class="classifier">bool, default=True</span></dt><dd><p>Whether to use the shrinking heuristic.</p>
+<dt><strong>shrinking</strong><span class="classifier">bool, default=True</span></dt><dd><p>Whether to use the shrinking heuristic.
+See the <a class="reference internal" href="../svm.html#shrinking-svm"><span class="std std-ref">User Guide</span></a>.</p>
 </dd>
 <dt><strong>probability</strong><span class="classifier">bool, default=False</span></dt><dd><p>Whether to enable probability estimates. This must be enabled prior
 to calling <code class="docutils literal notranslate"><span class="pre">fit</span></code>, will slow down that method as it internally uses
@@ -226,7 +226,9 @@ properly in a multithreaded context.</p>
 <dt><strong>decision_function_shape</strong><span class="classifier">{‘ovo’, ‘ovr’}, default=’ovr’</span></dt><dd><p>Whether to return a one-vs-rest (‘ovr’) decision function of shape
 (n_samples, n_classes) as all other classifiers, or the original
 one-vs-one (‘ovo’) decision function of libsvm which has shape
-(n_samples, n_classes * (n_classes - 1) / 2).</p>
+(n_samples, n_classes * (n_classes - 1) / 2). However, one-vs-one
+(‘ovo’) is always used as multi-class strategy. The parameter is
+ignored for binary classification.</p>
 <div class="versionchanged">
 <p><span class="versionmodified changed">Changed in version 0.19: </span>decision_function_shape is ‘ovr’ by default.</p>
 </div>
@@ -247,7 +249,7 @@ relatively high computational cost compared to a simple predict.</p>
 </div>
 </dd>
 <dt><strong>random_state</strong><span class="classifier">int or RandomState instance, default=None</span></dt><dd><p>Controls the pseudo random number generation for shuffling the data for
-probability estimates.
+probability estimates. Ignored when <code class="docutils literal notranslate"><span class="pre">probability</span></code> is False.
 Pass an int for reproducible output across multiple function calls.
 See <a class="reference internal" href="../../glossary.html#term-random-state"><span class="xref std std-term">Glossary</span></a>.</p>
 </dd>
@@ -261,11 +263,12 @@ See <a class="reference internal" href="../../glossary.html#term-random-state"><
 </dd>
 <dt><strong>n_support_</strong><span class="classifier">ndarray of shape (n_class), dtype=int32</span></dt><dd><p>Number of support vectors for each class.</p>
 </dd>
-<dt><strong>dual_coef_</strong><span class="classifier">ndarray of shape (n_class-1, n_SV)</span></dt><dd><p>Coefficients of the support vector in the decision function.
+<dt><strong>dual_coef_</strong><span class="classifier">ndarray of shape (n_class-1, n_SV)</span></dt><dd><p>Dual coefficients of the support vector in the decision
+function (see <a class="reference internal" href="../sgd.html#sgd-mathematical-formulation"><span class="std std-ref">Mathematical formulation</span></a>), multiplied by
+their targets.
 For multiclass, coefficient for all 1-vs-1 classifiers.
 The layout of the coefficients in the multiclass case is somewhat
-non-trivial. See the section about multi-class classification in
-the SVM section of the User Guide for details.</p>
+non-trivial. See the <a class="reference internal" href="../svm.html#svm-multi-class"><span class="std std-ref">multi-class section of the User Guide</span></a> for details.</p>
 </dd>
 <dt><strong>coef_</strong><span class="classifier">ndarray of shape (n_class * (n_class-1) / 2, n_features)</span></dt><dd><p>Weights assigned to the features (coefficients in the primal
 problem). This is only available in the case of a linear kernel.</p>
@@ -319,10 +322,12 @@ machines and comparison to regularizedlikelihood methods.”</a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">make_pipeline</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">NuSVC</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">NuSVC</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">(),</span> <span class="n">NuSVC</span><span class="p">())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="go">NuSVC()</span>
+<span class="go">Pipeline(steps=[(&#39;standardscaler&#39;, StandardScaler()), (&#39;nusvc&#39;, NuSVC())])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">([[</span><span class="o">-</span><span class="mf">0.8</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]]))</span>
 <span class="go">[1]</span>
 </pre></div>
@@ -356,13 +361,13 @@ machines and comparison to regularizedlikelihood methods.”</a></p>
 </table>
 <dl class="method">
 <dt id="sklearn.svm.NuSVC.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">nu=0.5</em>, <em class="sig-param">kernel='rbf'</em>, <em class="sig-param">degree=3</em>, <em class="sig-param">gamma='scale'</em>, <em class="sig-param">coef0=0.0</em>, <em class="sig-param">shrinking=True</em>, <em class="sig-param">probability=False</em>, <em class="sig-param">tol=0.001</em>, <em class="sig-param">cache_size=200</em>, <em class="sig-param">class_weight=None</em>, <em class="sig-param">verbose=False</em>, <em class="sig-param">max_iter=-1</em>, <em class="sig-param">decision_function_shape='ovr'</em>, <em class="sig-param">break_ties=False</em>, <em class="sig-param">random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/fc3601eac/sklearn/svm/_classes.py#L814"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.NuSVC.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">nu=0.5</em>, <em class="sig-param">kernel='rbf'</em>, <em class="sig-param">degree=3</em>, <em class="sig-param">gamma='scale'</em>, <em class="sig-param">coef0=0.0</em>, <em class="sig-param">shrinking=True</em>, <em class="sig-param">probability=False</em>, <em class="sig-param">tol=0.001</em>, <em class="sig-param">cache_size=200</em>, <em class="sig-param">class_weight=None</em>, <em class="sig-param">verbose=False</em>, <em class="sig-param">max_iter=-1</em>, <em class="sig-param">decision_function_shape='ovr'</em>, <em class="sig-param">break_ties=False</em>, <em class="sig-param">random_state=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e3e913781/sklearn/svm/_classes.py#L841"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.NuSVC.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="sklearn.svm.NuSVC.decision_function">
-<code class="sig-name descname">decision_function</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/fc3601eac/sklearn/svm/_base.py#L555"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.NuSVC.decision_function" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">decision_function</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e3e913781/sklearn/svm/_base.py#L556"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.NuSVC.decision_function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluates the decision function for the samples in X.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -391,12 +396,12 @@ transformation of ovo decision function.</p>
 
 <dl class="method">
 <dt id="sklearn.svm.NuSVC.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/fc3601eac/sklearn/svm/_base.py#L110"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.NuSVC.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e3e913781/sklearn/svm/_base.py#L110"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.NuSVC.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the SVM model according to the given training data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Training vectors, where n_samples is the number of samples
+<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)                 or (n_samples, n_samples)</span></dt><dd><p>Training vectors, where n_samples is the number of samples
 and n_features is the number of features.
 For kernel=”precomputed”, the expected shape of X is
 (n_samples, n_samples).</p>
@@ -424,7 +429,7 @@ matrices as input.</p>
 
 <dl class="method">
 <dt id="sklearn.svm.NuSVC.get_params">
-<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/fc3601eac/sklearn/base.py#L183"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.NuSVC.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e3e913781/sklearn/base.py#L183"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.NuSVC.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -445,7 +450,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.svm.NuSVC.predict">
-<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/fc3601eac/sklearn/svm/_base.py#L586"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.NuSVC.predict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e3e913781/sklearn/svm/_base.py#L587"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.NuSVC.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform classification on samples in X.</p>
 <p>For an one-class model, +1 or -1 is returned.</p>
 <dl class="field-list simple">
@@ -527,7 +532,7 @@ datasets.</p>
 
 <dl class="method">
 <dt id="sklearn.svm.NuSVC.score">
-<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/fc3601eac/sklearn/base.py#L420"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.NuSVC.score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">sample_weight=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e3e913781/sklearn/base.py#L420"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.NuSVC.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the mean accuracy on the given test data and labels.</p>
 <p>In multi-label classification, this is the subset accuracy
 which is a harsh metric since you require for each sample that
@@ -554,7 +559,7 @@ each label set be correctly predicted.</p>
 
 <dl class="method">
 <dt id="sklearn.svm.NuSVC.set_params">
-<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/fc3601eac/sklearn/base.py#L215"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.NuSVC.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/e3e913781/sklearn/base.py#L215"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.NuSVC.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
