@@ -162,17 +162,24 @@
 <h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.utils.estimator_checks</span></code>.check_estimator<a class="headerlink" href="#sklearn-utils-estimator-checks-check-estimator" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.utils.estimator_checks.check_estimator">
-<code class="sig-prename descclassname">sklearn.utils.estimator_checks.</code><code class="sig-name descname">check_estimator</code><span class="sig-paren">(</span><em class="sig-param">Estimator</em>, <em class="sig-param">generate_only=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7a77214c3/sklearn/utils/estimator_checks.py#L418"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.utils.estimator_checks.check_estimator" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sklearn.utils.estimator_checks.</code><code class="sig-name descname">check_estimator</code><span class="sig-paren">(</span><em class="sig-param">Estimator</em>, <em class="sig-param">generate_only=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2d03d781a/sklearn/utils/estimator_checks.py#L428"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.utils.estimator_checks.check_estimator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if estimator adheres to scikit-learn conventions.</p>
 <p>This estimator will run an extensive test-suite for input validation,
-shapes, etc.
+shapes, etc, making sure that the estimator complies with <code class="docutils literal notranslate"><span class="pre">scikit-leanrn</span></code>
+conventions as detailed in <a class="reference internal" href="../../developers/develop.html#rolling-your-own-estimator"><span class="std std-ref">Rolling your own estimator</span></a>.
 Additional tests for classifiers, regressors, clustering or transformers
 will be run if the Estimator class inherits from the corresponding mixin
 from sklearn.base.</p>
 <p>This test can be applied to classes or instances.
 Classes currently have some additional tests that related to construction,
 while passing instances allows the testing of multiple options.</p>
-<p>Read more in <a class="reference internal" href="../../developers/develop.html#rolling-your-own-estimator"><span class="std std-ref">Rolling your own estimator</span></a>.</p>
+<p>Setting <code class="docutils literal notranslate"><span class="pre">generate_only=True</span></code> returns a generator that yields (estimator,
+check) tuples where the check can be called independently from each
+other, i.e. <code class="docutils literal notranslate"><span class="pre">check(estimator)</span></code>. This allows all checks to be run
+independently and report the checks that are failing.</p>
+<p>scikit-learn provides a pytest specific decorator,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">parametrize_with_checks</span></code>, making it easier to test
+multiple estimators.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
