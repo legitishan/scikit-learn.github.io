@@ -162,7 +162,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.inspection" title="sklearn.inspection"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.inspection</span></code></a>.PartialDependenceDisplay<a class="headerlink" href="#sklearn-inspection-partialdependencedisplay" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="sklearn.inspection.PartialDependenceDisplay">
-<em class="property">class </em><code class="sig-prename descclassname">sklearn.inspection.</code><code class="sig-name descname">PartialDependenceDisplay</code><span class="sig-paren">(</span><em class="sig-param">pd_results</em>, <em class="sig-param">*</em>, <em class="sig-param">features</em>, <em class="sig-param">feature_names</em>, <em class="sig-param">target_idx</em>, <em class="sig-param">pdp_lim</em>, <em class="sig-param">deciles</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/dc0cc6e9b/sklearn/inspection/_plot/partial_dependence.py#L337"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.inspection.PartialDependenceDisplay" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sklearn.inspection.</code><code class="sig-name descname">PartialDependenceDisplay</code><span class="sig-paren">(</span><em class="sig-param">pd_results</em>, <em class="sig-param">*</em>, <em class="sig-param">features</em>, <em class="sig-param">feature_names</em>, <em class="sig-param">target_idx</em>, <em class="sig-param">pdp_lim</em>, <em class="sig-param">deciles</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/b4757f7fe/sklearn/inspection/_plot/partial_dependence.py#L337"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.inspection.PartialDependenceDisplay" title="Permalink to this definition">¶</a></dt>
 <dd><p>Partial Dependence Plot (PDP) visualization.</p>
 <p>It is recommended to use
 <a class="reference internal" href="sklearn.inspection.plot_partial_dependence.html#sklearn.inspection.plot_partial_dependence" title="sklearn.inspection.plot_partial_dependence"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_partial_dependence</span></code></a> to create a
@@ -214,19 +214,33 @@ or a numpy array of axes, <code class="docutils literal notranslate"><span class
 </dd>
 <dt><strong>axes_</strong><span class="classifier">ndarray of matplotlib Axes</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">ax</span></code> is an axes or None, <code class="docutils literal notranslate"><span class="pre">axes_[i,</span> <span class="pre">j]</span></code> is the axes on the i-th row
 and j-th column. If <code class="docutils literal notranslate"><span class="pre">ax</span></code> is a list of axes, <code class="docutils literal notranslate"><span class="pre">axes_[i]</span></code> is the i-th item
-in <code class="docutils literal notranslate"><span class="pre">ax</span></code>. Elements that are None corresponds to a nonexisting axes in
+in <code class="docutils literal notranslate"><span class="pre">ax</span></code>. Elements that are None correspond to a nonexisting axes in
 that position.</p>
 </dd>
-<dt><strong>lines_</strong><span class="classifier">ndarray of matplotlib Artists</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">ax</span></code> is an axes or None, <code class="docutils literal notranslate"><span class="pre">line_[i,</span> <span class="pre">j]</span></code> is the partial dependence
+<dt><strong>lines_</strong><span class="classifier">ndarray of matplotlib Artists</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">ax</span></code> is an axes or None, <code class="docutils literal notranslate"><span class="pre">lines_[i,</span> <span class="pre">j]</span></code> is the partial dependence
 curve on the i-th row and j-th column. If <code class="docutils literal notranslate"><span class="pre">ax</span></code> is a list of axes,
 <code class="docutils literal notranslate"><span class="pre">lines_[i]</span></code> is the partial dependence curve corresponding to the i-th
-item in <code class="docutils literal notranslate"><span class="pre">ax</span></code>. Elements that are None corresponds to a nonexisting axes
+item in <code class="docutils literal notranslate"><span class="pre">ax</span></code>. Elements that are None correspond to a nonexisting axes
 or an axes that does not include a line plot.</p>
+</dd>
+<dt><strong>deciles_vlines_</strong><span class="classifier">ndarray of matplotlib LineCollection</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">ax</span></code> is an axes or None, <code class="docutils literal notranslate"><span class="pre">vlines_[i,</span> <span class="pre">j]</span></code> is the line collection
+representing the x axis deciles of the i-th row and j-th column. If
+<code class="docutils literal notranslate"><span class="pre">ax</span></code> is a list of axes, <code class="docutils literal notranslate"><span class="pre">vlines_[i]</span></code> corresponds to the i-th item in
+<code class="docutils literal notranslate"><span class="pre">ax</span></code>. Elements that are None correspond to a nonexisting axes or an
+axes that does not include a PDP plot.
+.. versionadded:: 0.23</p>
+</dd>
+<dt><strong>deciles_hlines_</strong><span class="classifier">ndarray of matplotlib LineCollection</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">ax</span></code> is an axes or None, <code class="docutils literal notranslate"><span class="pre">vlines_[i,</span> <span class="pre">j]</span></code> is the line collection
+representing the y axis deciles of the i-th row and j-th column. If
+<code class="docutils literal notranslate"><span class="pre">ax</span></code> is a list of axes, <code class="docutils literal notranslate"><span class="pre">vlines_[i]</span></code> corresponds to the i-th item in
+<code class="docutils literal notranslate"><span class="pre">ax</span></code>. Elements that are None correspond to a nonexisting axes or an
+axes that does not include a 2-way plot.
+.. versionadded:: 0.23</p>
 </dd>
 <dt><strong>contours_</strong><span class="classifier">ndarray of matplotlib Artists</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">ax</span></code> is an axes or None, <code class="docutils literal notranslate"><span class="pre">contours_[i,</span> <span class="pre">j]</span></code> is the partial dependence
 plot on the i-th row and j-th column. If <code class="docutils literal notranslate"><span class="pre">ax</span></code> is a list of axes,
 <code class="docutils literal notranslate"><span class="pre">contours_[i]</span></code> is the partial dependence plot corresponding to the i-th
-item in <code class="docutils literal notranslate"><span class="pre">ax</span></code>. Elements that are None corresponds to a nonexisting axes
+item in <code class="docutils literal notranslate"><span class="pre">ax</span></code>. Elements that are None correspond to a nonexisting axes
 or an axes that does not include a contour plot.</p>
 </dd>
 <dt><strong>figure_</strong><span class="classifier">matplotlib Figure</span></dt><dd><p>Figure containing partial dependence plots.</p>
@@ -248,13 +262,13 @@ or an axes that does not include a contour plot.</p>
 </table>
 <dl class="method">
 <dt id="sklearn.inspection.PartialDependenceDisplay.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">pd_results</em>, <em class="sig-param">*</em>, <em class="sig-param">features</em>, <em class="sig-param">feature_names</em>, <em class="sig-param">target_idx</em>, <em class="sig-param">pdp_lim</em>, <em class="sig-param">deciles</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/dc0cc6e9b/sklearn/utils/validation.py#L415"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.inspection.PartialDependenceDisplay.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">pd_results</em>, <em class="sig-param">*</em>, <em class="sig-param">features</em>, <em class="sig-param">feature_names</em>, <em class="sig-param">target_idx</em>, <em class="sig-param">pdp_lim</em>, <em class="sig-param">deciles</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/b4757f7fe/sklearn/utils/validation.py#L430"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.inspection.PartialDependenceDisplay.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="sklearn.inspection.PartialDependenceDisplay.plot">
-<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">n_cols=3</em>, <em class="sig-param">line_kw=None</em>, <em class="sig-param">contour_kw=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/dc0cc6e9b/sklearn/inspection/_plot/partial_dependence.py#L425"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.inspection.PartialDependenceDisplay.plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">n_cols=3</em>, <em class="sig-param">line_kw=None</em>, <em class="sig-param">contour_kw=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/b4757f7fe/sklearn/inspection/_plot/partial_dependence.py#L440"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.inspection.PartialDependenceDisplay.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot partial dependence plots.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
