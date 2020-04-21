@@ -556,15 +556,14 @@ normalizing the vectors. <a class="reference external" href="https://github.com/
 <li><p><span class="raw-html"><span class="badge badge-danger">Fix</span></span>  <span class="raw-html"><span class="badge badge-info">Efficiency</span></span>  Improved <code class="docutils literal notranslate"><span class="pre">libsvm</span></code> and <code class="docutils literal notranslate"><span class="pre">liblinear</span></code> random number
 generators used to randomly select coordinates in the coordinate descent
 algorithms. Platform-dependent C <code class="docutils literal notranslate"><span class="pre">rand()</span></code> was used, which is only able to
-generate numbers up to <code class="docutils literal notranslate"><span class="pre">32767</span></code> on windows platform (see this <code class="docutils literal notranslate"><span class="pre">blog</span>
-<span class="pre">post</span> <span class="pre">&lt;https://codeforces.com/blog/entry/61587&gt;</span></code>) and also has poor
-randomization power as suggested by <code class="docutils literal notranslate"><span class="pre">this</span> <span class="pre">presentation</span>
-<span class="pre">&lt;https://channel9.msdn.com/Events/GoingNative/2013/rand-Considered-Harmful&gt;</span></code>.
+generate numbers up to <code class="docutils literal notranslate"><span class="pre">32767</span></code> on windows platform (see this <a class="reference external" href="https://codeforces.com/blog/entry/61587">blog
+post</a>) and also has poor
+randomization power as suggested by <a class="reference external" href="https://channel9.msdn.com/Events/GoingNative/2013/rand-Considered-Harmful">this presentation</a>.
 It was replaced with C++11 <code class="docutils literal notranslate"><span class="pre">mt19937</span></code>, a Mersenne Twister that correctly
 generates 31bits/63bits random numbers on all platforms. In addition, the
 crude “modulo” postprocessor used to get a random number in a bounded
-interval was replaced by the tweaked Lemire method as suggested by <code class="docutils literal notranslate"><span class="pre">this</span> <span class="pre">blog</span>
-<span class="pre">post</span> <span class="pre">&lt;http://www.pcg-random.org/posts/bounded-rands.html&gt;</span></code>.
+interval was replaced by the tweaked Lemire method as suggested by <a class="reference external" href="http://www.pcg-random.org/posts/bounded-rands.html">this blog
+post</a>.
 Any model using the <code class="xref py py-func docutils literal notranslate"><span class="pre">svm.libsvm</span></code> or the <code class="xref py py-func docutils literal notranslate"><span class="pre">svm.liblinear</span></code> solver,
 including <a class="reference internal" href="../modules/generated/sklearn.svm.LinearSVC.html#sklearn.svm.LinearSVC" title="sklearn.svm.LinearSVC"><code class="xref py py-class docutils literal notranslate"><span class="pre">svm.LinearSVC</span></code></a>, <a class="reference internal" href="../modules/generated/sklearn.svm.LinearSVR.html#sklearn.svm.LinearSVR" title="sklearn.svm.LinearSVR"><code class="xref py py-class docutils literal notranslate"><span class="pre">svm.LinearSVR</span></code></a>,
 <a class="reference internal" href="../modules/generated/sklearn.svm.NuSVC.html#sklearn.svm.NuSVC" title="sklearn.svm.NuSVC"><code class="xref py py-class docutils literal notranslate"><span class="pre">svm.NuSVC</span></code></a>, <a class="reference internal" href="../modules/generated/sklearn.svm.NuSVR.html#sklearn.svm.NuSVR" title="sklearn.svm.NuSVR"><code class="xref py py-class docutils literal notranslate"><span class="pre">svm.NuSVR</span></code></a>, <a class="reference internal" href="../modules/generated/sklearn.svm.OneClassSVM.html#sklearn.svm.OneClassSVM" title="sklearn.svm.OneClassSVM"><code class="xref py py-class docutils literal notranslate"><span class="pre">svm.OneClassSVM</span></code></a>,
