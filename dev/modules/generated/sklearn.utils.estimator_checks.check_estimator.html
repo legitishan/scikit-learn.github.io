@@ -162,17 +162,19 @@
 <h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.utils.estimator_checks</span></code>.check_estimator<a class="headerlink" href="#sklearn-utils-estimator-checks-check-estimator" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.utils.estimator_checks.check_estimator">
-<code class="sig-prename descclassname">sklearn.utils.estimator_checks.</code><code class="sig-name descname">check_estimator</code><span class="sig-paren">(</span><em class="sig-param">Estimator</em>, <em class="sig-param">generate_only=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/28c08d06f/sklearn/utils/estimator_checks.py#L417"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.utils.estimator_checks.check_estimator" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sklearn.utils.estimator_checks.</code><code class="sig-name descname">check_estimator</code><span class="sig-paren">(</span><em class="sig-param">Estimator</em>, <em class="sig-param">generate_only=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/964c83032/sklearn/utils/estimator_checks.py#L434"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.utils.estimator_checks.check_estimator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if estimator adheres to scikit-learn conventions.</p>
 <p>This estimator will run an extensive test-suite for input validation,
-shapes, etc, making sure that the estimator complies with <code class="docutils literal notranslate"><span class="pre">scikit-leanrn</span></code>
+shapes, etc, making sure that the estimator complies with <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>
 conventions as detailed in <a class="reference internal" href="../../developers/develop.html#rolling-your-own-estimator"><span class="std std-ref">Rolling your own estimator</span></a>.
 Additional tests for classifiers, regressors, clustering or transformers
 will be run if the Estimator class inherits from the corresponding mixin
 from sklearn.base.</p>
 <p>This test can be applied to classes or instances.
 Classes currently have some additional tests that related to construction,
-while passing instances allows the testing of multiple options.</p>
+while passing instances allows the testing of multiple options. However,
+support for classes is deprecated since version 0.23 and will be removed
+in version 0.24 (class checks will still be run on the instances).</p>
 <p>Setting <code class="docutils literal notranslate"><span class="pre">generate_only=True</span></code> returns a generator that yields (estimator,
 check) tuples where the check can be called independently from each
 other, i.e. <code class="docutils literal notranslate"><span class="pre">check(estimator)</span></code>. This allows all checks to be run
@@ -183,7 +185,11 @@ multiple estimators.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>estimator</strong><span class="classifier">estimator object or class</span></dt><dd><p>Estimator to check. Estimator is a class object or instance.</p>
+<dt><strong>estimator</strong><span class="classifier">estimator object</span></dt><dd><p>Estimator to check. Estimator is a class object or instance.</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.23: </span>Passing a class is deprecated from version 0.23, and won’t be
+supported in 0.24. Pass an instance instead.</p>
+</div>
 </dd>
 <dt><strong>generate_only</strong><span class="classifier">bool, optional (default=False)</span></dt><dd><p>When <code class="docutils literal notranslate"><span class="pre">False</span></code>, checks are evaluated when <code class="docutils literal notranslate"><span class="pre">check_estimator</span></code> is called.
 When <code class="docutils literal notranslate"><span class="pre">True</span></code>, <code class="docutils literal notranslate"><span class="pre">check_estimator</span></code> returns a generator that yields
