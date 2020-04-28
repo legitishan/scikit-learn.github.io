@@ -165,7 +165,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.metrics" title="sklearn.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.metrics</span></code></a>.pairwise_distances<a class="headerlink" href="#sklearn-metrics-pairwise-distances" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.metrics.pairwise_distances">
-<code class="sig-prename descclassname">sklearn.metrics.</code><code class="sig-name descname">pairwise_distances</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">Y=None</em>, <em class="sig-param">metric='euclidean'</em>, <em class="sig-param">*</em>, <em class="sig-param">n_jobs=None</em>, <em class="sig-param">force_all_finite=True</em>, <em class="sig-param">**kwds</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9f015c8a1/sklearn/utils/validation.py#L1624"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.metrics.pairwise_distances" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sklearn.metrics.</code><code class="sig-name descname">pairwise_distances</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">Y=None</em>, <em class="sig-param">metric='euclidean'</em>, <em class="sig-param">*</em>, <em class="sig-param">n_jobs=None</em>, <em class="sig-param">force_all_finite=True</em>, <em class="sig-param">**kwds</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/acbe13c07/sklearn/utils/validation.py#L1627"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.metrics.pairwise_distances" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the distance matrix from a vector array X and optional Y.</p>
 <p>This method takes either a vector array or a distance matrix, and returns
 a distance matrix. If the input is a vector array, the distances are
@@ -220,16 +220,19 @@ parallel.</p>
 <code class="docutils literal notranslate"><span class="pre">-1</span></code> means using all processors. See <a class="reference internal" href="../../glossary.html#term-n-jobs"><span class="xref std std-term">Glossary</span></a>
 for more details.</p>
 </dd>
-<dt><strong>force_all_finite</strong><span class="classifier">boolean or ‘allow-nan’, (default=True)</span></dt><dd><p>Whether to raise an error on np.inf and np.nan in array. The
+<dt><strong>force_all_finite</strong><span class="classifier">boolean or ‘allow-nan’, (default=True)</span></dt><dd><p>Whether to raise an error on np.inf, np.nan, pd.NA in array. The
 possibilities are:</p>
 <ul class="simple">
 <li><p>True: Force all values of array to be finite.</p></li>
-<li><p>False: accept both np.inf and np.nan in array.</p></li>
-<li><p>‘allow-nan’: accept only np.nan values in array. Values cannot
-be infinite.</p></li>
+<li><p>False: accepts np.inf, np.nan, pd.NA in array.</p></li>
+<li><p>‘allow-nan’: accepts only np.nan and pd.NA values in array. Values
+cannot be infinite.</p></li>
 </ul>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.22.</span></p>
+<p><span class="versionmodified added">New in version 0.22: </span><code class="docutils literal notranslate"><span class="pre">force_all_finite</span></code> accepts the string <code class="docutils literal notranslate"><span class="pre">'allow-nan'</span></code>.</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.23: </span>Accepts <code class="docutils literal notranslate"><span class="pre">pd.NA</span></code> and converts it into <code class="docutils literal notranslate"><span class="pre">np.nan</span></code></p>
 </div>
 </dd>
 <dt><strong>**kwds</strong><span class="classifier">optional keyword parameters</span></dt><dd><p>Any further parameters are passed directly to the distance function.
