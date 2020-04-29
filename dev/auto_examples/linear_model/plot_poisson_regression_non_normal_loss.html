@@ -152,7 +152,8 @@
 <li><a class="reference internal" href="#">Poisson regression and non-normal loss</a><ul>
 <li><a class="reference internal" href="#the-french-motor-third-party-liability-claims-dataset">The French Motor Third-Party Liability Claims dataset</a></li>
 <li><a class="reference internal" href="#a-constant-prediction-baseline">A constant prediction baseline</a></li>
-<li><a class="reference internal" href="#generalized-linear-models">(Generalized) Linear models</a></li>
+<li><a class="reference internal" href="#generalized-linear-models">(Generalized) linear models</a></li>
+<li><a class="reference internal" href="#gradient-boosting-regression-trees-for-poisson-regression">Gradient Boosting Regression Trees for Poisson regression</a></li>
 <li><a class="reference internal" href="#evaluation-of-the-calibration-of-predictions">Evaluation of the calibration of predictions</a></li>
 <li><a class="reference internal" href="#evaluation-of-the-ranking-power">Evaluation of the ranking power</a></li>
 <li><a class="reference internal" href="#main-takeaways">Main takeaways</a></li>
@@ -558,7 +559,7 @@ mean Poisson deviance: 0.625
 </div>
 </div>
 <div class="section" id="generalized-linear-models">
-<h2>(Generalized) Linear models<a class="headerlink" href="#generalized-linear-models" title="Permalink to this headline">¶</a></h2>
+<h2>(Generalized) linear models<a class="headerlink" href="#generalized-linear-models" title="Permalink to this headline">¶</a></h2>
 <p>We start by modeling the target variable with the (l2 penalized) least
 squares linear regression model, more comonly known as Ridge regression. We
 use a low penalization <code class="docutils literal notranslate"><span class="pre">alpha</span></code>, as we expect such a linear model to under-fit
@@ -595,6 +596,11 @@ mean Poisson deviance: 0.601
 regularization strength <code class="docutils literal notranslate"><span class="pre">alpha</span></code> to approximately 1e-6 over number of
 samples (i.e. <code class="docutils literal notranslate"><span class="pre">1e-12</span></code>) in order to mimic the Ridge regressor whose L2 penalty
 term scales differently with the number of samples.</p>
+<p>Since the Poisson regressor internally models the log of the expected target
+value instead of the expected value directly (log vs identity link function),
+the relationship between X and y is not exactly linear anymore. Therefore the
+Poisson regressor is called a Generalized Linear Model (GLM) rather than a
+vanilla linear model as is the case for Ridge regression.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.linear_model.PoissonRegressor.html#sklearn.linear_model.PoissonRegressor" title="sklearn.linear_model.PoissonRegressor" class="sphx-glr-backref-module-sklearn-linear_model sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">PoissonRegressor</span></a>
 
 <span class="n">n_samples</span> <span class="o">=</span> <span class="n">df_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -617,6 +623,9 @@ MAE: 0.186
 mean Poisson deviance: 0.594
 </pre></div>
 </div>
+</div>
+<div class="section" id="gradient-boosting-regression-trees-for-poisson-regression">
+<h2>Gradient Boosting Regression Trees for Poisson regression<a class="headerlink" href="#gradient-boosting-regression-trees-for-poisson-regression" title="Permalink to this headline">¶</a></h2>
 <p>Finally, we will consider a non-linear model, namely Gradient Boosting
 Regression Trees. Tree-based models do not require the categorical data to be
 one-hot encoded: instead, we can encode each category label with an arbitrary
@@ -894,7 +903,7 @@ each model.</p>
 </div>
 <img alt="../../_images/sphx_glr_plot_poisson_regression_non_normal_loss_004.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_poisson_regression_non_normal_loss_004.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend object at 0x7f05fdd40f10&gt;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend object at 0x7f96a4e9b550&gt;
 </pre></div>
 </div>
 <p>As expected, the dummy regressor is unable to correctly rank the samples and
@@ -944,7 +953,7 @@ Error are hard to meaningfully interpret on count values with many zeros.</p></l
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  42.995 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  40.474 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-linear-model-plot-poisson-regression-non-normal-loss-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/scikit-learn/scikit-learn/master?urlpath=lab/tree/notebooks/auto_examples/linear_model/plot_poisson_regression_non_normal_loss.ipynb"><img alt="https://mybinder.org/badge_logo.svg" src="https://mybinder.org/badge_logo.svg" width="150px" /></a>
