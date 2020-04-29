@@ -665,10 +665,9 @@ MAE: 0.184
 mean Poisson deviance: 0.575
 </pre></div>
 </div>
-<p>Like the Ridge regression above, the gradient boosted trees model minimizes
-the conditional squared error. However, because of a higher predictive power,
-it also results in a smaller Poisson deviance than the linear Poisson
-regression model.</p>
+<p>Like the Poisson GLM above, the gradient boosted trees model minimizes
+the Poisson deviance. However, because of a higher predictive power,
+it reaches lower values of Poisson deviance.</p>
 <p>Evaluating models with a single train / test split is prone to random
 fluctuations. If computing resources allow, it should be verified that
 cross-validated performance metrics would lead to similar conclusions.</p>
@@ -722,7 +721,7 @@ variable.</p>
 is able to predict higher expected values.</p>
 <p>Note that we could have used the least squares loss for the
 <code class="docutils literal notranslate"><span class="pre">HistGradientBoostingRegressor</span></code> model. This would wrongly assume a normal
-distribution the response variable as for the <code class="docutils literal notranslate"><span class="pre">Ridge</span></code> model, and possibly
+distributed response variable as does the <code class="docutils literal notranslate"><span class="pre">Ridge</span></code> model, and possibly
 also lead to slightly negative predictions. However the gradient boosted
 trees would still perform relatively well and in particular better than
 <code class="docutils literal notranslate"><span class="pre">PoissonRegressor</span></code> thanks to the flexibility of the trees combined with the
@@ -895,7 +894,7 @@ each model.</p>
 </div>
 <img alt="../../_images/sphx_glr_plot_poisson_regression_non_normal_loss_004.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_poisson_regression_non_normal_loss_004.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend object at 0x7fae276b8eb0&gt;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend object at 0x7fb5f7d64d60&gt;
 </pre></div>
 </div>
 <p>As expected, the dummy regressor is unable to correctly rank the samples and
@@ -917,11 +916,8 @@ ability of the models to identify the top 5% riskiest profiles.</p>
 <div class="section" id="main-takeaways">
 <h2>Main takeaways<a class="headerlink" href="#main-takeaways" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>The performance of the models can be evaluted by their ability to yield
+<li><p>The performance of the models can be evaluated by their ability to yield
 well-calibrated predictions and a good ranking.</p></li>
-<li><p>The Gini index reflects the ability of a model to rank predictions
-irrespective of their absolute values, and therefore only assess their
-ranking power.</p></li>
 <li><p>The calibration of the model can be assessed by plotting the mean observed
 value vs the mean predicted value on groups of test samples binned by
 predicted risk.</p></li>
@@ -931,6 +927,9 @@ badly calibrated. In particular, it tends to underestimate the risk and can
 even predict invalid negative frequencies.</p></li>
 <li><p>Using the Poisson loss with a log-link can correct these problems and lead
 to a well-calibrated linear model.</p></li>
+<li><p>The Gini index reflects the ability of a model to rank predictions
+irrespective of their absolute values, and therefore only assess their
+ranking power.</p></li>
 <li><p>Despite the improvement in calibration, the ranking power of both linear
 models are comparable and well below the ranking power of the Gradient
 Boosting Regression Trees.</p></li>
@@ -945,7 +944,7 @@ Error are hard to meaningfully interpret on count values with many zeros.</p></l
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  41.563 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  41.749 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-linear-model-plot-poisson-regression-non-normal-loss-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/scikit-learn/scikit-learn/master?urlpath=lab/tree/notebooks/auto_examples/linear_model/plot_poisson_regression_non_normal_loss.ipynb"><img alt="https://mybinder.org/badge_logo.svg" src="https://mybinder.org/badge_logo.svg" width="150px" /></a>
