@@ -1,0 +1,242 @@
+.. only:: html
+
+    .. note::
+        :class: sphx-glr-download-link-note
+
+        Click :ref:`here <sphx_glr_download_auto_examples_applications_plot_topics_extraction_with_nmf_lda.py>`     to download the full example code or to run this example in your browser via Binder
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_auto_examples_applications_plot_topics_extraction_with_nmf_lda.py:
+
+
+=======================================================================================
+Topic extraction with Non-negative Matrix Factorization and Latent Dirichlet Allocation
+=======================================================================================
+
+This is an example of applying :class:`sklearn.decomposition.NMF` and
+:class:`sklearn.decomposition.LatentDirichletAllocation` on a corpus
+of documents and extract additive models of the topic structure of the
+corpus.  The output is a list of topics, each represented as a list of
+terms (weights are not shown).
+
+Non-negative Matrix Factorization is applied with two different objective
+functions: the Frobenius norm, and the generalized Kullback-Leibler divergence.
+The latter is equivalent to Probabilistic Latent Semantic Indexing.
+
+The default parameters (n_samples / n_features / n_components) should make
+the example runnable in a couple of tens of seconds. You can try to
+increase the dimensions of the problem, but be aware that the time
+complexity is polynomial in NMF. In LDA, the time complexity is
+proportional to (n_samples * iterations).
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    Loading dataset...
+    done in 1.097s.
+    Extracting tf-idf features for NMF...
+    done in 0.236s.
+    Extracting tf features for LDA...
+    done in 0.234s.
+
+    Fitting the NMF model (Frobenius norm) with tf-idf features, n_samples=2000 and n_features=1000...
+    done in 0.265s.
+
+    Topics in NMF model (Frobenius norm):
+    Topic #0: just people don think like know good time make way really say ve right want did ll new use years
+    Topic #1: windows use dos using window program os application drivers help software pc running ms screen files version work code mode
+    Topic #2: god jesus bible faith christian christ christians does sin heaven believe lord life mary church atheism love belief human religion
+    Topic #3: thanks know does mail advance hi info interested email anybody looking card help like appreciated information list send video need
+    Topic #4: car cars tires miles 00 new engine insurance price condition oil speed power good 000 brake year models used bought
+    Topic #5: edu soon send com university internet mit ftp mail cc pub article information hope email mac home program blood contact
+    Topic #6: file files problem format win sound ftp pub read save site image help available create copy running memory self version
+    Topic #7: game team games year win play season players nhl runs goal toronto hockey division flyers player defense leafs bad won
+    Topic #8: drive drives hard disk floppy software card mac computer power scsi controller apple 00 mb pc rom sale problem monitor
+    Topic #9: key chip clipper keys encryption government public use secure enforcement phone nsa law communications security clinton used standard legal data
+
+    Fitting the NMF model (generalized Kullback-Leibler divergence) with tf-idf features, n_samples=2000 and n_features=1000...
+    done in 0.653s.
+
+    Topics in NMF model (generalized Kullback-Leibler divergence):
+    Topic #0: people don think just right did like time say really know make said question course let way real things good
+    Topic #1: windows thanks help hi using looking does info software video use dos pc advance anybody mail appreciated card need know
+    Topic #2: god does jesus true book christian bible christians religion faith church believe read life christ says people lord exist say
+    Topic #3: thanks know bike interested car mail new like price edu heard list hear want cars email contact just com mark
+    Topic #4: 10 time year power 12 sale 15 new offer 20 30 00 16 monitor ve 11 14 condition problem 100
+    Topic #5: space government 00 nasa public security states earth phone 1993 research technology university subject information science data internet provide blood
+    Topic #6: edu file com program try problem files soon window remember sun win send library mike article just mit oh code
+    Topic #7: game team year games play world season won case division players win nhl flyers second toronto points cubs ll al
+    Topic #8: drive think hard drives disk mac apple need number software scsi computer don card floppy bus cable actually controller memory
+    Topic #9: just use good like key chip got way don doesn sure clipper better going keys ll want speed encryption thought
+
+    Fitting LDA models with tf features, n_samples=2000 and n_features=1000...
+    done in 3.181s.
+
+    Topics in LDA model:
+    Topic #0: hiv health aids disease medical care study research said 1993 national april service children test information rules page new dr
+    Topic #1: drive car disk hard drives game power speed card just like good controller new year bios rom better team got
+    Topic #2: edu com mail windows file send graphics use version ftp pc thanks available program help files using software time know
+    Topic #3: vs gm thanks win interested copies john email text st mail copy hi new book division edu buying advance know
+    Topic #4: performance wanted robert speed couldn math ok change address include organization mr science major university internet edu computer driver kept
+    Topic #5: space scsi earth moon surface probe lunar orbit mission nasa launch science mars energy bit printer spacecraft probes sci solar
+    Topic #6: israel 000 section turkish military armenian greek killed state armenians people population attacks women israeli men weapon division dangerous jews
+    Topic #7: 10 55 11 15 18 12 20 00 13 93 16 19 period 14 17 23 25 22 24 21
+    Topic #8: key government people law public chip church encryption clipper used keys use god christian rights person security private enforcement fact
+    Topic #9: just don people like think know time say god good way make does did want right really going said things
+
+
+
+
+
+
+
+|
+
+
+.. code-block:: default
+
+
+    # Author: Olivier Grisel <olivier.grisel@ensta.org>
+    #         Lars Buitinck
+    #         Chyi-Kwei Yau <chyikwei.yau@gmail.com>
+    # License: BSD 3 clause
+
+    from time import time
+
+    from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
+    from sklearn.decomposition import NMF, LatentDirichletAllocation
+    from sklearn.datasets import fetch_20newsgroups
+
+    n_samples = 2000
+    n_features = 1000
+    n_components = 10
+    n_top_words = 20
+
+
+    def print_top_words(model, feature_names, n_top_words):
+        for topic_idx, topic in enumerate(model.components_):
+            message = "Topic #%d: " % topic_idx
+            message += " ".join([feature_names[i]
+                                 for i in topic.argsort()[:-n_top_words - 1:-1]])
+            print(message)
+        print()
+
+
+    # Load the 20 newsgroups dataset and vectorize it. We use a few heuristics
+    # to filter out useless terms early on: the posts are stripped of headers,
+    # footers and quoted replies, and common English words, words occurring in
+    # only one document or in at least 95% of the documents are removed.
+
+    print("Loading dataset...")
+    t0 = time()
+    data, _ = fetch_20newsgroups(shuffle=True, random_state=1,
+                                 remove=('headers', 'footers', 'quotes'),
+                                 return_X_y=True)
+    data_samples = data[:n_samples]
+    print("done in %0.3fs." % (time() - t0))
+
+    # Use tf-idf features for NMF.
+    print("Extracting tf-idf features for NMF...")
+    tfidf_vectorizer = TfidfVectorizer(max_df=0.95, min_df=2,
+                                       max_features=n_features,
+                                       stop_words='english')
+    t0 = time()
+    tfidf = tfidf_vectorizer.fit_transform(data_samples)
+    print("done in %0.3fs." % (time() - t0))
+
+    # Use tf (raw term count) features for LDA.
+    print("Extracting tf features for LDA...")
+    tf_vectorizer = CountVectorizer(max_df=0.95, min_df=2,
+                                    max_features=n_features,
+                                    stop_words='english')
+    t0 = time()
+    tf = tf_vectorizer.fit_transform(data_samples)
+    print("done in %0.3fs." % (time() - t0))
+    print()
+
+    # Fit the NMF model
+    print("Fitting the NMF model (Frobenius norm) with tf-idf features, "
+          "n_samples=%d and n_features=%d..."
+          % (n_samples, n_features))
+    t0 = time()
+    nmf = NMF(n_components=n_components, random_state=1,
+              alpha=.1, l1_ratio=.5).fit(tfidf)
+    print("done in %0.3fs." % (time() - t0))
+
+    print("\nTopics in NMF model (Frobenius norm):")
+    tfidf_feature_names = tfidf_vectorizer.get_feature_names()
+    print_top_words(nmf, tfidf_feature_names, n_top_words)
+
+    # Fit the NMF model
+    print("Fitting the NMF model (generalized Kullback-Leibler divergence) with "
+          "tf-idf features, n_samples=%d and n_features=%d..."
+          % (n_samples, n_features))
+    t0 = time()
+    nmf = NMF(n_components=n_components, random_state=1,
+              beta_loss='kullback-leibler', solver='mu', max_iter=1000, alpha=.1,
+              l1_ratio=.5).fit(tfidf)
+    print("done in %0.3fs." % (time() - t0))
+
+    print("\nTopics in NMF model (generalized Kullback-Leibler divergence):")
+    tfidf_feature_names = tfidf_vectorizer.get_feature_names()
+    print_top_words(nmf, tfidf_feature_names, n_top_words)
+
+    print("Fitting LDA models with tf features, "
+          "n_samples=%d and n_features=%d..."
+          % (n_samples, n_features))
+    lda = LatentDirichletAllocation(n_components=n_components, max_iter=5,
+                                    learning_method='online',
+                                    learning_offset=50.,
+                                    random_state=0)
+    t0 = time()
+    lda.fit(tf)
+    print("done in %0.3fs." % (time() - t0))
+
+    print("\nTopics in LDA model:")
+    tf_feature_names = tf_vectorizer.get_feature_names()
+    print_top_words(lda, tf_feature_names, n_top_words)
+
+
+.. rst-class:: sphx-glr-timing
+
+   **Total running time of the script:** ( 0 minutes  5.674 seconds)
+
+
+.. _sphx_glr_download_auto_examples_applications_plot_topics_extraction_with_nmf_lda.py:
+
+
+.. only :: html
+
+ .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
+
+
+  .. container:: binder-badge
+
+    .. image:: https://mybinder.org/badge_logo.svg
+      :target: https://mybinder.org/v2/gh/scikit-learn/scikit-learn/master?urlpath=lab/tree/notebooks/auto_examples/applications/plot_topics_extraction_with_nmf_lda.ipynb
+      :width: 150 px
+
+
+  .. container:: sphx-glr-download sphx-glr-download-python
+
+     :download:`Download Python source code: plot_topics_extraction_with_nmf_lda.py <plot_topics_extraction_with_nmf_lda.py>`
+
+
+
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
+
+     :download:`Download Jupyter notebook: plot_topics_extraction_with_nmf_lda.ipynb <plot_topics_extraction_with_nmf_lda.ipynb>`
+
+
+.. only:: html
+
+ .. rst-class:: sphx-glr-signature
+
+    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.github.io>`_
