@@ -421,22 +421,22 @@ properly handle datasets with heterogeneous data:</p>
 <h2>Checking scikit-learn compatibility of an estimator<a class="headerlink" href="#checking-scikit-learn-compatibility-of-an-estimator" title="Permalink to this headline">¶</a></h2>
 <p>Developers can check the compatibility of their scikit-learn compatible
 estimators using <a class="reference internal" href="../../modules/generated/sklearn.utils.estimator_checks.check_estimator.html#sklearn.utils.estimator_checks.check_estimator" title="sklearn.utils.estimator_checks.check_estimator"><code class="xref py py-func docutils literal notranslate"><span class="pre">check_estimator</span></code></a>. For
-instance, the <code class="docutils literal notranslate"><span class="pre">check_estimator(LinearSVC)</span></code> passes.</p>
+instance, the <code class="docutils literal notranslate"><span class="pre">check_estimator(LinearSVC())</span></code> passes.</p>
 <p>We now provide a <code class="docutils literal notranslate"><span class="pre">pytest</span></code> specific decorator which allows <code class="docutils literal notranslate"><span class="pre">pytest</span></code>
 to run all checks independently and report the checks that are failing.</p>
+<dl class="simple">
+<dt>..note::</dt><dd><p>This entry was slightly updated in version 0.24, where passing classes
+isn’t supported anymore: pass instances instead.</p>
+</dd>
+</dl>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="sklearn.linear_model.LogisticRegression" class="sphx-glr-backref-module-sklearn-linear_model sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">LogisticRegression</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.tree.DecisionTreeRegressor.html#sklearn.tree.DecisionTreeRegressor" title="sklearn.tree.DecisionTreeRegressor" class="sphx-glr-backref-module-sklearn-tree sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">DecisionTreeRegressor</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.utils.estimator_checks</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.utils.estimator_checks.parametrize_with_checks.html#sklearn.utils.estimator_checks.parametrize_with_checks" title="sklearn.utils.estimator_checks.parametrize_with_checks" class="sphx-glr-backref-module-sklearn-utils-estimator_checks sphx-glr-backref-type-py-function"><span class="n">parametrize_with_checks</span></a>
 
 
-<span class="nd">@parametrize_with_checks</span><span class="p">([</span><a href="../../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="sklearn.linear_model.LogisticRegression" class="sphx-glr-backref-module-sklearn-linear_model sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">LogisticRegression</span></a><span class="p">,</span> <a href="../../modules/generated/sklearn.tree.DecisionTreeRegressor.html#sklearn.tree.DecisionTreeRegressor" title="sklearn.tree.DecisionTreeRegressor" class="sphx-glr-backref-module-sklearn-tree sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">DecisionTreeRegressor</span></a><span class="p">])</span>
+<span class="nd">@parametrize_with_checks</span><span class="p">([</span><a href="../../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="sklearn.linear_model.LogisticRegression" class="sphx-glr-backref-module-sklearn-linear_model sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">LogisticRegression</span></a><span class="p">(),</span> <a href="../../modules/generated/sklearn.tree.DecisionTreeRegressor.html#sklearn.tree.DecisionTreeRegressor" title="sklearn.tree.DecisionTreeRegressor" class="sphx-glr-backref-module-sklearn-tree sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">DecisionTreeRegressor</span></a><span class="p">()])</span>
 <span class="k">def</span> <span class="nf">test_sklearn_compatible_estimator</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">check</span><span class="p">):</span>
     <span class="n">check</span><span class="p">(</span><span class="n">estimator</span><span class="p">)</span>
-</pre></div>
-</div>
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/circleci/project/sklearn/utils/estimator_checks.py:420: FutureWarning: Passing a class is deprecated since version 0.23 and won&#39;t be supported in 0.24.Please pass an instance instead.
-  warnings.warn(msg, FutureWarning)
 </pre></div>
 </div>
 </div>
@@ -462,10 +462,10 @@ weighting uniformly (<code class="docutils literal notranslate"><span class="pre
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.9853978632478633
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.9909519213565107
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.509 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.302 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-release-highlights-plot-release-highlights-0-22-0-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/scikit-learn/scikit-learn/master?urlpath=lab/tree/notebooks/auto_examples/release_highlights/plot_release_highlights_0_22_0.ipynb"><img alt="https://mybinder.org/badge_logo.svg" src="https://mybinder.org/badge_logo.svg" width="150px" /></a>
