@@ -412,7 +412,8 @@ R. Jenatton, G. Obozinski, F. Bach, 2009</p>
 (SVD) that only computes the <span class="math notranslate nohighlight">\(k\)</span> largest singular values,
 where <span class="math notranslate nohighlight">\(k\)</span> is a user-specified parameter.</p>
 <p>When truncated SVD is applied to term-document matrices
-(as returned by <code class="docutils literal notranslate"><span class="pre">CountVectorizer</span></code> or <code class="docutils literal notranslate"><span class="pre">TfidfVectorizer</span></code>),
+(as returned by <a class="reference internal" href="generated/sklearn.feature_extraction.text.CountVectorizer.html#sklearn.feature_extraction.text.CountVectorizer" title="sklearn.feature_extraction.text.CountVectorizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">CountVectorizer</span></code></a> or
+<a class="reference internal" href="generated/sklearn.feature_extraction.text.TfidfVectorizer.html#sklearn.feature_extraction.text.TfidfVectorizer" title="sklearn.feature_extraction.text.TfidfVectorizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">TfidfVectorizer</span></code></a>),
 this transformation is known as
 <a class="reference external" href="https://nlp.stanford.edu/IR-book/pdf/18lsi.pdf">latent semantic analysis</a>
 (LSA), because it transforms such matrices
@@ -447,8 +448,7 @@ We present LSA in a different way that matches the scikit-learn API better,
 but the singular values found are the same.</p>
 </div>
 <p><a class="reference internal" href="generated/sklearn.decomposition.TruncatedSVD.html#sklearn.decomposition.TruncatedSVD" title="sklearn.decomposition.TruncatedSVD"><code class="xref py py-class docutils literal notranslate"><span class="pre">TruncatedSVD</span></code></a> is very similar to <a class="reference internal" href="generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="sklearn.decomposition.PCA"><code class="xref py py-class docutils literal notranslate"><span class="pre">PCA</span></code></a>, but differs
-in that it works on sample matrices <span class="math notranslate nohighlight">\(X\)</span> directly
-instead of their covariance matrices.
+in that the matrix <span class="math notranslate nohighlight">\(X\)</span> does not need to be centered.
 When the columnwise (per-feature) means of <span class="math notranslate nohighlight">\(X\)</span>
 are subtracted from the feature values,
 truncated SVD on the resulting matrix is equivalent to PCA.
@@ -457,7 +457,7 @@ that the <a class="reference internal" href="generated/sklearn.decomposition.Tru
 matrices without the need to densify them,
 as densifying may fill up memory even for medium-sized document collections.</p>
 <p>While the <a class="reference internal" href="generated/sklearn.decomposition.TruncatedSVD.html#sklearn.decomposition.TruncatedSVD" title="sklearn.decomposition.TruncatedSVD"><code class="xref py py-class docutils literal notranslate"><span class="pre">TruncatedSVD</span></code></a> transformer
-works with any (sparse) feature matrix,
+works with any feature matrix,
 using it on tf–idf matrices is recommended over raw frequency counts
 in an LSA/document processing setting.
 In particular, sublinear scaling and inverse document frequency
