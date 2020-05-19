@@ -118,24 +118,14 @@ the provided labels, contrary to other methods.
     Computing PCA projection
     Computing Linear Discriminant Analysis projection
     Computing Isomap projection
-    /home/circleci/project/sklearn/utils/validation.py:68: FutureWarning: Pass n_neighbors=30 as keyword args. From version 0.25 passing these as positional arguments will result in an error
-      warnings.warn("Pass {} as keyword args. From version 0.25 "
     Done.
     Computing LLE embedding
-    /home/circleci/project/sklearn/utils/validation.py:68: FutureWarning: Pass n_neighbors=30 as keyword args. From version 0.25 passing these as positional arguments will result in an error
-      warnings.warn("Pass {} as keyword args. From version 0.25 "
     Done. Reconstruction error: 1.63544e-06
     Computing modified LLE embedding
-    /home/circleci/project/sklearn/utils/validation.py:68: FutureWarning: Pass n_neighbors=30 as keyword args. From version 0.25 passing these as positional arguments will result in an error
-      warnings.warn("Pass {} as keyword args. From version 0.25 "
     Done. Reconstruction error: 0.360613
     Computing Hessian LLE embedding
-    /home/circleci/project/sklearn/utils/validation.py:68: FutureWarning: Pass n_neighbors=30 as keyword args. From version 0.25 passing these as positional arguments will result in an error
-      warnings.warn("Pass {} as keyword args. From version 0.25 "
     Done. Reconstruction error: 0.212803
     Computing LTSA embedding
-    /home/circleci/project/sklearn/utils/validation.py:68: FutureWarning: Pass n_neighbors=30 as keyword args. From version 0.25 passing these as positional arguments will result in an error
-      warnings.warn("Pass {} as keyword args. From version 0.25 "
     Done. Reconstruction error: 0.212804
     Computing MDS embedding
     Done. Stress: 174889755.062254
@@ -259,7 +249,8 @@ the provided labels, contrary to other methods.
     # Isomap projection of the digits dataset
     print("Computing Isomap projection")
     t0 = time()
-    X_iso = manifold.Isomap(n_neighbors, n_components=2).fit_transform(X)
+    X_iso = manifold.Isomap(n_neighbors=n_neighbors, n_components=2
+                            ).fit_transform(X)
     print("Done.")
     plot_embedding(X_iso,
                    "Isomap projection of the digits (time %.2fs)" %
@@ -269,7 +260,7 @@ the provided labels, contrary to other methods.
     # ----------------------------------------------------------------------
     # Locally linear embedding of the digits dataset
     print("Computing LLE embedding")
-    clf = manifold.LocallyLinearEmbedding(n_neighbors, n_components=2,
+    clf = manifold.LocallyLinearEmbedding(n_neighbors=n_neighbors, n_components=2,
                                           method='standard')
     t0 = time()
     X_lle = clf.fit_transform(X)
@@ -282,7 +273,7 @@ the provided labels, contrary to other methods.
     # ----------------------------------------------------------------------
     # Modified Locally linear embedding of the digits dataset
     print("Computing modified LLE embedding")
-    clf = manifold.LocallyLinearEmbedding(n_neighbors, n_components=2,
+    clf = manifold.LocallyLinearEmbedding(n_neighbors=n_neighbors, n_components=2,
                                           method='modified')
     t0 = time()
     X_mlle = clf.fit_transform(X)
@@ -295,7 +286,7 @@ the provided labels, contrary to other methods.
     # ----------------------------------------------------------------------
     # HLLE embedding of the digits dataset
     print("Computing Hessian LLE embedding")
-    clf = manifold.LocallyLinearEmbedding(n_neighbors, n_components=2,
+    clf = manifold.LocallyLinearEmbedding(n_neighbors=n_neighbors, n_components=2,
                                           method='hessian')
     t0 = time()
     X_hlle = clf.fit_transform(X)
@@ -308,7 +299,7 @@ the provided labels, contrary to other methods.
     # ----------------------------------------------------------------------
     # LTSA embedding of the digits dataset
     print("Computing LTSA embedding")
-    clf = manifold.LocallyLinearEmbedding(n_neighbors, n_components=2,
+    clf = manifold.LocallyLinearEmbedding(n_neighbors=n_neighbors, n_components=2,
                                           method='ltsa')
     t0 = time()
     X_ltsa = clf.fit_transform(X)
@@ -382,7 +373,7 @@ the provided labels, contrary to other methods.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  34.277 seconds)
+   **Total running time of the script:** ( 0 minutes  38.436 seconds)
 
 
 .. _sphx_glr_download_auto_examples_manifold_plot_lle_digits.py:
