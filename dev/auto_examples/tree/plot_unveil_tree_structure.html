@@ -153,7 +153,12 @@
         </div>
           <div class="sk-sidebar-toc">
             <ul>
-<li><a class="reference internal" href="#">Understanding the decision tree structure</a></li>
+<li><a class="reference internal" href="#">Understanding the decision tree structure</a><ul>
+<li><a class="reference internal" href="#train-tree-classifier">Train tree classifier</a></li>
+<li><a class="reference internal" href="#tree-structure">Tree structure</a></li>
+<li><a class="reference internal" href="#decision-path">Decision path</a></li>
+</ul>
+</li>
 </ul>
 
           </div>
@@ -179,145 +184,192 @@ show how to retrieve:</p>
 <li><p>the rules that were used to predict a sample;</p></li>
 <li><p>the decision path shared by a group of samples.</p></li>
 </ul>
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The binary tree structure has 5 nodes and has the following tree structure:
-node=0 test node: go to node 1 if X[:, 3] &lt;= 0.800000011920929 else to node 2.
-        node=1 leaf node.
-        node=2 test node: go to node 3 if X[:, 2] &lt;= 4.950000047683716 else to node 4.
-                node=3 leaf node.
-                node=4 leaf node.
-
-Rules used to predict sample 0:
-decision id node 0 : (X_test[0, 3] (= 2.4) &gt; 0.800000011920929)
-decision id node 2 : (X_test[0, 2] (= 5.1) &gt; 4.950000047683716)
-
-The following samples [0, 1] share the node [0 2] in the tree
-It is 40.0 % of all nodes.
-</pre></div>
-</div>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="sklearn.model_selection.train_test_split" class="sphx-glr-backref-module-sklearn-model_selection sphx-glr-backref-type-py-function"><span class="n">train_test_split</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.datasets.load_iris.html#sklearn.datasets.load_iris" title="sklearn.datasets.load_iris" class="sphx-glr-backref-module-sklearn-datasets sphx-glr-backref-type-py-function"><span class="n">load_iris</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.tree.DecisionTreeClassifier.html#sklearn.tree.DecisionTreeClassifier" title="sklearn.tree.DecisionTreeClassifier" class="sphx-glr-backref-module-sklearn-tree sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">DecisionTreeClassifier</span></a>
-
-<span class="n">iris</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.load_iris.html#sklearn.datasets.load_iris" title="sklearn.datasets.load_iris" class="sphx-glr-backref-module-sklearn-datasets sphx-glr-backref-type-py-function"><span class="n">load_iris</span></a><span class="p">()</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">tree</span>
+</pre></div>
+</div>
+<div class="section" id="train-tree-classifier">
+<h2>Train tree classifier<a class="headerlink" href="#train-tree-classifier" title="Permalink to this headline">¶</a></h2>
+<p>First, we fit a <a class="reference internal" href="../../modules/generated/sklearn.tree.DecisionTreeClassifier.html#sklearn.tree.DecisionTreeClassifier" title="sklearn.tree.DecisionTreeClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionTreeClassifier</span></code></a> using the
+<a class="reference internal" href="../../modules/generated/sklearn.datasets.load_iris.html#sklearn.datasets.load_iris" title="sklearn.datasets.load_iris"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_iris</span></code></a> dataset.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">iris</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.load_iris.html#sklearn.datasets.load_iris" title="sklearn.datasets.load_iris" class="sphx-glr-backref-module-sklearn-datasets sphx-glr-backref-type-py-function"><span class="n">load_iris</span></a><span class="p">()</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span>
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="sklearn.model_selection.train_test_split" class="sphx-glr-backref-module-sklearn-model_selection sphx-glr-backref-type-py-function"><span class="n">train_test_split</span></a><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-<span class="n">estimator</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.tree.DecisionTreeClassifier.html#sklearn.tree.DecisionTreeClassifier" title="sklearn.tree.DecisionTreeClassifier" class="sphx-glr-backref-module-sklearn-tree sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">DecisionTreeClassifier</span></a><span class="p">(</span><span class="n">max_leaf_nodes</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">estimator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">clf</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.tree.DecisionTreeClassifier.html#sklearn.tree.DecisionTreeClassifier" title="sklearn.tree.DecisionTreeClassifier" class="sphx-glr-backref-module-sklearn-tree sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">DecisionTreeClassifier</span></a><span class="p">(</span><span class="n">max_leaf_nodes</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+<style>div.sk-top-container {color: black;background-color: white;}div.sk-toggleable {background-color: white;}label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.2em 0.3em;box-sizing: border-box;text-align: center;}div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}div.sk-estimator {font-family: monospace;background-color: #f0f8ff;margin: 0.25em 0.25em;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;}div.sk-estimator:hover {background-color: #d4ebff;}div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 2em;bottom: 0;left: 50%;}div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;}div.sk-item {z-index: 1;}div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;}div.sk-parallel-item {display: flex;flex-direction: column;position: relative;background-color: white;}div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}div.sk-parallel-item:only-child::after {width: 0;}div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0.2em;box-sizing: border-box;padding-bottom: 0.1em;background-color: white;position: relative;}div.sk-label label {font-family: monospace;font-weight: bold;background-color: white;display: inline-block;line-height: 1.2em;}div.sk-label-container {position: relative;z-index: 2;text-align: center;}div.sk-container {display: inline-block;position: relative;}</style><div class="sk-top-container"><div class="sk-container"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="cac354c9-6b84-4131-b15f-ee8a221a00bf" type="checkbox" checked><label class="sk-toggleable__label" for="cac354c9-6b84-4131-b15f-ee8a221a00bf">DecisionTreeClassifier</label><div class="sk-toggleable__content"><pre>DecisionTreeClassifier(max_leaf_nodes=3, random_state=0)</pre></div></div></div></div></div>
+<br />
+<br /></div>
+<div class="section" id="tree-structure">
+<h2>Tree structure<a class="headerlink" href="#tree-structure" title="Permalink to this headline">¶</a></h2>
+<p>The decision classifier has an attribute called <code class="docutils literal notranslate"><span class="pre">tree_</span></code> which allows access
+to low level attributes such as <code class="docutils literal notranslate"><span class="pre">node_count</span></code>, the total number of nodes,
+and <code class="docutils literal notranslate"><span class="pre">max_depth</span></code>, the maximal depth of the tree. It also stores the
+entire binary tree structure, represented as a number of parallel arrays. The
+i-th element of each array holds information about the node <code class="docutils literal notranslate"><span class="pre">i</span></code>. Node 0 is
+the tree’s root. Some of the arrays only apply to either leaves or split
+nodes. In this case the values of the nodes of the other type is arbitrary.
+For example, the arrays <code class="docutils literal notranslate"><span class="pre">feature</span></code> and <code class="docutils literal notranslate"><span class="pre">threshold</span></code> only apply to split
+nodes. The values for leaf nodes in these arrays are therefore arbitrary.</p>
+<p>Among these arrays, we have:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">children_left[i]</span></code>: id of the left child of node <code class="docutils literal notranslate"><span class="pre">i</span></code> or -1 if leaf
+node</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">children_right[i]</span></code>: id of the right child of node <code class="docutils literal notranslate"><span class="pre">i</span></code> or -1 if leaf
+node</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">feature[i]</span></code>: feature used for splitting node <code class="docutils literal notranslate"><span class="pre">i</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">threshold[i]</span></code>: threshold value at node <code class="docutils literal notranslate"><span class="pre">i</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n_node_samples[i]</span></code>: the number of of training samples reaching node
+<code class="docutils literal notranslate"><span class="pre">i</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">impurity[i]</span></code>: the impurity at node <code class="docutils literal notranslate"><span class="pre">i</span></code></p></li>
+</ul>
+</div></blockquote>
+<p>Using the arrays, we can traverse the tree structure to compute various
+properties. Below, we will compute the depth of each node and whether or not
+it is a leaf.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">n_nodes</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">tree_</span><span class="o">.</span><span class="n">node_count</span>
+<span class="n">children_left</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">tree_</span><span class="o">.</span><span class="n">children_left</span>
+<span class="n">children_right</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">tree_</span><span class="o">.</span><span class="n">children_right</span>
+<span class="n">feature</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">tree_</span><span class="o">.</span><span class="n">feature</span>
+<span class="n">threshold</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">tree_</span><span class="o">.</span><span class="n">threshold</span>
 
-<span class="c1"># The decision estimator has an attribute called tree_  which stores the entire</span>
-<span class="c1"># tree structure and allows access to low level attributes. The binary tree</span>
-<span class="c1"># tree_ is represented as a number of parallel arrays. The i-th element of each</span>
-<span class="c1"># array holds information about the node `i`. Node 0 is the tree&#39;s root. NOTE:</span>
-<span class="c1"># Some of the arrays only apply to either leaves or split nodes, resp. In this</span>
-<span class="c1"># case the values of nodes of the other type are arbitrary!</span>
-<span class="c1">#</span>
-<span class="c1"># Among those arrays, we have:</span>
-<span class="c1">#   - left_child, id of the left child of the node</span>
-<span class="c1">#   - right_child, id of the right child of the node</span>
-<span class="c1">#   - feature, feature used for splitting the node</span>
-<span class="c1">#   - threshold, threshold value at the node</span>
-<span class="c1">#</span>
-
-<span class="c1"># Using those arrays, we can parse the tree structure:</span>
-
-<span class="n">n_nodes</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">tree_</span><span class="o">.</span><span class="n">node_count</span>
-<span class="n">children_left</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">tree_</span><span class="o">.</span><span class="n">children_left</span>
-<span class="n">children_right</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">tree_</span><span class="o">.</span><span class="n">children_right</span>
-<span class="n">feature</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">tree_</span><span class="o">.</span><span class="n">feature</span>
-<span class="n">threshold</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">tree_</span><span class="o">.</span><span class="n">threshold</span>
-
-
-<span class="c1"># The tree structure can be traversed to compute various properties such</span>
-<span class="c1"># as the depth of each node and whether or not it is a leaf.</span>
 <span class="n">node_depth</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.zeros.html#numpy.zeros" title="numpy.zeros" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">zeros</span></a><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">n_nodes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
 <span class="n">is_leaves</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.zeros.html#numpy.zeros" title="numpy.zeros" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">zeros</span></a><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">n_nodes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
-<span class="n">stack</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span>  <span class="c1"># seed is the root node id and its parent depth</span>
+<span class="n">stack</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>  <span class="c1"># start with the root node id (0) and its depth (0)</span>
 <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-    <span class="n">node_id</span><span class="p">,</span> <span class="n">parent_depth</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-    <span class="n">node_depth</span><span class="p">[</span><span class="n">node_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">parent_depth</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="c1"># `pop` ensures each node is only visited once</span>
+    <span class="n">node_id</span><span class="p">,</span> <span class="n">depth</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+    <span class="n">node_depth</span><span class="p">[</span><span class="n">node_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">depth</span>
 
-    <span class="c1"># If we have a test node</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">children_left</span><span class="p">[</span><span class="n">node_id</span><span class="p">]</span> <span class="o">!=</span> <span class="n">children_right</span><span class="p">[</span><span class="n">node_id</span><span class="p">]):</span>
-        <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">children_left</span><span class="p">[</span><span class="n">node_id</span><span class="p">],</span> <span class="n">parent_depth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
-        <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">children_right</span><span class="p">[</span><span class="n">node_id</span><span class="p">],</span> <span class="n">parent_depth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="c1"># If the left and right child of a node is not the same we have a split</span>
+    <span class="c1"># node</span>
+    <span class="n">is_split_node</span> <span class="o">=</span> <span class="n">children_left</span><span class="p">[</span><span class="n">node_id</span><span class="p">]</span> <span class="o">!=</span> <span class="n">children_right</span><span class="p">[</span><span class="n">node_id</span><span class="p">]</span>
+    <span class="c1"># If a split node, append left and right children and depth to `stack`</span>
+    <span class="c1"># so we can loop through them</span>
+    <span class="k">if</span> <span class="n">is_split_node</span><span class="p">:</span>
+        <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">children_left</span><span class="p">[</span><span class="n">node_id</span><span class="p">],</span> <span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">children_right</span><span class="p">[</span><span class="n">node_id</span><span class="p">],</span> <span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">is_leaves</span><span class="p">[</span><span class="n">node_id</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The binary tree structure has </span><span class="si">%s</span><span class="s2"> nodes and has &quot;</span>
-      <span class="s2">&quot;the following tree structure:&quot;</span>
-      <span class="o">%</span> <span class="n">n_nodes</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The binary tree structure has </span><span class="si">{n}</span><span class="s2"> nodes and has &quot;</span>
+      <span class="s2">&quot;the following tree structure:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n_nodes</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_nodes</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">is_leaves</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">node=</span><span class="si">%s</span><span class="s2"> leaf node.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">node_depth</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{space}</span><span class="s2">node=</span><span class="si">{node}</span><span class="s2"> is a leaf node.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">space</span><span class="o">=</span><span class="n">node_depth</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">node</span><span class="o">=</span><span class="n">i</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">node=</span><span class="si">%s</span><span class="s2"> test node: go to node </span><span class="si">%s</span><span class="s2"> if X[:, </span><span class="si">%s</span><span class="s2">] &lt;= </span><span class="si">%s</span><span class="s2"> else to &quot;</span>
-              <span class="s2">&quot;node </span><span class="si">%s</span><span class="s2">.&quot;</span>
-              <span class="o">%</span> <span class="p">(</span><span class="n">node_depth</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span>
-                 <span class="n">i</span><span class="p">,</span>
-                 <span class="n">children_left</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                 <span class="n">feature</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                 <span class="n">threshold</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                 <span class="n">children_right</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                 <span class="p">))</span>
-<span class="nb">print</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{space}</span><span class="s2">node=</span><span class="si">{node}</span><span class="s2"> is a split node: &quot;</span>
+              <span class="s2">&quot;go to node </span><span class="si">{left}</span><span class="s2"> if X[:, </span><span class="si">{feature}</span><span class="s2">] &lt;= </span><span class="si">{threshold}</span><span class="s2"> &quot;</span>
+              <span class="s2">&quot;else to node </span><span class="si">{right}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                  <span class="n">space</span><span class="o">=</span><span class="n">node_depth</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span>
+                  <span class="n">node</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
+                  <span class="n">left</span><span class="o">=</span><span class="n">children_left</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                  <span class="n">feature</span><span class="o">=</span><span class="n">feature</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                  <span class="n">threshold</span><span class="o">=</span><span class="n">threshold</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                  <span class="n">right</span><span class="o">=</span><span class="n">children_right</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The binary tree structure has 5 nodes and has the following tree structure:
 
-<span class="c1"># First let&#39;s retrieve the decision path of each sample. The decision_path</span>
-<span class="c1"># method allows to retrieve the node indicator functions. A non zero element of</span>
-<span class="c1"># indicator matrix at the position (i, j) indicates that the sample i goes</span>
-<span class="c1"># through the node j.</span>
-
-<span class="n">node_indicator</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">decision_path</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
-
-<span class="c1"># Similarly, we can also have the leaves ids reached by each sample.</span>
-
-<span class="n">leave_id</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
-
-<span class="c1"># Now, it&#39;s possible to get the tests that were used to predict a sample or</span>
-<span class="c1"># a group of samples. First, let&#39;s make it for the sample.</span>
+node=0 is a split node: go to node 1 if X[:, 3] &lt;= 0.800000011920929 else to node 2.
+        node=1 is a leaf node.
+        node=2 is a split node: go to node 3 if X[:, 2] &lt;= 4.950000047683716 else to node 4.
+                node=3 is a leaf node.
+                node=4 is a leaf node.
+</pre></div>
+</div>
+<p>We can compare the above output to the plot of the decision tree.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="../../modules/generated/sklearn.tree.plot_tree.html#sklearn.tree.plot_tree" title="sklearn.tree.plot_tree" class="sphx-glr-backref-module-sklearn-tree sphx-glr-backref-type-py-function"><span class="n">tree</span><span class="o">.</span><span class="n">plot_tree</span></a><span class="p">(</span><span class="n">clf</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../../_images/sphx_glr_plot_unveil_tree_structure_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_unveil_tree_structure_001.png" />
+</div>
+<div class="section" id="decision-path">
+<h2>Decision path<a class="headerlink" href="#decision-path" title="Permalink to this headline">¶</a></h2>
+<p>We can also retrieve the decision path of samples of interest. The
+<code class="docutils literal notranslate"><span class="pre">decision_path</span></code> method outputs an indicator matrix that allows us to
+retrieve the nodes the samples of interest traverse through. A non zero
+element in the indicator matrix at position <code class="docutils literal notranslate"><span class="pre">(i,</span> <span class="pre">j)</span></code> indicates that
+the sample <code class="docutils literal notranslate"><span class="pre">i</span></code> goes through the node <code class="docutils literal notranslate"><span class="pre">j</span></code>. Or, for one sample <code class="docutils literal notranslate"><span class="pre">i</span></code>, the
+positions of the non zero elements in row <code class="docutils literal notranslate"><span class="pre">i</span></code> of the indicator matrix
+designate the ids of the nodes that sample goes through.</p>
+<p>The leaf ids reached by samples of interest can be obtained with the
+<code class="docutils literal notranslate"><span class="pre">apply</span></code> method. This returns an array of the node ids of the leaves
+reached by each sample of interest. Using the leaf ids and the
+<code class="docutils literal notranslate"><span class="pre">decision_path</span></code> we can obtain the splitting conditions that were used to
+predict a sample or a group of samples. First, let’s do it for one sample.
+Note that <code class="docutils literal notranslate"><span class="pre">node_index</span></code> is a sparse matrix.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">node_indicator</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">decision_path</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">leaf_id</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
 
 <span class="n">sample_id</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="c1"># obtain ids of the nodes `sample_id` goes through, i.e., row `sample_id`</span>
 <span class="n">node_index</span> <span class="o">=</span> <span class="n">node_indicator</span><span class="o">.</span><span class="n">indices</span><span class="p">[</span><span class="n">node_indicator</span><span class="o">.</span><span class="n">indptr</span><span class="p">[</span><span class="n">sample_id</span><span class="p">]:</span>
                                     <span class="n">node_indicator</span><span class="o">.</span><span class="n">indptr</span><span class="p">[</span><span class="n">sample_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Rules used to predict sample </span><span class="si">%s</span><span class="s1">: &#39;</span> <span class="o">%</span> <span class="n">sample_id</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Rules used to predict sample </span><span class="si">{id}</span><span class="s1">:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">sample_id</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">node_id</span> <span class="ow">in</span> <span class="n">node_index</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">leave_id</span><span class="p">[</span><span class="n">sample_id</span><span class="p">]</span> <span class="o">==</span> <span class="n">node_id</span><span class="p">:</span>
+    <span class="c1"># continue to the next node if it is a leaf node</span>
+    <span class="k">if</span> <span class="n">leaf_id</span><span class="p">[</span><span class="n">sample_id</span><span class="p">]</span> <span class="o">==</span> <span class="n">node_id</span><span class="p">:</span>
         <span class="k">continue</span>
 
+    <span class="c1"># check if value of the split feature for sample 0 is below threshold</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">X_test</span><span class="p">[</span><span class="n">sample_id</span><span class="p">,</span> <span class="n">feature</span><span class="p">[</span><span class="n">node_id</span><span class="p">]]</span> <span class="o">&lt;=</span> <span class="n">threshold</span><span class="p">[</span><span class="n">node_id</span><span class="p">]):</span>
         <span class="n">threshold_sign</span> <span class="o">=</span> <span class="s2">&quot;&lt;=&quot;</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">threshold_sign</span> <span class="o">=</span> <span class="s2">&quot;&gt;&quot;</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;decision id node </span><span class="si">%s</span><span class="s2"> : (X_test[</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">] (= </span><span class="si">%s</span><span class="s2">) </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">)&quot;</span>
-          <span class="o">%</span> <span class="p">(</span><span class="n">node_id</span><span class="p">,</span>
-             <span class="n">sample_id</span><span class="p">,</span>
-             <span class="n">feature</span><span class="p">[</span><span class="n">node_id</span><span class="p">],</span>
-             <span class="n">X_test</span><span class="p">[</span><span class="n">sample_id</span><span class="p">,</span> <span class="n">feature</span><span class="p">[</span><span class="n">node_id</span><span class="p">]],</span>
-             <span class="n">threshold_sign</span><span class="p">,</span>
-             <span class="n">threshold</span><span class="p">[</span><span class="n">node_id</span><span class="p">]))</span>
-
-<span class="c1"># For a group of samples, we have the following common node.</span>
-<span class="n">sample_ids</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="n">common_nodes</span> <span class="o">=</span> <span class="p">(</span><span class="n">node_indicator</span><span class="o">.</span><span class="n">toarray</span><span class="p">()[</span><span class="n">sample_ids</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span>
-                <span class="nb">len</span><span class="p">(</span><span class="n">sample_ids</span><span class="p">))</span>
-
-<span class="n">common_node_id</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="n">n_nodes</span><span class="p">)[</span><span class="n">common_nodes</span><span class="p">]</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">The following samples </span><span class="si">%s</span><span class="s2"> share the node </span><span class="si">%s</span><span class="s2"> in the tree&quot;</span>
-      <span class="o">%</span> <span class="p">(</span><span class="n">sample_ids</span><span class="p">,</span> <span class="n">common_node_id</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;It is </span><span class="si">%s</span><span class="s2"> </span><span class="si">%%</span><span class="s2"> of all nodes.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">common_node_id</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_nodes</span><span class="p">,))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;decision node </span><span class="si">{node}</span><span class="s2"> : (X_test[</span><span class="si">{sample}</span><span class="s2">, </span><span class="si">{feature}</span><span class="s2">] = </span><span class="si">{value}</span><span class="s2">) &quot;</span>
+          <span class="s2">&quot;</span><span class="si">{inequality}</span><span class="s2"> </span><span class="si">{threshold}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+              <span class="n">node</span><span class="o">=</span><span class="n">node_id</span><span class="p">,</span>
+              <span class="n">sample</span><span class="o">=</span><span class="n">sample_id</span><span class="p">,</span>
+              <span class="n">feature</span><span class="o">=</span><span class="n">feature</span><span class="p">[</span><span class="n">node_id</span><span class="p">],</span>
+              <span class="n">value</span><span class="o">=</span><span class="n">X_test</span><span class="p">[</span><span class="n">sample_id</span><span class="p">,</span> <span class="n">feature</span><span class="p">[</span><span class="n">node_id</span><span class="p">]],</span>
+              <span class="n">inequality</span><span class="o">=</span><span class="n">threshold_sign</span><span class="p">,</span>
+              <span class="n">threshold</span><span class="o">=</span><span class="n">threshold</span><span class="p">[</span><span class="n">node_id</span><span class="p">]))</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.005 seconds)</p>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Rules used to predict sample 0:
+
+decision node 0 : (X_test[0, 3] = 2.4) &gt; 0.800000011920929)
+decision node 2 : (X_test[0, 2] = 5.1) &gt; 4.950000047683716)
+</pre></div>
+</div>
+<p>For a group of samples, we can determine the common nodes the samples go
+through.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sample_ids</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="c1"># boolean array indicating the nodes both samples go through</span>
+<span class="n">common_nodes</span> <span class="o">=</span> <span class="p">(</span><span class="n">node_indicator</span><span class="o">.</span><span class="n">toarray</span><span class="p">()[</span><span class="n">sample_ids</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">sample_ids</span><span class="p">))</span>
+<span class="c1"># obtain node ids using position in array</span>
+<span class="n">common_node_id</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="n">n_nodes</span><span class="p">)[</span><span class="n">common_nodes</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">The following samples </span><span class="si">{samples}</span><span class="s2"> share the node(s) </span><span class="si">{nodes}</span><span class="s2"> in the &quot;</span>
+      <span class="s2">&quot;tree.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">samples</span><span class="o">=</span><span class="n">sample_ids</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="n">common_node_id</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;This is </span><span class="si">{prop}% o</span><span class="s2">f all nodes.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">prop</span><span class="o">=</span><span class="mi">100</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">common_node_id</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_nodes</span><span class="p">))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The following samples [0, 1] share the node(s) [0 2] in the tree.
+This is 40.0% of all nodes.
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.097 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-tree-plot-unveil-tree-structure-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/scikit-learn/scikit-learn/master?urlpath=lab/tree/notebooks/auto_examples/tree/plot_unveil_tree_structure.ipynb"><img alt="https://mybinder.org/badge_logo.svg" src="https://mybinder.org/badge_logo.svg" width="150px" /></a>
@@ -330,6 +382,7 @@ It is 40.0 % of all nodes.
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
 </div>
 
 
