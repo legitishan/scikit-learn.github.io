@@ -277,9 +277,9 @@ problem, you will get useless results.</p>
 <p>Given an external estimator that assigns weights to features (e.g., the
 coefficients of a linear model), recursive feature elimination (<a class="reference internal" href="generated/sklearn.feature_selection.RFE.html#sklearn.feature_selection.RFE" title="sklearn.feature_selection.RFE"><code class="xref py py-class docutils literal notranslate"><span class="pre">RFE</span></code></a>)
 is to select features by recursively considering smaller and smaller sets of
-features.  First, the estimator is trained on the initial set of features and
-the importance of each feature is obtained either through a <code class="docutils literal notranslate"><span class="pre">coef_</span></code> attribute
-or through a <code class="docutils literal notranslate"><span class="pre">feature_importances_</span></code> attribute. Then, the least important
+features. First, the estimator is trained on the initial set of features and
+the importance of each feature is obtained either through any specific attribute
+(such as <code class="docutils literal notranslate"><span class="pre">coef_</span></code>, <code class="docutils literal notranslate"><span class="pre">feature_importances_</span></code>) or callable. Then, the least important
 features are pruned from current set of features.That procedure is recursively
 repeated on the pruned set until the desired number of features to select is
 eventually reached.</p>
@@ -299,9 +299,10 @@ selected with cross-validation.</p></li>
 <div class="section" id="feature-selection-using-selectfrommodel">
 <span id="select-from-model"></span><h2>1.13.4. Feature selection using SelectFromModel<a class="headerlink" href="#feature-selection-using-selectfrommodel" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference internal" href="generated/sklearn.feature_selection.SelectFromModel.html#sklearn.feature_selection.SelectFromModel" title="sklearn.feature_selection.SelectFromModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">SelectFromModel</span></code></a> is a meta-transformer that can be used along with any
-estimator that has a <code class="docutils literal notranslate"><span class="pre">coef_</span></code> or <code class="docutils literal notranslate"><span class="pre">feature_importances_</span></code> attribute after fitting.
+estimator that importance of each feature through a specific attribute (such as
+<code class="docutils literal notranslate"><span class="pre">coef_</span></code>, <code class="docutils literal notranslate"><span class="pre">feature_importances_</span></code>) or callable after fitting.
 The features are considered unimportant and removed, if the corresponding
-<code class="docutils literal notranslate"><span class="pre">coef_</span></code> or <code class="docutils literal notranslate"><span class="pre">feature_importances_</span></code> values are below the provided
+importance of the feature values are below the provided
 <code class="docutils literal notranslate"><span class="pre">threshold</span></code> parameter. Apart from specifying the threshold numerically,
 there are built-in heuristics for finding a threshold using a string argument.
 Available heuristics are “mean”, “median” and float multiples of these like
