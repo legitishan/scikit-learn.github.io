@@ -169,7 +169,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.preprocessing" title="sklearn.preprocessing"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.preprocessing</span></code></a>.MaxAbsScaler<a class="headerlink" href="#sklearn-preprocessing-maxabsscaler" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="sklearn.preprocessing.MaxAbsScaler">
-<em class="property">class </em><code class="sig-prename descclassname">sklearn.preprocessing.</code><code class="sig-name descname">MaxAbsScaler</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">copy=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f93f560bb/sklearn/preprocessing/_data.py#L854"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.MaxAbsScaler" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sklearn.preprocessing.</code><code class="sig-name descname">MaxAbsScaler</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">copy=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/ffd1873dc/sklearn/preprocessing/_data.py#L874"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.MaxAbsScaler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Scale each feature by its maximum absolute value.</p>
 <p>This estimator scales and translates each feature individually such
 that the maximal absolute value of each feature in the
@@ -182,19 +182,19 @@ thus does not destroy any sparsity.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>copy</strong><span class="classifier">boolean, optional, default is True</span></dt><dd><p>Set to False to perform inplace scaling and avoid a copy (if the input
+<dt><strong>copy</strong><span class="classifier">bool, default=True</span></dt><dd><p>Set to False to perform inplace scaling and avoid a copy (if the input
 is already a numpy array).</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><dl>
-<dt><strong>scale_</strong><span class="classifier">ndarray, shape (n_features,)</span></dt><dd><p>Per feature relative scaling of the data.</p>
+<dt><strong>scale_</strong><span class="classifier">ndarray of shape (n_features,)</span></dt><dd><p>Per feature relative scaling of the data.</p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.17: </span><em>scale_</em> attribute.</p>
 </div>
 </dd>
-<dt><strong>max_abs_</strong><span class="classifier">ndarray, shape (n_features,)</span></dt><dd><p>Per feature maximum absolute value.</p>
+<dt><strong>max_abs_</strong><span class="classifier">ndarray of shape (n_features,)</span></dt><dd><p>Per feature maximum absolute value.</p>
 </dd>
 <dt><strong>n_samples_seen_</strong><span class="classifier">int</span></dt><dd><p>The number of samples processed by the estimator. Will be reset on
 new calls to fit, but increments across <code class="docutils literal notranslate"><span class="pre">partial_fit</span></code> calls.</p>
@@ -260,13 +260,21 @@ see <a class="reference internal" href="../../auto_examples/preprocessing/plot_a
 </table>
 <dl class="method">
 <dt id="sklearn.preprocessing.MaxAbsScaler.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f93f560bb/sklearn/preprocessing/_data.py#L932"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.MaxAbsScaler.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/ffd1873dc/sklearn/preprocessing/_data.py#L952"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.MaxAbsScaler.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the maximum absolute value to be used for later scaling.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix}, shape [n_samples, n_features]</span></dt><dd><p>The data used to compute the per-feature minimum and maximum
+<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>The data used to compute the per-feature minimum and maximum
 used for later scaling along the features axis.</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">None</span></dt><dd><p>Ignored.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>self</strong><span class="classifier">object</span></dt><dd><p>Fitted scaler.</p>
 </dd>
 </dl>
 </dd>
@@ -275,7 +283,7 @@ used for later scaling along the features axis.</p>
 
 <dl class="method">
 <dt id="sklearn.preprocessing.MaxAbsScaler.fit_transform">
-<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y=None</em>, <em class="sig-param">**fit_params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f93f560bb/sklearn/base.py#L659"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.MaxAbsScaler.fit_transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y=None</em>, <em class="sig-param">**fit_params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/ffd1873dc/sklearn/base.py#L659"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.MaxAbsScaler.fit_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit to data, then transform it.</p>
 <p>Fits transformer to X and y with optional parameters fit_params
 and returns a transformed version of X.</p>
@@ -300,7 +308,7 @@ and returns a transformed version of X.</p>
 
 <dl class="method">
 <dt id="sklearn.preprocessing.MaxAbsScaler.get_params">
-<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f93f560bb/sklearn/base.py#L185"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.MaxAbsScaler.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">deep=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/ffd1873dc/sklearn/base.py#L185"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.MaxAbsScaler.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -321,12 +329,18 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.preprocessing.MaxAbsScaler.inverse_transform">
-<code class="sig-name descname">inverse_transform</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f93f560bb/sklearn/preprocessing/_data.py#L1009"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.MaxAbsScaler.inverse_transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">inverse_transform</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/ffd1873dc/sklearn/preprocessing/_data.py#L1041"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.MaxAbsScaler.inverse_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Scale back the data to the original representation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix}</span></dt><dd><p>The data that should be transformed back.</p>
+<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>The data that should be transformed back.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>X_tr</strong><span class="classifier">{ndarray, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Transformed array.</p>
 </dd>
 </dl>
 </dd>
@@ -335,7 +349,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="sklearn.preprocessing.MaxAbsScaler.partial_fit">
-<code class="sig-name descname">partial_fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f93f560bb/sklearn/preprocessing/_data.py#L946"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.MaxAbsScaler.partial_fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">partial_fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/ffd1873dc/sklearn/preprocessing/_data.py#L973"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.MaxAbsScaler.partial_fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Online computation of max absolute value of X for later scaling.</p>
 <p>All of X is processed as a single batch. This is intended for cases
 when <a class="reference internal" href="#sklearn.preprocessing.MaxAbsScaler.fit" title="sklearn.preprocessing.MaxAbsScaler.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit</span></code></a> is not feasible due to very large number of
@@ -343,7 +357,7 @@ when <a class="reference internal" href="#sklearn.preprocessing.MaxAbsScaler.fit
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix}, shape [n_samples, n_features]</span></dt><dd><p>The data used to compute the mean and standard deviation
+<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>The data used to compute the mean and standard deviation
 used for later scaling along the features axis.</p>
 </dd>
 <dt><strong>y</strong><span class="classifier">None</span></dt><dd><p>Ignored.</p>
@@ -352,7 +366,7 @@ used for later scaling along the features axis.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>self</strong><span class="classifier">object</span></dt><dd><p>Transformer instance.</p>
+<dt><strong>self</strong><span class="classifier">object</span></dt><dd><p>Fitted scaler.</p>
 </dd>
 </dl>
 </dd>
@@ -361,7 +375,7 @@ used for later scaling along the features axis.</p>
 
 <dl class="method">
 <dt id="sklearn.preprocessing.MaxAbsScaler.set_params">
-<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f93f560bb/sklearn/base.py#L217"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.MaxAbsScaler.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">**params</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/ffd1873dc/sklearn/base.py#L217"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.MaxAbsScaler.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
@@ -385,12 +399,18 @@ component of a nested object.</p>
 
 <dl class="method">
 <dt id="sklearn.preprocessing.MaxAbsScaler.transform">
-<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f93f560bb/sklearn/preprocessing/_data.py#L990"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.MaxAbsScaler.transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/ffd1873dc/sklearn/preprocessing/_data.py#L1017"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.MaxAbsScaler.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Scale the data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix}</span></dt><dd><p>The data that should be scaled.</p>
+<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>The data that should be scaled.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>X_tr</strong><span class="classifier">{ndarray, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Transformed array.</p>
 </dd>
 </dl>
 </dd>
