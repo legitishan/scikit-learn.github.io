@@ -169,7 +169,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.cluster" title="sklearn.cluster"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.cluster</span></code></a>.spectral_clustering<a class="headerlink" href="#sklearn-cluster-spectral-clustering" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.cluster.spectral_clustering">
-<code class="sig-prename descclassname">sklearn.cluster.</code><code class="sig-name descname">spectral_clustering</code><span class="sig-paren">(</span><em class="sig-param">affinity</em>, <em class="sig-param">*</em>, <em class="sig-param">n_clusters=8</em>, <em class="sig-param">n_components=None</em>, <em class="sig-param">eigen_solver=None</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">n_init=10</em>, <em class="sig-param">eigen_tol=0.0</em>, <em class="sig-param">assign_labels='kmeans'</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/74b445efb/sklearn/cluster/_spectral.py#L160"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.spectral_clustering" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sklearn.cluster.</code><code class="sig-name descname">spectral_clustering</code><span class="sig-paren">(</span><em class="sig-param">affinity</em>, <em class="sig-param">*</em>, <em class="sig-param">n_clusters=8</em>, <em class="sig-param">n_components=None</em>, <em class="sig-param">eigen_solver=None</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">n_init=10</em>, <em class="sig-param">eigen_tol=0.0</em>, <em class="sig-param">assign_labels='kmeans'</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/76817211a/sklearn/cluster/_spectral.py#L160"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.spectral_clustering" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply clustering to a projection of the normalized Laplacian.</p>
 <p>In practice Spectral Clustering is very useful when the structure of
 the individual clusters is highly non-convex or more generally when
@@ -182,7 +182,7 @@ used to find normalized graph cuts.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>affinity</strong><span class="classifier">array-like or sparse matrix, shape: (n_samples, n_samples)</span></dt><dd><p>The affinity matrix describing the relationship of the samples to
+<dt><strong>affinity</strong><span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_samples)</span></dt><dd><p>The affinity matrix describing the relationship of the samples to
 embed. <strong>Must be symmetric</strong>.</p>
 <dl class="simple">
 <dt>Possible examples:</dt><dd><ul class="simple">
@@ -193,9 +193,9 @@ embed. <strong>Must be symmetric</strong>.</p>
 </dd>
 </dl>
 </dd>
-<dt><strong>n_clusters</strong><span class="classifier">integer, optional</span></dt><dd><p>Number of clusters to extract.</p>
+<dt><strong>n_clusters</strong><span class="classifier">int, default=None</span></dt><dd><p>Number of clusters to extract.</p>
 </dd>
-<dt><strong>n_components</strong><span class="classifier">integer, optional, default is n_clusters</span></dt><dd><p>Number of eigen vectors to use for the spectral embedding</p>
+<dt><strong>n_components</strong><span class="classifier">int, default=n_clusters</span></dt><dd><p>Number of eigen vectors to use for the spectral embedding</p>
 </dd>
 <dt><strong>eigen_solver</strong><span class="classifier">{None, ‘arpack’, ‘lobpcg’, or ‘amg’}</span></dt><dd><p>The eigenvalue decomposition strategy to use. AMG requires pyamg
 to be installed. It can be faster on very large, sparse problems,
@@ -207,14 +207,14 @@ the K-Means initialization. Use an int to make the randomness
 deterministic.
 See <a class="reference internal" href="../../glossary.html#term-random-state"><span class="xref std std-term">Glossary</span></a>.</p>
 </dd>
-<dt><strong>n_init</strong><span class="classifier">int, optional, default: 10</span></dt><dd><p>Number of time the k-means algorithm will be run with different
+<dt><strong>n_init</strong><span class="classifier">int, default=10</span></dt><dd><p>Number of time the k-means algorithm will be run with different
 centroid seeds. The final results will be the best output of
 n_init consecutive runs in terms of inertia.</p>
 </dd>
-<dt><strong>eigen_tol</strong><span class="classifier">float, optional, default: 0.0</span></dt><dd><p>Stopping criterion for eigendecomposition of the Laplacian matrix
+<dt><strong>eigen_tol</strong><span class="classifier">float, default=0.0</span></dt><dd><p>Stopping criterion for eigendecomposition of the Laplacian matrix
 when using arpack eigen_solver.</p>
 </dd>
-<dt><strong>assign_labels</strong><span class="classifier">{‘kmeans’, ‘discretize’}, default: ‘kmeans’</span></dt><dd><p>The strategy to use to assign labels in the embedding
+<dt><strong>assign_labels</strong><span class="classifier">{‘kmeans’, ‘discretize’}, default=’kmeans’</span></dt><dd><p>The strategy to use to assign labels in the embedding
 space.  There are two ways to assign labels after the laplacian
 embedding.  k-means can be applied and is a popular choice. But it can
 also be sensitive to initialization. Discretization is another

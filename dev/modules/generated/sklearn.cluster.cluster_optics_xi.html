@@ -166,41 +166,41 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.cluster" title="sklearn.cluster"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.cluster</span></code></a>.cluster_optics_xi<a class="headerlink" href="#sklearn-cluster-cluster-optics-xi" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.cluster.cluster_optics_xi">
-<code class="sig-prename descclassname">sklearn.cluster.</code><code class="sig-name descname">cluster_optics_xi</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">reachability</em>, <em class="sig-param">predecessor</em>, <em class="sig-param">ordering</em>, <em class="sig-param">min_samples</em>, <em class="sig-param">min_cluster_size=None</em>, <em class="sig-param">xi=0.05</em>, <em class="sig-param">predecessor_correction=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/74b445efb/sklearn/cluster/_optics.py#L582"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.cluster_optics_xi" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sklearn.cluster.</code><code class="sig-name descname">cluster_optics_xi</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">reachability</em>, <em class="sig-param">predecessor</em>, <em class="sig-param">ordering</em>, <em class="sig-param">min_samples</em>, <em class="sig-param">min_cluster_size=None</em>, <em class="sig-param">xi=0.05</em>, <em class="sig-param">predecessor_correction=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/76817211a/sklearn/cluster/_optics.py#L582"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.cluster_optics_xi" title="Permalink to this definition">¶</a></dt>
 <dd><p>Automatically extract clusters according to the Xi-steep method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>reachability</strong><span class="classifier">array, shape (n_samples,)</span></dt><dd><p>Reachability distances calculated by OPTICS (<code class="docutils literal notranslate"><span class="pre">reachability_</span></code>)</p>
+<dt><strong>reachability</strong><span class="classifier">ndarray of shape (n_samples,)</span></dt><dd><p>Reachability distances calculated by OPTICS (<code class="docutils literal notranslate"><span class="pre">reachability_</span></code>)</p>
 </dd>
-<dt><strong>predecessor</strong><span class="classifier">array, shape (n_samples,)</span></dt><dd><p>Predecessors calculated by OPTICS.</p>
+<dt><strong>predecessor</strong><span class="classifier">ndarray of shape (n_samples,)</span></dt><dd><p>Predecessors calculated by OPTICS.</p>
 </dd>
-<dt><strong>ordering</strong><span class="classifier">array, shape (n_samples,)</span></dt><dd><p>OPTICS ordered point indices (<code class="docutils literal notranslate"><span class="pre">ordering_</span></code>)</p>
+<dt><strong>ordering</strong><span class="classifier">ndarray of shape (n_samples,)</span></dt><dd><p>OPTICS ordered point indices (<code class="docutils literal notranslate"><span class="pre">ordering_</span></code>)</p>
 </dd>
 <dt><strong>min_samples</strong><span class="classifier">int &gt; 1 or float between 0 and 1</span></dt><dd><p>The same as the min_samples given to OPTICS. Up and down steep regions
 can’t have more then <code class="docutils literal notranslate"><span class="pre">min_samples</span></code> consecutive non-steep points.
 Expressed as an absolute number or a fraction of the number of samples
 (rounded to be at least 2).</p>
 </dd>
-<dt><strong>min_cluster_size</strong><span class="classifier">int &gt; 1 or float between 0 and 1 (default=None)</span></dt><dd><p>Minimum number of samples in an OPTICS cluster, expressed as an
+<dt><strong>min_cluster_size</strong><span class="classifier">int &gt; 1 or float between 0 and 1, default=None</span></dt><dd><p>Minimum number of samples in an OPTICS cluster, expressed as an
 absolute number or a fraction of the number of samples (rounded to be
 at least 2). If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the value of <code class="docutils literal notranslate"><span class="pre">min_samples</span></code> is used instead.</p>
 </dd>
-<dt><strong>xi</strong><span class="classifier">float, between 0 and 1, optional (default=0.05)</span></dt><dd><p>Determines the minimum steepness on the reachability plot that
+<dt><strong>xi</strong><span class="classifier">float between 0 and 1, default=0.05</span></dt><dd><p>Determines the minimum steepness on the reachability plot that
 constitutes a cluster boundary. For example, an upwards point in the
 reachability plot is defined by the ratio from one point to its
 successor being at most 1-xi.</p>
 </dd>
-<dt><strong>predecessor_correction</strong><span class="classifier">bool, optional (default=True)</span></dt><dd><p>Correct clusters based on the calculated predecessors.</p>
+<dt><strong>predecessor_correction</strong><span class="classifier">bool, default=True</span></dt><dd><p>Correct clusters based on the calculated predecessors.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>labels</strong><span class="classifier">array, shape (n_samples)</span></dt><dd><p>The labels assigned to samples. Points which are not included
+<dt><strong>labels</strong><span class="classifier">ndarray of shape (n_samples,)</span></dt><dd><p>The labels assigned to samples. Points which are not included
 in any cluster are labeled as -1.</p>
 </dd>
-<dt><strong>clusters</strong><span class="classifier">array, shape (n_clusters, 2)</span></dt><dd><p>The list of clusters in the form of <code class="docutils literal notranslate"><span class="pre">[start,</span> <span class="pre">end]</span></code> in each row, with
+<dt><strong>clusters</strong><span class="classifier">ndarray of shape (n_clusters, 2)</span></dt><dd><p>The list of clusters in the form of <code class="docutils literal notranslate"><span class="pre">[start,</span> <span class="pre">end]</span></code> in each row, with
 all indices inclusive. The clusters are ordered according to <code class="docutils literal notranslate"><span class="pre">(end,</span>
 <span class="pre">-start)</span></code> (ascending) so that larger clusters encompassing smaller
 clusters come after such nested smaller clusters. Since <code class="docutils literal notranslate"><span class="pre">labels</span></code> does
