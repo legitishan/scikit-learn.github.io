@@ -172,7 +172,7 @@
 that the maximal absolute value of each feature in the
 training set will be 1.0.</p>
 <p>This scaler can also be applied to sparse CSR or CSC matrices.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>X</strong><span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>The data.</p>
@@ -190,6 +190,19 @@ is already a numpy array).</p>
 <dt><strong>X_tr</strong><span class="classifier">{ndarray, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>The transformed data.</p>
 </dd>
 </dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Risk of data leak
+Do not use <a class="reference internal" href="#sklearn.preprocessing.maxabs_scale" title="sklearn.preprocessing.maxabs_scale"><code class="xref py py-func docutils literal notranslate"><span class="pre">maxabs_scale</span></code></a> unless you know what
+you are doing. A common mistake is to apply it to the entire data
+<em>before</em> splitting into training and test sets. This will bias the
+model evaluation because information would have leaked from the test
+set to the training set.
+In general, we recommend using
+<a class="reference internal" href="sklearn.preprocessing.MaxAbsScaler.html#sklearn.preprocessing.MaxAbsScaler" title="sklearn.preprocessing.MaxAbsScaler"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaxAbsScaler</span></code></a> within a
+<a class="reference internal" href="../compose.html#pipeline"><span class="std std-ref">Pipeline</span></a> in order to prevent most risks of data
+leaking: <code class="docutils literal notranslate"><span class="pre">pipe</span> <span class="pre">=</span> <span class="pre">make_pipeline(MaxAbsScaler(),</span> <span class="pre">LogisticRegression())</span></code>.</p>
+</div>
 </dd>
 </dl>
 <div class="admonition seealso">
