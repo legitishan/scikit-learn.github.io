@@ -169,7 +169,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.manifold" title="sklearn.manifold"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.manifold</span></code></a>.locally_linear_embedding<a class="headerlink" href="#sklearn-manifold-locally-linear-embedding" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.manifold.locally_linear_embedding">
-<code class="sig-prename descclassname">sklearn.manifold.</code><code class="sig-name descname">locally_linear_embedding</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">*</em>, <em class="sig-param">n_neighbors</em>, <em class="sig-param">n_components</em>, <em class="sig-param">reg=0.001</em>, <em class="sig-param">eigen_solver='auto'</em>, <em class="sig-param">tol=1e-06</em>, <em class="sig-param">max_iter=100</em>, <em class="sig-param">method='standard'</em>, <em class="sig-param">hessian_tol=0.0001</em>, <em class="sig-param">modified_tol=1e-12</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">n_jobs=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/51df26242/sklearn/manifold/_locally_linear.py#L187"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.manifold.locally_linear_embedding" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sklearn.manifold.</code><code class="sig-name descname">locally_linear_embedding</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">*</em>, <em class="sig-param">n_neighbors</em>, <em class="sig-param">n_components</em>, <em class="sig-param">reg=0.001</em>, <em class="sig-param">eigen_solver='auto'</em>, <em class="sig-param">tol=1e-06</em>, <em class="sig-param">max_iter=100</em>, <em class="sig-param">method='standard'</em>, <em class="sig-param">hessian_tol=0.0001</em>, <em class="sig-param">modified_tol=1e-12</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">n_jobs=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c115ed715/sklearn/manifold/_locally_linear.py#L187"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.manifold.locally_linear_embedding" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform a Locally Linear Embedding analysis on the data.</p>
 <p>Read more in the <a class="reference internal" href="../manifold.html#locally-linear-embedding"><span class="std std-ref">User Guide</span></a>.</p>
 <dl class="field-list">
@@ -178,14 +178,14 @@
 <dt><strong>X</strong><span class="classifier">{array-like, NearestNeighbors}</span></dt><dd><p>Sample data, shape = (n_samples, n_features), in the form of a
 numpy array or a NearestNeighbors object.</p>
 </dd>
-<dt><strong>n_neighbors</strong><span class="classifier">integer</span></dt><dd><p>number of neighbors to consider for each point.</p>
+<dt><strong>n_neighbors</strong><span class="classifier">int</span></dt><dd><p>number of neighbors to consider for each point.</p>
 </dd>
-<dt><strong>n_components</strong><span class="classifier">integer</span></dt><dd><p>number of coordinates for the manifold.</p>
+<dt><strong>n_components</strong><span class="classifier">int</span></dt><dd><p>number of coordinates for the manifold.</p>
 </dd>
-<dt><strong>reg</strong><span class="classifier">float</span></dt><dd><p>regularization constant, multiplies the trace of the local covariance
+<dt><strong>reg</strong><span class="classifier">float, default=1e-3</span></dt><dd><p>regularization constant, multiplies the trace of the local covariance
 matrix of the distances.</p>
 </dd>
-<dt><strong>eigen_solver</strong><span class="classifier">string, {‘auto’, ‘arpack’, ‘dense’}</span></dt><dd><p>auto : algorithm will attempt to choose the best method for input data</p>
+<dt><strong>eigen_solver</strong><span class="classifier">{‘auto’, ‘arpack’, ‘dense’}, default=’auto’</span></dt><dd><p>auto : algorithm will attempt to choose the best method for input data</p>
 <dl class="simple">
 <dt>arpack<span class="classifier">use arnoldi iteration in shift-invert mode.</span></dt><dd><p>For this method, M may be a dense matrix, sparse matrix,
 or general linear operator.
@@ -198,12 +198,12 @@ large problems.</p>
 </dd>
 </dl>
 </dd>
-<dt><strong>tol</strong><span class="classifier">float, optional</span></dt><dd><p>Tolerance for ‘arpack’ method
+<dt><strong>tol</strong><span class="classifier">float, default=1e-6</span></dt><dd><p>Tolerance for ‘arpack’ method
 Not used if eigen_solver==’dense’.</p>
 </dd>
-<dt><strong>max_iter</strong><span class="classifier">integer</span></dt><dd><p>maximum number of iterations for the arpack solver.</p>
+<dt><strong>max_iter</strong><span class="classifier">int, default=100</span></dt><dd><p>maximum number of iterations for the arpack solver.</p>
 </dd>
-<dt><strong>method</strong><span class="classifier">{‘standard’, ‘hessian’, ‘modified’, ‘ltsa’}</span></dt><dd><dl class="simple">
+<dt><strong>method</strong><span class="classifier">{‘standard’, ‘hessian’, ‘modified’, ‘ltsa’}, default=’standard’</span></dt><dd><dl class="simple">
 <dt>standard<span class="classifier">use the standard locally linear embedding algorithm.</span></dt><dd><p>see reference <a class="reference internal" href="#rb2a5641379f7-1" id="id1">[1]</a></p>
 </dd>
 <dt>hessian<span class="classifier">use the Hessian eigenmap method.  This method requires</span></dt><dd><p>n_neighbors &gt; n_components * (1 + (n_components + 1) / 2.
@@ -215,17 +215,17 @@ see reference <a class="reference internal" href="#rb2a5641379f7-2" id="id2">[2]
 </dd>
 </dl>
 </dd>
-<dt><strong>hessian_tol</strong><span class="classifier">float, optional</span></dt><dd><p>Tolerance for Hessian eigenmapping method.
+<dt><strong>hessian_tol</strong><span class="classifier">float, default=1e-4</span></dt><dd><p>Tolerance for Hessian eigenmapping method.
 Only used if method == ‘hessian’</p>
 </dd>
-<dt><strong>modified_tol</strong><span class="classifier">float, optional</span></dt><dd><p>Tolerance for modified LLE method.
+<dt><strong>modified_tol</strong><span class="classifier">float, default=1e-12</span></dt><dd><p>Tolerance for modified LLE method.
 Only used if method == ‘modified’</p>
 </dd>
 <dt><strong>random_state</strong><span class="classifier">int, RandomState instance, default=None</span></dt><dd><p>Determines the random number generator when <code class="docutils literal notranslate"><span class="pre">solver</span></code> == ‘arpack’.
 Pass an int for reproducible results across multiple function calls.
 See :term: <code class="docutils literal notranslate"><span class="pre">Glossary</span> <span class="pre">&lt;random_state&gt;</span></code>.</p>
 </dd>
-<dt><strong>n_jobs</strong><span class="classifier">int or None, optional (default=None)</span></dt><dd><p>The number of parallel jobs to run for neighbors search.
+<dt><strong>n_jobs</strong><span class="classifier">int or None, default=None</span></dt><dd><p>The number of parallel jobs to run for neighbors search.
 <code class="docutils literal notranslate"><span class="pre">None</span></code> means 1 unless in a <a class="reference external" href="https://joblib.readthedocs.io/en/latest/parallel.html#joblib.parallel_backend" title="(in joblib v0.14.1.dev0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">joblib.parallel_backend</span></code></a> context.
 <code class="docutils literal notranslate"><span class="pre">-1</span></code> means using all processors. See <a class="reference internal" href="../../glossary.html#term-n-jobs"><span class="xref std std-term">Glossary</span></a>
 for more details.</p>
