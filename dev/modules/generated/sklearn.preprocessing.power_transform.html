@@ -166,7 +166,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.preprocessing" title="sklearn.preprocessing"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.preprocessing</span></code></a>.power_transform<a class="headerlink" href="#sklearn-preprocessing-power-transform" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sklearn.preprocessing.power_transform">
-<code class="sig-prename descclassname">sklearn.preprocessing.</code><code class="sig-name descname">power_transform</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">method='yeo-johnson'</em>, <em class="sig-param">*</em>, <em class="sig-param">standardize=True</em>, <em class="sig-param">copy=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c3835442e/sklearn/preprocessing/_data.py#L3212"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.power_transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sklearn.preprocessing.</code><code class="sig-name descname">power_transform</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">method='yeo-johnson'</em>, <em class="sig-param">*</em>, <em class="sig-param">standardize=True</em>, <em class="sig-param">copy=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/689e6fc4f/sklearn/preprocessing/_data.py#L3212"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.power_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Power transforms are a family of parametric, monotonic transformations
 that are applied to make data more Gaussian-like. This is useful for
 modeling issues related to heteroscedasticity (non-constant variance),
@@ -243,6 +243,20 @@ of the Royal Statistical Society B, 26, 211-252 (1964).</p>
 <span class="go"> [ 0.256... -0.707...]</span>
 <span class="go"> [ 1.076...  1.414...]]</span>
 </pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Risk of data leak.
+Do not use <a class="reference internal" href="#sklearn.preprocessing.power_transform" title="sklearn.preprocessing.power_transform"><code class="xref py py-func docutils literal notranslate"><span class="pre">power_transform</span></code></a> unless you
+know what you are doing. A common mistake is to apply it to the entire
+data <em>before</em> splitting into training and test sets. This will bias the
+model evaluation because information would have leaked from the test
+set to the training set.
+In general, we recommend using
+<a class="reference internal" href="sklearn.preprocessing.PowerTransformer.html#sklearn.preprocessing.PowerTransformer" title="sklearn.preprocessing.PowerTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">PowerTransformer</span></code></a> within a
+<a class="reference internal" href="../compose.html#pipeline"><span class="std std-ref">Pipeline</span></a> in order to prevent most risks of data
+leaking, e.g.: <code class="docutils literal notranslate"><span class="pre">pipe</span> <span class="pre">=</span> <span class="pre">make_pipeline(PowerTransformer(),</span>
+<span class="pre">LogisticRegression())</span></code>.</p>
 </div>
 </dd></dl>
 
