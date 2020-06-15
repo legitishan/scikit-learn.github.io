@@ -169,7 +169,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.preprocessing" title="sklearn.preprocessing"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.preprocessing</span></code></a>.quantile_transform<a class="headerlink" href="#sklearn-preprocessing-quantile-transform" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="sklearn.preprocessing.quantile_transform">
-<code class="sig-prename descclassname">sklearn.preprocessing.</code><code class="sig-name descname">quantile_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">axis</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">n_quantiles</span><span class="o">=</span><span class="default_value">1000</span></em>, <em class="sig-param"><span class="n">output_distribution</span><span class="o">=</span><span class="default_value">'uniform'</span></em>, <em class="sig-param"><span class="n">ignore_implicit_zeros</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">subsample</span><span class="o">=</span><span class="default_value">100000</span></em>, <em class="sig-param"><span class="n">random_state</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">copy</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f9966ba61/sklearn/preprocessing/_data.py#L2758"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.quantile_transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sklearn.preprocessing.</code><code class="sig-name descname">quantile_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">axis</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">n_quantiles</span><span class="o">=</span><span class="default_value">1000</span></em>, <em class="sig-param"><span class="n">output_distribution</span><span class="o">=</span><span class="default_value">'uniform'</span></em>, <em class="sig-param"><span class="n">ignore_implicit_zeros</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">subsample</span><span class="o">=</span><span class="default_value">100000</span></em>, <em class="sig-param"><span class="n">random_state</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">copy</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9fa140406/sklearn/preprocessing/_data.py#L2758"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.quantile_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform features using quantiles information.</p>
 <p>This method transforms the features to follow a uniform or a normal
 distribution. Therefore, for a given feature, this transformation tends
@@ -250,6 +250,21 @@ leaving the original <code class="docutils literal notranslate"><span class="pre
 <p class="rubric">Notes</p>
 <p>NaNs are treated as missing values: disregarded in fit, and maintained in
 transform.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Risk of data leak</p>
+<p>Do not use <a class="reference internal" href="#sklearn.preprocessing.quantile_transform" title="sklearn.preprocessing.quantile_transform"><code class="xref py py-func docutils literal notranslate"><span class="pre">quantile_transform</span></code></a> unless
+you know what you are doing. A common mistake is to apply it
+to the entire data <em>before</em> splitting into training and
+test sets. This will bias the model evaluation because
+information would have leaked from the test set to the
+training set.
+In general, we recommend using
+<a class="reference internal" href="sklearn.preprocessing.QuantileTransformer.html#sklearn.preprocessing.QuantileTransformer" title="sklearn.preprocessing.QuantileTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantileTransformer</span></code></a> within a
+<a class="reference internal" href="../compose.html#pipeline"><span class="std std-ref">Pipeline</span></a> in order to prevent most risks of data
+leaking:<code class="docutils literal notranslate"><span class="pre">pipe</span> <span class="pre">=</span> <span class="pre">make_pipeline(QuantileTransformer(),</span>
+<span class="pre">LogisticRegression())</span></code>.</p>
+</div>
 <p>For a comparison of the different scalers, transformers, and normalizers,
 see <a class="reference internal" href="../../auto_examples/preprocessing/plot_all_scaling.html#sphx-glr-auto-examples-preprocessing-plot-all-scaling-py"><span class="std std-ref">examples/preprocessing/plot_all_scaling.py</span></a>.</p>
 <p class="rubric">Examples</p>
