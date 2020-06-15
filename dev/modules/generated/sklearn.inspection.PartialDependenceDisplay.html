@@ -169,8 +169,10 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.inspection" title="sklearn.inspection"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.inspection</span></code></a>.PartialDependenceDisplay<a class="headerlink" href="#sklearn-inspection-partialdependencedisplay" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="sklearn.inspection.PartialDependenceDisplay">
-<em class="property">class </em><code class="sig-prename descclassname">sklearn.inspection.</code><code class="sig-name descname">PartialDependenceDisplay</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pd_results</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">features</span></em>, <em class="sig-param"><span class="n">feature_names</span></em>, <em class="sig-param"><span class="n">target_idx</span></em>, <em class="sig-param"><span class="n">pdp_lim</span></em>, <em class="sig-param"><span class="n">deciles</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/bf6023fc7/sklearn/inspection/_plot/partial_dependence.py#L322"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.inspection.PartialDependenceDisplay" title="Permalink to this definition">¶</a></dt>
-<dd><p>Partial Dependence Plot (PDP) visualization.</p>
+<em class="property">class </em><code class="sig-prename descclassname">sklearn.inspection.</code><code class="sig-name descname">PartialDependenceDisplay</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pd_results</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">features</span></em>, <em class="sig-param"><span class="n">feature_names</span></em>, <em class="sig-param"><span class="n">target_idx</span></em>, <em class="sig-param"><span class="n">pdp_lim</span></em>, <em class="sig-param"><span class="n">deciles</span></em>, <em class="sig-param"><span class="n">kind</span><span class="o">=</span><span class="default_value">'average'</span></em>, <em class="sig-param"><span class="n">subsample</span><span class="o">=</span><span class="default_value">1000</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/45a6ef7b7/sklearn/inspection/_plot/partial_dependence.py#L380"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.inspection.PartialDependenceDisplay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Partial Dependence Plot (PDP)</p>
+<p>This can also display individual partial dependencies which are often
+referred to as: Individual Condition Expectation (ICE).</p>
 <p>It is recommended to use
 <a class="reference internal" href="sklearn.inspection.plot_partial_dependence.html#sklearn.inspection.plot_partial_dependence" title="sklearn.inspection.plot_partial_dependence"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_partial_dependence</span></code></a> to create a
 <a class="reference internal" href="#sklearn.inspection.PartialDependenceDisplay" title="sklearn.inspection.PartialDependenceDisplay"><code class="xref py py-class docutils literal notranslate"><span class="pre">PartialDependenceDisplay</span></code></a>. All parameters are
@@ -186,8 +188,8 @@ and the <a class="reference internal" href="../../visualizations.html#visualizat
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>pd_results</strong><span class="classifier">list of (ndarray, ndarray)</span></dt><dd><p>Results of <a class="reference internal" href="sklearn.inspection.partial_dependence.html#sklearn.inspection.partial_dependence" title="sklearn.inspection.partial_dependence"><code class="xref py py-func docutils literal notranslate"><span class="pre">partial_dependence</span></code></a> for
-<code class="docutils literal notranslate"><span class="pre">features</span></code>. Each tuple corresponds to a (averaged_predictions, grid).</p>
+<dt><strong>pd_results</strong><span class="classifier">list of Bunch</span></dt><dd><p>Results of <a class="reference internal" href="sklearn.inspection.partial_dependence.html#sklearn.inspection.partial_dependence" title="sklearn.inspection.partial_dependence"><code class="xref py py-func docutils literal notranslate"><span class="pre">partial_dependence</span></code></a> for
+<code class="docutils literal notranslate"><span class="pre">features</span></code>.</p>
 </dd>
 <dt><strong>features</strong><span class="classifier">list of (int,) or list of (int, int)</span></dt><dd><p>Indices of features for a given plot. A tuple of one integer will plot
 a partial dependence curve of one feature. A tuple of two integers will
@@ -210,6 +212,33 @@ single partial dependence curves. <code class="docutils literal notranslate"><sp
 max for two-way partial dependence curves.</p>
 </dd>
 <dt><strong>deciles</strong><span class="classifier">dict</span></dt><dd><p>Deciles for feature indices in <code class="docutils literal notranslate"><span class="pre">features</span></code>.</p>
+</dd>
+<dt><strong>kind</strong><span class="classifier">{‘average’, ‘individual’, ‘both’}, default=’average’</span></dt><dd><blockquote>
+<div><p>Whether to plot the partial dependence averaged across all the samples
+in the dataset or one line per sample or both.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">kind='average'</span></code> results in the traditional PD plot;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">kind='individual'</span></code> results in the ICE plot.</p></li>
+</ul>
+</div></blockquote>
+<p>Note that the fast <code class="docutils literal notranslate"><span class="pre">method='recursion'</span></code> option is only available for
+<code class="docutils literal notranslate"><span class="pre">kind='average'</span></code>. Plotting individual dependencies requires using the
+slower <code class="docutils literal notranslate"><span class="pre">method='brute'</span></code> option.</p>
+<blockquote>
+<div><div class="versionadded">
+<p><span class="versionmodified added">New in version 0.24.</span></p>
+</div>
+</div></blockquote>
+</dd>
+<dt><strong>subsample</strong><span class="classifier">float, int or None, default=1000</span></dt><dd><p>Sampling for ICE curves when <code class="docutils literal notranslate"><span class="pre">kind</span></code> is ‘individual’ or ‘both’.
+If float, should be between 0.0 and 1.0 and represent the proportion
+of the dataset to be used to plot ICE curves. If int, represents the
+maximum absolute number of samples to use.</p>
+<p>Note that the full dataset is still used to calculate partial
+dependence when <code class="docutils literal notranslate"><span class="pre">kind='both'</span></code>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.24.</span></p>
+</div>
 </dd>
 </dl>
 </dd>
@@ -269,7 +298,7 @@ or an axes that does not include a contour plot.</p>
 </table>
 <dl class="py method">
 <dt id="sklearn.inspection.PartialDependenceDisplay.plot">
-<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n_cols</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">line_kw</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">contour_kw</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/bf6023fc7/sklearn/inspection/_plot/partial_dependence.py#L425"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.inspection.PartialDependenceDisplay.plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n_cols</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">line_kw</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">contour_kw</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/45a6ef7b7/sklearn/inspection/_plot/partial_dependence.py#L521"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.inspection.PartialDependenceDisplay.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot partial dependence plots.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
