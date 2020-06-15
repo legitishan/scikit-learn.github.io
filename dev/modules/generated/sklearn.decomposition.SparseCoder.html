@@ -169,7 +169,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.decomposition" title="sklearn.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.decomposition</span></code></a>.SparseCoder<a class="headerlink" href="#sklearn-decomposition-sparsecoder" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="sklearn.decomposition.SparseCoder">
-<em class="property">class </em><code class="sig-prename descclassname">sklearn.decomposition.</code><code class="sig-name descname">SparseCoder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dictionary</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">transform_algorithm</span><span class="o">=</span><span class="default_value">'omp'</span></em>, <em class="sig-param"><span class="n">transform_n_nonzero_coefs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">transform_alpha</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">split_sign</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">n_jobs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">positive_code</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">transform_max_iter</span><span class="o">=</span><span class="default_value">1000</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/45a6ef7b7/sklearn/decomposition/_dict_learning.py#L937"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.SparseCoder" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sklearn.decomposition.</code><code class="sig-name descname">SparseCoder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dictionary</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">transform_algorithm</span><span class="o">=</span><span class="default_value">'omp'</span></em>, <em class="sig-param"><span class="n">transform_n_nonzero_coefs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">transform_alpha</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">split_sign</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">n_jobs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">positive_code</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">transform_max_iter</span><span class="o">=</span><span class="default_value">1000</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/11c670586/sklearn/decomposition/_dict_learning.py#L937"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.SparseCoder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sparse coding</p>
 <p>Finds a sparse representation of data against a fixed, precomputed
 dictionary.</p>
@@ -246,6 +246,27 @@ for more details.</p>
 <dt><a class="reference internal" href="sklearn.decomposition.sparse_encode.html#sklearn.decomposition.sparse_encode" title="sklearn.decomposition.sparse_encode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sparse_encode</span></code></a></dt><dd></dd>
 </dl>
 </div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">SparseCoder</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dictionary</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>     <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+<span class="gp">... </span>     <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="gp">... </span>     <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="gp">... </span>     <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span>
+<span class="gp">... </span>   <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coder</span> <span class="o">=</span> <span class="n">SparseCoder</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">dictionary</span><span class="o">=</span><span class="n">dictionary</span><span class="p">,</span> <span class="n">transform_algorithm</span><span class="o">=</span><span class="s1">&#39;lasso_lars&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">transform_alpha</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="go">array([[ 0.,  0., -1.,  0.,  0.],</span>
+<span class="go">       [ 0.,  1.,  1.,  0.,  0.]])</span>
+</pre></div>
+</div>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -272,7 +293,7 @@ for more details.</p>
 </table>
 <dl class="py method">
 <dt id="sklearn.decomposition.SparseCoder.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/45a6ef7b7/sklearn/decomposition/_dict_learning.py#L1031"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.SparseCoder.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/11c670586/sklearn/decomposition/_dict_learning.py#L1052"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.SparseCoder.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Do nothing and return the estimator unchanged</p>
 <p>This method is just there to implement the usual API and hence
 work in pipelines.</p>
@@ -294,7 +315,7 @@ work in pipelines.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.SparseCoder.fit_transform">
-<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">fit_params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/45a6ef7b7/sklearn/base.py#L659"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.SparseCoder.fit_transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">fit_params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/11c670586/sklearn/base.py#L659"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.SparseCoder.fit_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit to data, then transform it.</p>
 <p>Fits transformer to X and y with optional parameters fit_params
 and returns a transformed version of X.</p>
@@ -320,7 +341,7 @@ and returns a transformed version of X.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.SparseCoder.get_params">
-<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/45a6ef7b7/sklearn/base.py#L185"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.SparseCoder.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/11c670586/sklearn/base.py#L185"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.SparseCoder.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -341,7 +362,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.SparseCoder.set_params">
-<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/45a6ef7b7/sklearn/base.py#L217"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.SparseCoder.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/11c670586/sklearn/base.py#L217"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.SparseCoder.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
@@ -365,7 +386,7 @@ component of a nested object.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.SparseCoder.transform">
-<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/45a6ef7b7/sklearn/decomposition/_dict_learning.py#L898"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.SparseCoder.transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/11c670586/sklearn/decomposition/_dict_learning.py#L898"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.SparseCoder.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Encode the data as a sparse combination of the dictionary atoms.</p>
 <p>Coding method is determined by the object parameter
 <code class="docutils literal notranslate"><span class="pre">transform_algorithm</span></code>.</p>
