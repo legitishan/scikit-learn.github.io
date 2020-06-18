@@ -168,7 +168,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.svm" title="sklearn.svm"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.svm</span></code></a>.OneClassSVM<a class="headerlink" href="#sklearn-svm-oneclasssvm" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="sklearn.svm.OneClassSVM">
-<em class="property">class </em><code class="sig-prename descclassname">sklearn.svm.</code><code class="sig-name descname">OneClassSVM</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">kernel</span><span class="o">=</span><span class="default_value">'rbf'</span></em>, <em class="sig-param"><span class="n">degree</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">gamma</span><span class="o">=</span><span class="default_value">'scale'</span></em>, <em class="sig-param"><span class="n">coef0</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">tol</span><span class="o">=</span><span class="default_value">0.001</span></em>, <em class="sig-param"><span class="n">nu</span><span class="o">=</span><span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">shrinking</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">cache_size</span><span class="o">=</span><span class="default_value">200</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">max_iter</span><span class="o">=</span><span class="default_value">- 1</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c298cb771/sklearn/svm/_classes.py#L1203"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.OneClassSVM" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sklearn.svm.</code><code class="sig-name descname">OneClassSVM</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">kernel</span><span class="o">=</span><span class="default_value">'rbf'</span></em>, <em class="sig-param"><span class="n">degree</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">gamma</span><span class="o">=</span><span class="default_value">'scale'</span></em>, <em class="sig-param"><span class="n">coef0</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">tol</span><span class="o">=</span><span class="default_value">0.001</span></em>, <em class="sig-param"><span class="n">nu</span><span class="o">=</span><span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">shrinking</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">cache_size</span><span class="o">=</span><span class="default_value">200</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">max_iter</span><span class="o">=</span><span class="default_value">- 1</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/89b80a6c6/sklearn/svm/_classes.py#L1234"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.OneClassSVM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Unsupervised Outlier Detection.</p>
 <p>Estimate the support of a high-dimensional distribution.</p>
 <p>The implementation is based on libsvm.</p>
@@ -220,18 +220,21 @@ properly in a multithreaded context.</p>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><dl>
-<dt><strong>support_</strong><span class="classifier">ndarray of shape (n_SV,)</span></dt><dd><p>Indices of support vectors.</p>
-</dd>
-<dt><strong>support_vectors_</strong><span class="classifier">ndarray of shape (n_SV, n_features)</span></dt><dd><p>Support vectors.</p>
-</dd>
-<dt><strong>dual_coef_</strong><span class="classifier">ndarray of shape (1, n_SV)</span></dt><dd><p>Coefficients of the support vectors in the decision function.</p>
+<dt><strong>class_weight_</strong><span class="classifier">ndarray of shape (n_classes,)</span></dt><dd><p>Multipliers of parameter C for each class.
+Computed based on the <code class="docutils literal notranslate"><span class="pre">class_weight</span></code> parameter.</p>
 </dd>
 <dt><strong>coef_</strong><span class="classifier">ndarray of shape (1, n_features)</span></dt><dd><p>Weights assigned to the features (coefficients in the primal
 problem). This is only available in the case of a linear kernel.</p>
 <p><code class="docutils literal notranslate"><span class="pre">coef_</span></code> is readonly property derived from <code class="docutils literal notranslate"><span class="pre">dual_coef_</span></code> and
-<code class="docutils literal notranslate"><span class="pre">support_vectors_</span></code></p>
+<code class="docutils literal notranslate"><span class="pre">support_vectors_</span></code>.</p>
+</dd>
+<dt><strong>dual_coef_</strong><span class="classifier">ndarray of shape (1, n_SV)</span></dt><dd><p>Coefficients of the support vectors in the decision function.</p>
+</dd>
+<dt><strong>fit_status_</strong><span class="classifier">int</span></dt><dd><p>0 if correctly fitted, 1 otherwise (will raise warning)</p>
 </dd>
 <dt><strong>intercept_</strong><span class="classifier">ndarray of shape (1,)</span></dt><dd><p>Constant in the decision function.</p>
+</dd>
+<dt><strong>n_support_</strong><span class="classifier">ndarray of shape (n_classes,), dtype=int32</span></dt><dd><p>Number of support vectors for each class.</p>
 </dd>
 <dt><strong>offset_</strong><span class="classifier">float</span></dt><dd><p>Offset used to define the decision function from the raw scores.
 We have the relation: decision_function = score_samples - <code class="docutils literal notranslate"><span class="pre">offset_</span></code>.
@@ -241,7 +244,11 @@ consistency with other outlier detection algorithms.</p>
 <p><span class="versionmodified added">New in version 0.20.</span></p>
 </div>
 </dd>
-<dt><strong>fit_status_</strong><span class="classifier">int</span></dt><dd><p>0 if correctly fitted, 1 otherwise (will raise warning)</p>
+<dt><strong>shape_fit_</strong><span class="classifier">tuple of int of shape (n_dimensions_of_X,)</span></dt><dd><p>Array dimensions of training vector <code class="docutils literal notranslate"><span class="pre">X</span></code>.</p>
+</dd>
+<dt><strong>support_</strong><span class="classifier">ndarray of shape (n_SV,)</span></dt><dd><p>Indices of support vectors.</p>
+</dd>
+<dt><strong>support_vectors_</strong><span class="classifier">ndarray of shape (n_SV, n_features)</span></dt><dd><p>Support vectors.</p>
 </dd>
 </dl>
 </dd>
@@ -288,7 +295,7 @@ consistency with other outlier detection algorithms.</p>
 </table>
 <dl class="py method">
 <dt id="sklearn.svm.OneClassSVM.decision_function">
-<code class="sig-name descname">decision_function</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c298cb771/sklearn/svm/_classes.py#L1348"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.OneClassSVM.decision_function" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">decision_function</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/89b80a6c6/sklearn/svm/_classes.py#L1389"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.OneClassSVM.decision_function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Signed distance to the separating hyperplane.</p>
 <p>Signed distance is positive for an inlier and negative for an outlier.</p>
 <dl class="field-list simple">
@@ -309,7 +316,7 @@ consistency with other outlier detection algorithms.</p>
 
 <dl class="py method">
 <dt id="sklearn.svm.OneClassSVM.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c298cb771/sklearn/svm/_classes.py#L1318"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.OneClassSVM.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/89b80a6c6/sklearn/svm/_classes.py#L1359"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.OneClassSVM.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detects the soft boundary of the set of samples X.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -336,7 +343,7 @@ force the classifier to put more emphasis on these points.</p>
 
 <dl class="py method">
 <dt id="sklearn.svm.OneClassSVM.fit_predict">
-<code class="sig-name descname">fit_predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c298cb771/sklearn/base.py#L718"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.OneClassSVM.fit_predict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit_predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/89b80a6c6/sklearn/base.py#L718"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.OneClassSVM.fit_predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform fit on X and returns labels for X.</p>
 <p>Returns -1 for outliers and 1 for inliers.</p>
 <dl class="field-list simple">
@@ -358,7 +365,7 @@ force the classifier to put more emphasis on these points.</p>
 
 <dl class="py method">
 <dt id="sklearn.svm.OneClassSVM.get_params">
-<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c298cb771/sklearn/base.py#L185"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.OneClassSVM.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/89b80a6c6/sklearn/base.py#L185"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.OneClassSVM.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -379,7 +386,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt id="sklearn.svm.OneClassSVM.predict">
-<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c298cb771/sklearn/svm/_classes.py#L1381"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.OneClassSVM.predict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/89b80a6c6/sklearn/svm/_classes.py#L1422"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.OneClassSVM.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform classification on samples in X.</p>
 <p>For a one-class model, +1 or -1 is returned.</p>
 <dl class="field-list simple">
@@ -401,7 +408,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt id="sklearn.svm.OneClassSVM.score_samples">
-<code class="sig-name descname">score_samples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c298cb771/sklearn/svm/_classes.py#L1366"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.OneClassSVM.score_samples" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">score_samples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/89b80a6c6/sklearn/svm/_classes.py#L1407"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.OneClassSVM.score_samples" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raw scoring function of the samples.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -421,7 +428,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt id="sklearn.svm.OneClassSVM.set_params">
-<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c298cb771/sklearn/base.py#L217"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.OneClassSVM.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/89b80a6c6/sklearn/base.py#L217"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.svm.OneClassSVM.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
