@@ -16,8 +16,8 @@ Topic extraction with Non-negative Matrix Factorization and Latent Dirichlet All
 This is an example of applying :class:`~sklearn.decomposition.NMF` and
 :class:`~sklearn.decomposition.LatentDirichletAllocation` on a corpus
 of documents and extract additive models of the topic structure of the
-corpus.  The output is a list of topics, each represented as a list of
-terms (weights are not shown).
+corpus.  The output is a plot of topics, each represented as bar plot
+using top few words based on weights.
 
 Non-negative Matrix Factorization is applied with two different objective
 functions: the Frobenius norm, and the generalized Kullback-Leibler divergence.
@@ -31,6 +31,27 @@ proportional to (n_samples * iterations).
 
 
 
+.. rst-class:: sphx-glr-horizontal
+
+
+    *
+
+      .. image:: /auto_examples/applications/images/sphx_glr_plot_topics_extraction_with_nmf_lda_001.png
+          :alt: Topics in NMF model (Frobenius norm), Topic 1, Topic 2, Topic 3, Topic 4, Topic 5, Topic 6, Topic 7, Topic 8, Topic 9, Topic 10
+          :class: sphx-glr-multi-img
+
+    *
+
+      .. image:: /auto_examples/applications/images/sphx_glr_plot_topics_extraction_with_nmf_lda_002.png
+          :alt: Topics in NMF model (generalized Kullback-Leibler divergence), Topic 1, Topic 2, Topic 3, Topic 4, Topic 5, Topic 6, Topic 7, Topic 8, Topic 9, Topic 10
+          :class: sphx-glr-multi-img
+
+    *
+
+      .. image:: /auto_examples/applications/images/sphx_glr_plot_topics_extraction_with_nmf_lda_003.png
+          :alt: Topics in LDA model, Topic 1, Topic 2, Topic 3, Topic 4, Topic 5, Topic 6, Topic 7, Topic 8, Topic 9, Topic 10
+          :class: sphx-glr-multi-img
+
 
 .. rst-class:: sphx-glr-script-out
 
@@ -39,57 +60,22 @@ proportional to (n_samples * iterations).
  .. code-block:: none
 
     Loading dataset...
-    done in 1.895s.
+    done in 1.988s.
     Extracting tf-idf features for NMF...
-    done in 0.479s.
+    done in 0.492s.
     Extracting tf features for LDA...
-    done in 0.479s.
+    done in 0.494s.
 
     Fitting the NMF model (Frobenius norm) with tf-idf features, n_samples=2000 and n_features=1000...
-    done in 0.462s.
+    done in 0.512s.
 
-    Topics in NMF model (Frobenius norm):
-    Topic #0: just people don think like know good time make way really say ve right want did ll new use years
-    Topic #1: windows use dos using window program os application drivers help software pc running ms screen files version work code mode
-    Topic #2: god jesus bible faith christian christ christians does sin heaven believe lord life mary church atheism love belief human religion
-    Topic #3: thanks know does mail advance hi info interested email anybody looking card help like appreciated information list send video need
-    Topic #4: car cars tires miles 00 new engine insurance price condition oil speed power good 000 brake year models used bought
-    Topic #5: edu soon send com university internet mit ftp mail cc pub article information hope email mac home program blood contact
-    Topic #6: file files problem format win sound ftp pub read save site image help available create copy running memory self version
-    Topic #7: game team games year win play season players nhl runs goal toronto hockey division flyers player defense leafs bad won
-    Topic #8: drive drives hard disk floppy software card mac computer power scsi controller apple 00 mb pc rom sale problem monitor
-    Topic #9: key chip clipper keys encryption government public use secure enforcement phone nsa law communications security clinton used standard legal data
 
-    Fitting the NMF model (generalized Kullback-Leibler divergence) with tf-idf features, n_samples=2000 and n_features=1000...
-    done in 1.195s.
+     Fitting the NMF model (generalized Kullback-Leibler divergence) with tf-idf features, n_samples=2000 and n_features=1000...
+    done in 1.218s.
 
-    Topics in NMF model (generalized Kullback-Leibler divergence):
-    Topic #0: people don think just right did like time say really know make said question course let way real things good
-    Topic #1: windows thanks help hi using looking does info software video use dos pc advance anybody mail appreciated card need know
-    Topic #2: god does jesus true book christian bible christians religion faith church believe read life christ says people lord exist say
-    Topic #3: thanks know bike interested car mail new like price edu heard list hear want cars email contact just com mark
-    Topic #4: 10 time year power 12 sale 15 new offer 20 30 00 16 monitor ve 11 14 condition problem 100
-    Topic #5: space government 00 nasa public security states earth phone 1993 research technology university subject information science data internet provide blood
-    Topic #6: edu file com program try problem files soon window remember sun win send library mike article just mit oh code
-    Topic #7: game team year games play world season won case division players win nhl flyers second toronto points cubs ll al
-    Topic #8: drive think hard drives disk mac apple need number software scsi computer don card floppy bus cable actually controller memory
-    Topic #9: just use good like key chip got way don doesn sure clipper better going keys ll want speed encryption thought
 
-    Fitting LDA models with tf features, n_samples=2000 and n_features=1000...
-    done in 5.559s.
-
-    Topics in LDA model:
-    Topic #0: hiv health aids disease medical care study research said 1993 national april service children test information rules page new dr
-    Topic #1: drive car disk hard drives game power speed card just like good controller new year bios rom better team got
-    Topic #2: edu com mail windows file send graphics use version ftp pc thanks available program help files using software time know
-    Topic #3: vs gm thanks win interested copies john email text st mail copy hi new book division edu buying advance know
-    Topic #4: performance wanted robert speed couldn math ok change address include organization mr science major university internet edu computer driver kept
-    Topic #5: space scsi earth moon surface probe lunar orbit mission nasa launch science mars energy bit printer spacecraft probes sci solar
-    Topic #6: israel 000 section turkish military armenian greek killed state armenians people population attacks women israeli men weapon division dangerous jews
-    Topic #7: 10 55 11 15 18 12 20 00 13 93 16 19 period 14 17 23 25 22 24 21
-    Topic #8: key government people law public chip church encryption clipper used keys use god christian rights person security private enforcement fact
-    Topic #9: just don people like think know time say god good way make does did want right really going said things
-
+     Fitting LDA models with tf features, n_samples=2000 and n_features=1000...
+    done in 5.432s.
 
 
 
@@ -108,6 +94,7 @@ proportional to (n_samples * iterations).
     # License: BSD 3 clause
 
     from time import time
+    import matplotlib.pyplot as plt
 
     from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
     from sklearn.decomposition import NMF, LatentDirichletAllocation
@@ -119,13 +106,26 @@ proportional to (n_samples * iterations).
     n_top_words = 20
 
 
-    def print_top_words(model, feature_names, n_top_words):
+    def plot_top_words(model, feature_names, n_top_words, title):
+        fig, axes = plt.subplots(2, 5, figsize=(30, 15), sharex=True)
+        axes = axes.flatten()
         for topic_idx, topic in enumerate(model.components_):
-            message = "Topic #%d: " % topic_idx
-            message += " ".join([feature_names[i]
-                                 for i in topic.argsort()[:-n_top_words - 1:-1]])
-            print(message)
-        print()
+            top_features_ind = topic.argsort()[:-n_top_words - 1:-1]
+            top_features = [feature_names[i] for i in top_features_ind]
+            weights = topic[top_features_ind]
+
+            ax = axes[topic_idx]
+            ax.barh(top_features, weights, height=0.7)
+            ax.set_title(f'Topic {topic_idx +1}',
+                         fontdict={'fontsize': 30})
+            ax.invert_yaxis()
+            ax.tick_params(axis='both', which='major', labelsize=20)
+            for i in 'top right left'.split():
+                ax.spines[i].set_visible(False)
+            fig.suptitle(title, fontsize=40)
+
+        plt.subplots_adjust(top=0.90, bottom=0.05, wspace=0.90, hspace=0.3)
+        plt.show()
 
 
     # Load the 20 newsgroups dataset and vectorize it. We use a few heuristics
@@ -169,13 +169,14 @@ proportional to (n_samples * iterations).
               alpha=.1, l1_ratio=.5).fit(tfidf)
     print("done in %0.3fs." % (time() - t0))
 
-    print("\nTopics in NMF model (Frobenius norm):")
+
     tfidf_feature_names = tfidf_vectorizer.get_feature_names()
-    print_top_words(nmf, tfidf_feature_names, n_top_words)
+    plot_top_words(nmf, tfidf_feature_names, n_top_words,
+                   'Topics in NMF model (Frobenius norm)')
 
     # Fit the NMF model
-    print("Fitting the NMF model (generalized Kullback-Leibler divergence) with "
-          "tf-idf features, n_samples=%d and n_features=%d..."
+    print('\n' * 2, "Fitting the NMF model (generalized Kullback-Leibler "
+          "divergence) with tf-idf features, n_samples=%d and n_features=%d..."
           % (n_samples, n_features))
     t0 = time()
     nmf = NMF(n_components=n_components, random_state=1,
@@ -183,11 +184,11 @@ proportional to (n_samples * iterations).
               l1_ratio=.5).fit(tfidf)
     print("done in %0.3fs." % (time() - t0))
 
-    print("\nTopics in NMF model (generalized Kullback-Leibler divergence):")
     tfidf_feature_names = tfidf_vectorizer.get_feature_names()
-    print_top_words(nmf, tfidf_feature_names, n_top_words)
+    plot_top_words(nmf, tfidf_feature_names, n_top_words,
+                   'Topics in NMF model (generalized Kullback-Leibler divergence)')
 
-    print("Fitting LDA models with tf features, "
+    print('\n' * 2, "Fitting LDA models with tf features, "
           "n_samples=%d and n_features=%d..."
           % (n_samples, n_features))
     lda = LatentDirichletAllocation(n_components=n_components, max_iter=5,
@@ -198,14 +199,13 @@ proportional to (n_samples * iterations).
     lda.fit(tf)
     print("done in %0.3fs." % (time() - t0))
 
-    print("\nTopics in LDA model:")
     tf_feature_names = tf_vectorizer.get_feature_names()
-    print_top_words(lda, tf_feature_names, n_top_words)
+    plot_top_words(lda, tf_feature_names, n_top_words, 'Topics in LDA model')
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  10.083 seconds)
+   **Total running time of the script:** ( 0 minutes  15.320 seconds)
 
 
 .. _sphx_glr_download_auto_examples_applications_plot_topics_extraction_with_nmf_lda.py:
