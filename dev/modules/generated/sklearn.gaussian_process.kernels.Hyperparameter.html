@@ -168,7 +168,7 @@
 <h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.gaussian_process.kernels</span></code>.Hyperparameter<a class="headerlink" href="#sklearn-gaussian-process-kernels-hyperparameter" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="sklearn.gaussian_process.kernels.Hyperparameter">
-<em class="property">class </em><code class="sig-prename descclassname">sklearn.gaussian_process.kernels.</code><code class="sig-name descname">Hyperparameter</code><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/19eda89f3/sklearn/gaussian_process/kernels.py#L47"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.gaussian_process.kernels.Hyperparameter" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sklearn.gaussian_process.kernels.</code><code class="sig-name descname">Hyperparameter</code><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/4ea7fd687/sklearn/gaussian_process/kernels.py#L47"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.gaussian_process.kernels.Hyperparameter" title="Permalink to this definition">¶</a></dt>
 <dd><p>A kernel hyperparameter’s specification in form of a namedtuple.</p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.18.</span></p>
@@ -200,6 +200,29 @@ derived based on the given bounds.</p>
 </dl>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.gaussian_process.kernels</span> <span class="kn">import</span> <span class="n">ConstantKernel</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_friedman2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.gaussian_process</span> <span class="kn">import</span> <span class="n">GaussianProcessRegressor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.gaussian_process.kernels</span> <span class="kn">import</span> <span class="n">Hyperparameter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_friedman2</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kernel</span> <span class="o">=</span> <span class="n">ConstantKernel</span><span class="p">(</span><span class="n">constant_value</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="n">constant_value_bounds</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>We can access each hyperparameter:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">hyperparameter</span> <span class="ow">in</span> <span class="n">kernel</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">:</span>
+<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="n">hyperparameter</span><span class="p">)</span>
+<span class="go">Hyperparameter(name=&#39;constant_value&#39;, value_type=&#39;numeric&#39;,</span>
+<span class="go">bounds=array([[ 0., 10.]]), n_elements=1, fixed=False)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">params</span> <span class="o">=</span> <span class="n">kernel</span><span class="o">.</span><span class="n">get_params</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">params</span><span class="p">):</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">constant_value : 1.0</span>
+<span class="go">constant_value_bounds : (0.0, 10.0)</span>
+</pre></div>
+</div>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
