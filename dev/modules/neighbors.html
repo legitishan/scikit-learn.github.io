@@ -561,14 +561,26 @@ queries will be performed, however, the construction can make up
 a significant fraction of the total cost.  If very few query points
 will be required, brute force is better than a tree-based method.</p></li>
 </ul>
-<p>Currently, <code class="docutils literal notranslate"><span class="pre">algorithm</span> <span class="pre">=</span> <span class="pre">'auto'</span></code> selects <code class="docutils literal notranslate"><span class="pre">'brute'</span></code> if <span class="math notranslate nohighlight">\(k &gt;= N/2\)</span>,
-the input data is sparse, or <code class="docutils literal notranslate"><span class="pre">effective_metric_</span></code> isn’t in
-the <code class="docutils literal notranslate"><span class="pre">VALID_METRICS</span></code> list for either <code class="docutils literal notranslate"><span class="pre">'kd_tree'</span></code> or <code class="docutils literal notranslate"><span class="pre">'ball_tree'</span></code>.
-Otherwise, it selects the first out of <code class="docutils literal notranslate"><span class="pre">'kd_tree'</span></code> and <code class="docutils literal notranslate"><span class="pre">'ball_tree'</span></code>
-that has <code class="docutils literal notranslate"><span class="pre">effective_metric_</span></code> in its <code class="docutils literal notranslate"><span class="pre">VALID_METRICS</span></code> list.
-This choice is based on the assumption that the number of query points is at
-least the same order as the number of training points, and that <code class="docutils literal notranslate"><span class="pre">leaf_size</span></code>
-is close to its default value of <code class="docutils literal notranslate"><span class="pre">30</span></code>.</p>
+<p>Currently, <code class="docutils literal notranslate"><span class="pre">algorithm</span> <span class="pre">=</span> <span class="pre">'auto'</span></code> selects <code class="docutils literal notranslate"><span class="pre">'brute'</span></code> if any of the following
+conditions are verified:</p>
+<ul class="simple">
+<li><p>input data is sparse</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">metric</span> <span class="pre">=</span> <span class="pre">'precomputed'</span></code></p></li>
+<li><p><span class="math notranslate nohighlight">\(D &gt; 15\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(k &gt;= N/2\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">effective_metric_</span></code> isn’t in the <code class="docutils literal notranslate"><span class="pre">VALID_METRICS</span></code> list for either
+<code class="docutils literal notranslate"><span class="pre">'kd_tree'</span></code> or <code class="docutils literal notranslate"><span class="pre">'ball_tree'</span></code></p></li>
+</ul>
+<p>Otherwise, it selects the first out of <code class="docutils literal notranslate"><span class="pre">'kd_tree'</span></code> and <code class="docutils literal notranslate"><span class="pre">'ball_tree'</span></code> that
+has <code class="docutils literal notranslate"><span class="pre">effective_metric_</span></code> in its <code class="docutils literal notranslate"><span class="pre">VALID_METRICS</span></code> list. This heuristic is
+based on the following assumptions:</p>
+<ul class="simple">
+<li><p>the number of query points is at least the same order as the number of
+training points</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">leaf_size</span></code> is close to its default value of <code class="docutils literal notranslate"><span class="pre">30</span></code></p></li>
+<li><p>when <span class="math notranslate nohighlight">\(D &gt; 15\)</span>, the intrinsic dimensionality of the data is generally
+to high for tree-based methods</p></li>
+</ul>
 </div>
 <div class="section" id="effect-of-leaf-size">
 <h3><span class="section-number">1.6.4.5. </span>Effect of <code class="docutils literal notranslate"><span class="pre">leaf_size</span></code><a class="headerlink" href="#effect-of-leaf-size" title="Permalink to this headline">¶</a></h3>

@@ -135,8 +135,9 @@ we plot a heatmap of the correlated features:
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 8))
     corr = spearmanr(X).correlation
     corr_linkage = hierarchy.ward(corr)
-    dendro = hierarchy.dendrogram(corr_linkage, labels=data.feature_names, ax=ax1,
-                                  leaf_rotation=90)
+    dendro = hierarchy.dendrogram(
+        corr_linkage, labels=data.feature_names.tolist(), ax=ax1, leaf_rotation=90
+    )
     dendro_idx = np.arange(0, len(dendro['ivl']))
 
     ax2.imshow(corr[dendro['leaves'], :][:, dendro['leaves']])
@@ -198,7 +199,7 @@ the random forest trained on the complete dataset.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  3.669 seconds)
+   **Total running time of the script:** ( 0 minutes  6.872 seconds)
 
 
 .. _sphx_glr_download_auto_examples_inspection_plot_permutation_importance_multicollinear.py:

@@ -168,8 +168,8 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.multiclass" title="sklearn.multiclass"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.multiclass</span></code></a>.OneVsRestClassifier<a class="headerlink" href="#sklearn-multiclass-onevsrestclassifier" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="sklearn.multiclass.OneVsRestClassifier">
-<em class="property">class </em><code class="sig-prename descclassname">sklearn.multiclass.</code><code class="sig-name descname">OneVsRestClassifier</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">estimator</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">n_jobs</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/3d098af4c/sklearn/multiclass.py#L134"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.multiclass.OneVsRestClassifier" title="Permalink to this definition">¶</a></dt>
-<dd><p>One-vs-the-rest (OvR) multiclass/multilabel strategy</p>
+<em class="property">class </em><code class="sig-prename descclassname">sklearn.multiclass.</code><code class="sig-name descname">OneVsRestClassifier</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">estimator</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">n_jobs</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c8898450a/sklearn/multiclass.py#L134"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.multiclass.OneVsRestClassifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>One-vs-the-rest (OvR) multiclass strategy.</p>
 <p>Also known as one-vs-all, this strategy consists in fitting one classifier
 per class. For each classifier, the class is fitted against all the other
 classes. In addition to its computational efficiency (only <code class="docutils literal notranslate"><span class="pre">n_classes</span></code>
@@ -178,11 +178,13 @@ interpretability. Since each class is represented by one and one classifier
 only, it is possible to gain knowledge about the class by inspecting its
 corresponding classifier. This is the most commonly used strategy for
 multiclass classification and is a fair default choice.</p>
-<p>This strategy can also be used for multilabel learning, where a classifier
-is used to predict multiple labels for instance, by fitting on a 2-d matrix
-in which cell [i, j] is 1 if sample i has label j and 0 otherwise.</p>
-<p>In the multilabel learning literature, OvR is also known as the binary
-relevance method.</p>
+<p>OneVsRestClassifier can also be used for multilabel classification. To use
+this feature, provide an indicator matrix for the target <code class="docutils literal notranslate"><span class="pre">y</span></code> when calling
+<code class="docutils literal notranslate"><span class="pre">.fit</span></code>. In other words, the target labels should be formatted as a 2D
+binary (0/1) matrix, where [i, j] == 1 indicates the presence of label j
+in sample i. This estimator uses the binary relevance method to perform
+multilabel classification, which involves training one binary classifier
+independently for each label.</p>
 <p>Read more in the <a class="reference internal" href="../multiclass.html#ovr-classification"><span class="std std-ref">User Guide</span></a>.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -217,6 +219,15 @@ vice-versa.</p>
 </dl>
 </dd>
 </dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="sklearn.multioutput.MultiOutputClassifier.html#sklearn.multioutput.MultiOutputClassifier" title="sklearn.multioutput.MultiOutputClassifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sklearn.multioutput.MultiOutputClassifier</span></code></a></dt><dd><p>Alternate way of extending an estimator for multilabel classification.</p>
+</dd>
+<dt><a class="reference internal" href="sklearn.preprocessing.MultiLabelBinarizer.html#sklearn.preprocessing.MultiLabelBinarizer" title="sklearn.preprocessing.MultiLabelBinarizer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sklearn.preprocessing.MultiLabelBinarizer</span></code></a></dt><dd><p>Transform iterable of iterables to binary indicator matrix.</p>
+</dd>
+</dl>
+</div>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.multiclass</span> <span class="kn">import</span> <span class="n">OneVsRestClassifier</span>
@@ -270,7 +281,7 @@ vice-versa.</p>
 </table>
 <dl class="py method">
 <dt id="sklearn.multiclass.OneVsRestClassifier.decision_function">
-<code class="sig-name descname">decision_function</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/3d098af4c/sklearn/multiclass.py#L387"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.multiclass.OneVsRestClassifier.decision_function" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">decision_function</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c8898450a/sklearn/multiclass.py#L394"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.multiclass.OneVsRestClassifier.decision_function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the distance of each sample from the decision boundary for
 each class. This can only be used with estimators which implement the
 decision_function method.</p>
@@ -294,7 +305,7 @@ scikit-learn conventions for binary classification.</p>
 
 <dl class="py method">
 <dt id="sklearn.multiclass.OneVsRestClassifier.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/3d098af4c/sklearn/multiclass.py#L215"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.multiclass.OneVsRestClassifier.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c8898450a/sklearn/multiclass.py#L222"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.multiclass.OneVsRestClassifier.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit underlying estimators.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -316,7 +327,7 @@ classification.</p>
 
 <dl class="py method">
 <dt id="sklearn.multiclass.OneVsRestClassifier.get_params">
-<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/3d098af4c/sklearn/base.py#L185"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.multiclass.OneVsRestClassifier.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c8898450a/sklearn/base.py#L185"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.multiclass.OneVsRestClassifier.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -343,7 +354,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt id="sklearn.multiclass.OneVsRestClassifier.partial_fit">
-<code class="sig-name descname">partial_fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">classes</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/3d098af4c/sklearn/multiclass.py#L251"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.multiclass.OneVsRestClassifier.partial_fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">partial_fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">classes</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c8898450a/sklearn/multiclass.py#L258"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.multiclass.OneVsRestClassifier.partial_fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Partially fit underlying estimators</p>
 <p>Should be used when memory is inefficient to train all data.
 Chunks of data can be passed in several iteration.</p>
@@ -373,7 +384,7 @@ and can be omitted in the subsequent calls.</p>
 
 <dl class="py method">
 <dt id="sklearn.multiclass.OneVsRestClassifier.predict">
-<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/3d098af4c/sklearn/multiclass.py#L307"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.multiclass.OneVsRestClassifier.predict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c8898450a/sklearn/multiclass.py#L314"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.multiclass.OneVsRestClassifier.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Predict multi-class targets using underlying estimators.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -393,7 +404,7 @@ and can be omitted in the subsequent calls.</p>
 
 <dl class="py method">
 <dt id="sklearn.multiclass.OneVsRestClassifier.predict_proba">
-<code class="sig-name descname">predict_proba</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/3d098af4c/sklearn/multiclass.py#L348"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.multiclass.OneVsRestClassifier.predict_proba" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">predict_proba</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c8898450a/sklearn/multiclass.py#L355"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.multiclass.OneVsRestClassifier.predict_proba" title="Permalink to this definition">¶</a></dt>
 <dd><p>Probability estimates.</p>
 <p>The returned estimates for all classes are ordered by label of classes.</p>
 <p>Note that in the multilabel case, each sample can have any number of
@@ -420,7 +431,7 @@ where classes are ordered as they are in <code class="docutils literal notransla
 
 <dl class="py method">
 <dt id="sklearn.multiclass.OneVsRestClassifier.score">
-<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/3d098af4c/sklearn/base.py#L470"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.multiclass.OneVsRestClassifier.score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c8898450a/sklearn/base.py#L470"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.multiclass.OneVsRestClassifier.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the mean accuracy on the given test data and labels.</p>
 <p>In multi-label classification, this is the subset accuracy
 which is a harsh metric since you require for each sample that
@@ -447,7 +458,7 @@ each label set be correctly predicted.</p>
 
 <dl class="py method">
 <dt id="sklearn.multiclass.OneVsRestClassifier.set_params">
-<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/3d098af4c/sklearn/base.py#L217"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.multiclass.OneVsRestClassifier.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c8898450a/sklearn/base.py#L217"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.multiclass.OneVsRestClassifier.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
