@@ -136,8 +136,8 @@
           </a>
         </div>
         <div class="btn-group w-100 mb-2" role="group" aria-label="rellinks">
-            <a href="plot_custom_kernel.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="SVM with custom kernel">Prev</a><a href="../index.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Examples">Up</a>
-            <a href="plot_svm_tie_breaking.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="SVM Tie Breaking Example">Next</a>
+            <a href="plot_weighted_samples.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="SVM: Weighted samples">Prev</a><a href="../index.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Examples">Up</a>
+            <a href="plot_separating_hyperplane_unbalanced.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="SVM: Separating hyperplane for unbalanced classes">Next</a>
         </div>
         <div class="alert alert-danger p-1 mb-2" role="alert">
           <p class="text-center mb-0">
@@ -186,7 +186,10 @@ vectors in LinearSVC.</p>
     <span class="n">decision_function</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">decision_function</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
     <span class="c1"># we can also calculate the decision function manually</span>
     <span class="c1"># decision_function = np.dot(X, clf.coef_[0]) + clf.intercept_[0]</span>
-    <span class="n">support_vector_indices</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.where.html#numpy.where" title="numpy.where" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">where</span></a><span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">decision_function</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># The support vectors are the samples that lie within the margin</span>
+    <span class="c1"># boundaries, whose size is conventionally constrained to 1</span>
+    <span class="n">support_vector_indices</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.where.html#numpy.where" title="numpy.where" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">where</span></a><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">decision_function</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span> <span class="o">+</span> <span class="mf">1e-15</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">support_vectors</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">support_vector_indices</span><span class="p">]</span>
 
     <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplot.html#matplotlib.pyplot.subplot" title="matplotlib.pyplot.subplot" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
@@ -207,7 +210,7 @@ vectors in LinearSVC.</p>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.146 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.140 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-svm-plot-linearsvc-support-vectors-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/scikit-learn/scikit-learn/master?urlpath=lab/tree/notebooks/auto_examples/svm/plot_linearsvc_support_vectors.ipynb"><img alt="https://mybinder.org/badge_logo.svg" src="https://mybinder.org/badge_logo.svg" width="150px" /></a>
