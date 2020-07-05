@@ -168,7 +168,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.decomposition" title="sklearn.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.decomposition</span></code></a>.FactorAnalysis<a class="headerlink" href="#sklearn-decomposition-factoranalysis" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="sklearn.decomposition.FactorAnalysis">
-<em class="property">class </em><code class="sig-prename descclassname">sklearn.decomposition.</code><code class="sig-name descname">FactorAnalysis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n_components</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">tol</span><span class="o">=</span><span class="default_value">0.01</span></em>, <em class="sig-param"><span class="n">copy</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">max_iter</span><span class="o">=</span><span class="default_value">1000</span></em>, <em class="sig-param"><span class="n">noise_variance_init</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">svd_method</span><span class="o">=</span><span class="default_value">'randomized'</span></em>, <em class="sig-param"><span class="n">iterated_power</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">random_state</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9cd13a1fa/sklearn/decomposition/_factor_analysis.py#L35"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FactorAnalysis" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sklearn.decomposition.</code><code class="sig-name descname">FactorAnalysis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n_components</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">tol</span><span class="o">=</span><span class="default_value">0.01</span></em>, <em class="sig-param"><span class="n">copy</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">max_iter</span><span class="o">=</span><span class="default_value">1000</span></em>, <em class="sig-param"><span class="n">noise_variance_init</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">svd_method</span><span class="o">=</span><span class="default_value">'randomized'</span></em>, <em class="sig-param"><span class="n">iterated_power</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">rotation</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">random_state</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/5e193ec65/sklearn/decomposition/_factor_analysis.py#L35"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FactorAnalysis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Factor Analysis (FA)</p>
 <p>A simple linear generative model with Gaussian latent variables.</p>
 <p>The observations are assumed to be caused by a linear transformation of
@@ -186,9 +186,9 @@ observed ones, using SVD based approach.</p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.13.</span></p>
 </div>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
+<dd class="field-odd"><dl>
 <dt><strong>n_components</strong><span class="classifier">int | None</span></dt><dd><p>Dimensionality of latent space, the number of components
 of <code class="docutils literal notranslate"><span class="pre">X</span></code> that are obtained after <code class="docutils literal notranslate"><span class="pre">transform</span></code>.
 If None, n_components is set to the number of features.</p>
@@ -213,6 +213,14 @@ you should choose ‘lapack’.</p>
 </dd>
 <dt><strong>iterated_power</strong><span class="classifier">int, optional</span></dt><dd><p>Number of iterations for the power method. 3 by default. Only used
 if <code class="docutils literal notranslate"><span class="pre">svd_method</span></code> equals ‘randomized’</p>
+</dd>
+<dt><strong>rotation</strong><span class="classifier">None | ‘varimax’ | ‘quartimax’</span></dt><dd><p>If not None, apply the indicated rotation. Currently, varimax and
+quartimax are implemented. See
+<a class="reference external" href="https://link.springer.com/article/10.1007%2FBF02289233">“The varimax criterion for analytic rotation in factor analysis”</a>
+H. F. Kaiser, 1958</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.24.</span></p>
+</div>
 </dd>
 <dt><strong>random_state</strong><span class="classifier">int, RandomState instance, default=0</span></dt><dd><p>Only used when <code class="docutils literal notranslate"><span class="pre">svd_method</span></code> equals ‘randomized’. Pass an int for
 reproducible results across multiple function calls.
@@ -293,7 +301,7 @@ See <a class="reference internal" href="../../glossary.html#term-random_state"><
 </table>
 <dl class="py method">
 <dt id="sklearn.decomposition.FactorAnalysis.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9cd13a1fa/sklearn/decomposition/_factor_analysis.py#L159"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FactorAnalysis.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/5e193ec65/sklearn/decomposition/_factor_analysis.py#L169"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FactorAnalysis.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the FactorAnalysis model to X using SVD based approach</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -313,7 +321,7 @@ See <a class="reference internal" href="../../glossary.html#term-random_state"><
 
 <dl class="py method">
 <dt id="sklearn.decomposition.FactorAnalysis.fit_transform">
-<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">fit_params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9cd13a1fa/sklearn/base.py#L659"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FactorAnalysis.fit_transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">fit_params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/5e193ec65/sklearn/base.py#L659"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FactorAnalysis.fit_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit to data, then transform it.</p>
 <p>Fits transformer to X and y with optional parameters fit_params
 and returns a transformed version of X.</p>
@@ -339,7 +347,7 @@ and returns a transformed version of X.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.FactorAnalysis.get_covariance">
-<code class="sig-name descname">get_covariance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9cd13a1fa/sklearn/decomposition/_factor_analysis.py#L281"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FactorAnalysis.get_covariance" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_covariance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/5e193ec65/sklearn/decomposition/_factor_analysis.py#L294"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FactorAnalysis.get_covariance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute data covariance with the FactorAnalysis model.</p>
 <p><code class="docutils literal notranslate"><span class="pre">cov</span> <span class="pre">=</span> <span class="pre">components_.T</span> <span class="pre">*</span> <span class="pre">components_</span> <span class="pre">+</span> <span class="pre">diag(noise_variance)</span></code></p>
 <dl class="field-list simple">
@@ -354,7 +362,7 @@ and returns a transformed version of X.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.FactorAnalysis.get_params">
-<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9cd13a1fa/sklearn/base.py#L185"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FactorAnalysis.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/5e193ec65/sklearn/base.py#L185"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FactorAnalysis.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -375,7 +383,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.FactorAnalysis.get_precision">
-<code class="sig-name descname">get_precision</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9cd13a1fa/sklearn/decomposition/_factor_analysis.py#L297"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FactorAnalysis.get_precision" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_precision</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/5e193ec65/sklearn/decomposition/_factor_analysis.py#L310"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FactorAnalysis.get_precision" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute data precision matrix with the FactorAnalysis model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -389,7 +397,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.FactorAnalysis.score">
-<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9cd13a1fa/sklearn/decomposition/_factor_analysis.py#L349"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FactorAnalysis.score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/5e193ec65/sklearn/decomposition/_factor_analysis.py#L362"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FactorAnalysis.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the average log-likelihood of the samples</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -410,7 +418,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.FactorAnalysis.score_samples">
-<code class="sig-name descname">score_samples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9cd13a1fa/sklearn/decomposition/_factor_analysis.py#L326"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FactorAnalysis.score_samples" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">score_samples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/5e193ec65/sklearn/decomposition/_factor_analysis.py#L339"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FactorAnalysis.score_samples" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the log-likelihood of each sample</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -430,7 +438,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.FactorAnalysis.set_params">
-<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9cd13a1fa/sklearn/base.py#L217"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FactorAnalysis.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/5e193ec65/sklearn/base.py#L217"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FactorAnalysis.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
@@ -454,7 +462,7 @@ component of a nested object.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.FactorAnalysis.transform">
-<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9cd13a1fa/sklearn/decomposition/_factor_analysis.py#L251"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FactorAnalysis.transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/5e193ec65/sklearn/decomposition/_factor_analysis.py#L264"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FactorAnalysis.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply dimensionality reduction to X using the model.</p>
 <p>Compute the expected mean of the latent variables.
 See Barber, 21.2.33 (or Bishop, 12.66).</p>
@@ -478,13 +486,17 @@ See Barber, 21.2.33 (or Bishop, 12.66).</p>
 
 <div class="section" id="examples-using-sklearn-decomposition-factoranalysis">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">sklearn.decomposition.FactorAnalysis</span></code><a class="headerlink" href="#examples-using-sklearn-decomposition-factoranalysis" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Probabilistic PCA and Factor Analysis are probabilistic models. The consequence is that the lik..."><div class="figure align-default" id="id1">
-<img alt="Model selection with Probabilistic PCA and Factor Analysis (FA)" src="../../_images/sphx_glr_plot_pca_vs_fa_model_selection_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/decomposition/plot_pca_vs_fa_model_selection.html#sphx-glr-auto-examples-decomposition-plot-pca-vs-fa-model-selection-py"><span class="std std-ref">Model selection with Probabilistic PCA and Factor Analysis (FA)</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<div class="sphx-glr-thumbcontainer" tooltip="Investigating the Iris dataset, we see that sepal length, petal length and petal width are high..."><div class="figure align-default" id="id1">
+<img alt="Factor Analysis (with rotation) to visualize patterns" src="../../_images/sphx_glr_plot_varimax_fa_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/decomposition/plot_varimax_fa.html#sphx-glr-auto-examples-decomposition-plot-varimax-fa-py"><span class="std std-ref">Factor Analysis (with rotation) to visualize patterns</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="This example applies to olivetti_faces_dataset different unsupervised matrix decomposition (dim..."><div class="figure align-default" id="id2">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Probabilistic PCA and Factor Analysis are probabilistic models. The consequence is that the lik..."><div class="figure align-default" id="id2">
+<img alt="Model selection with Probabilistic PCA and Factor Analysis (FA)" src="../../_images/sphx_glr_plot_pca_vs_fa_model_selection_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/decomposition/plot_pca_vs_fa_model_selection.html#sphx-glr-auto-examples-decomposition-plot-pca-vs-fa-model-selection-py"><span class="std std-ref">Model selection with Probabilistic PCA and Factor Analysis (FA)</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example applies to olivetti_faces_dataset different unsupervised matrix decomposition (dim..."><div class="figure align-default" id="id3">
 <img alt="Faces dataset decompositions" src="../../_images/sphx_glr_plot_faces_decomposition_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/decomposition/plot_faces_decomposition.html#sphx-glr-auto-examples-decomposition-plot-faces-decomposition-py"><span class="std std-ref">Faces dataset decompositions</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/decomposition/plot_faces_decomposition.html#sphx-glr-auto-examples-decomposition-plot-faces-decomposition-py"><span class="std std-ref">Faces dataset decompositions</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="clearer"></div></div>
 </div>
