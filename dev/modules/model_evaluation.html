@@ -562,7 +562,7 @@ independently of the joblib backend.</p>
 <span id="multimetric-scoring"></span><h3><span class="section-number">3.3.1.4. </span>Using multiple metric evaluation<a class="headerlink" href="#using-multiple-metric-evaluation" title="Permalink to this headline">¶</a></h3>
 <p>Scikit-learn also permits evaluation of multiple metrics in <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code>,
 <code class="docutils literal notranslate"><span class="pre">RandomizedSearchCV</span></code> and <code class="docutils literal notranslate"><span class="pre">cross_validate</span></code>.</p>
-<p>There are two ways to specify multiple scoring metrics for the <code class="docutils literal notranslate"><span class="pre">scoring</span></code>
+<p>There are three ways to specify multiple scoring metrics for the <code class="docutils literal notranslate"><span class="pre">scoring</span></code>
 parameter:</p>
 <ul>
 <li><dl>
@@ -581,25 +581,22 @@ parameter:</p>
 </div>
 </dd>
 </dl>
-</li>
-</ul>
 <p>Note that the dict values can either be scorer functions or one of the
 predefined metric strings.</p>
-<p>Currently only those scorer functions that return a single score can be passed
-inside the dict. Scorer functions that return multiple values are not
-permitted and will require a wrapper to return a single metric:</p>
+</li>
+<li><p>As a callable that returns a dictionary of scores:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_validate</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># A sample toy binary classification dataset</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">make_classification</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">svm</span> <span class="o">=</span> <span class="n">LinearSVC</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">tn</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span> <span class="k">return</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">fp</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span> <span class="k">return</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">fn</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span> <span class="k">return</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">tp</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span> <span class="k">return</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">scoring</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;tp&#39;</span><span class="p">:</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">tp</span><span class="p">),</span> <span class="s1">&#39;tn&#39;</span><span class="p">:</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">tn</span><span class="p">),</span>
-<span class="gp">... </span>           <span class="s1">&#39;fp&#39;</span><span class="p">:</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">fp</span><span class="p">),</span> <span class="s1">&#39;fn&#39;</span><span class="p">:</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">fn</span><span class="p">)}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cv_results</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">svm</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="n">scoring</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">confusion_matrix_scorer</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="gp">... </span>     <span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="gp">... </span>     <span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="gp">... </span>     <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;tn&#39;</span><span class="p">:</span> <span class="n">cm</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;fp&#39;</span><span class="p">:</span> <span class="n">cm</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="gp">... </span>             <span class="s1">&#39;fn&#39;</span><span class="p">:</span> <span class="n">cm</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;tp&#39;</span><span class="p">:</span> <span class="n">cm</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv_results</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">svm</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+<span class="gp">... </span>                            <span class="n">scoring</span><span class="o">=</span><span class="n">confusion_matrix_scorer</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Getting the test set true positive scores</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">cv_results</span><span class="p">[</span><span class="s1">&#39;test_tp&#39;</span><span class="p">])</span>
 <span class="go">[10  9  8  7  8]</span>
@@ -608,6 +605,8 @@ permitted and will require a wrapper to return a single metric:</p>
 <span class="go">[0 1 2 3 2]</span>
 </pre></div>
 </div>
+</li>
+</ul>
 </div>
 </div>
 <div class="section" id="classification-metrics">
