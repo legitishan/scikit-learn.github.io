@@ -162,6 +162,7 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#debugging-memory-errors-in-cython-with-valgrind">Debugging memory errors in Cython with valgrind</a></li>
+<li><a class="reference internal" href="#building-and-testing-for-the-arm64-platform-on-a-x86-64-machine">Building and testing for the ARM64 platform on a x86_64 machine</a></li>
 </ul>
 </li>
 </ul>
@@ -385,6 +386,55 @@ corresponding location in your .pyx source file. Hopefully the output will
 give you clues as to the source of your memory error.</p>
 <p>For more information on valgrind and the array of options it has, see the
 tutorials and documentation on the <a class="reference external" href="http://valgrind.org">valgrind web site</a>.</p>
+</div>
+<div class="section" id="building-and-testing-for-the-arm64-platform-on-a-x86-64-machine">
+<span id="arm64-dev-env"></span><h2>Building and testing for the ARM64 platform on a x86_64 machine<a class="headerlink" href="#building-and-testing-for-the-arm64-platform-on-a-x86-64-machine" title="Permalink to this headline">¶</a></h2>
+<p>ARM-based machines are a popular target for mobile, edge or other low-energy
+deployments (including in the cloud, for instance on Scaleway or AWS Graviton).</p>
+<p>Here are instructions to setup a local dev environment to reproduce
+ARM-specific bugs or test failures on a x86_64 host laptop or workstation. This
+is based on QEMU user mode emulation using docker for convenience (see
+<a class="reference external" href="https://github.com/multiarch/qemu-user-static">https://github.com/multiarch/qemu-user-static</a>).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The following instructions are illustrated for ARM64 but they also apply to
+ppc64le, after changing the Docker image and Miniforge paths appropriately.</p>
+</div>
+<p>Prepare a folder on the host filesystem and download the necessary tools and
+source code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="n">arm64</span>
+<span class="n">pushd</span> <span class="n">arm64</span>
+<span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">conda</span><span class="o">-</span><span class="n">forge</span><span class="o">/</span><span class="n">miniforge</span><span class="o">/</span><span class="n">releases</span><span class="o">/</span><span class="n">latest</span><span class="o">/</span><span class="n">download</span><span class="o">/</span><span class="n">Miniforge3</span><span class="o">-</span><span class="n">Linux</span><span class="o">-</span><span class="n">aarch64</span><span class="o">.</span><span class="n">sh</span>
+<span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">scikit</span><span class="o">-</span><span class="n">learn</span><span class="o">/</span><span class="n">scikit</span><span class="o">-</span><span class="n">learn</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
+</div>
+<p>Use docker to install QEMU user mode and run an ARM64v8 container with access
+to your shared folder under the <code class="docutils literal notranslate"><span class="pre">/io</span></code> mount point:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+docker run -v`pwd`:/io --rm -it arm64v8/ubuntu /bin/bash
+</pre></div>
+</div>
+<p>In the container, install miniforge3 for the ARM64 (a.k.a. aarch64)
+architecture:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bash</span> <span class="n">Miniforge3</span><span class="o">-</span><span class="n">Linux</span><span class="o">-</span><span class="n">aarch64</span><span class="o">.</span><span class="n">sh</span>
+<span class="c1"># Choose to install miniforge3 under: `/io/miniforge3`</span>
+</pre></div>
+</div>
+<p>Whenever you restart a new container, you will need to reinit the conda env
+previously installed under <code class="docutils literal notranslate"><span class="pre">/io/miniforge3</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">io</span><span class="o">/</span><span class="n">miniforge3</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">conda</span> <span class="n">init</span>
+<span class="n">source</span> <span class="o">/</span><span class="n">root</span><span class="o">/.</span><span class="n">bashrc</span>
+</pre></div>
+</div>
+<p>as the <code class="docutils literal notranslate"><span class="pre">/root</span></code> home folder is part of the ephemeral docker container. Every
+file or directory stored under <code class="docutils literal notranslate"><span class="pre">/io</span></code> is persistent on the other hand.</p>
+<p>You can then build scikit-learn as usual (you will need to install compiler
+tools and dependencies using apt or conda as usual). Building scikit-learn
+takes a lot of time because of the emulation layer, however it needs to be
+done only once if you put the scikit-learn folder under the <code class="docutils literal notranslate"><span class="pre">/io</span></code> mount
+point.</p>
+<p>Then use pytest to run only the tests of the module you are interested in
+debugging.</p>
 </div>
 </div>
 
