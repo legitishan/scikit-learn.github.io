@@ -180,8 +180,9 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#predefined-fold-splits-validation-sets">3.1.2.4. Predefined Fold-Splits / Validation-Sets</a></li>
-<li><a class="reference internal" href="#cross-validation-of-time-series-data">3.1.2.5. Cross validation of time series data</a><ul>
-<li><a class="reference internal" href="#time-series-split">3.1.2.5.1. Time Series Split</a></li>
+<li><a class="reference internal" href="#using-cross-validation-iterators-to-split-train-and-test">3.1.2.5. Using cross-validation iterators to split train and test</a></li>
+<li><a class="reference internal" href="#cross-validation-of-time-series-data">3.1.2.6. Cross validation of time series data</a><ul>
+<li><a class="reference internal" href="#time-series-split">3.1.2.6.1. Time Series Split</a></li>
 </ul>
 </li>
 </ul>
@@ -839,8 +840,36 @@ e.g. when searching for hyperparameters.</p>
 <p>For example, when using a validation set, set the <code class="docutils literal notranslate"><span class="pre">test_fold</span></code> to 0 for all
 samples that are part of the validation set, and to -1 for all other samples.</p>
 </div>
+<div class="section" id="using-cross-validation-iterators-to-split-train-and-test">
+<h3><span class="section-number">3.1.2.5. </span>Using cross-validation iterators to split train and test<a class="headerlink" href="#using-cross-validation-iterators-to-split-train-and-test" title="Permalink to this headline">¶</a></h3>
+<p>The above group cross-validation functions may also be useful for spitting a
+dataset into training and testing subsets. Note that the convenience
+function <a class="reference internal" href="generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="sklearn.model_selection.train_test_split"><code class="xref py py-func docutils literal notranslate"><span class="pre">train_test_split</span></code></a> is a wrapper around <a class="reference internal" href="generated/sklearn.model_selection.ShuffleSplit.html#sklearn.model_selection.ShuffleSplit" title="sklearn.model_selection.ShuffleSplit"><code class="xref py py-func docutils literal notranslate"><span class="pre">ShuffleSplit</span></code></a>
+and thus only allows for stratified splitting (using the class labels)
+and cannot account for groups.</p>
+<p>To perform the train and test split, use the indices for the train and test
+subsets yielded by the generator output by the <code class="docutils literal notranslate"><span class="pre">split()</span></code> method of the
+cross-validation splitter. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">GroupShuffleSplit</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">,</span> <span class="mf">2.4</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">4.55</span><span class="p">,</span> <span class="mf">5.8</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">groups</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">train_indx</span><span class="p">,</span> <span class="n">test_indx</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">GroupShuffleSplit</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">groups</span><span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> \
+<span class="gp">... </span>    <span class="n">X</span><span class="p">[</span><span class="n">train_indx</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">test_indx</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">train_indx</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">test_indx</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">X_test</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">((6,), (2,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">groups</span><span class="p">[</span><span class="n">train_indx</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">groups</span><span class="p">[</span><span class="n">test_indx</span><span class="p">])</span>
+<span class="go">(array([1, 2, 4]), array([3]))</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="cross-validation-of-time-series-data">
-<span id="timeseries-cv"></span><h3><span class="section-number">3.1.2.5. </span>Cross validation of time series data<a class="headerlink" href="#cross-validation-of-time-series-data" title="Permalink to this headline">¶</a></h3>
+<span id="timeseries-cv"></span><h3><span class="section-number">3.1.2.6. </span>Cross validation of time series data<a class="headerlink" href="#cross-validation-of-time-series-data" title="Permalink to this headline">¶</a></h3>
 <p>Time series data is characterised by the correlation between observations
 that are near in time (<em>autocorrelation</em>). However, classical
 cross-validation techniques such as <a class="reference internal" href="generated/sklearn.model_selection.KFold.html#sklearn.model_selection.KFold" title="sklearn.model_selection.KFold"><code class="xref py py-class docutils literal notranslate"><span class="pre">KFold</span></code></a> and
@@ -852,7 +881,7 @@ to evaluate our model for time series data on the “future” observations
 least like those that are used to train the model. To achieve this, one
 solution is provided by <a class="reference internal" href="generated/sklearn.model_selection.TimeSeriesSplit.html#sklearn.model_selection.TimeSeriesSplit" title="sklearn.model_selection.TimeSeriesSplit"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeriesSplit</span></code></a>.</p>
 <div class="section" id="time-series-split">
-<h4><span class="section-number">3.1.2.5.1. </span>Time Series Split<a class="headerlink" href="#time-series-split" title="Permalink to this headline">¶</a></h4>
+<h4><span class="section-number">3.1.2.6.1. </span>Time Series Split<a class="headerlink" href="#time-series-split" title="Permalink to this headline">¶</a></h4>
 <p><a class="reference internal" href="generated/sklearn.model_selection.TimeSeriesSplit.html#sklearn.model_selection.TimeSeriesSplit" title="sklearn.model_selection.TimeSeriesSplit"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeriesSplit</span></code></a> is a variation of <em>k-fold</em> which
 returns first <span class="math notranslate nohighlight">\(k\)</span> folds as train set and the <span class="math notranslate nohighlight">\((k+1)\)</span> th
 fold as test set. Note that unlike standard cross-validation methods,
