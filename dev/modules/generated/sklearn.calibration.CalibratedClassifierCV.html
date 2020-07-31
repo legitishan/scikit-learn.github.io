@@ -168,7 +168,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.calibration" title="sklearn.calibration"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.calibration</span></code></a>.CalibratedClassifierCV<a class="headerlink" href="#sklearn-calibration-calibratedclassifiercv" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="sklearn.calibration.CalibratedClassifierCV">
-<em class="property">class </em><code class="sig-prename descclassname">sklearn.calibration.</code><code class="sig-name descname">CalibratedClassifierCV</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">base_estimator</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'sigmoid'</span></em>, <em class="sig-param"><span class="n">cv</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n_jobs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">pre_dispatch</span><span class="o">=</span><span class="default_value">'2*n_jobs'</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/6c9d8090f/sklearn/calibration.py#L59"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.calibration.CalibratedClassifierCV" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sklearn.calibration.</code><code class="sig-name descname">CalibratedClassifierCV</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">base_estimator</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'sigmoid'</span></em>, <em class="sig-param"><span class="n">cv</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n_jobs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">pre_dispatch</span><span class="o">=</span><span class="default_value">'2*n_jobs'</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8980458a5/sklearn/calibration.py#L59"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.calibration.CalibratedClassifierCV" title="Permalink to this definition">¶</a></dt>
 <dd><p>Probability calibration with isotonic regression or logistic regression.</p>
 <p>This class uses cross-validation to both estimate the parameters of a
 classifier and subsequently calibrate a classifier. For each cv split it
@@ -195,7 +195,7 @@ corresponds to Platt’s method (i.e. a logistic regression model) or
 use isotonic calibration with too few calibration samples
 <code class="docutils literal notranslate"><span class="pre">(&lt;&lt;1000)</span></code> since it tends to overfit.</p>
 </dd>
-<dt><strong>cv</strong><span class="classifier">integer, cross-validation generator, iterable or “prefit”,             default=None</span></dt><dd><p>Determines the cross-validation splitting strategy.
+<dt><strong>cv</strong><span class="classifier">int, cross-validation generator, iterable or “prefit”,             default=None</span></dt><dd><p>Determines the cross-validation splitting strategy.
 Possible inputs for cv are:</p>
 <ul class="simple">
 <li><p>None, to use the default 5-fold cross-validation,</p></li>
@@ -225,7 +225,7 @@ iterations. Therefore parallelism happens only when cv != “prefit”.</p>
 <p><span class="versionmodified added">New in version 0.24.</span></p>
 </div>
 </dd>
-<dt><strong>pre_dispatch</strong><span class="classifier">int, or str, default=n_jobs</span></dt><dd><p>Controls the number of jobs that get dispatched during parallel
+<dt><strong>pre_dispatch</strong><span class="classifier">int or str, default=’2*n_jobs’</span></dt><dd><p>Controls the number of jobs that get dispatched during parallel
 execution. Reducing this number can be useful to avoid an
 explosion of memory consumption when more jobs get dispatched
 than CPUs can process. This parameter can be:</p>
@@ -245,7 +245,7 @@ as in ‘2*n_jobs’</p></li>
 <p><span class="versionmodified added">New in version 0.24.</span></p>
 </div>
 </dd>
-<dt><strong>verbose</strong><span class="classifier">integer</span></dt><dd><p>Controls the verbosity: the higher, the more messages.</p>
+<dt><strong>verbose</strong><span class="classifier">int, default=0</span></dt><dd><p>Controls the verbosity: the higher, the more messages.</p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.24.</span></p>
 </div>
@@ -254,7 +254,7 @@ as in ‘2*n_jobs’</p></li>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>classes_</strong><span class="classifier">array, shape (n_classes)</span></dt><dd><p>The class labels.</p>
+<dt><strong>classes_</strong><span class="classifier">ndarray of shape (n_classes,)</span></dt><dd><p>The class labels.</p>
 </dd>
 <dt><strong>calibrated_classifiers_</strong><span class="classifier">list (len() equal to cv or 1 if cv == “prefit”)</span></dt><dd><p>The list of calibrated classifiers, one for each cross-validation
 split, which has been fitted on training folds and
@@ -352,14 +352,14 @@ A. Niculescu-Mizil &amp; R. Caruana, ICML 2005</p>
 </table>
 <dl class="py method">
 <dt id="sklearn.calibration.CalibratedClassifierCV.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/6c9d8090f/sklearn/calibration.py#L229"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.calibration.CalibratedClassifierCV.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8980458a5/sklearn/calibration.py#L229"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.calibration.CalibratedClassifierCV.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the calibrated model</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>Training data.</p>
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Training data.</p>
 </dd>
-<dt><strong>y</strong><span class="classifier">array-like, shape (n_samples,)</span></dt><dd><p>Target values.</p>
+<dt><strong>y</strong><span class="classifier">array-like of shape (n_samples,)</span></dt><dd><p>Target values.</p>
 </dd>
 <dt><strong>sample_weight</strong><span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>Sample weights. If None, then samples are equally weighted.</p>
 </dd>
@@ -376,7 +376,7 @@ A. Niculescu-Mizil &amp; R. Caruana, ICML 2005</p>
 
 <dl class="py method">
 <dt id="sklearn.calibration.CalibratedClassifierCV.get_params">
-<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/6c9d8090f/sklearn/base.py#L185"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.calibration.CalibratedClassifierCV.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8980458a5/sklearn/base.py#L185"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.calibration.CalibratedClassifierCV.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -397,20 +397,20 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt id="sklearn.calibration.CalibratedClassifierCV.predict">
-<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/6c9d8090f/sklearn/calibration.py#L353"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.calibration.CalibratedClassifierCV.predict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8980458a5/sklearn/calibration.py#L353"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.calibration.CalibratedClassifierCV.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Predict the target of new samples. The predicted class is the
 class that has the highest probability, and can thus be different
 from the prediction of the uncalibrated classifier.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>The samples.</p>
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>The samples.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>C</strong><span class="classifier">array, shape (n_samples,)</span></dt><dd><p>The predicted class.</p>
+<dt><strong>C</strong><span class="classifier">ndarray of shape (n_samples,)</span></dt><dd><p>The predicted class.</p>
 </dd>
 </dl>
 </dd>
@@ -419,20 +419,20 @@ from the prediction of the uncalibrated classifier.</p>
 
 <dl class="py method">
 <dt id="sklearn.calibration.CalibratedClassifierCV.predict_proba">
-<code class="sig-name descname">predict_proba</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/6c9d8090f/sklearn/calibration.py#L323"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.calibration.CalibratedClassifierCV.predict_proba" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">predict_proba</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8980458a5/sklearn/calibration.py#L323"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.calibration.CalibratedClassifierCV.predict_proba" title="Permalink to this definition">¶</a></dt>
 <dd><p>Posterior probabilities of classification</p>
 <p>This function returns posterior probabilities of classification
 according to each class on an array of test vectors X.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>The samples.</p>
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>The samples.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>C</strong><span class="classifier">array, shape (n_samples, n_classes)</span></dt><dd><p>The predicted probas.</p>
+<dt><strong>C</strong><span class="classifier">ndarray of shape (n_samples, n_classes)</span></dt><dd><p>The predicted probas.</p>
 </dd>
 </dl>
 </dd>
@@ -441,7 +441,7 @@ according to each class on an array of test vectors X.</p>
 
 <dl class="py method">
 <dt id="sklearn.calibration.CalibratedClassifierCV.score">
-<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/6c9d8090f/sklearn/base.py#L470"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.calibration.CalibratedClassifierCV.score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8980458a5/sklearn/base.py#L470"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.calibration.CalibratedClassifierCV.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the mean accuracy on the given test data and labels.</p>
 <p>In multi-label classification, this is the subset accuracy
 which is a harsh metric since you require for each sample that
@@ -468,7 +468,7 @@ each label set be correctly predicted.</p>
 
 <dl class="py method">
 <dt id="sklearn.calibration.CalibratedClassifierCV.set_params">
-<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/6c9d8090f/sklearn/base.py#L217"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.calibration.CalibratedClassifierCV.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8980458a5/sklearn/base.py#L217"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.calibration.CalibratedClassifierCV.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
