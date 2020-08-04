@@ -10,7 +10,7 @@
   <meta name="Description" content="scikit-learn: machine learning in Python">
 
   
-  <title>Visualizing cross-validation behavior in scikit-learn &mdash; scikit-learn 0.23.1 documentation</title>
+  <title>Visualizing cross-validation behavior in scikit-learn &mdash; scikit-learn 0.23.2 documentation</title>
   
   <link rel="canonical" href="http://scikit-learn.org/stable/auto_examples/model_selection/plot_cv_indices.html" />
 
@@ -142,7 +142,7 @@
         </div>
         <div class="alert alert-danger p-1 mb-2" role="alert">
           <p class="text-center mb-0">
-          <strong>scikit-learn 0.23.1</strong><br/>
+          <strong>scikit-learn 0.23.2</strong><br/>
           <a href="http://scikit-learn.org/dev/versions.html">Other versions</a>
           </p>
         </div>
@@ -185,7 +185,7 @@ for comparison.</p>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.patches.Patch.html#matplotlib.patches.Patch" title="matplotlib.patches.Patch" class="sphx-glr-backref-module-matplotlib-patches sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Patch</span></a>
-<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1338</span><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.seed.html#numpy.random.seed" title="numpy.random.seed" class="sphx-glr-backref-module-numpy-random sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span></a><span class="p">(</span><span class="mi">1338</span><span class="p">)</span>
 <span class="n">cmap_data</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Paired</span>
 <span class="n">cmap_cv</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span>
 <span class="n">n_splits</span> <span class="o">=</span> <span class="mi">4</span>
@@ -202,14 +202,14 @@ do not use this information.</p>
 <p>To begin, we’ll visualize our data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate the class/group data</span>
 <span class="n">n_points</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.randn.html#numpy.random.randn" title="numpy.random.randn" class="sphx-glr-backref-module-numpy-random sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span></a><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
 <span class="n">percentiles_classes</span> <span class="o">=</span> <span class="p">[</span><span class="o">.</span><span class="mi">1</span><span class="p">,</span> <span class="o">.</span><span class="mi">3</span><span class="p">,</span> <span class="o">.</span><span class="mi">6</span><span class="p">]</span>
-<span class="n">y</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.hstack.html#numpy.hstack" title="numpy.hstack" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">hstack</span></a><span class="p">([[</span><span class="n">ii</span><span class="p">]</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">perc</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.hstack.html#numpy.hstack" title="numpy.hstack" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">hstack</span></a><span class="p">([[</span><span class="n">ii</span><span class="p">]</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">perc</span><span class="p">)</span>
                <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">perc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">percentiles_classes</span><span class="p">)])</span>
 
 <span class="c1"># Evenly spaced groups repeated once</span>
-<span class="n">groups</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.hstack.html#numpy.hstack" title="numpy.hstack" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">hstack</span></a><span class="p">([[</span><span class="n">ii</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)])</span>
+<span class="n">groups</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.hstack.html#numpy.hstack" title="numpy.hstack" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">hstack</span></a><span class="p">([[</span><span class="n">ii</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)])</span>
 
 
 <span class="k">def</span> <span class="nf">visualize_groups</span><span class="p">(</span><span class="n">classes</span><span class="p">,</span> <span class="n">groups</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
@@ -226,7 +226,7 @@ do not use this information.</p>
 <span class="n">visualize_groups</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">groups</span><span class="p">,</span> <span class="s1">&#39;no groups&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_plot_cv_indices_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_cv_indices_001.png" />
+<img alt="plot cv indices" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_cv_indices_001.png" />
 </div>
 <div class="section" id="define-a-function-to-visualize-cross-validation-behavior">
 <h2>Define a function to visualize cross-validation behavior<a class="headerlink" href="#define-a-function-to-visualize-cross-validation-behavior" title="Permalink to this headline">¶</a></h2>
@@ -240,7 +240,7 @@ split, we’ll visualize the indices chosen for the training set
     <span class="c1"># Generate the training/testing visualizations for each CV split</span>
     <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">tt</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cv</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="n">group</span><span class="p">)):</span>
         <span class="c1"># Fill in indices with the training/test groups</span>
-        <span class="n">indices</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><a href="https://docs.scipy.org/doc/numpy/reference/constants.html#numpy.nan" title="numpy.nan" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">nan</span></a><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+        <span class="n">indices</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><a href="https://numpy.org/doc/stable/reference/constants.html#numpy.nan" title="numpy.nan" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">nan</span></a><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
         <span class="n">indices</span><span class="p">[</span><span class="n">tt</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">indices</span><span class="p">[</span><span class="n">tr</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
@@ -258,7 +258,7 @@ split, we’ll visualize the indices chosen for the training set
 
     <span class="c1"># Formatting</span>
     <span class="n">yticklabels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n_splits</span><span class="p">))</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;class&#39;</span><span class="p">,</span> <span class="s1">&#39;group&#39;</span><span class="p">]</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">yticks</span><span class="o">=</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="n">n_splits</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="n">yticklabels</span><span class="o">=</span><span class="n">yticklabels</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">yticks</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="n">n_splits</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="n">yticklabels</span><span class="o">=</span><span class="n">yticklabels</span><span class="p">,</span>
            <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;Sample index&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;CV iteration&quot;</span><span class="p">,</span>
            <span class="n">ylim</span><span class="o">=</span><span class="p">[</span><span class="n">n_splits</span><span class="o">+</span><span class="mf">2.2</span><span class="p">,</span> <span class="o">-.</span><span class="mi">2</span><span class="p">],</span> <span class="n">xlim</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">cv</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
@@ -272,9 +272,9 @@ cross-validation object:</p>
 <span class="n">plot_cv_indices</span><span class="p">(</span><span class="n">cv</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">groups</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">n_splits</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_plot_cv_indices_002.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_cv_indices_002.png" />
+<img alt="KFold" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_cv_indices_002.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot object at 0x7f96064f9190&gt;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot object at 0x7f635d06c970&gt;
 </pre></div>
 </div>
 <p>As you can see, by default the KFold cross-validation iterator does not
@@ -285,9 +285,9 @@ by using the <code class="docutils literal notranslate"><span class="pre">Strati
 <span class="n">plot_cv_indices</span><span class="p">(</span><span class="n">cv</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">groups</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">n_splits</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_plot_cv_indices_003.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_cv_indices_003.png" />
+<img alt="StratifiedKFold" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_cv_indices_003.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot object at 0x7f96042325b0&gt;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot object at 0x7f635d73aac0&gt;
 </pre></div>
 </div>
 <p>In this case, the cross-validation retained the same ratio of classes across
@@ -318,22 +318,22 @@ common cross-validation objects, visualizing the behavior of each.</p>
 </pre></div>
 </div>
 <ul class="sphx-glr-horizontal">
-<li><img alt="../../_images/sphx_glr_plot_cv_indices_004.png" class="sphx-glr-multi-img" src="../../_images/sphx_glr_plot_cv_indices_004.png" />
+<li><img alt="KFold" class="sphx-glr-multi-img" src="../../_images/sphx_glr_plot_cv_indices_004.png" />
 </li>
-<li><img alt="../../_images/sphx_glr_plot_cv_indices_005.png" class="sphx-glr-multi-img" src="../../_images/sphx_glr_plot_cv_indices_005.png" />
+<li><img alt="GroupKFold" class="sphx-glr-multi-img" src="../../_images/sphx_glr_plot_cv_indices_005.png" />
 </li>
-<li><img alt="../../_images/sphx_glr_plot_cv_indices_006.png" class="sphx-glr-multi-img" src="../../_images/sphx_glr_plot_cv_indices_006.png" />
+<li><img alt="ShuffleSplit" class="sphx-glr-multi-img" src="../../_images/sphx_glr_plot_cv_indices_006.png" />
 </li>
-<li><img alt="../../_images/sphx_glr_plot_cv_indices_007.png" class="sphx-glr-multi-img" src="../../_images/sphx_glr_plot_cv_indices_007.png" />
+<li><img alt="StratifiedKFold" class="sphx-glr-multi-img" src="../../_images/sphx_glr_plot_cv_indices_007.png" />
 </li>
-<li><img alt="../../_images/sphx_glr_plot_cv_indices_008.png" class="sphx-glr-multi-img" src="../../_images/sphx_glr_plot_cv_indices_008.png" />
+<li><img alt="GroupShuffleSplit" class="sphx-glr-multi-img" src="../../_images/sphx_glr_plot_cv_indices_008.png" />
 </li>
-<li><img alt="../../_images/sphx_glr_plot_cv_indices_009.png" class="sphx-glr-multi-img" src="../../_images/sphx_glr_plot_cv_indices_009.png" />
+<li><img alt="StratifiedShuffleSplit" class="sphx-glr-multi-img" src="../../_images/sphx_glr_plot_cv_indices_009.png" />
 </li>
-<li><img alt="../../_images/sphx_glr_plot_cv_indices_010.png" class="sphx-glr-multi-img" src="../../_images/sphx_glr_plot_cv_indices_010.png" />
+<li><img alt="TimeSeriesSplit" class="sphx-glr-multi-img" src="../../_images/sphx_glr_plot_cv_indices_010.png" />
 </li>
 </ul>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.937 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.722 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-model-selection-plot-cv-indices-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/scikit-learn/scikit-learn/0.23.X?urlpath=lab/tree/notebooks/auto_examples/model_selection/plot_cv_indices.ipynb"><img alt="https://mybinder.org/badge_logo.svg" src="https://mybinder.org/badge_logo.svg" width="150px" /></a>
@@ -353,7 +353,7 @@ common cross-validation objects, visualizing the behavior of each.</p>
       </div>
     <div class="container">
       <footer class="sk-content-footer">
-            &copy; 2007 - 2019, scikit-learn developers (BSD License).
+            &copy; 2007 - 2020, scikit-learn developers (BSD License).
           <a href="../../_sources/auto_examples/model_selection/plot_cv_indices.rst.txt" rel="nofollow">Show this page source</a>
       </footer>
     </div>

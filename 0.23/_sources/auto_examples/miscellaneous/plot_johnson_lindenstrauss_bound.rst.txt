@@ -32,15 +32,15 @@ space while controlling the distortion in the pairwise distances.
     import numpy as np
     import matplotlib
     import matplotlib.pyplot as plt
-    from distutils.version import LooseVersion
     from sklearn.random_projection import johnson_lindenstrauss_min_dim
     from sklearn.random_projection import SparseRandomProjection
     from sklearn.datasets import fetch_20newsgroups_vectorized
     from sklearn.datasets import load_digits
     from sklearn.metrics.pairwise import euclidean_distances
+    from sklearn.utils.fixes import parse_version
 
     # `normed` is being deprecated in favor of `density` in histograms
-    if LooseVersion(matplotlib.__version__) >= '2.1':
+    if parse_version(matplotlib.__version__) >= parse_version('2.1'):
         density_param = {'density': True}
     else:
         density_param = {'normed': True}
@@ -103,6 +103,7 @@ in order to guarantee an ``eps``-embedding.
 
 
 .. image:: /auto_examples/miscellaneous/images/sphx_glr_plot_johnson_lindenstrauss_bound_001.png
+    :alt: Johnson-Lindenstrauss bounds: n_samples vs n_components
     :class: sphx-glr-single-img
 
 
@@ -139,6 +140,7 @@ dimensions ``n_components`` for a given number of samples ``n_samples``
 
 
 .. image:: /auto_examples/miscellaneous/images/sphx_glr_plot_johnson_lindenstrauss_bound_002.png
+    :alt: Johnson-Lindenstrauss bounds: n_components vs eps
     :class: sphx-glr-single-img
 
 
@@ -254,32 +256,38 @@ For each value of ``n_components``, we plot:
     *
 
       .. image:: /auto_examples/miscellaneous/images/sphx_glr_plot_johnson_lindenstrauss_bound_003.png
-            :class: sphx-glr-multi-img
+          :alt: Pairwise distances distribution for n_components=300
+          :class: sphx-glr-multi-img
 
     *
 
       .. image:: /auto_examples/miscellaneous/images/sphx_glr_plot_johnson_lindenstrauss_bound_004.png
-            :class: sphx-glr-multi-img
+          :alt: Histogram of pairwise distance rates for n_components=300
+          :class: sphx-glr-multi-img
 
     *
 
       .. image:: /auto_examples/miscellaneous/images/sphx_glr_plot_johnson_lindenstrauss_bound_005.png
-            :class: sphx-glr-multi-img
+          :alt: Pairwise distances distribution for n_components=1000
+          :class: sphx-glr-multi-img
 
     *
 
       .. image:: /auto_examples/miscellaneous/images/sphx_glr_plot_johnson_lindenstrauss_bound_006.png
-            :class: sphx-glr-multi-img
+          :alt: Histogram of pairwise distance rates for n_components=1000
+          :class: sphx-glr-multi-img
 
     *
 
       .. image:: /auto_examples/miscellaneous/images/sphx_glr_plot_johnson_lindenstrauss_bound_007.png
-            :class: sphx-glr-multi-img
+          :alt: Pairwise distances distribution for n_components=10000
+          :class: sphx-glr-multi-img
 
     *
 
       .. image:: /auto_examples/miscellaneous/images/sphx_glr_plot_johnson_lindenstrauss_bound_008.png
-            :class: sphx-glr-multi-img
+          :alt: Histogram of pairwise distance rates for n_components=10000
+          :class: sphx-glr-multi-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -289,13 +297,13 @@ For each value of ``n_components``, we plot:
  .. code-block:: none
 
     Embedding 500 samples with dim 130107 using various random projections
-    Projected 500 samples from 130107 to 300 in 0.969s
+    Projected 500 samples from 130107 to 300 in 0.277s
     Random matrix with size: 1.303MB
     Mean distances rate: 1.01 (0.16)
-    Projected 500 samples from 130107 to 1000 in 3.381s
+    Projected 500 samples from 130107 to 1000 in 0.961s
     Random matrix with size: 4.325MB
     Mean distances rate: 1.04 (0.11)
-    Projected 500 samples from 130107 to 10000 in 33.519s
+    Projected 500 samples from 130107 to 10000 in 9.520s
     Random matrix with size: 43.285MB
     Mean distances rate: 0.99 (0.03)
 
@@ -326,7 +334,7 @@ pairwise distances.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  43.639 seconds)
+   **Total running time of the script:** ( 0 minutes  13.591 seconds)
 
 
 .. _sphx_glr_download_auto_examples_miscellaneous_plot_johnson_lindenstrauss_bound.py:

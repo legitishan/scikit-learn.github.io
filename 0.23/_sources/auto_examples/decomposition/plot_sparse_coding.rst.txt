@@ -27,6 +27,7 @@ is performed in order to stay on the same order of magnitude.
 
 
 .. image:: /auto_examples/decomposition/images/sphx_glr_plot_sparse_coding_001.png
+    :alt: Sparse coding against fixed width dictionary, Sparse coding against multiple widths dictionary
     :class: sphx-glr-single-img
 
 
@@ -38,12 +39,11 @@ is performed in order to stay on the same order of magnitude.
 
     print(__doc__)
 
-    from distutils.version import LooseVersion
-
     import numpy as np
     import matplotlib.pyplot as plt
 
     from sklearn.decomposition import SparseCoder
+    from sklearn.utils.fixes import np_version, parse_version
 
 
     def ricker_function(resolution, center, width):
@@ -90,7 +90,7 @@ is performed in order to stay on the same order of magnitude.
                   ('Lasso', 'lasso_lars', 2, None, 'turquoise'), ]
     lw = 2
     # Avoid FutureWarning about default value change when numpy >= 1.14
-    lstsq_rcond = None if LooseVersion(np.__version__) >= '1.14' else -1
+    lstsq_rcond = None if np_version >= parse_version('1.14') else -1
 
     plt.figure(figsize=(13, 6))
     for subplot, (D, title) in enumerate(zip((D_fixed, D_multi),
@@ -129,7 +129,7 @@ is performed in order to stay on the same order of magnitude.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.380 seconds)
+   **Total running time of the script:** ( 0 minutes  0.321 seconds)
 
 
 .. _sphx_glr_download_auto_examples_decomposition_plot_sparse_coding.py:
