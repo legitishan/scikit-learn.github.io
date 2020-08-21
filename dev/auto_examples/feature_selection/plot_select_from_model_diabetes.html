@@ -9,7 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   
-  <title>Feature selection using SelectFromModel and LassoCV &mdash; scikit-learn 0.24.dev0 documentation</title>
+  <title>Model-based and sequential feature selection &mdash; scikit-learn 0.24.dev0 documentation</title>
   
   <link rel="canonical" href="http://scikit-learn.org/stable/auto_examples/feature_selection/plot_select_from_model_diabetes.html" />
 
@@ -140,8 +140,8 @@
           </a>
         </div>
         <div class="btn-group w-100 mb-2" role="group" aria-label="rellinks">
-            <a href="plot_feature_selection_pipeline.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Pipeline Anova SVM">Prev</a><a href="../index.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Examples">Up</a>
-            <a href="plot_rfe_with_cross_validation.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Recursive feature elimination with cross-validation">Next</a>
+            <a href="plot_rfe_with_cross_validation.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Recursive feature elimination with cross-validation">Prev</a><a href="../index.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Examples">Up</a>
+            <a href="plot_permutation_test_for_classification.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Test with permutations the significance of a classification score">Next</a>
         </div>
         <div class="alert alert-danger p-1 mb-2" role="alert">
           <p class="text-center mb-0">
@@ -156,11 +156,12 @@
         </div>
             <div class="sk-sidebar-toc">
               <ul>
-<li><a class="reference internal" href="#">Feature selection using SelectFromModel and LassoCV</a><ul>
-<li><a class="reference internal" href="#load-the-data">Load the data</a></li>
-<li><a class="reference internal" href="#find-importance-of-the-features">Find importance of the features</a></li>
-<li><a class="reference internal" href="#select-from-the-model-features-with-the-higest-score">Select from the model features with the higest score</a></li>
-<li><a class="reference internal" href="#plot-the-two-most-important-features">Plot the two most important features</a></li>
+<li><a class="reference internal" href="#">Model-based and sequential feature selection</a><ul>
+<li><a class="reference internal" href="#loading-the-data">Loading the data</a></li>
+<li><a class="reference internal" href="#feature-importance-from-coefficients">Feature importance from coefficients</a></li>
+<li><a class="reference internal" href="#selecting-features-based-on-importance">Selecting features based on importance</a></li>
+<li><a class="reference internal" href="#selecting-features-with-sequential-feature-selection">Selecting features with Sequential Feature Selection</a></li>
+<li><a class="reference internal" href="#discussion">Discussion</a></li>
 </ul>
 </li>
 </ul>
@@ -175,109 +176,188 @@
 <p class="admonition-title">Note</p>
 <p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-feature-selection-plot-select-from-model-diabetes-py"><span class="std std-ref">here</span></a>     to download the full example code or to run this example in your browser via Binder</p>
 </div>
-<div class="sphx-glr-example-title section" id="feature-selection-using-selectfrommodel-and-lassocv">
-<span id="sphx-glr-auto-examples-feature-selection-plot-select-from-model-diabetes-py"></span><h1>Feature selection using SelectFromModel and LassoCV<a class="headerlink" href="#feature-selection-using-selectfrommodel-and-lassocv" title="Permalink to this headline">¶</a></h1>
-<p>Use SelectFromModel meta-transformer along with Lasso to select the best
-couple of features from the diabetes dataset.</p>
-<p>Since the L1 norm promotes sparsity of features we might be interested in
-selecting only a subset of the most interesting features from the dataset. This
-example shows how to select two the most interesting features from the diabetes
-dataset.</p>
-<p>Diabetes dataset consists of 10 variables (features) collected from 442
-diabetes patients. This example shows how to use SelectFromModel and LassoCv to
-find the best two features predicting disease progression after one year from
-the baseline.</p>
+<div class="sphx-glr-example-title section" id="model-based-and-sequential-feature-selection">
+<span id="sphx-glr-auto-examples-feature-selection-plot-select-from-model-diabetes-py"></span><h1>Model-based and sequential feature selection<a class="headerlink" href="#model-based-and-sequential-feature-selection" title="Permalink to this headline">¶</a></h1>
+<p>This example illustrates and compares two approaches for feature selection:
+<a class="reference internal" href="../../modules/generated/sklearn.feature_selection.SelectFromModel.html#sklearn.feature_selection.SelectFromModel" title="sklearn.feature_selection.SelectFromModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">SelectFromModel</span></code></a> which is based on feature
+importance, and
+<code class="xref py py-class docutils literal notranslate"><span class="pre">SequentialFeatureSelection</span></code> which relies
+on a greedy approach.</p>
+<p>We use the Diabetes dataset, which consists of 10 features collected from 442
+diabetes patients.</p>
 <p>Authors: <a class="reference external" href="mailto:mks542&#37;&#52;&#48;nyu&#46;edu">Manoj Kumar</a>,
-<a class="reference external" href="https://github.com/maikia">Maria Telenczuk</a></p>
+<a class="reference external" href="https://github.com/maikia">Maria Telenczuk</a>, Nicolas Hug.</p>
 <p>License: BSD 3 clause</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="loading-the-data">
+<h2>Loading the data<a class="headerlink" href="#loading-the-data" title="Permalink to this headline">¶</a></h2>
+<p>We first load the diabetes dataset which is available from within
+scikit-learn, and print its description:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.datasets.load_diabetes.html#sklearn.datasets.load_diabetes" title="sklearn.datasets.load_diabetes" class="sphx-glr-backref-module-sklearn-datasets sphx-glr-backref-type-py-function"><span class="n">load_diabetes</span></a>
 
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">diabetes</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.load_diabetes.html#sklearn.datasets.load_diabetes" title="sklearn.datasets.load_diabetes" class="sphx-glr-backref-module-sklearn-datasets sphx-glr-backref-type-py-function"><span class="n">load_diabetes</span></a><span class="p">()</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">diabetes</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">diabetes</span><span class="o">.</span><span class="n">target</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">diabetes</span><span class="o">.</span><span class="n">DESCR</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>.. _diabetes_dataset:
+
+Diabetes dataset
+----------------
+
+Ten baseline variables, age, sex, body mass index, average blood
+pressure, and six blood serum measurements were obtained for each of n =
+442 diabetes patients, as well as the response of interest, a
+quantitative measure of disease progression one year after baseline.
+
+**Data Set Characteristics:**
+
+  :Number of Instances: 442
+
+  :Number of Attributes: First 10 columns are numeric predictive values
+
+  :Target: Column 11 is a quantitative measure of disease progression one year after baseline
+
+  :Attribute Information:
+      - age     age in years
+      - sex
+      - bmi     body mass index
+      - bp      average blood pressure
+      - s1      tc, T-Cells (a type of white blood cells)
+      - s2      ldl, low-density lipoproteins
+      - s3      hdl, high-density lipoproteins
+      - s4      tch, thyroid stimulating hormone
+      - s5      ltg, lamotrigine
+      - s6      glu, blood sugar level
+
+Note: Each of these 10 feature variables have been mean centered and scaled by the standard deviation times `n_samples` (i.e. the sum of squares of each column totals 1).
+
+Source URL:
+https://www4.stat.ncsu.edu/~boos/var.select/diabetes.html
+
+For more information see:
+Bradley Efron, Trevor Hastie, Iain Johnstone and Robert Tibshirani (2004) &quot;Least Angle Regression,&quot; Annals of Statistics (with discussion), 407-499.
+(https://web.stanford.edu/~hastie/Papers/LARS/LeastAngle_2002.pdf)
+</pre></div>
+</div>
+</div>
+<div class="section" id="feature-importance-from-coefficients">
+<h2>Feature importance from coefficients<a class="headerlink" href="#feature-importance-from-coefficients" title="Permalink to this headline">¶</a></h2>
+<p>To get an idea of the importance of the features, we are going to use the
+<a class="reference internal" href="../../modules/generated/sklearn.linear_model.LassoCV.html#sklearn.linear_model.LassoCV" title="sklearn.linear_model.LassoCV"><code class="xref py py-class docutils literal notranslate"><span class="pre">LassoCV</span></code></a> estimator. The features with the
+highest absolute <code class="docutils literal notranslate"><span class="pre">coef_</span></code> value are considered the most important.
+We can observe the coefficients directly without needing to scale them (or
+scale the data) because from the description above, we know that the features
+were already standardized.
+For a more complete example on the interpretations of the coefficients of
+linear models, you may refer to
+<a class="reference internal" href="../inspection/plot_linear_model_coefficient_interpretation.html#sphx-glr-auto-examples-inspection-plot-linear-model-coefficient-interpretation-py"><span class="std std-ref">Common pitfalls in interpretation of coefficients of linear models</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.datasets.load_diabetes.html#sklearn.datasets.load_diabetes" title="sklearn.datasets.load_diabetes" class="sphx-glr-backref-module-sklearn-datasets sphx-glr-backref-type-py-function"><span class="n">load_diabetes</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.feature_selection.SelectFromModel.html#sklearn.feature_selection.SelectFromModel" title="sklearn.feature_selection.SelectFromModel" class="sphx-glr-backref-module-sklearn-feature_selection sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SelectFromModel</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.linear_model.LassoCV.html#sklearn.linear_model.LassoCV" title="sklearn.linear_model.LassoCV" class="sphx-glr-backref-module-sklearn-linear_model sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">LassoCV</span></a>
-</pre></div>
-</div>
-<div class="section" id="load-the-data">
-<h2>Load the data<a class="headerlink" href="#load-the-data" title="Permalink to this headline">¶</a></h2>
-<p>First, let’s load the diabetes dataset which is available from within
-sklearn. Then, we will look what features are collected for the diabates
-patients:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">diabetes</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.load_diabetes.html#sklearn.datasets.load_diabetes" title="sklearn.datasets.load_diabetes" class="sphx-glr-backref-module-sklearn-datasets sphx-glr-backref-type-py-function"><span class="n">load_diabetes</span></a><span class="p">()</span>
 
-<span class="n">X</span> <span class="o">=</span> <span class="n">diabetes</span><span class="o">.</span><span class="n">data</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">diabetes</span><span class="o">.</span><span class="n">target</span>
-
-<span class="n">feature_names</span> <span class="o">=</span> <span class="n">diabetes</span><span class="o">.</span><span class="n">feature_names</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">feature_names</span><span class="p">)</span>
-</pre></div>
-</div>
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;age&#39;, &#39;sex&#39;, &#39;bmi&#39;, &#39;bp&#39;, &#39;s1&#39;, &#39;s2&#39;, &#39;s3&#39;, &#39;s4&#39;, &#39;s5&#39;, &#39;s6&#39;]
-</pre></div>
-</div>
-</div>
-<div class="section" id="find-importance-of-the-features">
-<h2>Find importance of the features<a class="headerlink" href="#find-importance-of-the-features" title="Permalink to this headline">¶</a></h2>
-<p>To decide on the importance of the features we are going to use LassoCV
-estimator. The features with the highest absolute <code class="docutils literal notranslate"><span class="pre">coef_</span></code> value are
-considered the most important</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">clf</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.linear_model.LassoCV.html#sklearn.linear_model.LassoCV" title="sklearn.linear_model.LassoCV" class="sphx-glr-backref-module-sklearn-linear_model sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">LassoCV</span></a><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="n">importance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">importance</span><span class="p">)</span>
-</pre></div>
-</div>
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[  6.49684455 235.99640534 521.73854261 321.06689245 569.4426838
- 302.45627915   0.         143.6995665  669.92633112  66.83430445]
-</pre></div>
-</div>
-</div>
-<div class="section" id="select-from-the-model-features-with-the-higest-score">
-<h2>Select from the model features with the higest score<a class="headerlink" href="#select-from-the-model-features-with-the-higest-score" title="Permalink to this headline">¶</a></h2>
-<p>Now we want to select the two features which are the most important.
-SelectFromModel() allows for setting the threshold. Only the features with
-the <code class="docutils literal notranslate"><span class="pre">coef_</span></code> higher than the threshold will remain. Here, we want to set the
-threshold slightly above the third highest <code class="docutils literal notranslate"><span class="pre">coef_</span></code> calculated by LassoCV()
-from our data.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">idx_third</span> <span class="o">=</span> <span class="n">importance</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
-<span class="n">threshold</span> <span class="o">=</span> <span class="n">importance</span><span class="p">[</span><span class="n">idx_third</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.01</span>
-
-<span class="n">idx_features</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">importance</span><span class="p">)</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[:</span><span class="mi">2</span><span class="p">]</span>
-<span class="n">name_features</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">feature_names</span><span class="p">)[</span><span class="n">idx_features</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Selected features: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name_features</span><span class="p">))</span>
-
-<span class="n">sfm</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.feature_selection.SelectFromModel.html#sklearn.feature_selection.SelectFromModel" title="sklearn.feature_selection.SelectFromModel" class="sphx-glr-backref-module-sklearn-feature_selection sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SelectFromModel</span></a><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="n">threshold</span><span class="p">)</span>
-<span class="n">sfm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="n">X_transform</span> <span class="o">=</span> <span class="n">sfm</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-
-<span class="n">n_features</span> <span class="o">=</span> <span class="n">sfm</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-</pre></div>
-</div>
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Selected features: [&#39;s5&#39; &#39;s1&#39;]
-</pre></div>
-</div>
-</div>
-<div class="section" id="plot-the-two-most-important-features">
-<h2>Plot the two most important features<a class="headerlink" href="#plot-the-two-most-important-features" title="Permalink to this headline">¶</a></h2>
-<p>Finally we will plot the selected two features from the data.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="matplotlib.pyplot.title" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span>
-    <span class="s2">&quot;Features from diabets using SelectFromModel with &quot;</span>
-    <span class="s2">&quot;threshold </span><span class="si">%0.3f</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="n">sfm</span><span class="o">.</span><span class="n">threshold</span><span class="p">)</span>
-<span class="n">feature1</span> <span class="o">=</span> <span class="n">X_transform</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="n">feature2</span> <span class="o">=</span> <span class="n">X_transform</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="matplotlib.pyplot.plot" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">feature1</span><span class="p">,</span> <span class="n">feature2</span><span class="p">,</span> <span class="s1">&#39;r.&#39;</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="matplotlib.pyplot.xlabel" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s2">&quot;First feature: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name_features</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="matplotlib.pyplot.ylabel" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="s2">&quot;Second feature: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name_features</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylim.html#matplotlib.pyplot.ylim" title="matplotlib.pyplot.ylim" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">ylim</span></a><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">feature2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">feature2</span><span class="p">)])</span>
+<span class="n">lasso</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.linear_model.LassoCV.html#sklearn.linear_model.LassoCV" title="sklearn.linear_model.LassoCV" class="sphx-glr-backref-module-sklearn-linear_model sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">LassoCV</span></a><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">importance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">lasso</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span>
+<span class="n">feature_names</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">diabetes</span><span class="o">.</span><span class="n">feature_names</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.bar.html#matplotlib.pyplot.bar" title="matplotlib.pyplot.bar" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">bar</span></a><span class="p">(</span><span class="n">height</span><span class="o">=</span><span class="n">importance</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">feature_names</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="matplotlib.pyplot.title" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s2">&quot;Feature importances via coefficients&quot;</span><span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="Features from diabets using SelectFromModel with threshold 521.749." class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_select_from_model_diabetes_001.png" />
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.177 seconds)</p>
+<img alt="Feature importances via coefficients" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_select_from_model_diabetes_001.png" />
+</div>
+<div class="section" id="selecting-features-based-on-importance">
+<h2>Selecting features based on importance<a class="headerlink" href="#selecting-features-based-on-importance" title="Permalink to this headline">¶</a></h2>
+<p>Now we want to select the two features which are the most important according
+to the coefficients. The <a class="reference internal" href="../../modules/generated/sklearn.feature_selection.SelectFromModel.html#sklearn.feature_selection.SelectFromModel" title="sklearn.feature_selection.SelectFromModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">SelectFromModel</span></code></a>
+is meant just for that. <a class="reference internal" href="../../modules/generated/sklearn.feature_selection.SelectFromModel.html#sklearn.feature_selection.SelectFromModel" title="sklearn.feature_selection.SelectFromModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">SelectFromModel</span></code></a>
+accepts a <code class="docutils literal notranslate"><span class="pre">threshold</span></code> parameter and will select the features whose importance
+(defined by the coefficients) are above this threshold.</p>
+<p>Since we want to select only 2 features, we will set this threshold slightly
+above the coefficient of third most important feature.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.feature_selection.SelectFromModel.html#sklearn.feature_selection.SelectFromModel" title="sklearn.feature_selection.SelectFromModel" class="sphx-glr-backref-module-sklearn-feature_selection sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SelectFromModel</span></a>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span></a>
+
+<span class="n">threshold</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.sort.html#numpy.sort" title="numpy.sort" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">sort</span></a><span class="p">(</span><span class="n">importance</span><span class="p">)[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.01</span>
+
+<span class="n">tic</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span></a><span class="p">()</span>
+<span class="n">sfm</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.feature_selection.SelectFromModel.html#sklearn.feature_selection.SelectFromModel" title="sklearn.feature_selection.SelectFromModel" class="sphx-glr-backref-module-sklearn-feature_selection sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SelectFromModel</span></a><span class="p">(</span><span class="n">lasso</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="n">threshold</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">toc</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span></a><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Features selected by SelectFromModel: &quot;</span>
+      <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">feature_names</span><span class="p">[</span><span class="n">sfm</span><span class="o">.</span><span class="n">get_support</span><span class="p">()]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Done in </span><span class="si">{</span><span class="n">toc</span> <span class="o">-</span> <span class="n">tic</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Features selected by SelectFromModel: [&#39;s1&#39; &#39;s5&#39;]
+Done in 0.050s
+</pre></div>
+</div>
+</div>
+<div class="section" id="selecting-features-with-sequential-feature-selection">
+<h2>Selecting features with Sequential Feature Selection<a class="headerlink" href="#selecting-features-with-sequential-feature-selection" title="Permalink to this headline">¶</a></h2>
+<p>Another way of selecting features is to use
+<a class="reference internal" href="../../modules/generated/sklearn.feature_selection.SequentialFeatureSelector.html#sklearn.feature_selection.SequentialFeatureSelector" title="sklearn.feature_selection.SequentialFeatureSelector"><code class="xref py py-class docutils literal notranslate"><span class="pre">SequentialFeatureSelector</span></code></a>
+(SFS). SFS is a greedy procedure where, at each iteration, we choose the best
+new feature to add to our selected features based a cross-validation score.
+That is, we start with 0 features and choose the best single feature with the
+highest score. The procedure is repeated until we reach the desired number of
+selected features.</p>
+<p>We can also go in the reverse direction (backward SFS), <em>i.e.</em> start with all
+the features and greedily choose features to remove one by one. We illustrate
+both approaches here.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.feature_selection.SequentialFeatureSelector.html#sklearn.feature_selection.SequentialFeatureSelector" title="sklearn.feature_selection.SequentialFeatureSelector" class="sphx-glr-backref-module-sklearn-feature_selection sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SequentialFeatureSelector</span></a>
+
+<span class="n">tic_fwd</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span></a><span class="p">()</span>
+<span class="n">sfs_forward</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.feature_selection.SequentialFeatureSelector.html#sklearn.feature_selection.SequentialFeatureSelector" title="sklearn.feature_selection.SequentialFeatureSelector" class="sphx-glr-backref-module-sklearn-feature_selection sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SequentialFeatureSelector</span></a><span class="p">(</span><span class="n">lasso</span><span class="p">,</span> <span class="n">n_features_to_select</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                                        <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">toc_fwd</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span></a><span class="p">()</span>
+
+<span class="n">tic_bwd</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span></a><span class="p">()</span>
+<span class="n">sfs_backward</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.feature_selection.SequentialFeatureSelector.html#sklearn.feature_selection.SequentialFeatureSelector" title="sklearn.feature_selection.SequentialFeatureSelector" class="sphx-glr-backref-module-sklearn-feature_selection sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SequentialFeatureSelector</span></a><span class="p">(</span><span class="n">lasso</span><span class="p">,</span> <span class="n">n_features_to_select</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                                         <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;backward&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">toc_bwd</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span></a><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Features selected by forward sequential selection: &quot;</span>
+      <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">feature_names</span><span class="p">[</span><span class="n">sfs_forward</span><span class="o">.</span><span class="n">get_support</span><span class="p">()]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Done in </span><span class="si">{</span><span class="n">toc_fwd</span> <span class="o">-</span> <span class="n">tic_fwd</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Features selected by backward sequential selection: &quot;</span>
+      <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">feature_names</span><span class="p">[</span><span class="n">sfs_backward</span><span class="o">.</span><span class="n">get_support</span><span class="p">()]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Done in </span><span class="si">{</span><span class="n">toc_bwd</span> <span class="o">-</span> <span class="n">tic_bwd</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Features selected by forward sequential selection: [&#39;bmi&#39; &#39;s5&#39;]
+Done in 3.555s
+Features selected by backward sequential selection: [&#39;bmi&#39; &#39;s5&#39;]
+Done in 10.913s
+</pre></div>
+</div>
+</div>
+<div class="section" id="discussion">
+<h2>Discussion<a class="headerlink" href="#discussion" title="Permalink to this headline">¶</a></h2>
+<p>Interestingly, forward and backward selection have selected the same set of
+features. In general, this isn’t the case and the two methods would lead to
+different results.</p>
+<p>We also note that the features selected by SFS differ from those selected by
+feature importance: SFS selects <code class="docutils literal notranslate"><span class="pre">bmi</span></code> instead of <code class="docutils literal notranslate"><span class="pre">s1</span></code>. This does sound
+reasonable though, since <code class="docutils literal notranslate"><span class="pre">bmi</span></code> corresponds to the third most important
+feature according to the coefficients. It is quite remarkable considering
+that SFS makes no use of the coefficients at all.</p>
+<p>To finish with, we should note that
+<a class="reference internal" href="../../modules/generated/sklearn.feature_selection.SelectFromModel.html#sklearn.feature_selection.SelectFromModel" title="sklearn.feature_selection.SelectFromModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">SelectFromModel</span></code></a> is significantly faster
+than SFS. Indeed, <a class="reference internal" href="../../modules/generated/sklearn.feature_selection.SelectFromModel.html#sklearn.feature_selection.SelectFromModel" title="sklearn.feature_selection.SelectFromModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">SelectFromModel</span></code></a> only
+needs to fit a model once, while SFS needs to cross-validate many different
+models for each of the iterations. SFS however works with any model, while
+<a class="reference internal" href="../../modules/generated/sklearn.feature_selection.SelectFromModel.html#sklearn.feature_selection.SelectFromModel" title="sklearn.feature_selection.SelectFromModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">SelectFromModel</span></code></a> requires the underlying
+estimator to expose a <code class="docutils literal notranslate"><span class="pre">coef_</span></code> attribute or a <code class="docutils literal notranslate"><span class="pre">feature_importances_</span></code>
+attribute. The forward SFS is faster than the backward SFS because it only
+needs to perform <code class="docutils literal notranslate"><span class="pre">n_features_to_select</span> <span class="pre">=</span> <span class="pre">2</span></code> iterations, while the backward
+SFS needs to perform <code class="docutils literal notranslate"><span class="pre">n_features</span> <span class="pre">-</span> <span class="pre">n_features_to_select</span> <span class="pre">=</span> <span class="pre">8</span></code> iterations.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  14.684 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-feature-selection-plot-select-from-model-diabetes-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/scikit-learn/scikit-learn/master?urlpath=lab/tree/notebooks/auto_examples/feature_selection/plot_select_from_model_diabetes.ipynb"><img alt="https://mybinder.org/badge_logo.svg" src="https://mybinder.org/badge_logo.svg" width="150px" /></a>

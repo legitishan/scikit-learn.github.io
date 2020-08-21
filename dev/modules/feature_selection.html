@@ -165,7 +165,8 @@
 <li><a class="reference internal" href="#tree-based-feature-selection">1.13.4.2. Tree-based feature selection</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#feature-selection-as-part-of-a-pipeline">1.13.5. Feature selection as part of a pipeline</a></li>
+<li><a class="reference internal" href="#sequential-feature-selection">1.13.5. Sequential Feature Selection</a></li>
+<li><a class="reference internal" href="#feature-selection-as-part-of-a-pipeline">1.13.6. Feature selection as part of a pipeline</a></li>
 </ul>
 </li>
 </ul>
@@ -315,9 +316,7 @@ Available heuristics are “mean”, “median” and float multiples of these l
 <div class="topic">
 <p class="topic-title">Examples</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="../auto_examples/feature_selection/plot_select_from_model_diabetes.html#sphx-glr-auto-examples-feature-selection-plot-select-from-model-diabetes-py"><span class="std std-ref">Feature selection using SelectFromModel and LassoCV</span></a>: Selecting the two
-most important features from the diabetes dataset without knowing the
-threshold beforehand.</p></li>
+<li><p><a class="reference internal" href="../auto_examples/feature_selection/plot_select_from_model_diabetes.html#sphx-glr-auto-examples-feature-selection-plot-select-from-model-diabetes-py"><span class="std std-ref">Model-based and sequential feature selection</span></a></p></li>
 </ul>
 </div>
 <div class="section" id="l1-based-feature-selection">
@@ -412,8 +411,55 @@ on face recognition data.</p></li>
 </div>
 </div>
 </div>
+<div class="section" id="sequential-feature-selection">
+<span id="id3"></span><h2><span class="section-number">1.13.5. </span>Sequential Feature Selection<a class="headerlink" href="#sequential-feature-selection" title="Permalink to this headline">¶</a></h2>
+<p>Sequential Feature Selection <a class="reference internal" href="#sfs" id="id4"><span>[sfs]</span></a> (SFS) is available in the
+<a class="reference internal" href="generated/sklearn.feature_selection.SequentialFeatureSelector.html#sklearn.feature_selection.SequentialFeatureSelector" title="sklearn.feature_selection.SequentialFeatureSelector"><code class="xref py py-class docutils literal notranslate"><span class="pre">SequentialFeatureSelector</span></code></a> transformer.
+SFS can be either forward or backward:</p>
+<p>Forward-SFS is a greedy procedure that iteratively finds the best new feature
+to add to the set of selected features. Concretely, we initially start with
+zero feature and find the one feature that maximizes a cross-validated score
+when an estimator is trained on this single feature. Once that first feature
+is selected, we repeat the procedure by adding a new feature to the set of
+selected features. The procedure stops when the desired number of selected
+features is reached, as determined by the <code class="docutils literal notranslate"><span class="pre">n_features_to_select</span></code> parameter.</p>
+<p>Backward-SFS follows the same idea but works in the opposite direction:
+instead of starting with no feature and greedily adding features, we start
+with <em>all</em> the features and greedily <em>remove</em> features from the set. The
+<code class="docutils literal notranslate"><span class="pre">direction</span></code> parameter controls whether forward or backward SFS is used.</p>
+<p>In general, forward and backward selection do not yield equivalent results.
+Also, one may be much faster than the other depending on the requested number
+of selected features: if we have 10 features and ask for 7 selected features,
+forward selection would need to perform 7 iterations while backward selection
+would only need to perform 3.</p>
+<p>SFS differs from <a class="reference internal" href="generated/sklearn.feature_selection.RFE.html#sklearn.feature_selection.RFE" title="sklearn.feature_selection.RFE"><code class="xref py py-class docutils literal notranslate"><span class="pre">RFE</span></code></a> and
+<a class="reference internal" href="generated/sklearn.feature_selection.SelectFromModel.html#sklearn.feature_selection.SelectFromModel" title="sklearn.feature_selection.SelectFromModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">SelectFromModel</span></code></a> in that it does not
+require the underlying model to expose a <code class="docutils literal notranslate"><span class="pre">coef_</span></code> or <code class="docutils literal notranslate"><span class="pre">feature_importances_</span></code>
+attribute. It may however be slower considering that more models need to be
+evaluated, compared to the other approaches. For example in backward
+selection, the iteration going from <code class="docutils literal notranslate"><span class="pre">m</span></code> features to <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">-</span> <span class="pre">1</span></code> features using k-fold
+cross-validation requires fitting <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">*</span> <span class="pre">k</span></code> models, while
+<a class="reference internal" href="generated/sklearn.feature_selection.RFE.html#sklearn.feature_selection.RFE" title="sklearn.feature_selection.RFE"><code class="xref py py-class docutils literal notranslate"><span class="pre">RFE</span></code></a> would require only a single fit, and
+<a class="reference internal" href="generated/sklearn.feature_selection.SelectFromModel.html#sklearn.feature_selection.SelectFromModel" title="sklearn.feature_selection.SelectFromModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">SelectFromModel</span></code></a> always just does a single
+fit and requires no iterations.</p>
+<div class="topic">
+<p class="topic-title">Examples</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../auto_examples/feature_selection/plot_select_from_model_diabetes.html#sphx-glr-auto-examples-feature-selection-plot-select-from-model-diabetes-py"><span class="std std-ref">Model-based and sequential feature selection</span></a></p></li>
+</ul>
+</div>
+<div class="topic">
+<p class="topic-title">References:</p>
+<dl class="citation">
+<dt class="label" id="sfs"><span class="brackets"><a class="fn-backref" href="#id4">sfs</a></span></dt>
+<dd><p>Ferri et al, <a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.24.4369&amp;rep=rep1&amp;type=pdf">Comparative study of techniques for
+large-scale feature selection</a>.</p>
+</dd>
+</dl>
+</div>
+</div>
 <div class="section" id="feature-selection-as-part-of-a-pipeline">
-<h2><span class="section-number">1.13.5. </span>Feature selection as part of a pipeline<a class="headerlink" href="#feature-selection-as-part-of-a-pipeline" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.13.6. </span>Feature selection as part of a pipeline<a class="headerlink" href="#feature-selection-as-part-of-a-pipeline" title="Permalink to this headline">¶</a></h2>
 <p>Feature selection is usually used as a pre-processing step before doing
 the actual learning. The recommended way to do this in scikit-learn is
 to use a <a class="reference internal" href="generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>:</p>
