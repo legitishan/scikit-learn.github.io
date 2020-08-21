@@ -172,7 +172,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.decomposition" title="sklearn.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.decomposition</span></code></a>.TruncatedSVD<a class="headerlink" href="#sklearn-decomposition-truncatedsvd" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="sklearn.decomposition.TruncatedSVD">
-<em class="property">class </em><code class="sig-prename descclassname">sklearn.decomposition.</code><code class="sig-name descname">TruncatedSVD</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2fa4272b1/sklearn/decomposition/_truncated_svd.py#L24"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.TruncatedSVD" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sklearn.decomposition.</code><code class="sig-name descname">TruncatedSVD</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46b7d8a76/sklearn/decomposition/_truncated_svd.py#L24"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.TruncatedSVD" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dimensionality reduction using truncated SVD (aka LSA).</p>
 <p>This transformer performs linear dimensionality reduction by means of
 truncated singular value decomposition (SVD). Contrary to PCA, this
@@ -189,38 +189,38 @@ a “naive” algorithm that uses ARPACK as an eigensolver on <code class="docut
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>n_components</strong><span class="classifier">int, default = 2</span></dt><dd><p>Desired dimensionality of output data.
+<dt><strong>n_components</strong><span class="classifier">int, default=2</span></dt><dd><p>Desired dimensionality of output data.
 Must be strictly less than the number of features.
 The default value is useful for visualisation. For LSA, a value of
 100 is recommended.</p>
 </dd>
-<dt><strong>algorithm</strong><span class="classifier">string, default = “randomized”</span></dt><dd><p>SVD solver to use. Either “arpack” for the ARPACK wrapper in SciPy
+<dt><strong>algorithm</strong><span class="classifier">{‘arpack’, ‘randomized’}, default=’randomized’</span></dt><dd><p>SVD solver to use. Either “arpack” for the ARPACK wrapper in SciPy
 (scipy.sparse.linalg.svds), or “randomized” for the randomized
 algorithm due to Halko (2009).</p>
 </dd>
-<dt><strong>n_iter</strong><span class="classifier">int, optional (default 5)</span></dt><dd><p>Number of iterations for randomized SVD solver. Not used by ARPACK. The
+<dt><strong>n_iter</strong><span class="classifier">int, default=5</span></dt><dd><p>Number of iterations for randomized SVD solver. Not used by ARPACK. The
 default is larger than the default in
 <a class="reference internal" href="sklearn.utils.extmath.randomized_svd.html#sklearn.utils.extmath.randomized_svd" title="sklearn.utils.extmath.randomized_svd"><code class="xref py py-func docutils literal notranslate"><span class="pre">randomized_svd</span></code></a> to handle sparse
 matrices that may have large slowly decaying spectrum.</p>
 </dd>
-<dt><strong>random_state</strong><span class="classifier">int, RandomState instance, default=None</span></dt><dd><p>Used during randomized svd. Pass an int for reproducible results across
+<dt><strong>random_state</strong><span class="classifier">int or RandomState instance, default=None</span></dt><dd><p>Used during randomized svd. Pass an int for reproducible results across
 multiple function calls.
 See <a class="reference internal" href="../../glossary.html#term-random_state"><span class="xref std std-term">Glossary</span></a>.</p>
 </dd>
-<dt><strong>tol</strong><span class="classifier">float, optional</span></dt><dd><p>Tolerance for ARPACK. 0 means machine precision. Ignored by randomized
+<dt><strong>tol</strong><span class="classifier">float, default=0.</span></dt><dd><p>Tolerance for ARPACK. 0 means machine precision. Ignored by randomized
 SVD solver.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>components_</strong><span class="classifier">array, shape (n_components, n_features)</span></dt><dd></dd>
-<dt><strong>explained_variance_</strong><span class="classifier">array, shape (n_components,)</span></dt><dd><p>The variance of the training samples transformed by a projection to
+<dt><strong>components_</strong><span class="classifier">ndarray of shape (n_components, n_features)</span></dt><dd></dd>
+<dt><strong>explained_variance_</strong><span class="classifier">ndarray of shape (n_components,)</span></dt><dd><p>The variance of the training samples transformed by a projection to
 each component.</p>
 </dd>
-<dt><strong>explained_variance_ratio_</strong><span class="classifier">array, shape (n_components,)</span></dt><dd><p>Percentage of variance explained by each of the selected components.</p>
+<dt><strong>explained_variance_ratio_</strong><span class="classifier">ndarray of shape (n_components,)</span></dt><dd><p>Percentage of variance explained by each of the selected components.</p>
 </dd>
-<dt><strong>singular_values_</strong><span class="classifier">array, shape (n_components,)</span></dt><dd><p>The singular values corresponding to each of the selected components.
+<dt><strong>singular_values_</strong><span class="classifier">ndarray od shape (n_components,)</span></dt><dd><p>The singular values corresponding to each of the selected components.
 The singular values are equal to the 2-norms of the <code class="docutils literal notranslate"><span class="pre">n_components</span></code>
 variables in the lower-dimensional space.</p>
 </dd>
@@ -287,12 +287,12 @@ Halko, et al., 2009 (arXiv:909) https://arxiv.org/pdf/0909.4061.pdf</p>
 </table>
 <dl class="py method">
 <dt id="sklearn.decomposition.TruncatedSVD.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2fa4272b1/sklearn/decomposition/_truncated_svd.py#L130"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.TruncatedSVD.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46b7d8a76/sklearn/decomposition/_truncated_svd.py#L130"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.TruncatedSVD.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit LSI model on training data X.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix}, shape (n_samples, n_features)</span></dt><dd><p>Training data.</p>
+<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Training data.</p>
 </dd>
 <dt><strong>y</strong><span class="classifier">Ignored</span></dt><dd></dd>
 </dl>
@@ -308,19 +308,19 @@ Halko, et al., 2009 (arXiv:909) https://arxiv.org/pdf/0909.4061.pdf</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.TruncatedSVD.fit_transform">
-<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2fa4272b1/sklearn/decomposition/_truncated_svd.py#L148"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.TruncatedSVD.fit_transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46b7d8a76/sklearn/decomposition/_truncated_svd.py#L148"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.TruncatedSVD.fit_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit LSI model to X and perform dimensionality reduction on X.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix}, shape (n_samples, n_features)</span></dt><dd><p>Training data.</p>
+<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Training data.</p>
 </dd>
 <dt><strong>y</strong><span class="classifier">Ignored</span></dt><dd></dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>X_new</strong><span class="classifier">array, shape (n_samples, n_components)</span></dt><dd><p>Reduced version of X. This will always be a dense array.</p>
+<dt><strong>X_new</strong><span class="classifier">ndarray of shape (n_samples, n_components)</span></dt><dd><p>Reduced version of X. This will always be a dense array.</p>
 </dd>
 </dl>
 </dd>
@@ -329,7 +329,7 @@ Halko, et al., 2009 (arXiv:909) https://arxiv.org/pdf/0909.4061.pdf</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.TruncatedSVD.get_params">
-<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2fa4272b1/sklearn/base.py#L186"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.TruncatedSVD.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46b7d8a76/sklearn/base.py#L186"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.TruncatedSVD.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -350,19 +350,19 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.TruncatedSVD.inverse_transform">
-<code class="sig-name descname">inverse_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2fa4272b1/sklearn/decomposition/_truncated_svd.py#L218"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.TruncatedSVD.inverse_transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">inverse_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46b7d8a76/sklearn/decomposition/_truncated_svd.py#L218"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.TruncatedSVD.inverse_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform X back to its original space.</p>
 <p>Returns an array X_original whose transform would be X.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like, shape (n_samples, n_components)</span></dt><dd><p>New data.</p>
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_components)</span></dt><dd><p>New data.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>X_original</strong><span class="classifier">array, shape (n_samples, n_features)</span></dt><dd><p>Note that this is always a dense array.</p>
+<dt><strong>X_original</strong><span class="classifier">ndarray of shape (n_samples, n_features)</span></dt><dd><p>Note that this is always a dense array.</p>
 </dd>
 </dl>
 </dd>
@@ -371,7 +371,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.TruncatedSVD.set_params">
-<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2fa4272b1/sklearn/base.py#L218"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.TruncatedSVD.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46b7d8a76/sklearn/base.py#L218"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.TruncatedSVD.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as <a class="reference internal" href="sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>). The latter have
@@ -395,18 +395,18 @@ possible to update each component of a nested object.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.TruncatedSVD.transform">
-<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2fa4272b1/sklearn/decomposition/_truncated_svd.py#L201"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.TruncatedSVD.transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46b7d8a76/sklearn/decomposition/_truncated_svd.py#L201"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.TruncatedSVD.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform dimensionality reduction on X.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix}, shape (n_samples, n_features)</span></dt><dd><p>New data.</p>
+<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>New data.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>X_new</strong><span class="classifier">array, shape (n_samples, n_components)</span></dt><dd><p>Reduced version of X. This will always be a dense array.</p>
+<dt><strong>X_new</strong><span class="classifier">ndarray of shape (n_samples, n_components)</span></dt><dd><p>Reduced version of X. This will always be a dense array.</p>
 </dd>
 </dl>
 </dd>

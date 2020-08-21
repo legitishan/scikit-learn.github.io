@@ -172,20 +172,20 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.decomposition" title="sklearn.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.decomposition</span></code></a>.FastICA<a class="headerlink" href="#sklearn-decomposition-fastica" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="sklearn.decomposition.FastICA">
-<em class="property">class </em><code class="sig-prename descclassname">sklearn.decomposition.</code><code class="sig-name descname">FastICA</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2fa4272b1/sklearn/decomposition/_fastica.py#L304"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FastICA" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sklearn.decomposition.</code><code class="sig-name descname">FastICA</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46b7d8a76/sklearn/decomposition/_fastica.py#L304"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FastICA" title="Permalink to this definition">¶</a></dt>
 <dd><p>FastICA: a fast algorithm for Independent Component Analysis.</p>
 <p>Read more in the <a class="reference internal" href="../decomposition.html#ica"><span class="std std-ref">User Guide</span></a>.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>n_components</strong><span class="classifier">int, default=None</span></dt><dd><p>Number of components to use. If none is passed, all are used.</p>
+<dt><strong>n_components</strong><span class="classifier">int, default=None</span></dt><dd><p>Number of components to use. If None is passed, all are used.</p>
 </dd>
 <dt><strong>algorithm</strong><span class="classifier">{‘parallel’, ‘deflation’}, default=’parallel’</span></dt><dd><p>Apply parallel or deflational algorithm for FastICA.</p>
 </dd>
 <dt><strong>whiten</strong><span class="classifier">bool, default=True</span></dt><dd><p>If whiten is false, the data is already considered to be
 whitened, and no whitening is performed.</p>
 </dd>
-<dt><strong>fun</strong><span class="classifier">string or function, default=’logcosh’</span></dt><dd><p>The functional form of the G function used in the
+<dt><strong>fun</strong><span class="classifier">{‘logcosh’, ‘exp’, ‘cube’} or callable, default=’logcosh’</span></dt><dd><p>The functional form of the G function used in the
 approximation to neg-entropy. Could be either ‘logcosh’, ‘exp’,
 or ‘cube’.
 You can also provide your own function. It should return a tuple
@@ -206,7 +206,7 @@ If empty and if fun=’logcosh’, fun_args will take value
 </dd>
 <dt><strong>w_init</strong><span class="classifier">ndarray of shape (n_components, n_components), default=None</span></dt><dd><p>The mixing matrix to be used to initialize the algorithm.</p>
 </dd>
-<dt><strong>random_state</strong><span class="classifier">int, RandomState instance, default=None</span></dt><dd><p>Used to initialize <code class="docutils literal notranslate"><span class="pre">w_init</span></code> when not specified, with a
+<dt><strong>random_state</strong><span class="classifier">int or RandomState instance, default=None</span></dt><dd><p>Used to initialize <code class="docutils literal notranslate"><span class="pre">w_init</span></code> when not specified, with a
 normal distribution. Pass an int, for reproducible results
 across multiple function calls.
 See <a class="reference internal" href="../../glossary.html#term-random_state"><span class="xref std std-term">Glossary</span></a>.</p>
@@ -215,21 +215,21 @@ See <a class="reference internal" href="../../glossary.html#term-random_state"><
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>components_</strong><span class="classifier">2D array, shape (n_components, n_features)</span></dt><dd><p>The linear operator to apply to the data to get the independent
+<dt><strong>components_</strong><span class="classifier">ndarray of shape (n_components, n_features)</span></dt><dd><p>The linear operator to apply to the data to get the independent
 sources. This is equal to the unmixing matrix when <code class="docutils literal notranslate"><span class="pre">whiten</span></code> is
 False, and equal to <code class="docutils literal notranslate"><span class="pre">np.dot(unmixing_matrix,</span> <span class="pre">self.whitening_)</span></code> when
 <code class="docutils literal notranslate"><span class="pre">whiten</span></code> is True.</p>
 </dd>
-<dt><strong>mixing_</strong><span class="classifier">array, shape (n_features, n_components)</span></dt><dd><p>The pseudo-inverse of <code class="docutils literal notranslate"><span class="pre">components_</span></code>. It is the linear operator
+<dt><strong>mixing_</strong><span class="classifier">ndarray of shape (n_features, n_components)</span></dt><dd><p>The pseudo-inverse of <code class="docutils literal notranslate"><span class="pre">components_</span></code>. It is the linear operator
 that maps independent sources to the data.</p>
 </dd>
-<dt><strong>mean_</strong><span class="classifier">array, shape(n_features)</span></dt><dd><p>The mean over features. Only set if <code class="docutils literal notranslate"><span class="pre">self.whiten</span></code> is True.</p>
+<dt><strong>mean_</strong><span class="classifier">ndarray of shape(n_features,)</span></dt><dd><p>The mean over features. Only set if <code class="docutils literal notranslate"><span class="pre">self.whiten</span></code> is True.</p>
 </dd>
 <dt><strong>n_iter_</strong><span class="classifier">int</span></dt><dd><p>If the algorithm is “deflation”, n_iter is the
 maximum number of iterations run across all components. Else
 they are just the number of iterations taken to converge.</p>
 </dd>
-<dt><strong>whitening_</strong><span class="classifier">array, shape (n_components, n_features)</span></dt><dd><p>Only set if whiten is ‘True’. This is the pre-whitening matrix
+<dt><strong>whitening_</strong><span class="classifier">ndarray of shape (n_components, n_features)</span></dt><dd><p>Only set if whiten is ‘True’. This is the pre-whitening matrix
 that projects data onto the first <code class="docutils literal notranslate"><span class="pre">n_components</span></code> principal components.</p>
 </dd>
 </dl>
@@ -280,12 +280,12 @@ pp. 411-430</em></p>
 </table>
 <dl class="py method">
 <dt id="sklearn.decomposition.FastICA.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2fa4272b1/sklearn/decomposition/_fastica.py#L562"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FastICA.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46b7d8a76/sklearn/decomposition/_fastica.py#L562"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FastICA.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the model to X.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>Training data, where n_samples is the number of samples
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Training data, where n_samples is the number of samples
 and n_features is the number of features.</p>
 </dd>
 <dt><strong>y</strong><span class="classifier">Ignored</span></dt><dd></dd>
@@ -301,12 +301,12 @@ and n_features is the number of features.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.FastICA.fit_transform">
-<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2fa4272b1/sklearn/decomposition/_fastica.py#L545"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FastICA.fit_transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46b7d8a76/sklearn/decomposition/_fastica.py#L545"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FastICA.fit_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the model and recover the sources from X.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>Training data, where n_samples is the number of samples
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Training data, where n_samples is the number of samples
 and n_features is the number of features.</p>
 </dd>
 <dt><strong>y</strong><span class="classifier">Ignored</span></dt><dd></dd>
@@ -314,7 +314,7 @@ and n_features is the number of features.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>X_new</strong><span class="classifier">array-like, shape (n_samples, n_components)</span></dt><dd></dd>
+<dt><strong>X_new</strong><span class="classifier">ndarray of shape (n_samples, n_components)</span></dt><dd></dd>
 </dl>
 </dd>
 </dl>
@@ -322,7 +322,7 @@ and n_features is the number of features.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.FastICA.get_params">
-<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2fa4272b1/sklearn/base.py#L186"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FastICA.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46b7d8a76/sklearn/base.py#L186"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FastICA.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -343,12 +343,12 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.FastICA.inverse_transform">
-<code class="sig-name descname">inverse_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">copy</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2fa4272b1/sklearn/decomposition/_fastica.py#L604"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FastICA.inverse_transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">inverse_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">copy</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46b7d8a76/sklearn/decomposition/_fastica.py#L604"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FastICA.inverse_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform the sources back to the mixed data (apply mixing matrix).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like, shape (n_samples, n_components)</span></dt><dd><p>Sources, where n_samples is the number of samples
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_components)</span></dt><dd><p>Sources, where n_samples is the number of samples
 and n_components is the number of components.</p>
 </dd>
 <dt><strong>copy</strong><span class="classifier">bool, default=True</span></dt><dd><p>If False, data passed to fit are overwritten. Defaults to True.</p>
@@ -357,7 +357,7 @@ and n_components is the number of components.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>X_new</strong><span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd></dd>
+<dt><strong>X_new</strong><span class="classifier">ndarray of shape (n_samples, n_features)</span></dt><dd></dd>
 </dl>
 </dd>
 </dl>
@@ -365,7 +365,7 @@ and n_components is the number of components.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.FastICA.set_params">
-<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2fa4272b1/sklearn/base.py#L218"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FastICA.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46b7d8a76/sklearn/base.py#L218"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FastICA.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as <a class="reference internal" href="sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>). The latter have
@@ -389,12 +389,12 @@ possible to update each component of a nested object.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.FastICA.transform">
-<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">copy</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2fa4272b1/sklearn/decomposition/_fastica.py#L580"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FastICA.transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">copy</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46b7d8a76/sklearn/decomposition/_fastica.py#L580"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.FastICA.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Recover the sources from X (apply the unmixing matrix).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>Data to transform, where n_samples is the number of samples
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Data to transform, where n_samples is the number of samples
 and n_features is the number of features.</p>
 </dd>
 <dt><strong>copy</strong><span class="classifier">bool, default=True</span></dt><dd><p>If False, data passed to fit are overwritten. Defaults to True.</p>
@@ -403,7 +403,7 @@ and n_features is the number of features.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>X_new</strong><span class="classifier">array-like, shape (n_samples, n_components)</span></dt><dd></dd>
+<dt><strong>X_new</strong><span class="classifier">ndarray of shape (n_samples, n_components)</span></dt><dd></dd>
 </dl>
 </dd>
 </dl>

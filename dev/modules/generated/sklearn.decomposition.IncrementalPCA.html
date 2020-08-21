@@ -172,7 +172,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.decomposition" title="sklearn.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.decomposition</span></code></a>.IncrementalPCA<a class="headerlink" href="#sklearn-decomposition-incrementalpca" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="sklearn.decomposition.IncrementalPCA">
-<em class="property">class </em><code class="sig-prename descclassname">sklearn.decomposition.</code><code class="sig-name descname">IncrementalPCA</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2fa4272b1/sklearn/decomposition/_incremental_pca.py#L16"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.IncrementalPCA" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sklearn.decomposition.</code><code class="sig-name descname">IncrementalPCA</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46b7d8a76/sklearn/decomposition/_incremental_pca.py#L16"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.IncrementalPCA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Incremental principal components analysis (IPCA).</p>
 <p>Linear dimensionality reduction using Singular Value Decomposition of
 the data, keeping only the most significant singular vectors to
@@ -197,10 +197,10 @@ complexity <code class="docutils literal notranslate"><span class="pre">O(n_samp
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>n_components</strong><span class="classifier">int or None, (default=None)</span></dt><dd><p>Number of components to keep. If <code class="docutils literal notranslate"><span class="pre">n_components</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>,
+<dt><strong>n_components</strong><span class="classifier">int, default=None</span></dt><dd><p>Number of components to keep. If <code class="docutils literal notranslate"><span class="pre">n_components</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>,
 then <code class="docutils literal notranslate"><span class="pre">n_components</span></code> is set to <code class="docutils literal notranslate"><span class="pre">min(n_samples,</span> <span class="pre">n_features)</span></code>.</p>
 </dd>
-<dt><strong>whiten</strong><span class="classifier">bool, optional</span></dt><dd><p>When True (False by default) the <code class="docutils literal notranslate"><span class="pre">components_</span></code> vectors are divided
+<dt><strong>whiten</strong><span class="classifier">bool, default=False</span></dt><dd><p>When True (False by default) the <code class="docutils literal notranslate"><span class="pre">components_</span></code> vectors are divided
 by <code class="docutils literal notranslate"><span class="pre">n_samples</span></code> times <code class="docutils literal notranslate"><span class="pre">components_</span></code> to ensure uncorrelated outputs
 with unit component-wise variances.</p>
 <p>Whitening will remove some information from the transformed signal
@@ -208,10 +208,10 @@ with unit component-wise variances.</p>
 improve the predictive accuracy of the downstream estimators by
 making data respect some hard-wired assumptions.</p>
 </dd>
-<dt><strong>copy</strong><span class="classifier">bool, (default=True)</span></dt><dd><p>If False, X will be overwritten. <code class="docutils literal notranslate"><span class="pre">copy=False</span></code> can be used to
+<dt><strong>copy</strong><span class="classifier">bool, default=True</span></dt><dd><p>If False, X will be overwritten. <code class="docutils literal notranslate"><span class="pre">copy=False</span></code> can be used to
 save memory but is unsafe for general use.</p>
 </dd>
-<dt><strong>batch_size</strong><span class="classifier">int or None, (default=None)</span></dt><dd><p>The number of samples to use for each batch. Only used when calling
+<dt><strong>batch_size</strong><span class="classifier">int, default=None</span></dt><dd><p>The number of samples to use for each batch. Only used when calling
 <code class="docutils literal notranslate"><span class="pre">fit</span></code>. If <code class="docutils literal notranslate"><span class="pre">batch_size</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, then <code class="docutils literal notranslate"><span class="pre">batch_size</span></code>
 is inferred from the data and set to <code class="docutils literal notranslate"><span class="pre">5</span> <span class="pre">*</span> <span class="pre">n_features</span></code>, to provide a
 balance between approximation accuracy and memory consumption.</p>
@@ -220,21 +220,21 @@ balance between approximation accuracy and memory consumption.</p>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>components_</strong><span class="classifier">array, shape (n_components, n_features)</span></dt><dd><p>Components with maximum variance.</p>
+<dt><strong>components_</strong><span class="classifier">ndarray of shape (n_components, n_features)</span></dt><dd><p>Components with maximum variance.</p>
 </dd>
-<dt><strong>explained_variance_</strong><span class="classifier">array, shape (n_components,)</span></dt><dd><p>Variance explained by each of the selected components.</p>
+<dt><strong>explained_variance_</strong><span class="classifier">ndarray of shape (n_components,)</span></dt><dd><p>Variance explained by each of the selected components.</p>
 </dd>
-<dt><strong>explained_variance_ratio_</strong><span class="classifier">array, shape (n_components,)</span></dt><dd><p>Percentage of variance explained by each of the selected components.
+<dt><strong>explained_variance_ratio_</strong><span class="classifier">ndarray of shape (n_components,)</span></dt><dd><p>Percentage of variance explained by each of the selected components.
 If all components are stored, the sum of explained variances is equal
 to 1.0.</p>
 </dd>
-<dt><strong>singular_values_</strong><span class="classifier">array, shape (n_components,)</span></dt><dd><p>The singular values corresponding to each of the selected components.
+<dt><strong>singular_values_</strong><span class="classifier">ndarray of shape (n_components,)</span></dt><dd><p>The singular values corresponding to each of the selected components.
 The singular values are equal to the 2-norms of the <code class="docutils literal notranslate"><span class="pre">n_components</span></code>
 variables in the lower-dimensional space.</p>
 </dd>
-<dt><strong>mean_</strong><span class="classifier">array, shape (n_features,)</span></dt><dd><p>Per-feature empirical mean, aggregate over calls to <code class="docutils literal notranslate"><span class="pre">partial_fit</span></code>.</p>
+<dt><strong>mean_</strong><span class="classifier">ndarray of shape (n_features,)</span></dt><dd><p>Per-feature empirical mean, aggregate over calls to <code class="docutils literal notranslate"><span class="pre">partial_fit</span></code>.</p>
 </dd>
-<dt><strong>var_</strong><span class="classifier">array, shape (n_features,)</span></dt><dd><p>Per-feature empirical variance, aggregate over calls to
+<dt><strong>var_</strong><span class="classifier">ndarray of shape (n_features,)</span></dt><dd><p>Per-feature empirical variance, aggregate over calls to
 <code class="docutils literal notranslate"><span class="pre">partial_fit</span></code>.</p>
 </dd>
 <dt><strong>noise_variance_</strong><span class="classifier">float</span></dt><dd><p>The estimated noise covariance following the Probabilistic PCA model
@@ -342,12 +342,12 @@ Section 5.4.4, pp. 252-253.</p>
 </table>
 <dl class="py method">
 <dt id="sklearn.decomposition.IncrementalPCA.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2fa4272b1/sklearn/decomposition/_incremental_pca.py#L175"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.IncrementalPCA.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46b7d8a76/sklearn/decomposition/_incremental_pca.py#L175"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.IncrementalPCA.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the model with X, using minibatches of size batch_size.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like or sparse matrix, shape (n_samples, n_features)</span></dt><dd><p>Training data, where n_samples is the number of samples and
+<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Training data, where n_samples is the number of samples and
 n_features is the number of features.</p>
 </dd>
 <dt><strong>y</strong><span class="classifier">Ignored</span></dt><dd></dd>
@@ -364,7 +364,7 @@ n_features is the number of features.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.IncrementalPCA.fit_transform">
-<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">fit_params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2fa4272b1/sklearn/base.py#L664"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.IncrementalPCA.fit_transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">fit_params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46b7d8a76/sklearn/base.py#L664"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.IncrementalPCA.fit_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit to data, then transform it.</p>
 <p>Fits transformer to <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> with optional parameters <code class="docutils literal notranslate"><span class="pre">fit_params</span></code>
 and returns a transformed version of <code class="docutils literal notranslate"><span class="pre">X</span></code>.</p>
@@ -390,7 +390,7 @@ and returns a transformed version of <code class="docutils literal notranslate">
 
 <dl class="py method">
 <dt id="sklearn.decomposition.IncrementalPCA.get_covariance">
-<code class="sig-name descname">get_covariance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2fa4272b1/sklearn/decomposition/_base.py#L26"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.IncrementalPCA.get_covariance" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_covariance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46b7d8a76/sklearn/decomposition/_base.py#L26"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.IncrementalPCA.get_covariance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute data covariance with the generative model.</p>
 <p><code class="docutils literal notranslate"><span class="pre">cov</span> <span class="pre">=</span> <span class="pre">components_.T</span> <span class="pre">*</span> <span class="pre">S**2</span> <span class="pre">*</span> <span class="pre">components_</span> <span class="pre">+</span> <span class="pre">sigma2</span> <span class="pre">*</span> <span class="pre">eye(n_features)</span></code>
 where S**2 contains the explained variances, and sigma2 contains the
@@ -407,7 +407,7 @@ noise variances.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.IncrementalPCA.get_params">
-<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2fa4272b1/sklearn/base.py#L186"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.IncrementalPCA.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46b7d8a76/sklearn/base.py#L186"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.IncrementalPCA.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -428,7 +428,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.IncrementalPCA.get_precision">
-<code class="sig-name descname">get_precision</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2fa4272b1/sklearn/decomposition/_base.py#L47"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.IncrementalPCA.get_precision" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_precision</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46b7d8a76/sklearn/decomposition/_base.py#L47"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.IncrementalPCA.get_precision" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute data precision matrix with the generative model.</p>
 <p>Equals the inverse of the covariance but computed with
 the matrix inversion lemma for efficiency.</p>
@@ -444,7 +444,7 @@ the matrix inversion lemma for efficiency.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.IncrementalPCA.inverse_transform">
-<code class="sig-name descname">inverse_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2fa4272b1/sklearn/decomposition/_base.py#L135"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.IncrementalPCA.inverse_transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">inverse_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46b7d8a76/sklearn/decomposition/_base.py#L135"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.IncrementalPCA.inverse_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform data back to its original space.</p>
 <p>In other words, return an input X_original whose transform would be X.</p>
 <dl class="field-list simple">
@@ -468,15 +468,15 @@ exact inverse operation, which includes reversing whitening.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.IncrementalPCA.partial_fit">
-<code class="sig-name descname">partial_fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">check_input</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2fa4272b1/sklearn/decomposition/_incremental_pca.py#L218"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.IncrementalPCA.partial_fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">partial_fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">check_input</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46b7d8a76/sklearn/decomposition/_incremental_pca.py#L218"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.IncrementalPCA.partial_fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Incremental fit with X. All of X is processed as a single batch.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>Training data, where n_samples is the number of samples and
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Training data, where n_samples is the number of samples and
 n_features is the number of features.</p>
 </dd>
-<dt><strong>check_input</strong><span class="classifier">bool</span></dt><dd><p>Run check_array on X.</p>
+<dt><strong>check_input</strong><span class="classifier">bool, default=True</span></dt><dd><p>Run check_array on X.</p>
 </dd>
 <dt><strong>y</strong><span class="classifier">Ignored</span></dt><dd></dd>
 </dl>
@@ -492,7 +492,7 @@ n_features is the number of features.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.IncrementalPCA.set_params">
-<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2fa4272b1/sklearn/base.py#L218"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.IncrementalPCA.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46b7d8a76/sklearn/base.py#L218"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.IncrementalPCA.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as <a class="reference internal" href="sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>). The latter have
@@ -516,7 +516,7 @@ possible to update each component of a nested object.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.IncrementalPCA.transform">
-<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2fa4272b1/sklearn/decomposition/_incremental_pca.py#L317"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.IncrementalPCA.transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/46b7d8a76/sklearn/decomposition/_incremental_pca.py#L318"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.IncrementalPCA.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply dimensionality reduction to X.</p>
 <p>X is projected on the first principal components previously extracted
 from a training set, using minibatches of size batch_size if X is
@@ -524,14 +524,14 @@ sparse.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>New data, where n_samples is the number of samples
+<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>New data, where n_samples is the number of samples
 and n_features is the number of features.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>X_new</strong><span class="classifier">array-like, shape (n_samples, n_components)</span></dt><dd></dd>
+<dt><strong>X_new</strong><span class="classifier">ndarray of shape (n_samples, n_components)</span></dt><dd></dd>
 </dl>
 </dd>
 </dl>
