@@ -169,7 +169,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.linear_model" title="sklearn.linear_model"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.linear_model</span></code></a>.Lars<a class="headerlink" href="#sklearn-linear-model-lars" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="sklearn.linear_model.Lars">
-<em class="property">class </em><code class="sig-prename descclassname">sklearn.linear_model.</code><code class="sig-name descname">Lars</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7647ed3e7/sklearn/linear_model/_least_angle.py#L760"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.Lars" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sklearn.linear_model.</code><code class="sig-name descname">Lars</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/d306abad8/sklearn/linear_model/_least_angle.py#L803"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.Lars" title="Permalink to this definition">¶</a></dt>
 <dd><p>Least Angle Regression model a.k.a. LAR</p>
 <p>Read more in the <a class="reference internal" href="../linear_model.html#least-angle-regression"><span class="std std-ref">User Guide</span></a>.</p>
 <dl class="field-list simple">
@@ -179,7 +179,7 @@
 to false, no intercept will be used in calculations
 (i.e. data is expected to be centered).</p>
 </dd>
-<dt><strong>verbose</strong><span class="classifier">bool or int, default=False</span></dt><dd><p>Sets the verbosity amount</p>
+<dt><strong>verbose</strong><span class="classifier">bool or int, default=False</span></dt><dd><p>Sets the verbosity amount.</p>
 </dd>
 <dt><strong>normalize</strong><span class="classifier">bool, default=True</span></dt><dd><p>This parameter is ignored when <code class="docutils literal notranslate"><span class="pre">fit_intercept</span></code> is set to False.
 If True, the regressors X will be normalized before regression by
@@ -194,12 +194,11 @@ matrix can also be passed as argument.</p>
 </dd>
 <dt><strong>n_nonzero_coefs</strong><span class="classifier">int, default=500</span></dt><dd><p>Target number of non-zero coefficients. Use <code class="docutils literal notranslate"><span class="pre">np.inf</span></code> for no limit.</p>
 </dd>
-<dt><strong>eps</strong><span class="classifier">float, optional</span></dt><dd><p>The machine-precision regularization in the computation of the
+<dt><strong>eps</strong><span class="classifier">float, default=np.finfo(float).eps</span></dt><dd><p>The machine-precision regularization in the computation of the
 Cholesky diagonal factors. Increase this for very ill-conditioned
 systems. Unlike the <code class="docutils literal notranslate"><span class="pre">tol</span></code> parameter in some iterative
 optimization-based algorithms, this parameter does not control
-the tolerance of the optimization.
-By default, <code class="docutils literal notranslate"><span class="pre">np.finfo(float).eps</span></code> is used.</p>
+the tolerance of the optimization.</p>
 </dd>
 <dt><strong>copy_X</strong><span class="classifier">bool, default=True</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, X will be copied; else, it may be overwritten.</p>
 </dd>
@@ -212,7 +211,7 @@ with a small alpha.</p>
 <code class="docutils literal notranslate"><span class="pre">y</span></code> values, to satisfy the model’s assumption of
 one-at-a-time computations. Might help with stability.</p>
 </dd>
-<dt><strong>random_state</strong><span class="classifier">int, RandomState instance or None (default)</span></dt><dd><p>Determines random number generation for jittering. Pass an int
+<dt><strong>random_state</strong><span class="classifier">int, RandomState instance or None, default=None</span></dt><dd><p>Determines random number generation for jittering. Pass an int
 for reproducible output across multiple function calls.
 See <a class="reference internal" href="../../glossary.html#term-random_state"><span class="xref std std-term">Glossary</span></a>. Ignored if <code class="docutils literal notranslate"><span class="pre">jitter</span></code> is None.</p>
 </dd>
@@ -220,11 +219,11 @@ See <a class="reference internal" href="../../glossary.html#term-random_state"><
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>alphas_</strong><span class="classifier">array-like of shape (n_alphas + 1,) | list of n_targets such             arrays</span></dt><dd><p>Maximum of covariances (in absolute value) at each iteration.         <code class="docutils literal notranslate"><span class="pre">n_alphas</span></code> is either <code class="docutils literal notranslate"><span class="pre">n_nonzero_coefs</span></code> or <code class="docutils literal notranslate"><span class="pre">n_features</span></code>,         whichever is smaller.</p>
+<dt><strong>alphas_</strong><span class="classifier">array-like of shape (n_alphas + 1,) or list of thereof of             shape (n_targets,)</span></dt><dd><p>Maximum of covariances (in absolute value) at each iteration.         <code class="docutils literal notranslate"><span class="pre">n_alphas</span></code> is either <code class="docutils literal notranslate"><span class="pre">n_nonzero_coefs</span></code> or <code class="docutils literal notranslate"><span class="pre">n_features</span></code>,         whichever is smaller.</p>
 </dd>
-<dt><strong>active_</strong><span class="classifier">list of length n_alphas or list of n_targets such lists</span></dt><dd><p>Indices of active variables at the end of the path.</p>
+<dt><strong>active_</strong><span class="classifier">list of shape (n_alphas,) or list of thereof of shape             (n_targets,)</span></dt><dd><p>Indices of active variables at the end of the path.</p>
 </dd>
-<dt><strong>coef_path_</strong><span class="classifier">array-like of shape (n_features, n_alphas + 1)         | list of n_targets such arrays</span></dt><dd><p>The varying values of the coefficients along the path. It is not
+<dt><strong>coef_path_</strong><span class="classifier">array-like of shape (n_features, n_alphas + 1) or list of             thereof of shape (n_targets,)</span></dt><dd><p>The varying values of the coefficients along the path. It is not
 present if the <code class="docutils literal notranslate"><span class="pre">fit_path</span></code> parameter is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 </dd>
 <dt><strong>coef_</strong><span class="classifier">array-like of shape (n_features,) or (n_targets, n_features)</span></dt><dd><p>Parameter vector (w in the formulation formula).</p>
@@ -279,7 +278,7 @@ grid of alphas for each target.</p>
 </table>
 <dl class="py method">
 <dt id="sklearn.linear_model.Lars.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">Xy</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7647ed3e7/sklearn/linear_model/_least_angle.py#L946"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.Lars.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">Xy</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/d306abad8/sklearn/linear_model/_least_angle.py#L990"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.Lars.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the model using X, y as training data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -304,7 +303,7 @@ only when the Gram matrix is precomputed.</p>
 
 <dl class="py method">
 <dt id="sklearn.linear_model.Lars.get_params">
-<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7647ed3e7/sklearn/base.py#L185"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.Lars.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/d306abad8/sklearn/base.py#L185"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.Lars.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -325,7 +324,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt id="sklearn.linear_model.Lars.predict">
-<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7647ed3e7/sklearn/linear_model/_base.py#L223"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.Lars.predict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/d306abad8/sklearn/linear_model/_base.py#L223"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.Lars.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Predict using the linear model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -345,7 +344,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt id="sklearn.linear_model.Lars.score">
-<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7647ed3e7/sklearn/base.py#L505"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.Lars.score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/d306abad8/sklearn/base.py#L505"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.Lars.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the coefficient of determination R^2 of the prediction.</p>
 <p>The coefficient R^2 is defined as (1 - u/v), where u is the residual
 sum of squares ((y_true - y_pred) ** 2).sum() and v is the total
@@ -387,7 +386,7 @@ regressors (except for
 
 <dl class="py method">
 <dt id="sklearn.linear_model.Lars.set_params">
-<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/7647ed3e7/sklearn/base.py#L217"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.Lars.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/d306abad8/sklearn/base.py#L217"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.linear_model.Lars.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
