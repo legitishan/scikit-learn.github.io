@@ -172,7 +172,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.decomposition" title="sklearn.decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.decomposition</span></code></a>.PCA<a class="headerlink" href="#sklearn-decomposition-pca" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="sklearn.decomposition.PCA">
-<em class="property">class </em><code class="sig-prename descclassname">sklearn.decomposition.</code><code class="sig-name descname">PCA</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n_components</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">copy</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">whiten</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">svd_solver</span><span class="o">=</span><span class="default_value">'auto'</span></em>, <em class="sig-param"><span class="n">tol</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">iterated_power</span><span class="o">=</span><span class="default_value">'auto'</span></em>, <em class="sig-param"><span class="n">random_state</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1ac9d6817/sklearn/decomposition/_pca.py#L112"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.PCA" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sklearn.decomposition.</code><code class="sig-name descname">PCA</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c24e749d2/sklearn/decomposition/_pca.py#L112"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.PCA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Principal component analysis (PCA).</p>
 <p>Linear dimensionality reduction using Singular Value Decomposition of the
 data to project it to a lower dimensional space. The input data is centered
@@ -188,7 +188,7 @@ truncated SVD.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>n_components</strong><span class="classifier">int, float, None or str</span></dt><dd><p>Number of components to keep.
+<dt><strong>n_components</strong><span class="classifier">int, float or str, default=None</span></dt><dd><p>Number of components to keep.
 if n_components is not set all components are kept:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">n_components</span> <span class="o">==</span> <span class="nb">min</span><span class="p">(</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span>
 </pre></div>
@@ -210,7 +210,7 @@ strictly less than the minimum of n_features and n_samples.</p>
 fit(X).transform(X) will not yield the expected results,
 use fit_transform(X) instead.</p>
 </dd>
-<dt><strong>whiten</strong><span class="classifier">bool, optional (default False)</span></dt><dd><p>When True (False by default) the <code class="docutils literal notranslate"><span class="pre">components_</span></code> vectors are multiplied
+<dt><strong>whiten</strong><span class="classifier">bool, default=False</span></dt><dd><p>When True (False by default) the <code class="docutils literal notranslate"><span class="pre">components_</span></code> vectors are multiplied
 by the square root of n_samples and then divided by the singular values
 to ensure uncorrelated outputs with unit component-wise variances.</p>
 <p>Whitening will remove some information from the transformed signal
@@ -218,7 +218,7 @@ to ensure uncorrelated outputs with unit component-wise variances.</p>
 improve the predictive accuracy of the downstream estimators by
 making their data respect some hard-wired assumptions.</p>
 </dd>
-<dt><strong>svd_solver</strong><span class="classifier">str {‘auto’, ‘full’, ‘arpack’, ‘randomized’}</span></dt><dd><dl class="simple">
+<dt><strong>svd_solver</strong><span class="classifier">{‘auto’, ‘full’, ‘arpack’, ‘randomized’}, default=’auto’</span></dt><dd><dl class="simple">
 <dt>If auto :</dt><dd><p>The solver is selected by a default policy based on <code class="docutils literal notranslate"><span class="pre">X.shape</span></code> and
 <code class="docutils literal notranslate"><span class="pre">n_components</span></code>: if the input data is larger than 500x500 and the
 number of components to extract is lower than 80% of the smallest
@@ -240,18 +240,20 @@ optionally truncated afterwards.</p>
 <p><span class="versionmodified added">New in version 0.18.0.</span></p>
 </div>
 </dd>
-<dt><strong>tol</strong><span class="classifier">float &gt;= 0, optional (default .0)</span></dt><dd><p>Tolerance for singular values computed by svd_solver == ‘arpack’.</p>
+<dt><strong>tol</strong><span class="classifier">float, default=0.0</span></dt><dd><p>Tolerance for singular values computed by svd_solver == ‘arpack’.
+Must be of range [0.0, infinity).</p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.18.0.</span></p>
 </div>
 </dd>
-<dt><strong>iterated_power</strong><span class="classifier">int &gt;= 0, or ‘auto’, (default ‘auto’)</span></dt><dd><p>Number of iterations for the power method computed by
-svd_solver == ‘randomized’.</p>
+<dt><strong>iterated_power</strong><span class="classifier">int or ‘auto’, default=’auto’</span></dt><dd><p>Number of iterations for the power method computed by
+svd_solver == ‘randomized’.
+Must be of range [0, infinity).</p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.18.0.</span></p>
 </div>
 </dd>
-<dt><strong>random_state</strong><span class="classifier">int, RandomState instance, default=None</span></dt><dd><p>Used when the ‘arpack’ or ‘randomized’ solvers are used. Pass an int
+<dt><strong>random_state</strong><span class="classifier">int or RandomState instance, default=None</span></dt><dd><p>Used when the ‘arpack’ or ‘randomized’ solvers are used. Pass an int
 for reproducible results across multiple function calls.
 See <a class="reference internal" href="../../glossary.html#term-random_state"><span class="xref std std-term">Glossary</span></a>.</p>
 <div class="versionadded">
@@ -262,29 +264,29 @@ See <a class="reference internal" href="../../glossary.html#term-random_state"><
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><dl>
-<dt><strong>components_</strong><span class="classifier">array, shape (n_components, n_features)</span></dt><dd><p>Principal axes in feature space, representing the directions of
+<dt><strong>components_</strong><span class="classifier">ndarray of shape (n_components, n_features)</span></dt><dd><p>Principal axes in feature space, representing the directions of
 maximum variance in the data. The components are sorted by
 <code class="docutils literal notranslate"><span class="pre">explained_variance_</span></code>.</p>
 </dd>
-<dt><strong>explained_variance_</strong><span class="classifier">array, shape (n_components,)</span></dt><dd><p>The amount of variance explained by each of the selected components.</p>
+<dt><strong>explained_variance_</strong><span class="classifier">ndarray of shape (n_components,)</span></dt><dd><p>The amount of variance explained by each of the selected components.</p>
 <p>Equal to n_components largest eigenvalues
 of the covariance matrix of X.</p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.18.</span></p>
 </div>
 </dd>
-<dt><strong>explained_variance_ratio_</strong><span class="classifier">array, shape (n_components,)</span></dt><dd><p>Percentage of variance explained by each of the selected components.</p>
+<dt><strong>explained_variance_ratio_</strong><span class="classifier">ndarray of shape (n_components,)</span></dt><dd><p>Percentage of variance explained by each of the selected components.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">n_components</span></code> is not set then all components are stored and the
 sum of the ratios is equal to 1.0.</p>
 </dd>
-<dt><strong>singular_values_</strong><span class="classifier">array, shape (n_components,)</span></dt><dd><p>The singular values corresponding to each of the selected components.
+<dt><strong>singular_values_</strong><span class="classifier">ndarray of shape (n_components,)</span></dt><dd><p>The singular values corresponding to each of the selected components.
 The singular values are equal to the 2-norms of the <code class="docutils literal notranslate"><span class="pre">n_components</span></code>
 variables in the lower-dimensional space.</p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.19.</span></p>
 </div>
 </dd>
-<dt><strong>mean_</strong><span class="classifier">array, shape (n_features,)</span></dt><dd><p>Per-feature empirical mean, estimated from the training set.</p>
+<dt><strong>mean_</strong><span class="classifier">ndarray of shape (n_features,)</span></dt><dd><p>Per-feature empirical mean, estimated from the training set.</p>
 <p>Equal to <code class="docutils literal notranslate"><span class="pre">X.mean(axis=0)</span></code>.</p>
 </dd>
 <dt><strong>n_components_</strong><span class="classifier">int</span></dt><dd><p>The estimated number of components. When n_components is set
@@ -411,12 +413,12 @@ Applied and Computational Harmonic Analysis, 30(1), 47-68.</em></p>
 </table>
 <dl class="py method">
 <dt id="sklearn.decomposition.PCA.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1ac9d6817/sklearn/decomposition/_pca.py#L334"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.PCA.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c24e749d2/sklearn/decomposition/_pca.py#L336"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.PCA.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the model with X.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>Training data, where n_samples is the number of samples
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Training data, where n_samples is the number of samples
 and n_features is the number of features.</p>
 </dd>
 <dt><strong>y</strong><span class="classifier">None</span></dt><dd><p>Ignored variable.</p>
@@ -434,12 +436,12 @@ and n_features is the number of features.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.PCA.fit_transform">
-<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1ac9d6817/sklearn/decomposition/_pca.py#L354"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.PCA.fit_transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c24e749d2/sklearn/decomposition/_pca.py#L356"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.PCA.fit_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the model with X and apply the dimensionality reduction on X.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>Training data, where n_samples is the number of samples
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Training data, where n_samples is the number of samples
 and n_features is the number of features.</p>
 </dd>
 <dt><strong>y</strong><span class="classifier">None</span></dt><dd><p>Ignored variable.</p>
@@ -448,7 +450,7 @@ and n_features is the number of features.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>X_new</strong><span class="classifier">array-like, shape (n_samples, n_components)</span></dt><dd><p>Transformed values.</p>
+<dt><strong>X_new</strong><span class="classifier">array-like of shape (n_samples, n_components)</span></dt><dd><p>Transformed values.</p>
 </dd>
 </dl>
 </dd>
@@ -460,7 +462,7 @@ C-ordered array, use ‘np.ascontiguousarray’.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.PCA.get_covariance">
-<code class="sig-name descname">get_covariance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1ac9d6817/sklearn/decomposition/_base.py#L26"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.PCA.get_covariance" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_covariance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c24e749d2/sklearn/decomposition/_base.py#L26"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.PCA.get_covariance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute data covariance with the generative model.</p>
 <p><code class="docutils literal notranslate"><span class="pre">cov</span> <span class="pre">=</span> <span class="pre">components_.T</span> <span class="pre">*</span> <span class="pre">S**2</span> <span class="pre">*</span> <span class="pre">components_</span> <span class="pre">+</span> <span class="pre">sigma2</span> <span class="pre">*</span> <span class="pre">eye(n_features)</span></code>
 where S**2 contains the explained variances, and sigma2 contains the
@@ -477,7 +479,7 @@ noise variances.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.PCA.get_params">
-<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1ac9d6817/sklearn/base.py#L185"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.PCA.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c24e749d2/sklearn/base.py#L185"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.PCA.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -498,7 +500,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.PCA.get_precision">
-<code class="sig-name descname">get_precision</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1ac9d6817/sklearn/decomposition/_base.py#L47"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.PCA.get_precision" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_precision</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c24e749d2/sklearn/decomposition/_base.py#L47"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.PCA.get_precision" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute data precision matrix with the generative model.</p>
 <p>Equals the inverse of the covariance but computed with
 the matrix inversion lemma for efficiency.</p>
@@ -514,7 +516,7 @@ the matrix inversion lemma for efficiency.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.PCA.inverse_transform">
-<code class="sig-name descname">inverse_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1ac9d6817/sklearn/decomposition/_base.py#L135"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.PCA.inverse_transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">inverse_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c24e749d2/sklearn/decomposition/_base.py#L135"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.PCA.inverse_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform data back to its original space.</p>
 <p>In other words, return an input X_original whose transform would be X.</p>
 <dl class="field-list simple">
@@ -538,7 +540,7 @@ exact inverse operation, which includes reversing whitening.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.PCA.score">
-<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1ac9d6817/sklearn/decomposition/_pca.py#L595"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.PCA.score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c24e749d2/sklearn/decomposition/_pca.py#L597"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.PCA.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the average log-likelihood of all samples.</p>
 <p>See. “Pattern Recognition and Machine Learning”
 by C. Bishop, 12.2.1 p. 574
@@ -546,7 +548,7 @@ or <a class="reference external" href="http://www.miketipping.com/papers/met-mpp
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array, shape(n_samples, n_features)</span></dt><dd><p>The data.</p>
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>The data.</p>
 </dd>
 <dt><strong>y</strong><span class="classifier">None</span></dt><dd><p>Ignored variable.</p>
 </dd>
@@ -563,7 +565,7 @@ or <a class="reference external" href="http://www.miketipping.com/papers/met-mpp
 
 <dl class="py method">
 <dt id="sklearn.decomposition.PCA.score_samples">
-<code class="sig-name descname">score_samples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1ac9d6817/sklearn/decomposition/_pca.py#L567"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.PCA.score_samples" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">score_samples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c24e749d2/sklearn/decomposition/_pca.py#L569"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.PCA.score_samples" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the log-likelihood of each sample.</p>
 <p>See. “Pattern Recognition and Machine Learning”
 by C. Bishop, 12.2.1 p. 574
@@ -571,13 +573,13 @@ or <a class="reference external" href="http://www.miketipping.com/papers/met-mpp
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array, shape(n_samples, n_features)</span></dt><dd><p>The data.</p>
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>The data.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>ll</strong><span class="classifier">array, shape (n_samples,)</span></dt><dd><p>Log-likelihood of each sample under the current model.</p>
+<dt><strong>ll</strong><span class="classifier">array-like of shape (n_samples,)</span></dt><dd><p>Log-likelihood of each sample under the current model.</p>
 </dd>
 </dl>
 </dd>
@@ -586,7 +588,7 @@ or <a class="reference external" href="http://www.miketipping.com/papers/met-mpp
 
 <dl class="py method">
 <dt id="sklearn.decomposition.PCA.set_params">
-<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1ac9d6817/sklearn/base.py#L217"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.PCA.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c24e749d2/sklearn/base.py#L217"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.PCA.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
@@ -610,7 +612,7 @@ component of a nested object.</p>
 
 <dl class="py method">
 <dt id="sklearn.decomposition.PCA.transform">
-<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1ac9d6817/sklearn/decomposition/_base.py#L98"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.PCA.transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c24e749d2/sklearn/decomposition/_base.py#L98"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.decomposition.PCA.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply dimensionality reduction to X.</p>
 <p>X is projected on the first principal components previously extracted
 from a training set.</p>
@@ -648,93 +650,97 @@ and n_features is the number of features.</p>
 <img alt="A demo of K-Means clustering on the handwritten digits data" src="../../_images/sphx_glr_plot_kmeans_digits_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/cluster/plot_kmeans_digits.html#sphx-glr-auto-examples-cluster-plot-kmeans-digits-py"><span class="std std-ref">A demo of K-Means clustering on the handwritten digits data</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="The rows being the samples and the columns being: Sepal Length, Sepal Width, Petal Length and P..."><div class="figure align-default" id="id2">
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example compares `Principal Component Regression &lt;https://en.wikipedia.org/wiki/Principal_..."><div class="figure align-default" id="id2">
+<img alt="Principal Component Regression vs Partial Least Squares Regression" src="../../_images/sphx_glr_plot_pcr_vs_pls_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/cross_decomposition/plot_pcr_vs_pls.html#sphx-glr-auto-examples-cross-decomposition-plot-pcr-vs-pls-py"><span class="std std-ref">Principal Component Regression vs Partial Least Squares Regression</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="The rows being the samples and the columns being: Sepal Length, Sepal Width, Petal Length and P..."><div class="figure align-default" id="id3">
 <img alt="The Iris Dataset" src="../../_images/sphx_glr_plot_iris_dataset_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/datasets/plot_iris_dataset.html#sphx-glr-auto-examples-datasets-plot-iris-dataset-py"><span class="std std-ref">The Iris Dataset</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/datasets/plot_iris_dataset.html#sphx-glr-auto-examples-datasets-plot-iris-dataset-py"><span class="std std-ref">The Iris Dataset</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Principal Component Analysis applied to the Iris dataset."><div class="figure align-default" id="id3">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Principal Component Analysis applied to the Iris dataset."><div class="figure align-default" id="id4">
 <img alt="PCA example with Iris Data-set" src="../../_images/sphx_glr_plot_pca_iris_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/decomposition/plot_pca_iris.html#sphx-glr-auto-examples-decomposition-plot-pca-iris-py"><span class="std std-ref">PCA example with Iris Data-set</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/decomposition/plot_pca_iris.html#sphx-glr-auto-examples-decomposition-plot-pca-iris-py"><span class="std std-ref">PCA example with Iris Data-set</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Incremental principal component analysis (IPCA) is typically used as a replacement for principa..."><div class="figure align-default" id="id4">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Incremental principal component analysis (IPCA) is typically used as a replacement for principa..."><div class="figure align-default" id="id5">
 <img alt="Incremental PCA" src="../../_images/sphx_glr_plot_incremental_pca_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/decomposition/plot_incremental_pca.html#sphx-glr-auto-examples-decomposition-plot-incremental-pca-py"><span class="std std-ref">Incremental PCA</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/decomposition/plot_incremental_pca.html#sphx-glr-auto-examples-decomposition-plot-incremental-pca-py"><span class="std std-ref">Incremental PCA</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="The Iris dataset represents 3 kind of Iris flowers (Setosa, Versicolour and Virginica) with 4 a..."><div class="figure align-default" id="id5">
+</div><div class="sphx-glr-thumbcontainer" tooltip="The Iris dataset represents 3 kind of Iris flowers (Setosa, Versicolour and Virginica) with 4 a..."><div class="figure align-default" id="id6">
 <img alt="Comparison of LDA and PCA 2D projection of Iris dataset" src="../../_images/sphx_glr_plot_pca_vs_lda_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/decomposition/plot_pca_vs_lda.html#sphx-glr-auto-examples-decomposition-plot-pca-vs-lda-py"><span class="std std-ref">Comparison of LDA and PCA 2D projection of Iris dataset</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/decomposition/plot_pca_vs_lda.html#sphx-glr-auto-examples-decomposition-plot-pca-vs-lda-py"><span class="std std-ref">Comparison of LDA and PCA 2D projection of Iris dataset</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Investigating the Iris dataset, we see that sepal length, petal length and petal width are high..."><div class="figure align-default" id="id6">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Investigating the Iris dataset, we see that sepal length, petal length and petal width are high..."><div class="figure align-default" id="id7">
 <img alt="Factor Analysis (with rotation) to visualize patterns" src="../../_images/sphx_glr_plot_varimax_fa_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/decomposition/plot_varimax_fa.html#sphx-glr-auto-examples-decomposition-plot-varimax-fa-py"><span class="std std-ref">Factor Analysis (with rotation) to visualize patterns</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/decomposition/plot_varimax_fa.html#sphx-glr-auto-examples-decomposition-plot-varimax-fa-py"><span class="std std-ref">Factor Analysis (with rotation) to visualize patterns</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="An example of estimating sources from noisy data."><div class="figure align-default" id="id7">
+</div><div class="sphx-glr-thumbcontainer" tooltip="An example of estimating sources from noisy data."><div class="figure align-default" id="id8">
 <img alt="Blind source separation using FastICA" src="../../_images/sphx_glr_plot_ica_blind_source_separation_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/decomposition/plot_ica_blind_source_separation.html#sphx-glr-auto-examples-decomposition-plot-ica-blind-source-separation-py"><span class="std std-ref">Blind source separation using FastICA</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/decomposition/plot_ica_blind_source_separation.html#sphx-glr-auto-examples-decomposition-plot-ica-blind-source-separation-py"><span class="std std-ref">Blind source separation using FastICA</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="These figures aid in illustrating how a point cloud can be very flat in one direction--which is..."><div class="figure align-default" id="id8">
+</div><div class="sphx-glr-thumbcontainer" tooltip="These figures aid in illustrating how a point cloud can be very flat in one direction--which is..."><div class="figure align-default" id="id9">
 <img alt="Principal components analysis (PCA)" src="../../_images/sphx_glr_plot_pca_3d_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/decomposition/plot_pca_3d.html#sphx-glr-auto-examples-decomposition-plot-pca-3d-py"><span class="std std-ref">Principal components analysis (PCA)</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/decomposition/plot_pca_3d.html#sphx-glr-auto-examples-decomposition-plot-pca-3d-py"><span class="std std-ref">Principal components analysis (PCA)</span></a></span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="This example illustrates visually in the feature space a comparison by results using two differ..."><div class="figure align-default" id="id9">
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example illustrates visually in the feature space a comparison by results using two differ..."><div class="figure align-default" id="id10">
 <img alt="FastICA on 2D point clouds" src="../../_images/sphx_glr_plot_ica_vs_pca_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/decomposition/plot_ica_vs_pca.html#sphx-glr-auto-examples-decomposition-plot-ica-vs-pca-py"><span class="std std-ref">FastICA on 2D point clouds</span></a></span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/decomposition/plot_ica_vs_pca.html#sphx-glr-auto-examples-decomposition-plot-ica-vs-pca-py"><span class="std std-ref">FastICA on 2D point clouds</span></a></span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="This example shows that Kernel PCA is able to find a projection of the data that makes data lin..."><div class="figure align-default" id="id10">
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example shows that Kernel PCA is able to find a projection of the data that makes data lin..."><div class="figure align-default" id="id11">
 <img alt="Kernel PCA" src="../../_images/sphx_glr_plot_kernel_pca_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/decomposition/plot_kernel_pca.html#sphx-glr-auto-examples-decomposition-plot-kernel-pca-py"><span class="std std-ref">Kernel PCA</span></a></span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/decomposition/plot_kernel_pca.html#sphx-glr-auto-examples-decomposition-plot-kernel-pca-py"><span class="std std-ref">Kernel PCA</span></a></span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Probabilistic PCA and Factor Analysis are probabilistic models. The consequence is that the lik..."><div class="figure align-default" id="id11">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Probabilistic PCA and Factor Analysis are probabilistic models. The consequence is that the lik..."><div class="figure align-default" id="id12">
 <img alt="Model selection with Probabilistic PCA and Factor Analysis (FA)" src="../../_images/sphx_glr_plot_pca_vs_fa_model_selection_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/decomposition/plot_pca_vs_fa_model_selection.html#sphx-glr-auto-examples-decomposition-plot-pca-vs-fa-model-selection-py"><span class="std std-ref">Model selection with Probabilistic PCA and Factor Analysis (FA)</span></a></span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/decomposition/plot_pca_vs_fa_model_selection.html#sphx-glr-auto-examples-decomposition-plot-pca-vs-fa-model-selection-py"><span class="std std-ref">Model selection with Probabilistic PCA and Factor Analysis (FA)</span></a></span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="This example applies to olivetti_faces_dataset different unsupervised matrix decomposition (dim..."><div class="figure align-default" id="id12">
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example applies to olivetti_faces_dataset different unsupervised matrix decomposition (dim..."><div class="figure align-default" id="id13">
 <img alt="Faces dataset decompositions" src="../../_images/sphx_glr_plot_faces_decomposition_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/decomposition/plot_faces_decomposition.html#sphx-glr-auto-examples-decomposition-plot-faces-decomposition-py"><span class="std std-ref">Faces dataset decompositions</span></a></span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/decomposition/plot_faces_decomposition.html#sphx-glr-auto-examples-decomposition-plot-faces-decomposition-py"><span class="std std-ref">Faces dataset decompositions</span></a></span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="The dataset used in this example is a preprocessed excerpt of the &quot;Labeled Faces in the Wild&quot;, ..."><div class="figure align-default" id="id13">
+</div><div class="sphx-glr-thumbcontainer" tooltip="The dataset used in this example is a preprocessed excerpt of the &quot;Labeled Faces in the Wild&quot;, ..."><div class="figure align-default" id="id14">
 <img alt="Faces recognition example using eigenfaces and SVMs" src="../../_images/sphx_glr_plot_face_recognition_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/applications/plot_face_recognition.html#sphx-glr-auto-examples-applications-plot-face-recognition-py"><span class="std std-ref">Faces recognition example using eigenfaces and SVMs</span></a></span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/applications/plot_face_recognition.html#sphx-glr-auto-examples-applications-plot-face-recognition-py"><span class="std std-ref">Faces recognition example using eigenfaces and SVMs</span></a></span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="An illustration of the metric and non-metric MDS on generated noisy data."><div class="figure align-default" id="id14">
+</div><div class="sphx-glr-thumbcontainer" tooltip="An illustration of the metric and non-metric MDS on generated noisy data."><div class="figure align-default" id="id15">
 <img alt="Multi-dimensional scaling" src="../../_images/sphx_glr_plot_mds_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/manifold/plot_mds.html#sphx-glr-auto-examples-manifold-plot-mds-py"><span class="std std-ref">Multi-dimensional scaling</span></a></span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/manifold/plot_mds.html#sphx-glr-auto-examples-manifold-plot-mds-py"><span class="std std-ref">Multi-dimensional scaling</span></a></span><a class="headerlink" href="#id15" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="This example simulates a multi-label document classification problem. The dataset is generated ..."><div class="figure align-default" id="id15">
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example simulates a multi-label document classification problem. The dataset is generated ..."><div class="figure align-default" id="id16">
 <img alt="Multilabel classification" src="../../_images/sphx_glr_plot_multilabel_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/miscellaneous/plot_multilabel.html#sphx-glr-auto-examples-miscellaneous-plot-multilabel-py"><span class="std std-ref">Multilabel classification</span></a></span><a class="headerlink" href="#id15" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/miscellaneous/plot_multilabel.html#sphx-glr-auto-examples-miscellaneous-plot-multilabel-py"><span class="std std-ref">Multilabel classification</span></a></span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="An example illustrating the approximation of the feature map of an RBF kernel."><div class="figure align-default" id="id16">
+</div><div class="sphx-glr-thumbcontainer" tooltip="An example illustrating the approximation of the feature map of an RBF kernel."><div class="figure align-default" id="id17">
 <img alt="Explicit feature map approximation for RBF kernels" src="../../_images/sphx_glr_plot_kernel_approximation_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/miscellaneous/plot_kernel_approximation.html#sphx-glr-auto-examples-miscellaneous-plot-kernel-approximation-py"><span class="std std-ref">Explicit feature map approximation for RBF kernels</span></a></span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/miscellaneous/plot_kernel_approximation.html#sphx-glr-auto-examples-miscellaneous-plot-kernel-approximation-py"><span class="std std-ref">Explicit feature map approximation for RBF kernels</span></a></span><a class="headerlink" href="#id17" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="This example balances model complexity and cross-validated score by finding a decent accuracy w..."><div class="figure align-default" id="id17">
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example balances model complexity and cross-validated score by finding a decent accuracy w..."><div class="figure align-default" id="id18">
 <img alt="Balance model complexity and cross-validated score" src="../../_images/sphx_glr_plot_grid_search_refit_callable_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/model_selection/plot_grid_search_refit_callable.html#sphx-glr-auto-examples-model-selection-plot-grid-search-refit-callable-py"><span class="std std-ref">Balance model complexity and cross-validated score</span></a></span><a class="headerlink" href="#id17" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/model_selection/plot_grid_search_refit_callable.html#sphx-glr-auto-examples-model-selection-plot-grid-search-refit-callable-py"><span class="std std-ref">Balance model complexity and cross-validated score</span></a></span><a class="headerlink" href="#id18" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="This example shows how kernel density estimation (KDE), a powerful non-parametric density estim..."><div class="figure align-default" id="id18">
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example shows how kernel density estimation (KDE), a powerful non-parametric density estim..."><div class="figure align-default" id="id19">
 <img alt="Kernel Density Estimation" src="../../_images/sphx_glr_plot_digits_kde_sampling_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/neighbors/plot_digits_kde_sampling.html#sphx-glr-auto-examples-neighbors-plot-digits-kde-sampling-py"><span class="std std-ref">Kernel Density Estimation</span></a></span><a class="headerlink" href="#id18" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/neighbors/plot_digits_kde_sampling.html#sphx-glr-auto-examples-neighbors-plot-digits-kde-sampling-py"><span class="std std-ref">Kernel Density Estimation</span></a></span><a class="headerlink" href="#id19" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Sample usage of Neighborhood Components Analysis for dimensionality reduction."><div class="figure align-default" id="id19">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Sample usage of Neighborhood Components Analysis for dimensionality reduction."><div class="figure align-default" id="id20">
 <img alt="Dimensionality Reduction with Neighborhood Components Analysis" src="../../_images/sphx_glr_plot_nca_dim_reduction_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/neighbors/plot_nca_dim_reduction.html#sphx-glr-auto-examples-neighbors-plot-nca-dim-reduction-py"><span class="std std-ref">Dimensionality Reduction with Neighborhood Components Analysis</span></a></span><a class="headerlink" href="#id19" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/neighbors/plot_nca_dim_reduction.html#sphx-glr-auto-examples-neighbors-plot-nca-dim-reduction-py"><span class="std std-ref">Dimensionality Reduction with Neighborhood Components Analysis</span></a></span><a class="headerlink" href="#id20" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="In many real-world examples, there are many ways to extract features from a dataset. Often it i..."><div class="figure align-default" id="id20">
+</div><div class="sphx-glr-thumbcontainer" tooltip="In many real-world examples, there are many ways to extract features from a dataset. Often it i..."><div class="figure align-default" id="id21">
 <img alt="Concatenating multiple feature extraction methods" src="../../_images/sphx_glr_plot_feature_union_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/compose/plot_feature_union.html#sphx-glr-auto-examples-compose-plot-feature-union-py"><span class="std std-ref">Concatenating multiple feature extraction methods</span></a></span><a class="headerlink" href="#id20" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/compose/plot_feature_union.html#sphx-glr-auto-examples-compose-plot-feature-union-py"><span class="std std-ref">Concatenating multiple feature extraction methods</span></a></span><a class="headerlink" href="#id21" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="The PCA does an unsupervised dimensionality reduction, while the logistic regression does the p..."><div class="figure align-default" id="id21">
+</div><div class="sphx-glr-thumbcontainer" tooltip="The PCA does an unsupervised dimensionality reduction, while the logistic regression does the p..."><div class="figure align-default" id="id22">
 <img alt="Pipelining: chaining a PCA and a logistic regression" src="../../_images/sphx_glr_plot_digits_pipe_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/compose/plot_digits_pipe.html#sphx-glr-auto-examples-compose-plot-digits-pipe-py"><span class="std std-ref">Pipelining: chaining a PCA and a logistic regression</span></a></span><a class="headerlink" href="#id21" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/compose/plot_digits_pipe.html#sphx-glr-auto-examples-compose-plot-digits-pipe-py"><span class="std std-ref">Pipelining: chaining a PCA and a logistic regression</span></a></span><a class="headerlink" href="#id22" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="This example constructs a pipeline that does dimensionality reduction followed by prediction wi..."><div class="figure align-default" id="id22">
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example constructs a pipeline that does dimensionality reduction followed by prediction wi..."><div class="figure align-default" id="id23">
 <img alt="Selecting dimensionality reduction with Pipeline and GridSearchCV" src="../../_images/sphx_glr_plot_compare_reduction_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/compose/plot_compare_reduction.html#sphx-glr-auto-examples-compose-plot-compare-reduction-py"><span class="std std-ref">Selecting dimensionality reduction with Pipeline and GridSearchCV</span></a></span><a class="headerlink" href="#id22" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/compose/plot_compare_reduction.html#sphx-glr-auto-examples-compose-plot-compare-reduction-py"><span class="std std-ref">Selecting dimensionality reduction with Pipeline and GridSearchCV</span></a></span><a class="headerlink" href="#id23" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Feature scaling through standardization (or Z-score normalization) can be an important preproce..."><div class="figure align-default" id="id23">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Feature scaling through standardization (or Z-score normalization) can be an important preproce..."><div class="figure align-default" id="id24">
 <img alt="Importance of Feature Scaling" src="../../_images/sphx_glr_plot_scaling_importance_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/preprocessing/plot_scaling_importance.html#sphx-glr-auto-examples-preprocessing-plot-scaling-importance-py"><span class="std std-ref">Importance of Feature Scaling</span></a></span><a class="headerlink" href="#id23" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../auto_examples/preprocessing/plot_scaling_importance.html#sphx-glr-auto-examples-preprocessing-plot-scaling-importance-py"><span class="std std-ref">Importance of Feature Scaling</span></a></span><a class="headerlink" href="#id24" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="clearer"></div></div>
 </div>

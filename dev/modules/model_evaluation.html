@@ -140,7 +140,7 @@
           </a>
         </div>
         <div class="btn-group w-100 mb-2" role="group" aria-label="rellinks">
-            <a href="generated/sklearn.ensemble.GradientBoostingRegressor.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="3.2.4.3.6. sklearn.ensemble.GradientBoostingRegressor">Prev</a><a href="../model_selection.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="3. Model selection and evaluation">Up</a>
+            <a href="grid_search.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="3.2. Tuning the hyper-parameters of an estimator">Prev</a><a href="../model_selection.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="3. Model selection and evaluation">Up</a>
             <a href="model_persistence.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="3.4. Model persistence">Next</a>
         </div>
         <div class="alert alert-danger p-1 mb-2" role="alert">
@@ -183,8 +183,9 @@
 <li><a class="reference internal" href="#matthews-correlation-coefficient">3.3.2.12. Matthews correlation coefficient</a></li>
 <li><a class="reference internal" href="#multi-label-confusion-matrix">3.3.2.13. Multi-label confusion matrix</a></li>
 <li><a class="reference internal" href="#receiver-operating-characteristic-roc">3.3.2.14. Receiver operating characteristic (ROC)</a></li>
-<li><a class="reference internal" href="#zero-one-loss">3.3.2.15. Zero one loss</a></li>
-<li><a class="reference internal" href="#brier-score-loss">3.3.2.16. Brier score loss</a></li>
+<li><a class="reference internal" href="#detection-error-tradeoff-det">3.3.2.15. Detection error tradeoff (DET)</a></li>
+<li><a class="reference internal" href="#zero-one-loss">3.3.2.16. Zero one loss</a></li>
+<li><a class="reference internal" href="#brier-score-loss">3.3.2.17. Brier score loss</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#multilabel-ranking-metrics">3.3.3. Multilabel ranking metrics</a><ul>
@@ -231,7 +232,7 @@ This is not discussed on this page, but in each estimator’s documentation.</p>
 <a class="reference internal" href="generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score" title="sklearn.model_selection.cross_val_score"><code class="xref py py-func docutils literal notranslate"><span class="pre">model_selection.cross_val_score</span></code></a> and
 <a class="reference internal" href="generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV" title="sklearn.model_selection.GridSearchCV"><code class="xref py py-class docutils literal notranslate"><span class="pre">model_selection.GridSearchCV</span></code></a>) rely on an internal <em>scoring</em> strategy.
 This is discussed in the section <a class="reference internal" href="#scoring-parameter"><span class="std std-ref">The scoring parameter: defining model evaluation rules</span></a>.</p></li>
-<li><p><strong>Metric functions</strong>: The <code class="xref py py-mod docutils literal notranslate"><span class="pre">metrics</span></code> module implements functions
+<li><p><strong>Metric functions</strong>: The <a class="reference internal" href="classes.html#module-sklearn.metrics" title="sklearn.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.metrics</span></code></a> module implements functions
 assessing prediction error for specific purposes. These metrics are detailed
 in sections on <a class="reference internal" href="#classification-metrics"><span class="std std-ref">Classification metrics</span></a>,
 <a class="reference internal" href="#multilabel-ranking-metrics"><span class="std std-ref">Multilabel ranking metrics</span></a>, <a class="reference internal" href="#regression-metrics"><span class="std std-ref">Regression metrics</span></a> and
@@ -449,7 +450,7 @@ of the metric.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The values listed by the ValueError exception correspond to the functions measuring
+<p>The values listed by the <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> exception correspond to the functions measuring
 prediction accuracy described in the following sections.
 The scorer objects for those functions are stored in the dictionary
 <code class="docutils literal notranslate"><span class="pre">sklearn.metrics.SCORERS</span></code>.</p>
@@ -465,7 +466,7 @@ maximize, the higher the better.</p></li>
 <li><p>functions ending with <code class="docutils literal notranslate"><span class="pre">_error</span></code> or <code class="docutils literal notranslate"><span class="pre">_loss</span></code> return a
 value to minimize, the lower the better.  When converting
 into a scorer object using <a class="reference internal" href="generated/sklearn.metrics.make_scorer.html#sklearn.metrics.make_scorer" title="sklearn.metrics.make_scorer"><code class="xref py py-func docutils literal notranslate"><span class="pre">make_scorer</span></code></a>, set
-the <code class="docutils literal notranslate"><span class="pre">greater_is_better</span></code> parameter to False (True by default; see the
+the <code class="docutils literal notranslate"><span class="pre">greater_is_better</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">False</span></code> (<code class="docutils literal notranslate"><span class="pre">True</span></code> by default; see the
 parameter description below).</p></li>
 </ul>
 <p>Metrics available for various machine learning tasks are detailed in sections
@@ -633,6 +634,9 @@ to the overall score, through the <code class="docutils literal notranslate"><sp
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/sklearn.metrics.roc_curve.html#sklearn.metrics.roc_curve" title="sklearn.metrics.roc_curve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">roc_curve</span></code></a>(y_true, y_score, *[, pos_label, …])</p></td>
 <td><p>Compute Receiver operating characteristic (ROC).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sklearn.metrics.detection_error_tradeoff_curve.html#sklearn.metrics.detection_error_tradeoff_curve" title="sklearn.metrics.detection_error_tradeoff_curve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">detection_error_tradeoff_curve</span></code></a>(y_true, y_score)</p></td>
+<td><p>Compute error rates for different probability thresholds.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1432,7 +1436,7 @@ be encoded as a 1-of-K binary indicator matrix <span class="math notranslate noh
 i.e., <span class="math notranslate nohighlight">\(y_{i,k} = 1\)</span> if sample <span class="math notranslate nohighlight">\(i\)</span> has label <span class="math notranslate nohighlight">\(k\)</span>
 taken from a set of <span class="math notranslate nohighlight">\(K\)</span> labels.
 Let <span class="math notranslate nohighlight">\(P\)</span> be a matrix of probability estimates,
-with <span class="math notranslate nohighlight">\(p_{i,k} = \operatorname{Pr}(t_{i,k} = 1)\)</span>.
+with <span class="math notranslate nohighlight">\(p_{i,k} = \operatorname{Pr}(y_{i,k} = 1)\)</span>.
 Then the log loss of the whole set is</p>
 <div class="math notranslate nohighlight">
 \[L_{\log}(Y, P) = -\log \operatorname{Pr}(Y|P) = - \frac{1}{N} \sum_{i=0}^{N-1} \sum_{k=0}^{K-1} y_{i,k} \log p_{i,k}\]</div>
@@ -1739,8 +1743,89 @@ Proceedings IEEE International Conference, pp. 131-138.</p>
 </dl>
 </div>
 </div>
+<div class="section" id="detection-error-tradeoff-det">
+<span id="det-curve"></span><h3><span class="section-number">3.3.2.15. </span>Detection error tradeoff (DET)<a class="headerlink" href="#detection-error-tradeoff-det" title="Permalink to this headline">¶</a></h3>
+<p>The function <a class="reference internal" href="generated/sklearn.metrics.detection_error_tradeoff_curve.html#sklearn.metrics.detection_error_tradeoff_curve" title="sklearn.metrics.detection_error_tradeoff_curve"><code class="xref py py-func docutils literal notranslate"><span class="pre">detection_error_tradeoff_curve</span></code></a> computes the
+detection error tradeoff curve (DET) curve <a class="reference internal" href="#wikipediadet2017" id="id30"><span>[WikipediaDET2017]</span></a>.
+Quoting Wikipedia:</p>
+<blockquote>
+<div><p>“A detection error tradeoff (DET) graph is a graphical plot of error rates
+for binary classification systems, plotting false reject rate vs. false
+accept rate. The x- and y-axes are scaled non-linearly by their standard
+normal deviates (or just by logarithmic transformation), yielding tradeoff
+curves that are more linear than ROC curves, and use most of the image area
+to highlight the differences of importance in the critical operating region.”</p>
+</div></blockquote>
+<p>DET curves are a variation of receiver operating characteristic (ROC) curves
+where False Negative Rate is plotted on the y-axis instead of True Positive
+Rate.
+DET curves are commonly plotted in normal deviate scale by transformation with
+<span class="math notranslate nohighlight">\(\phi^{-1}\)</span> (with <span class="math notranslate nohighlight">\(\phi\)</span> being the cumulative distribution
+function).
+The resulting performance curves explicitly visualize the tradeoff of error
+types for given classification algorithms.
+See <a class="reference internal" href="#martin1997" id="id31"><span>[Martin1997]</span></a> for examples and further motivation.</p>
+<p>This figure compares the ROC and DET curves of two example classifiers on the
+same classification task:</p>
+<a class="reference external image-reference" href="../auto_examples/model_selection/plot_det.html"><img alt="../_images/sphx_glr_plot_det_0011.png" class="align-center" src="../_images/sphx_glr_plot_det_0011.png" style="width: 825.0px; height: 375.0px;" /></a>
+<p><strong>Properties:</strong></p>
+<ul class="simple">
+<li><p>DET curves form a linear curve in normal deviate scale if the detection
+scores are normally (or close-to normally) distributed.
+It was shown by <a class="reference internal" href="#navratil2007" id="id32"><span>[Navratil2007]</span></a> that the reverse it not necessarily true and
+even more general distributions are able produce linear DET curves.</p></li>
+<li><p>The normal deviate scale transformation spreads out the points such that a
+comparatively larger space of plot is occupied.
+Therefore curves with similar classification performance might be easier to
+distinguish on a DET plot.</p></li>
+<li><p>With False Negative Rate being “inverse” to True Positive Rate the point
+of perfection for DET curves is the origin (in contrast to the top left
+corner for ROC curves).</p></li>
+</ul>
+<p><strong>Applications and limitations:</strong></p>
+<p>DET curves are intuitive to read and hence allow quick visual assessment of a
+classifier’s performance.
+Additionally DET curves can be consulted for threshold analysis and operating
+point selection.
+This is particularly helpful if a comparison of error types is required.</p>
+<p>One the other hand DET curves do not provide their metric as a single number.
+Therefore for either automated evaluation or comparison to other
+classification tasks metrics like the derived area under ROC curve might be
+better suited.</p>
+<div class="topic">
+<p class="topic-title">Examples:</p>
+<ul class="simple">
+<li><p>See <a class="reference internal" href="../auto_examples/model_selection/plot_det.html#sphx-glr-auto-examples-model-selection-plot-det-py"><span class="std std-ref">Detection error tradeoff (DET) curve</span></a>
+for an example comparison between receiver operating characteristic (ROC)
+curves and Detection error tradeoff (DET) curves.</p></li>
+</ul>
+</div>
+<div class="topic">
+<p class="topic-title">References:</p>
+<dl class="citation">
+<dt class="label" id="wikipediadet2017"><span class="brackets"><a class="fn-backref" href="#id30">WikipediaDET2017</a></span></dt>
+<dd><p>Wikipedia contributors. Detection error tradeoff.
+Wikipedia, The Free Encyclopedia. September 4, 2017, 23:33 UTC.
+Available at: <a class="reference external" href="https://en.wikipedia.org/w/index.php?title=Detection_error_tradeoff&amp;oldid=798982054">https://en.wikipedia.org/w/index.php?title=Detection_error_tradeoff&amp;oldid=798982054</a>.
+Accessed February 19, 2018.</p>
+</dd>
+<dt class="label" id="martin1997"><span class="brackets"><a class="fn-backref" href="#id31">Martin1997</a></span></dt>
+<dd><p>A. Martin, G. Doddington, T. Kamm, M. Ordowski, and M. Przybocki,
+<a class="reference external" href="http://www.dtic.mil/docs/citations/ADA530509">The DET Curve in Assessment of Detection Task Performance</a>,
+NIST 1997.</p>
+</dd>
+<dt class="label" id="navratil2007"><span class="brackets"><a class="fn-backref" href="#id32">Navratil2007</a></span></dt>
+<dd><p>J. Navractil and D. Klusacek,
+“<a class="reference external" href="http://www.research.ibm.com/CBG/papers/icassp07_navratil.pdf">On Linear DETs,</a>”
+2007 IEEE International Conference on Acoustics,
+Speech and Signal Processing - ICASSP ‘07, Honolulu,
+HI, 2007, pp. IV-229-IV-232.</p>
+</dd>
+</dl>
+</div>
+</div>
 <div class="section" id="zero-one-loss">
-<span id="id30"></span><h3><span class="section-number">3.3.2.15. </span>Zero one loss<a class="headerlink" href="#zero-one-loss" title="Permalink to this headline">¶</a></h3>
+<span id="id33"></span><h3><span class="section-number">3.3.2.16. </span>Zero one loss<a class="headerlink" href="#zero-one-loss" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="generated/sklearn.metrics.zero_one_loss.html#sklearn.metrics.zero_one_loss" title="sklearn.metrics.zero_one_loss"><code class="xref py py-func docutils literal notranslate"><span class="pre">zero_one_loss</span></code></a> function computes the sum or the average of the 0-1
 classification loss (<span class="math notranslate nohighlight">\(L_{0-1}\)</span>) over <span class="math notranslate nohighlight">\(n_{\text{samples}}\)</span>. By
 default, the function normalizes over the sample. To get the sum of the
@@ -1784,28 +1869,23 @@ elimination with cross-validation.</p></li>
 </div>
 </div>
 <div class="section" id="brier-score-loss">
-<span id="id32"></span><h3><span class="section-number">3.3.2.16. </span>Brier score loss<a class="headerlink" href="#brier-score-loss" title="Permalink to this headline">¶</a></h3>
+<span id="id35"></span><h3><span class="section-number">3.3.2.17. </span>Brier score loss<a class="headerlink" href="#brier-score-loss" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="generated/sklearn.metrics.brier_score_loss.html#sklearn.metrics.brier_score_loss" title="sklearn.metrics.brier_score_loss"><code class="xref py py-func docutils literal notranslate"><span class="pre">brier_score_loss</span></code></a> function computes the
 <a class="reference external" href="https://en.wikipedia.org/wiki/Brier_score">Brier score</a>
-for binary classes. Quoting Wikipedia:</p>
+for binary classes <a class="reference internal" href="#brier1950" id="id36"><span>[Brier1950]</span></a>. Quoting Wikipedia:</p>
 <blockquote>
 <div><p>“The Brier score is a proper score function that measures the accuracy of
 probabilistic predictions. It is applicable to tasks in which predictions
 must assign probabilities to a set of mutually exclusive discrete outcomes.”</p>
 </div></blockquote>
-<p>This function returns a score of the mean square difference between the actual
-outcome and the predicted probability of the possible outcome. The actual
-outcome has to be 1 or 0 (true or false), while the predicted probability of
-the actual outcome can be a value between 0 and 1.</p>
-<p>The brier score loss is also between 0 to 1 and the lower the score (the mean
-square difference is smaller), the more accurate the prediction is. It can be
-thought of as a measure of the “calibration” of a set of probabilistic
-predictions.</p>
+<p>This function returns the mean squared error of the actual outcome
+<span class="math notranslate nohighlight">\(y \in \{0,1\}\)</span> and the predicted probability estimate
+<span class="math notranslate nohighlight">\(p = \operatorname{Pr}(y = 1)\)</span> (<a class="reference internal" href="../glossary.html#term-predict_proba"><span class="xref std std-term">predict_proba</span></a>) as outputted by:</p>
 <div class="math notranslate nohighlight">
-\[BS = \frac{1}{N} \sum_{t=1}^{N}(f_t - o_t)^2\]</div>
-<p>where : <span class="math notranslate nohighlight">\(N\)</span> is the total number of predictions, <span class="math notranslate nohighlight">\(f_t\)</span> is the
-predicted probability of the actual outcome <span class="math notranslate nohighlight">\(o_t\)</span>.</p>
-<p>Here is a small example of usage of this function::</p>
+\[BS = \frac{1}{n_{\text{samples}}} \sum_{i=0}^{n_{\text{samples}} - 1}(y_i - p_i)^2\]</div>
+<p>The Brier score loss is also between 0 to 1 and the lower the value (the mean
+square difference is smaller), the more accurate the prediction is.</p>
+<p>Here is a small example of usage of this function:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">brier_score_loss</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
@@ -1822,6 +1902,18 @@ predicted probability of the actual outcome <span class="math notranslate nohigh
 <span class="go">0.0</span>
 </pre></div>
 </div>
+<p>The Brier score can be used to assess how well a classifier is calibrated.
+However, a lower Brier score loss does not always mean a better calibration.
+This is because, by analogy with the bias-variance decomposition of the mean
+squared error, the Brier score loss can be decomposed as the sum of calibration
+loss and refinement loss <a class="reference internal" href="#bella2012" id="id37"><span>[Bella2012]</span></a>. Calibration loss is defined as the mean
+squared deviation from empirical probabilities derived from the slope of ROC
+segments. Refinement loss can be defined as the expected optimal loss as
+measured by the area under the optimal cost curve. Refinement loss can change
+independently from calibration loss, thus a lower Brier score loss does not
+necessarily mean a better calibrated model. “Only when refinement loss remains
+the same does a lower Brier score loss always mean better calibration”
+<a class="reference internal" href="#bella2012" id="id38"><span>[Bella2012]</span></a>, <a class="reference internal" href="#flach2008" id="id39"><span>[Flach2008]</span></a>.</p>
 <div class="topic">
 <p class="topic-title">Example:</p>
 <ul class="simple">
@@ -1832,20 +1924,34 @@ calibration of classifiers.</p></li>
 </div>
 <div class="topic">
 <p class="topic-title">References:</p>
-<ul class="simple">
-<li><p>G. Brier, <a class="reference external" href="ftp://ftp.library.noaa.gov/docs.lib/htdocs/rescue/mwr/078/mwr-078-01-0001.pdf">Verification of forecasts expressed in terms of probability</a>,
-Monthly weather review 78.1 (1950)</p></li>
-</ul>
+<dl class="citation">
+<dt class="label" id="brier1950"><span class="brackets"><a class="fn-backref" href="#id36">Brier1950</a></span></dt>
+<dd><p>G. Brier, <a class="reference external" href="ftp://ftp.library.noaa.gov/docs.lib/htdocs/rescue/mwr/078/mwr-078-01-0001.pdf">Verification of forecasts expressed in terms of
+probability</a>,
+Monthly weather review 78.1 (1950)</p>
+</dd>
+<dt class="label" id="bella2012"><span class="brackets">Bella2012</span><span class="fn-backref">(<a href="#id37">1</a>,<a href="#id38">2</a>)</span></dt>
+<dd><p>Bella, Ferri, Hernández-Orallo, and Ramírez-Quintana
+<a class="reference external" href="http://dmip.webs.upv.es/papers/BFHRHandbook2010.pdf">“Calibration of Machine Learning Models”</a>
+in Khosrow-Pour, M. “Machine learning: concepts, methodologies, tools
+and applications.” Hershey, PA: Information Science Reference (2012).</p>
+</dd>
+<dt class="label" id="flach2008"><span class="brackets"><a class="fn-backref" href="#id39">Flach2008</a></span></dt>
+<dd><p>Flach, Peter, and Edson Matsubara. <a class="reference external" href="https://drops.dagstuhl.de/opus/volltexte/2008/1382/">“On classification, ranking,
+and probability estimation.”</a>
+Dagstuhl Seminar Proceedings. Schloss Dagstuhl-Leibniz-Zentrum fr Informatik (2008).</p>
+</dd>
+</dl>
 </div>
 </div>
 </div>
 <div class="section" id="multilabel-ranking-metrics">
-<span id="id33"></span><h2><span class="section-number">3.3.3. </span>Multilabel ranking metrics<a class="headerlink" href="#multilabel-ranking-metrics" title="Permalink to this headline">¶</a></h2>
+<span id="id40"></span><h2><span class="section-number">3.3.3. </span>Multilabel ranking metrics<a class="headerlink" href="#multilabel-ranking-metrics" title="Permalink to this headline">¶</a></h2>
 <p>In multilabel learning, each sample can have any number of ground truth labels
 associated with it. The goal is to give high scores and better rank to
 the ground truth labels.</p>
 <div class="section" id="coverage-error">
-<span id="id34"></span><h3><span class="section-number">3.3.3.1. </span>Coverage error<a class="headerlink" href="#coverage-error" title="Permalink to this headline">¶</a></h3>
+<span id="id41"></span><h3><span class="section-number">3.3.3.1. </span>Coverage error<a class="headerlink" href="#coverage-error" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="generated/sklearn.metrics.coverage_error.html#sklearn.metrics.coverage_error" title="sklearn.metrics.coverage_error"><code class="xref py py-func docutils literal notranslate"><span class="pre">coverage_error</span></code></a> function computes the average number of labels that
 have to be included in the final prediction such that all true labels
 are predicted. This is useful if you want to know how many top-scored-labels
@@ -1879,7 +1985,7 @@ maximal rank that would have been assigned to all tied values.</p>
 </div>
 </div>
 <div class="section" id="label-ranking-average-precision">
-<span id="id35"></span><h3><span class="section-number">3.3.3.2. </span>Label ranking average precision<a class="headerlink" href="#label-ranking-average-precision" title="Permalink to this headline">¶</a></h3>
+<span id="id42"></span><h3><span class="section-number">3.3.3.2. </span>Label ranking average precision<a class="headerlink" href="#label-ranking-average-precision" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="generated/sklearn.metrics.label_ranking_average_precision_score.html#sklearn.metrics.label_ranking_average_precision_score" title="sklearn.metrics.label_ranking_average_precision_score"><code class="xref py py-func docutils literal notranslate"><span class="pre">label_ranking_average_precision_score</span></code></a> function
 implements label ranking average precision (LRAP). This metric is linked to
 the <a class="reference internal" href="generated/sklearn.metrics.average_precision_score.html#sklearn.metrics.average_precision_score" title="sklearn.metrics.average_precision_score"><code class="xref py py-func docutils literal notranslate"><span class="pre">average_precision_score</span></code></a> function, but is based on the notion of
@@ -2009,7 +2115,7 @@ Berlin, Heidelberg.</p></li>
 </div>
 </div>
 <div class="section" id="regression-metrics">
-<span id="id36"></span><h2><span class="section-number">3.3.4. </span>Regression metrics<a class="headerlink" href="#regression-metrics" title="Permalink to this headline">¶</a></h2>
+<span id="id43"></span><h2><span class="section-number">3.3.4. </span>Regression metrics<a class="headerlink" href="#regression-metrics" title="Permalink to this headline">¶</a></h2>
 <p>The <a class="reference internal" href="classes.html#module-sklearn.metrics" title="sklearn.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.metrics</span></code></a> module implements several loss, score, and utility
 functions to measure regression performance. Some of those have been enhanced
 to handle the multioutput case: <a class="reference internal" href="generated/sklearn.metrics.mean_squared_error.html#sklearn.metrics.mean_squared_error" title="sklearn.metrics.mean_squared_error"><code class="xref py py-func docutils literal notranslate"><span class="pre">mean_squared_error</span></code></a>,
@@ -2033,7 +2139,7 @@ score puts more importance on well explaining the higher variance variables.
 for backward compatibility. This will be changed to <code class="docutils literal notranslate"><span class="pre">uniform_average</span></code> in the
 future.</p>
 <div class="section" id="explained-variance-score">
-<span id="id37"></span><h3><span class="section-number">3.3.4.1. </span>Explained variance score<a class="headerlink" href="#explained-variance-score" title="Permalink to this headline">¶</a></h3>
+<span id="id44"></span><h3><span class="section-number">3.3.4.1. </span>Explained variance score<a class="headerlink" href="#explained-variance-score" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="generated/sklearn.metrics.explained_variance_score.html#sklearn.metrics.explained_variance_score" title="sklearn.metrics.explained_variance_score"><code class="xref py py-func docutils literal notranslate"><span class="pre">explained_variance_score</span></code></a> computes the <a class="reference external" href="https://en.wikipedia.org/wiki/Explained_variation">explained variance
 regression score</a>.</p>
 <p>If <span class="math notranslate nohighlight">\(\hat{y}\)</span> is the estimated target output, <span class="math notranslate nohighlight">\(y\)</span> the corresponding
@@ -2059,7 +2165,7 @@ function:</p>
 </div>
 </div>
 <div class="section" id="max-error">
-<span id="id38"></span><h3><span class="section-number">3.3.4.2. </span>Max error<a class="headerlink" href="#max-error" title="Permalink to this headline">¶</a></h3>
+<span id="id45"></span><h3><span class="section-number">3.3.4.2. </span>Max error<a class="headerlink" href="#max-error" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="generated/sklearn.metrics.max_error.html#sklearn.metrics.max_error" title="sklearn.metrics.max_error"><code class="xref py py-func docutils literal notranslate"><span class="pre">max_error</span></code></a> function computes the maximum <a class="reference external" href="https://en.wikipedia.org/wiki/Errors_and_residuals">residual error</a> , a metric
 that captures the worst case error between the predicted value and
 the true value. In a perfectly fitted single output regression
@@ -2082,7 +2188,7 @@ defined as</p>
 <p>The <a class="reference internal" href="generated/sklearn.metrics.max_error.html#sklearn.metrics.max_error" title="sklearn.metrics.max_error"><code class="xref py py-func docutils literal notranslate"><span class="pre">max_error</span></code></a> does not support multioutput.</p>
 </div>
 <div class="section" id="mean-absolute-error">
-<span id="id39"></span><h3><span class="section-number">3.3.4.3. </span>Mean absolute error<a class="headerlink" href="#mean-absolute-error" title="Permalink to this headline">¶</a></h3>
+<span id="id46"></span><h3><span class="section-number">3.3.4.3. </span>Mean absolute error<a class="headerlink" href="#mean-absolute-error" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="generated/sklearn.metrics.mean_absolute_error.html#sklearn.metrics.mean_absolute_error" title="sklearn.metrics.mean_absolute_error"><code class="xref py py-func docutils literal notranslate"><span class="pre">mean_absolute_error</span></code></a> function computes <a class="reference external" href="https://en.wikipedia.org/wiki/Mean_absolute_error">mean absolute
 error</a>, a risk
 metric corresponding to the expected value of the absolute error loss or
@@ -2110,7 +2216,7 @@ and <span class="math notranslate nohighlight">\(y_i\)</span> is the correspondi
 </div>
 </div>
 <div class="section" id="mean-squared-error">
-<span id="id41"></span><h3><span class="section-number">3.3.4.4. </span>Mean squared error<a class="headerlink" href="#mean-squared-error" title="Permalink to this headline">¶</a></h3>
+<span id="id48"></span><h3><span class="section-number">3.3.4.4. </span>Mean squared error<a class="headerlink" href="#mean-squared-error" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="generated/sklearn.metrics.mean_squared_error.html#sklearn.metrics.mean_squared_error" title="sklearn.metrics.mean_squared_error"><code class="xref py py-func docutils literal notranslate"><span class="pre">mean_squared_error</span></code></a> function computes <a class="reference external" href="https://en.wikipedia.org/wiki/Mean_squared_error">mean square
 error</a>, a risk
 metric corresponding to the expected value of the squared (quadratic) error or
@@ -2173,7 +2279,7 @@ function:</p>
 </div>
 </div>
 <div class="section" id="mean-absolute-percentage-error">
-<span id="id42"></span><h3><span class="section-number">3.3.4.6. </span>Mean absolute percentage error<a class="headerlink" href="#mean-absolute-percentage-error" title="Permalink to this headline">¶</a></h3>
+<span id="id49"></span><h3><span class="section-number">3.3.4.6. </span>Mean absolute percentage error<a class="headerlink" href="#mean-absolute-percentage-error" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="generated/sklearn.metrics.mean_absolute_percentage_error.html#sklearn.metrics.mean_absolute_percentage_error" title="sklearn.metrics.mean_absolute_percentage_error"><code class="xref py py-func docutils literal notranslate"><span class="pre">mean_absolute_percentage_error</span></code></a> (MAPE), also known as mean absolute
 percentage deviation (MAPD), is an evaluation metric for regression problems.
 The idea of this metric is to be sensitive to relative errors. It is for example
@@ -2201,7 +2307,7 @@ magnitude value. But that problem is resolved in case of MAPE because it calcula
 relative percentage error with respect to actual output.</p>
 </div>
 <div class="section" id="median-absolute-error">
-<span id="id43"></span><h3><span class="section-number">3.3.4.7. </span>Median absolute error<a class="headerlink" href="#median-absolute-error" title="Permalink to this headline">¶</a></h3>
+<span id="id50"></span><h3><span class="section-number">3.3.4.7. </span>Median absolute error<a class="headerlink" href="#median-absolute-error" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="generated/sklearn.metrics.median_absolute_error.html#sklearn.metrics.median_absolute_error" title="sklearn.metrics.median_absolute_error"><code class="xref py py-func docutils literal notranslate"><span class="pre">median_absolute_error</span></code></a> is particularly interesting because it is
 robust to outliers. The loss is calculated by taking the median of all absolute
 differences between the target and the prediction.</p>
@@ -2336,14 +2442,14 @@ sensitive to relative errors.</p>
 </div>
 </div>
 <div class="section" id="clustering-metrics">
-<span id="id44"></span><h2><span class="section-number">3.3.5. </span>Clustering metrics<a class="headerlink" href="#clustering-metrics" title="Permalink to this headline">¶</a></h2>
+<span id="id51"></span><h2><span class="section-number">3.3.5. </span>Clustering metrics<a class="headerlink" href="#clustering-metrics" title="Permalink to this headline">¶</a></h2>
 <p>The <a class="reference internal" href="classes.html#module-sklearn.metrics" title="sklearn.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.metrics</span></code></a> module implements several loss, score, and utility
 functions. For more information see the <a class="reference internal" href="clustering.html#clustering-evaluation"><span class="std std-ref">Clustering performance evaluation</span></a>
 section for instance clustering, and <a class="reference internal" href="biclustering.html#biclustering-evaluation"><span class="std std-ref">Biclustering evaluation</span></a> for
 biclustering.</p>
 </div>
 <div class="section" id="dummy-estimators">
-<span id="id45"></span><h2><span class="section-number">3.3.6. </span>Dummy estimators<a class="headerlink" href="#dummy-estimators" title="Permalink to this headline">¶</a></h2>
+<span id="id52"></span><h2><span class="section-number">3.3.6. </span>Dummy estimators<a class="headerlink" href="#dummy-estimators" title="Permalink to this headline">¶</a></h2>
 <p>When doing supervised learning, a simple sanity check consists of comparing
 one’s estimator against simple rules of thumb. <a class="reference internal" href="generated/sklearn.dummy.DummyClassifier.html#sklearn.dummy.DummyClassifier" title="sklearn.dummy.DummyClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">DummyClassifier</span></code></a>
 implements several such simple strategies for classification:</p>

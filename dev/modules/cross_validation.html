@@ -193,6 +193,7 @@
 </li>
 <li><a class="reference internal" href="#a-note-on-shuffling">3.1.3. A note on shuffling</a></li>
 <li><a class="reference internal" href="#cross-validation-and-model-selection">3.1.4. Cross validation and model selection</a></li>
+<li><a class="reference internal" href="#permutation-test-score">3.1.5. Permutation test score</a></li>
 </ul>
 </li>
 </ul>
@@ -946,6 +947,62 @@ of parameters validated by a single call to its <code class="docutils literal no
 <p>Cross validation iterators can also be used to directly perform model
 selection using Grid Search for the optimal hyperparameters of the
 model. This is the topic of the next section: <a class="reference internal" href="grid_search.html#grid-search"><span class="std std-ref">Tuning the hyper-parameters of an estimator</span></a>.</p>
+</div>
+<div class="section" id="permutation-test-score">
+<span id="id2"></span><h2><span class="section-number">3.1.5. </span>Permutation test score<a class="headerlink" href="#permutation-test-score" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="generated/sklearn.model_selection.permutation_test_score.html#sklearn.model_selection.permutation_test_score" title="sklearn.model_selection.permutation_test_score"><code class="xref py py-func docutils literal notranslate"><span class="pre">permutation_test_score</span></code></a> offers another way
+to evaluate the performance of classifiers. It provides a permutation-based
+p-value, which represents how likely an observed performance of the
+classifier would be obtained by chance. The null hypothesis in this test is
+that the classifier fails to leverage any statistical dependency between the
+features and the labels to make correct predictions on left out data.
+<a class="reference internal" href="generated/sklearn.model_selection.permutation_test_score.html#sklearn.model_selection.permutation_test_score" title="sklearn.model_selection.permutation_test_score"><code class="xref py py-func docutils literal notranslate"><span class="pre">permutation_test_score</span></code></a> generates a null
+distribution by calculating <code class="docutils literal notranslate"><span class="pre">n_permutations</span></code> different permutations of the
+data. In each permutation the labels are randomly shuffled, thereby removing
+any dependency between the features and the labels. The p-value output
+is the fraction of permutations for which the average cross-validation score
+obtained by the model is better than the cross-validation score obtained by
+the model using the original data. For reliable results <code class="docutils literal notranslate"><span class="pre">n_permutations</span></code>
+should typically be larger than 100 and <code class="docutils literal notranslate"><span class="pre">cv</span></code> between 3-10 folds.</p>
+<p>A low p-value provides evidence that the dataset contains real dependency
+between features and labels and the classifier was able to utilize this
+to obtain good results. A high p-value could be due to a lack of dependency
+between features and labels (there is no difference in feature values between
+the classes) or because the classifier was not able to use the dependency in
+the data. In the latter case, using a more appropriate classifier that
+is able to utilize the structure in the data, would result in a low
+p-value.</p>
+<p>Cross-validation provides information about how well a classifier generalizes,
+specifically the range of expected errors of the classifier. However, a
+classifier trained on a high dimensional dataset with no structure may still
+perform better than expected on cross-validation, just by chance.
+This can typically happen with small datasets with less than a few hundred
+samples.
+<a class="reference internal" href="generated/sklearn.model_selection.permutation_test_score.html#sklearn.model_selection.permutation_test_score" title="sklearn.model_selection.permutation_test_score"><code class="xref py py-func docutils literal notranslate"><span class="pre">permutation_test_score</span></code></a> provides information
+on whether the classifier has found a real class structure and can help in
+evaluating the performance of the classifier.</p>
+<p>It is important to note that this test has been shown to produce low
+p-values even if there is only weak structure in the data because in the
+corresponding permutated datasets there is absolutely no structure. This
+test is therefore only able to show when the model reliably outperforms
+random guessing.</p>
+<p>Finally, <a class="reference internal" href="generated/sklearn.model_selection.permutation_test_score.html#sklearn.model_selection.permutation_test_score" title="sklearn.model_selection.permutation_test_score"><code class="xref py py-func docutils literal notranslate"><span class="pre">permutation_test_score</span></code></a> is computed
+using brute force and interally fits <code class="docutils literal notranslate"><span class="pre">(n_permutations</span> <span class="pre">+</span> <span class="pre">1)</span> <span class="pre">*</span> <span class="pre">n_cv</span></code> models.
+It is therefore only tractable with small datasets for which fitting an
+individual model is very fast.</p>
+<div class="topic">
+<p class="topic-title">Examples</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../auto_examples/feature_selection/plot_permutation_test_for_classification.html#sphx-glr-auto-examples-feature-selection-plot-permutation-test-for-classification-py"><span class="std std-ref">Test with permutations the significance of a classification score</span></a></p></li>
+</ul>
+</div>
+<div class="topic">
+<p class="topic-title">References:</p>
+<ul class="simple">
+<li><p>Ojala and Garriga. <a class="reference external" href="http://www.jmlr.org/papers/volume11/ojala10a/ojala10a.pdf">Permutation Tests for Studying Classifier Performance</a>.
+J. Mach. Learn. Res. 2010.</p></li>
+</ul>
+</div>
 </div>
 </div>
 

@@ -161,7 +161,8 @@
 <li><a class="reference internal" href="#radial-basis-function-kernel">6.7.2. Radial Basis Function Kernel</a></li>
 <li><a class="reference internal" href="#additive-chi-squared-kernel">6.7.3. Additive Chi Squared Kernel</a></li>
 <li><a class="reference internal" href="#skewed-chi-squared-kernel">6.7.4. Skewed Chi Squared Kernel</a></li>
-<li><a class="reference internal" href="#mathematical-details">6.7.5. Mathematical Details</a></li>
+<li><a class="reference internal" href="#polynomial-kernel-approximation-via-tensor-sketch">6.7.5. Polynomial Kernel Approximation via Tensor Sketch</a></li>
+<li><a class="reference internal" href="#mathematical-details">6.7.6. Mathematical Details</a></li>
 </ul>
 </li>
 </ul>
@@ -240,9 +241,9 @@ Details on the method can be found in <a class="reference internal" href="#rr200
 <p>For a given value of <code class="docutils literal notranslate"><span class="pre">n_components</span></code> <a class="reference internal" href="generated/sklearn.kernel_approximation.RBFSampler.html#sklearn.kernel_approximation.RBFSampler" title="sklearn.kernel_approximation.RBFSampler"><code class="xref py py-class docutils literal notranslate"><span class="pre">RBFSampler</span></code></a> is often less accurate
 as <a class="reference internal" href="generated/sklearn.kernel_approximation.Nystroem.html#sklearn.kernel_approximation.Nystroem" title="sklearn.kernel_approximation.Nystroem"><code class="xref py py-class docutils literal notranslate"><span class="pre">Nystroem</span></code></a>. <a class="reference internal" href="generated/sklearn.kernel_approximation.RBFSampler.html#sklearn.kernel_approximation.RBFSampler" title="sklearn.kernel_approximation.RBFSampler"><code class="xref py py-class docutils literal notranslate"><span class="pre">RBFSampler</span></code></a> is cheaper to compute, though, making
 use of larger feature spaces more efficient.</p>
-<div class="figure align-center" id="id8">
+<div class="figure align-center" id="id11">
 <a class="reference external image-reference" href="../auto_examples/miscellaneous/plot_kernel_approximation.html"><img alt="../_images/sphx_glr_plot_kernel_approximation_0021.png" src="../_images/sphx_glr_plot_kernel_approximation_0021.png" style="width: 900.0px; height: 375.0px;" /></a>
-<p class="caption"><span class="caption-text">Comparing an exact RBF kernel (left) with the approximation (right)</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">Comparing an exact RBF kernel (left) with the approximation (right)</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
 </div>
 <div class="topic">
 <p class="topic-title">Examples:</p>
@@ -288,8 +289,48 @@ above for the <a class="reference internal" href="generated/sklearn.kernel_appro
 parameter, that is called <span class="math notranslate nohighlight">\(c\)</span>.
 For a motivation for this mapping and the mathematical details see <a class="reference internal" href="#ls2010" id="id7"><span>[LS2010]</span></a>.</p>
 </div>
+<div class="section" id="polynomial-kernel-approximation-via-tensor-sketch">
+<span id="polynomial-kernel-approx"></span><h2><span class="section-number">6.7.5. </span>Polynomial Kernel Approximation via Tensor Sketch<a class="headerlink" href="#polynomial-kernel-approximation-via-tensor-sketch" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="metrics.html#polynomial-kernel"><span class="std std-ref">polynomial kernel</span></a> is a popular type of kernel
+function given by:</p>
+<div class="math notranslate nohighlight">
+\[k(x, y) = (\gamma x^\top y +c_0)^d\]</div>
+<p>where:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code> are the input vectors</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">d</span></code> is the kernel degree</p></li>
+</ul>
+</div></blockquote>
+<p>Intuitively, the feature space of the polynomial kernel of degree <code class="docutils literal notranslate"><span class="pre">d</span></code>
+consists of all possible degree-<code class="docutils literal notranslate"><span class="pre">d</span></code> products among input features, which enables
+learning algorithms using this kernel to account for interactions between features.</p>
+<p>The TensorSketch <a class="reference internal" href="#pp2013" id="id8"><span>[PP2013]</span></a> method, as implemented in <a class="reference internal" href="generated/sklearn.kernel_approximation.PolynomialCountSketch.html#sklearn.kernel_approximation.PolynomialCountSketch" title="sklearn.kernel_approximation.PolynomialCountSketch"><code class="xref py py-class docutils literal notranslate"><span class="pre">PolynomialCountSketch</span></code></a>, is a
+scalable, input data independent method for polynomial kernel approximation.
+It is based on the concept of Count sketch <a class="reference internal" href="#wikics" id="id9"><span>[WIKICS]</span></a> <a class="reference internal" href="#ccf2002" id="id10"><span>[CCF2002]</span></a> , a dimensionality
+reduction technique similar to feature hashing, which instead uses several
+independent hash functions. TensorSketch obtains a Count Sketch of the outer product
+of two vectors (or a vector with itself), which can be used as an approximation of the
+polynomial kernel feature space. In particular, instead of explicitly computing
+the outer product, TensorSketch computes the Count Sketch of the vectors and then
+uses polynomial multiplication via the Fast Fourier Transform to compute the
+Count Sketch of their outer product.</p>
+<p>Conveniently, the training phase of TensorSketch simply consists of initializing
+some random variables. It is thus independent of the input data, i.e. it only
+depends on the number of input features, but not the data values.
+In addition, this method can transform samples in
+<span class="math notranslate nohighlight">\(\mathcal{O}(n_{\text{samples}}(n_{\text{features}} + n_{\text{components}} \log(n_{\text{components}})))\)</span>
+time, where <span class="math notranslate nohighlight">\(n_{\text{components}}\)</span> is the desired output dimension,
+determined by <code class="docutils literal notranslate"><span class="pre">n_components</span></code>.</p>
+<div class="topic">
+<p class="topic-title">Examples:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../auto_examples/plot_scalable_poly_kernels.html#sphx-glr-auto-examples-plot-scalable-poly-kernels-py"><span class="std std-ref">Scalable learning with polynomial kernel aproximation</span></a></p></li>
+</ul>
+</div>
+</div>
 <div class="section" id="mathematical-details">
-<h2><span class="section-number">6.7.5. </span>Mathematical Details<a class="headerlink" href="#mathematical-details" title="Permalink to this headline">¶</a></h2>
+<span id="tensor-sketch-kernel-approx"></span><h2><span class="section-number">6.7.6. </span>Mathematical Details<a class="headerlink" href="#mathematical-details" title="Permalink to this headline">¶</a></h2>
 <p>Kernel methods like support vector machines or kernelized
 PCA rely on a property of reproducing kernel Hilbert spaces.
 For any positive definite kernel function <span class="math notranslate nohighlight">\(k\)</span> (a so called Mercer kernel),
@@ -334,6 +375,17 @@ Vedaldi, A. and Zisserman, A. - Computer Vision and Pattern Recognition 2010</p>
 <dt class="label" id="vvz2010"><span class="brackets"><a class="fn-backref" href="#id6">VVZ2010</a></span></dt>
 <dd><p><a class="reference external" href="https://www.robots.ox.ac.uk/~vgg/publications/2010/Sreekanth10/sreekanth10.pdf">“Generalized RBF feature maps for Efficient Detection”</a>
 Vempati, S. and Vedaldi, A. and Zisserman, A. and Jawahar, CV - 2010</p>
+</dd>
+<dt class="label" id="pp2013"><span class="brackets"><a class="fn-backref" href="#id8">PP2013</a></span></dt>
+<dd><p><a class="reference external" href="https://doi.org/10.1145/2487575.2487591">“Fast and scalable polynomial kernels via explicit feature maps”</a>
+Pham, N., &amp; Pagh, R. - 2013</p>
+</dd>
+<dt class="label" id="ccf2002"><span class="brackets"><a class="fn-backref" href="#id10">CCF2002</a></span></dt>
+<dd><p><a class="reference external" href="http://www.cs.princeton.edu/courses/archive/spring04/cos598B/bib/CharikarCF.pdf">“Finding frequent items in data streams”</a>
+Charikar, M., Chen, K., &amp; Farach-Colton - 2002</p>
+</dd>
+<dt class="label" id="wikics"><span class="brackets"><a class="fn-backref" href="#id9">WIKICS</a></span></dt>
+<dd><p><a class="reference external" href="https://en.wikipedia.org/wiki/Count_sketch">“Wikipedia: Count sketch”</a></p>
 </dd>
 </dl>
 </div>

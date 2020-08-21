@@ -169,8 +169,8 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.metrics" title="sklearn.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.metrics</span></code></a>.pairwise_distances_chunked<a class="headerlink" href="#sklearn-metrics-pairwise-distances-chunked" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="sklearn.metrics.pairwise_distances_chunked">
-<code class="sig-prename descclassname">sklearn.metrics.</code><code class="sig-name descname">pairwise_distances_chunked</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">Y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">reduce_func</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">metric</span><span class="o">=</span><span class="default_value">'euclidean'</span></em>, <em class="sig-param"><span class="n">n_jobs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">working_memory</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwds</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/1ac9d6817/sklearn/metrics/pairwise.py#L1472"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.metrics.pairwise_distances_chunked" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate a distance matrix chunk by chunk with optional reduction</p>
+<code class="sig-prename descclassname">sklearn.metrics.</code><code class="sig-name descname">pairwise_distances_chunked</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">Y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">reduce_func</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">metric</span><span class="o">=</span><span class="default_value">'euclidean'</span></em>, <em class="sig-param"><span class="n">n_jobs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">working_memory</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwds</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c24e749d2/sklearn/metrics/pairwise.py#L1468"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.metrics.pairwise_distances_chunked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a distance matrix chunk by chunk with optional reduction.</p>
 <p>In cases where not all of a pairwise distance matrix needs to be stored at
 once, this is used to calculate pairwise distances in
 <code class="docutils literal notranslate"><span class="pre">working_memory</span></code>-sized chunks.  If <code class="docutils literal notranslate"><span class="pre">reduce_func</span></code> is given, it is run
@@ -179,9 +179,11 @@ or sparse matrices.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>X</strong><span class="classifier">array of shape (n_samples_a, n_samples_a) if metric == “precomputed”,         or of shape (n_samples_a, n_features) otherwise</span></dt><dd><p>Array of pairwise distances between samples, or a feature array.</p>
+<dt><strong>X</strong><span class="classifier">ndarray of shape (n_samples_X, n_samples_X) or             (n_samples_X, n_features)</span></dt><dd><p>Array of pairwise distances between samples, or a feature array.
+The shape the array should be (n_samples_X, n_samples_X) if
+metric=’precomputed’ and (n_samples_X, n_features) otherwise.</p>
 </dd>
-<dt><strong>Y</strong><span class="classifier">array of shape (n_samples_b, n_features), default=None</span></dt><dd><p>An optional second feature array. Only allowed if
+<dt><strong>Y</strong><span class="classifier">ndarray of shape (n_samples_Y, n_features), default=None</span></dt><dd><p>An optional second feature array. Only allowed if
 metric != “precomputed”.</p>
 </dd>
 <dt><strong>reduce_func</strong><span class="classifier">callable, default=None</span></dt><dd><p>The function which is applied on each chunk of the distance matrix,
@@ -223,7 +225,7 @@ metric dependent. See the scipy docs for usage examples.</p>
 </dd>
 <dt class="field-even">Yields</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>D_chunk</strong><span class="classifier">array or sparse matrix</span></dt><dd><p>A contiguous slice of distance matrix, optionally processed by
+<dt><strong>D_chunk</strong><span class="classifier">{ndarray, sparse matrix}</span></dt><dd><p>A contiguous slice of distance matrix, optionally processed by
 <code class="docutils literal notranslate"><span class="pre">reduce_func</span></code>.</p>
 </dd>
 </dl>
