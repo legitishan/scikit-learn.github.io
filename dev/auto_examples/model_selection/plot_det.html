@@ -140,8 +140,8 @@
           </a>
         </div>
         <div class="btn-group w-100 mb-2" role="group" aria-label="rellinks">
-            <a href="plot_roc_crossval.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Receiver Operating Characteristic (ROC) with cross validation">Prev</a><a href="../index.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Examples">Up</a>
-            <a href="plot_nested_cross_validation_iris.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Nested versus non-nested cross-validation">Next</a>
+            <a href="plot_validation_curve.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Plotting Validation Curves">Prev</a><a href="../index.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Examples">Up</a>
+            <a href="plot_underfitting_overfitting.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="Underfitting vs. Overfitting">Next</a>
         </div>
         <div class="alert alert-danger p-1 mb-2" role="alert">
           <p class="text-center mb-0">
@@ -175,9 +175,9 @@
 detection error tradeoff (DET) curves for different classification algorithms
 for the same classification task.</p>
 <p>DET curves are commonly plotted in normal deviate scale.
-To achieve this we transform the error rates as returned by the
-<a class="reference internal" href="../../modules/generated/sklearn.metrics.detection_error_tradeoff_curve.html#sklearn.metrics.detection_error_tradeoff_curve" title="sklearn.metrics.detection_error_tradeoff_curve"><code class="xref py py-func docutils literal notranslate"><span class="pre">detection_error_tradeoff_curve</span></code></a> function and the axis
-scale using <code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.stats.norm</span></code>.</p>
+To achieve this <code class="docutils literal notranslate"><span class="pre">plot_det_curve</span></code> transforms the error rates as returned by the
+<a class="reference internal" href="../../modules/generated/sklearn.metrics.det_curve.html#sklearn.metrics.det_curve" title="sklearn.metrics.det_curve"><code class="xref py py-func docutils literal notranslate"><span class="pre">det_curve</span></code></a> and the axis scale using
+<code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.stats.norm</span></code>.</p>
 <p>The point of this example is to demonstrate two properties of DET curves,
 namely:</p>
 <ol class="arabic simple">
@@ -204,8 +204,8 @@ example plot over other classifiers available in scikit-learn.</p>
 <ul class="simple">
 <li><p>See <a class="reference internal" href="../../modules/generated/sklearn.metrics.roc_curve.html#sklearn.metrics.roc_curve" title="sklearn.metrics.roc_curve"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.metrics.roc_curve</span></code></a> for further information about ROC
 curves.</p></li>
-<li><p>See <a class="reference internal" href="../../modules/generated/sklearn.metrics.detection_error_tradeoff_curve.html#sklearn.metrics.detection_error_tradeoff_curve" title="sklearn.metrics.detection_error_tradeoff_curve"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.metrics.detection_error_tradeoff_curve</span></code></a> for further
-information about DET curves.</p></li>
+<li><p>See <a class="reference internal" href="../../modules/generated/sklearn.metrics.det_curve.html#sklearn.metrics.det_curve" title="sklearn.metrics.det_curve"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.metrics.det_curve</span></code></a> for further information about
+DET curves.</p></li>
 <li><p>This example is loosely based on
 <a class="reference internal" href="../classification/plot_classifier_comparison.html#sphx-glr-auto-examples-classification-plot-classifier-comparison-py"><span class="std std-ref">Classifier comparison</span></a>
 example.</p></li>
@@ -216,14 +216,12 @@ example.</p></li>
 
 <span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.datasets.make_classification.html#sklearn.datasets.make_classification" title="sklearn.datasets.make_classification" class="sphx-glr-backref-module-sklearn-datasets sphx-glr-backref-type-py-function"><span class="n">make_classification</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier" title="sklearn.ensemble.RandomForestClassifier" class="sphx-glr-backref-module-sklearn-ensemble sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">RandomForestClassifier</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.metrics.detection_error_tradeoff_curve.html#sklearn.metrics.detection_error_tradeoff_curve" title="sklearn.metrics.detection_error_tradeoff_curve" class="sphx-glr-backref-module-sklearn-metrics sphx-glr-backref-type-py-function"><span class="n">detection_error_tradeoff_curve</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.metrics.plot_det_curve.html#sklearn.metrics.plot_det_curve" title="sklearn.metrics.plot_det_curve" class="sphx-glr-backref-module-sklearn-metrics sphx-glr-backref-type-py-function"><span class="n">plot_det_curve</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.metrics.plot_roc_curve.html#sklearn.metrics.plot_roc_curve" title="sklearn.metrics.plot_roc_curve" class="sphx-glr-backref-module-sklearn-metrics sphx-glr-backref-type-py-function"><span class="n">plot_roc_curve</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="sklearn.model_selection.train_test_split" class="sphx-glr-backref-module-sklearn-model_selection sphx-glr-backref-type-py-function"><span class="n">train_test_split</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.pipeline.make_pipeline.html#sklearn.pipeline.make_pipeline" title="sklearn.pipeline.make_pipeline" class="sphx-glr-backref-module-sklearn-pipeline sphx-glr-backref-type-py-function"><span class="n">make_pipeline</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler" title="sklearn.preprocessing.StandardScaler" class="sphx-glr-backref-module-sklearn-preprocessing sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">StandardScaler</span></a>
 <span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <a href="../../modules/generated/sklearn.svm.LinearSVC.html#sklearn.svm.LinearSVC" title="sklearn.svm.LinearSVC" class="sphx-glr-backref-module-sklearn-svm sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">LinearSVC</span></a>
-
-<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">norm</span>
 
 <span class="n">N_SAMPLES</span> <span class="o">=</span> <span class="mi">1000</span>
 
@@ -244,49 +242,23 @@ example.</p></li>
 <span class="c1"># prepare plots</span>
 <span class="n">fig</span><span class="p">,</span> <span class="p">[</span><span class="n">ax_roc</span><span class="p">,</span> <span class="n">ax_det</span><span class="p">]</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 
-<span class="c1"># first prepare the ROC curve</span>
-<span class="n">ax_roc</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Receiver Operating Characteristic (ROC) curves&#39;</span><span class="p">)</span>
-<span class="n">ax_roc</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
-
-<span class="c1"># second prepare the DET curve</span>
-<span class="n">ax_det</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Detection Error Tradeoff (DET) curves&#39;</span><span class="p">)</span>
-<span class="n">ax_det</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;False Positive Rate&#39;</span><span class="p">)</span>
-<span class="n">ax_det</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;False Negative Rate&#39;</span><span class="p">)</span>
-<span class="n">ax_det</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="n">ax_det</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="n">ax_det</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
-
-<span class="c1"># customized ticks for DET curve plot to represent normal deviate scale</span>
-<span class="n">ticks</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.20</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.80</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">]</span>
-<span class="n">tick_locs</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">ticks</span><span class="p">)</span>
-<span class="n">tick_lbls</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;</span><span class="si">{:.0%}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">is_integer</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;</span><span class="si">{:.1%}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">ticks</span>
-<span class="p">]</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.sca.html#matplotlib.pyplot.sca" title="matplotlib.pyplot.sca" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">sca</span></a><span class="p">(</span><span class="n">ax_det</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xticks.html#matplotlib.pyplot.xticks" title="matplotlib.pyplot.xticks" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">xticks</span></a><span class="p">(</span><span class="n">tick_locs</span><span class="p">,</span> <span class="n">tick_lbls</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.yticks.html#matplotlib.pyplot.yticks" title="matplotlib.pyplot.yticks" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">yticks</span></a><span class="p">(</span><span class="n">tick_locs</span><span class="p">,</span> <span class="n">tick_lbls</span><span class="p">)</span>
-
-<span class="c1"># iterate over classifiers</span>
 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">clf</span> <span class="ow">in</span> <span class="n">classifiers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="s2">&quot;decision_function&quot;</span><span class="p">):</span>
-        <span class="n">y_score</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">decision_function</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">y_score</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span>
-
     <a href="../../modules/generated/sklearn.metrics.plot_roc_curve.html#sklearn.metrics.plot_roc_curve" title="sklearn.metrics.plot_roc_curve" class="sphx-glr-backref-module-sklearn-metrics sphx-glr-backref-type-py-function"><span class="n">plot_roc_curve</span></a><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax_roc</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-    <span class="n">det_fpr</span><span class="p">,</span> <span class="n">det_fnr</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.metrics.detection_error_tradeoff_curve.html#sklearn.metrics.detection_error_tradeoff_curve" title="sklearn.metrics.detection_error_tradeoff_curve" class="sphx-glr-backref-module-sklearn-metrics sphx-glr-backref-type-py-function"><span class="n">detection_error_tradeoff_curve</span></a><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_score</span><span class="p">)</span>
+    <a href="../../modules/generated/sklearn.metrics.plot_det_curve.html#sklearn.metrics.plot_det_curve" title="sklearn.metrics.plot_det_curve" class="sphx-glr-backref-module-sklearn-metrics sphx-glr-backref-type-py-function"><span class="n">plot_det_curve</span></a><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax_det</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
 
-    <span class="c1"># transform errors into normal deviate scale</span>
-    <span class="n">ax_det</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">det_fpr</span><span class="p">),</span> <span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">det_fnr</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+<span class="n">ax_roc</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Receiver Operating Characteristic (ROC) curves&#39;</span><span class="p">)</span>
+<span class="n">ax_det</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Detection Error Tradeoff (DET) curves&#39;</span><span class="p">)</span>
+
+<span class="n">ax_roc</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">ax_det</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
 
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.legend.html#matplotlib.pyplot.legend" title="matplotlib.pyplot.legend" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">legend</span></a><span class="p">()</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.199 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.198 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-model-selection-plot-det-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/scikit-learn/scikit-learn/master?urlpath=lab/tree/notebooks/auto_examples/model_selection/plot_det.ipynb"><img alt="https://mybinder.org/badge_logo.svg" src="https://mybinder.org/badge_logo.svg" width="150px" /></a>
