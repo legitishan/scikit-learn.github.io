@@ -171,7 +171,12 @@
 </li>
 <li><a class="reference internal" href="#support-vector-machines-svms">Support vector machines (SVMs)</a><ul>
 <li><a class="reference internal" href="#linear-svms">Linear SVMs</a></li>
-<li><a class="reference internal" href="#using-kernels">Using kernels</a></li>
+<li><a class="reference internal" href="#using-kernels">Using kernels</a><ul>
+<li><a class="reference internal" href="#linear-kernel">Linear kernel</a></li>
+<li><a class="reference internal" href="#polynomial-kernel">Polynomial kernel</a></li>
+<li><a class="reference internal" href="#rbf-kernel-radial-basis-function">RBF kernel (Radial Basis Function)</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -215,7 +220,6 @@ learning vocabulary used within scikit-learn.</p>
 <h2>Nearest neighbor and the curse of dimensionality<a class="headerlink" href="#nearest-neighbor-and-the-curse-of-dimensionality" title="Permalink to this headline">¶</a></h2>
 <div class="topic">
 <p class="topic-title">Classifying irises:</p>
-<a class="reference external image-reference" href="../../auto_examples/datasets/plot_iris_dataset.html"><img alt="../../_images/sphx_glr_plot_iris_dataset_001.png" class="align-right" src="../../_images/sphx_glr_plot_iris_dataset_001.png" style="width: 520.0px; height: 390.0px;" /></a>
 <p>The iris dataset is a classification task consisting in identifying 3
 different types of irises (Setosa, Versicolour, and Virginica) from
 their petal and sepal length and width:</p>
@@ -226,6 +230,7 @@ their petal and sepal length and width:</p>
 <span class="go">array([0, 1, 2])</span>
 </pre></div>
 </div>
+<a class="reference external image-reference" href="../../auto_examples/datasets/plot_iris_dataset.html"><img alt="../../_images/sphx_glr_plot_iris_dataset_001.png" class="align-center" src="../../_images/sphx_glr_plot_iris_dataset_001.png" style="width: 400.0px; height: 300.0px;" /></a>
 </div>
 <div class="section" id="k-nearest-neighbors-classifier">
 <h3>k-Nearest neighbors classifier<a class="headerlink" href="#k-nearest-neighbors-classifier" title="Permalink to this headline">¶</a></h3>
@@ -312,7 +317,6 @@ variables.</p>
 in its simplest form, fits a linear model to the data set by adjusting
 a set of parameters in order to make the sum of the squared residuals
 of the model as small as possible.</p>
-<a class="reference external image-reference" href="../../auto_examples/linear_model/plot_ols.html"><img alt="../../_images/sphx_glr_plot_ols_001.png" class="align-right" src="../../_images/sphx_glr_plot_ols_001.png" style="width: 256.0px; height: 192.0px;" /></a>
 <p>Linear models: <span class="math notranslate nohighlight">\(y = X\beta + \epsilon\)</span></p>
 <blockquote>
 <div><ul class="simple">
@@ -322,6 +326,7 @@ of the model as small as possible.</p>
 <li><p><span class="math notranslate nohighlight">\(\epsilon\)</span>: Observation noise</p></li>
 </ul>
 </div></blockquote>
+<a class="reference external image-reference" href="../../auto_examples/linear_model/plot_ols.html"><img alt="../../_images/sphx_glr_plot_ols_001.png" class="align-center" src="../../_images/sphx_glr_plot_ols_001.png" style="width: 320.0px; height: 240.0px;" /></a>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">linear_model</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">regr</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">LinearRegression</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">regr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">diabetes_X_train</span><span class="p">,</span> <span class="n">diabetes_y_train</span><span class="p">)</span>
@@ -347,7 +352,6 @@ of the model as small as possible.</p>
 <span id="id2"></span><h3>Shrinkage<a class="headerlink" href="#shrinkage" title="Permalink to this headline">¶</a></h3>
 <p>If there are few data points per dimension, noise in the observations
 induces high variance:</p>
-<a class="reference external image-reference" href="../../auto_examples/linear_model/plot_ols_ridge_variance.html"><img alt="../../_images/sphx_glr_plot_ols_ridge_variance_001.png" class="align-right" src="../../_images/sphx_glr_plot_ols_ridge_variance_001.png" style="width: 280.0px; height: 210.0px;" /></a>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span> <span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
@@ -364,11 +368,11 @@ induces high variance:</p>
 <span class="gp">... </span>    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">this_X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>  
 </pre></div>
 </div>
+<a class="reference external image-reference" href="../../auto_examples/linear_model/plot_ols_ridge_variance.html"><img alt="../../_images/sphx_glr_plot_ols_ridge_variance_001.png" class="align-center" src="../../_images/sphx_glr_plot_ols_ridge_variance_001.png" /></a>
 <p>A solution in high-dimensional statistical learning is to <em>shrink</em> the
 regression coefficients to zero: any two randomly chosen set of
 observations are likely to be uncorrelated. This is called <a class="reference internal" href="../../modules/generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge" title="sklearn.linear_model.Ridge"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ridge</span></code></a>
 regression:</p>
-<a class="reference external image-reference" href="../../auto_examples/linear_model/plot_ols_ridge_variance.html"><img alt="../../_images/sphx_glr_plot_ols_ridge_variance_002.png" class="align-right" src="../../_images/sphx_glr_plot_ols_ridge_variance_002.png" style="width: 280.0px; height: 210.0px;" /></a>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">regr</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">Ridge</span><span class="p">(</span><span class="n">alpha</span><span class="o">=.</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span> 
@@ -381,6 +385,7 @@ regression:</p>
 <span class="gp">... </span>    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">this_X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> 
 </pre></div>
 </div>
+<a class="reference external image-reference" href="../../auto_examples/linear_model/plot_ols_ridge_variance.html"><img alt="../../_images/sphx_glr_plot_ols_ridge_variance_002.png" class="align-center" src="../../_images/sphx_glr_plot_ols_ridge_variance_002.png" /></a>
 <p>This is an example of <strong>bias/variance tradeoff</strong>: the larger the ridge
 <code class="docutils literal notranslate"><span class="pre">alpha</span></code> parameter, the higher the bias and the lower the variance.</p>
 <p>We can choose <code class="docutils literal notranslate"><span class="pre">alpha</span></code> to minimize left out error, this time using the
@@ -434,8 +439,8 @@ application of Occam’s razor: <em>prefer simpler models</em>.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">regr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">diabetes_X_train</span><span class="p">,</span> <span class="n">diabetes_y_train</span><span class="p">)</span>
 <span class="go">Lasso(alpha=0.025118864315095794)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">regr</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span>
-<span class="go">[   0.         -212.43764548  517.19478111  313.77959962 -160.8303982    -0.</span>
-<span class="go"> -187.19554705   69.38229038  508.66011217   71.84239008]</span>
+<span class="go">[   0.         -212.437...  517.194...  313.779... -160.830...</span>
+<span class="go">   -0.         -187.195...   69.382...  508.660...   71.842...]</span>
 </pre></div>
 </div>
 <div class="topic">
@@ -452,12 +457,12 @@ is very sparse (i.e. problems with very few observations).</p>
 </div>
 <div class="section" id="classification">
 <span id="clf-tut"></span><h3>Classification<a class="headerlink" href="#classification" title="Permalink to this headline">¶</a></h3>
-<a class="reference external image-reference" href="../../auto_examples/linear_model/plot_logistic.html"><img alt="../../_images/sphx_glr_plot_logistic_001.png" class="align-right" src="../../_images/sphx_glr_plot_logistic_001.png" style="width: 260.0px; height: 195.0px;" /></a>
 <p>For classification, as in the labeling
 <a class="reference external" href="https://en.wikipedia.org/wiki/Iris_flower_data_set">iris</a> task, linear
 regression is not the right approach as it will give too much weight to
 data far from the decision frontier. A linear approach is to fit a sigmoid
 function or <strong>logistic</strong> function:</p>
+<a class="reference external image-reference" href="../../auto_examples/linear_model/plot_logistic.html"><img alt="../../_images/sphx_glr_plot_logistic_001.png" class="align-center" src="../../_images/sphx_glr_plot_logistic_001.png" style="width: 280.0px; height: 210.0px;" /></a>
 <div class="math notranslate nohighlight">
 \[y = \textrm{sigmoid}(X\beta - \textrm{offset}) + \epsilon =
 \frac{1}{1 + \textrm{exp}(- X\beta + \textrm{offset})} + \epsilon\]</div>
@@ -467,7 +472,7 @@ function or <strong>logistic</strong> function:</p>
 </pre></div>
 </div>
 <p>This is known as <a class="reference internal" href="../../modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="sklearn.linear_model.LogisticRegression"><code class="xref py py-class docutils literal notranslate"><span class="pre">LogisticRegression</span></code></a>.</p>
-<a class="reference external image-reference" href="../../auto_examples/linear_model/plot_iris_logistic.html"><img alt="../../_images/sphx_glr_plot_iris_logistic_001.png" src="../../_images/sphx_glr_plot_iris_logistic_001.png" style="width: 332.0px; height: 249.0px;" /></a>
+<a class="reference external image-reference" href="../../auto_examples/linear_model/plot_iris_logistic.html"><img alt="../../_images/sphx_glr_plot_iris_logistic_001.png" class="align-center" src="../../_images/sphx_glr_plot_iris_logistic_001.png" style="width: 332.0px; height: 249.0px;" /></a>
 <div class="topic">
 <p class="topic-title">Multiclass classification</p>
 <p>If you have several classes to predict, an option often used is to fit
@@ -494,7 +499,7 @@ observations.</p>
 
 </pre></div>
 </div>
-<p>Solution: <a class="reference download internal" download="" href="../../_downloads/33e7a1867d411176b5deb8da3209c67e/plot_digits_classification_exercise.py"><code class="xref download docutils literal notranslate"><span class="pre">../../auto_examples/exercises/plot_digits_classification_exercise.py</span></code></a></p>
+<p>A solution can be downloaded <a class="reference download internal" download="" href="../../_downloads/33e7a1867d411176b5deb8da3209c67e/plot_digits_classification_exercise.py"><code class="xref download docutils literal notranslate"><span class="pre">here</span></code></a>.</p>
 </div>
 </div>
 </div>
@@ -509,22 +514,14 @@ is calculated using many or all of the observations around the separating line
 (more regularization);
 a large value for <code class="docutils literal notranslate"><span class="pre">C</span></code> means the margin is calculated on observations close to
 the separating line (less regularization).</p>
-<table class="centered docutils align-default">
-<colgroup>
-<col style="width: 49%" />
-<col style="width: 51%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p><strong>Unregularized SVM</strong></p></th>
-<th class="head"><p><strong>Regularized SVM (default)</strong></p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><a class="reference external" href="../../auto_examples/svm/plot_svm_margin.html"><img alt="svm_margin_unreg" src="../../_images/sphx_glr_plot_svm_margin_001.png" style="width: 280.0px; height: 210.0px;" /></a></p></td>
-<td><p><a class="reference external" href="../../auto_examples/svm/plot_svm_margin.html"><img alt="svm_margin_reg" src="../../_images/sphx_glr_plot_svm_margin_002.png" style="width: 280.0px; height: 210.0px;" /></a></p></td>
-</tr>
-</tbody>
-</table>
+<div class="figure align-default" id="id4">
+<a class="reference external image-reference" href="../../auto_examples/svm/plot_svm_margin.html"><img alt="../../_images/sphx_glr_plot_svm_margin_001.png" src="../../_images/sphx_glr_plot_svm_margin_001.png" /></a>
+<p class="caption"><span class="caption-text"><strong>Unregularized SVM</strong></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-default" id="id5">
+<a class="reference external image-reference" href="../../auto_examples/svm/plot_svm_margin.html"><img alt="../../_images/sphx_glr_plot_svm_margin_002.png" src="../../_images/sphx_glr_plot_svm_margin_002.png" /></a>
+<p class="caption"><span class="caption-text"><strong>Regularized SVM (default)</strong></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
 <div class="topic">
 <p class="topic-title">Example:</p>
 <ul class="simple">
@@ -553,56 +550,36 @@ prediction.</p>
 build a decision function that is not linear but may be polynomial instead.
 This is done using the <em>kernel trick</em> that can be seen as
 creating a decision energy by positioning <em>kernels</em> on observations:</p>
-<table class="centered docutils align-default">
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><strong>Linear kernel</strong></p></td>
-<td><p><strong>Polynomial kernel</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference external" href="../../auto_examples/svm/plot_svm_kernels.html"><img alt="svm_kernel_linear" src="../../_images/sphx_glr_plot_svm_kernels_001.png" style="width: 260.0px; height: 195.0px;" /></a></p></td>
-<td><p><a class="reference external" href="../../auto_examples/svm/plot_svm_kernels.html"><img alt="svm_kernel_poly" src="../../_images/sphx_glr_plot_svm_kernels_002.png" style="width: 260.0px; height: 195.0px;" /></a></p></td>
-</tr>
-<tr class="row-odd"><td><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">svc</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span>
+<div class="section" id="linear-kernel">
+<h4>Linear kernel<a class="headerlink" href="#linear-kernel" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">svc</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</td>
-<td><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">svc</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span>
+<a class="reference external image-reference" href="../../auto_examples/svm/plot_svm_kernels.html"><img alt="../../_images/sphx_glr_plot_svm_kernels_001.png" src="../../_images/sphx_glr_plot_svm_kernels_001.png" /></a>
+</div>
+<div class="section" id="polynomial-kernel">
+<h4>Polynomial kernel<a class="headerlink" href="#polynomial-kernel" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">svc</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span>
 <span class="gp">... </span>              <span class="n">degree</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># degree: polynomial degree</span>
 </pre></div>
 </div>
-</td>
-</tr>
-</tbody>
-</table>
-<table class="centered docutils align-default">
-<colgroup>
-<col style="width: 100%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><strong>RBF kernel (Radial Basis Function)</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference external" href="../../auto_examples/svm/plot_svm_kernels.html"><img alt="svm_kernel_rbf" src="../../_images/sphx_glr_plot_svm_kernels_003.png" style="width: 260.0px; height: 195.0px;" /></a></p></td>
-</tr>
-<tr class="row-odd"><td><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">svc</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;rbf&#39;</span><span class="p">)</span>
+<a class="reference external image-reference" href="../../auto_examples/svm/plot_svm_kernels.html"><img alt="../../_images/sphx_glr_plot_svm_kernels_002.png" src="../../_images/sphx_glr_plot_svm_kernels_002.png" /></a>
+</div>
+<div class="section" id="rbf-kernel-radial-basis-function">
+<h4>RBF kernel (Radial Basis Function)<a class="headerlink" href="#rbf-kernel-radial-basis-function" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">svc</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;rbf&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># gamma: inverse of size of</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># radial kernel</span>
 </pre></div>
 </div>
-</td>
-</tr>
-</tbody>
-</table>
+<a class="reference external image-reference" href="../../auto_examples/svm/plot_svm_kernels.html"><img alt="../../_images/sphx_glr_plot_svm_kernels_003.png" src="../../_images/sphx_glr_plot_svm_kernels_003.png" /></a>
 <div class="topic">
 <p class="topic-title"><strong>Interactive example</strong></p>
 <p>See the <a class="reference internal" href="../../auto_examples/applications/svm_gui.html#sphx-glr-auto-examples-applications-svm-gui-py"><span class="std std-ref">SVM GUI</span></a> to download
 <code class="docutils literal notranslate"><span class="pre">svm_gui.py</span></code>; add data points of both classes with right and left button,
 fit the model and change parameters and data.</p>
 </div>
-<a class="reference external image-reference" href="../../auto_examples/datasets/plot_iris_dataset.html"><img alt="../../_images/sphx_glr_plot_iris_dataset_001.png" class="align-right" src="../../_images/sphx_glr_plot_iris_dataset_001.png" style="width: 560.0px; height: 420.0px;" /></a>
 <div class="green topic">
 <p class="topic-title"><strong>Exercise</strong></p>
 <p>Try classifying classes 1 and 2 from the iris dataset with SVMs, with
@@ -620,7 +597,9 @@ intuitions.</p>
 <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">y</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>Solution: <a class="reference download internal" download="" href="../../_downloads/002ebccb35a2de5ac6d32e3f54d8fa4f/plot_iris_exercise.py"><code class="xref download docutils literal notranslate"><span class="pre">../../auto_examples/exercises/plot_iris_exercise.py</span></code></a></p>
+<a class="reference external image-reference" href="../../auto_examples/datasets/plot_iris_dataset.html"><img alt="../../_images/sphx_glr_plot_iris_dataset_001.png" class="align-center" src="../../_images/sphx_glr_plot_iris_dataset_001.png" style="width: 560.0px; height: 420.0px;" /></a>
+<p>A solution can be downloaded <a class="reference download internal" download="" href="../../_downloads/002ebccb35a2de5ac6d32e3f54d8fa4f/plot_iris_exercise.py"><code class="xref download docutils literal notranslate"><span class="pre">here</span></code></a></p>
+</div>
 </div>
 </div>
 </div>
