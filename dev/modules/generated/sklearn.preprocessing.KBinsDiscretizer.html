@@ -181,9 +181,9 @@
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>n_bins</strong><span class="classifier">int or array-like, shape (n_features,) (default=5)</span></dt><dd><p>The number of bins to produce. Raises ValueError if <code class="docutils literal notranslate"><span class="pre">n_bins</span> <span class="pre">&lt;</span> <span class="pre">2</span></code>.</p>
+<dt><strong>n_bins</strong><span class="classifier">int or array-like of shape (n_features,), default=5</span></dt><dd><p>The number of bins to produce. Raises ValueError if <code class="docutils literal notranslate"><span class="pre">n_bins</span> <span class="pre">&lt;</span> <span class="pre">2</span></code>.</p>
 </dd>
-<dt><strong>encode</strong><span class="classifier">{‘onehot’, ‘onehot-dense’, ‘ordinal’}, (default=’onehot’)</span></dt><dd><p>Method used to encode the transformed result.</p>
+<dt><strong>encode</strong><span class="classifier">{‘onehot’, ‘onehot-dense’, ‘ordinal’}, default=’onehot’</span></dt><dd><p>Method used to encode the transformed result.</p>
 <dl class="simple">
 <dt>onehot</dt><dd><p>Encode the transformed result with one-hot encoding
 and return a sparse matrix. Ignored features are always
@@ -197,7 +197,7 @@ stacked to the right.</p>
 </dd>
 </dl>
 </dd>
-<dt><strong>strategy</strong><span class="classifier">{‘uniform’, ‘quantile’, ‘kmeans’}, (default=’quantile’)</span></dt><dd><p>Strategy used to define the widths of the bins.</p>
+<dt><strong>strategy</strong><span class="classifier">{‘uniform’, ‘quantile’, ‘kmeans’}, default=’quantile’</span></dt><dd><p>Strategy used to define the widths of the bins.</p>
 <dl class="simple">
 <dt>uniform</dt><dd><p>All bins in each feature have identical widths.</p>
 </dd>
@@ -216,10 +216,10 @@ supported.</p>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>n_bins_</strong><span class="classifier">int array, shape (n_features,)</span></dt><dd><p>Number of bins per feature. Bins whose width are too small
+<dt><strong>n_bins_</strong><span class="classifier">ndarray of shape (n_features,), dtype=np.int_</span></dt><dd><p>Number of bins per feature. Bins whose width are too small
 (i.e., &lt;= 1e-8) are removed with a warning.</p>
 </dd>
-<dt><strong>bin_edges_</strong><span class="classifier">array of arrays, shape (n_features, )</span></dt><dd><p>The edges of each bin. Contain arrays of varying shapes <code class="docutils literal notranslate"><span class="pre">(n_bins_,</span> <span class="pre">)</span></code>
+<dt><strong>bin_edges_</strong><span class="classifier">ndarray of ndarray of shape (n_features,)</span></dt><dd><p>The edges of each bin. Contain arrays of varying shapes <code class="docutils literal notranslate"><span class="pre">(n_bins_,</span> <span class="pre">)</span></code>
 Ignored features will have empty arrays.</p>
 </dd>
 </dl>
@@ -308,7 +308,7 @@ of the two bin edges.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">numeric array-like, shape (n_samples, n_features)</span></dt><dd><p>Data to be discretized.</p>
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features), dtype={int, float}</span></dt><dd><p>Data to be discretized.</p>
 </dd>
 <dt><strong>y</strong><span class="classifier">None</span></dt><dd><p>Ignored. This parameter exists only for compatibility with
 <a class="reference internal" href="sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>.</p>
@@ -372,20 +372,20 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt id="sklearn.preprocessing.KBinsDiscretizer.inverse_transform">
-<code class="sig-name descname">inverse_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Xt</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2e083df41/sklearn/preprocessing/_discretization.py#L322"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.KBinsDiscretizer.inverse_transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">inverse_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Xt</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/2e083df41/sklearn/preprocessing/_discretization.py#L323"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.preprocessing.KBinsDiscretizer.inverse_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform discretized data back to original feature space.</p>
 <p>Note that this function does not regenerate the original data
 due to discretization rounding.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>Xt</strong><span class="classifier">numeric array-like, shape (n_sample, n_features)</span></dt><dd><p>Transformed data in the binned space.</p>
+<dt><strong>Xt</strong><span class="classifier">array-like of shape (n_samples, n_features), dtype={int, float}</span></dt><dd><p>Transformed data in the binned space.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>Xinv</strong><span class="classifier">numeric array-like</span></dt><dd><p>Data in the original feature space.</p>
+<dt><strong>Xinv</strong><span class="classifier">ndarray, dtype={np.float32, np.float64}</span></dt><dd><p>Data in the original feature space.</p>
 </dd>
 </dl>
 </dd>
@@ -423,13 +423,14 @@ possible to update each component of a nested object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">numeric array-like, shape (n_samples, n_features)</span></dt><dd><p>Data to be discretized.</p>
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features), dtype={int, float}</span></dt><dd><p>Data to be discretized.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>Xt</strong><span class="classifier">numeric array-like or sparse matrix</span></dt><dd><p>Data in the binned space.</p>
+<dt><strong>Xt</strong><span class="classifier">{ndarray, sparse matrix}, dtype={np.float32, np.float64}</span></dt><dd><p>Data in the binned space. Will be a sparse matrix if
+<code class="docutils literal notranslate"><span class="pre">self.encode='onehot'</span></code> and ndarray otherwise.</p>
 </dd>
 </dl>
 </dd>
