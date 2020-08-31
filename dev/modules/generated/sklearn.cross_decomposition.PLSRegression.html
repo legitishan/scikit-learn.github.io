@@ -172,12 +172,10 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.cross_decomposition" title="sklearn.cross_decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.cross_decomposition</span></code></a>.PLSRegression<a class="headerlink" href="#sklearn-cross-decomposition-plsregression" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="sklearn.cross_decomposition.PLSRegression">
-<em class="property">class </em><code class="sig-prename descclassname">sklearn.cross_decomposition.</code><code class="sig-name descname">PLSRegression</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9007dc237/sklearn/cross_decomposition/_pls.py#L530"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cross_decomposition.PLSRegression" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sklearn.cross_decomposition.</code><code class="sig-name descname">PLSRegression</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8061aace1/sklearn/cross_decomposition/_pls.py#L444"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cross_decomposition.PLSRegression" title="Permalink to this definition">¶</a></dt>
 <dd><p>PLS regression</p>
-<p>PLSRegression implements the PLS 2 blocks regression known as PLS2 or PLS1
-in case of one dimensional response.
-This class inherits from _PLS with mode=”A”, deflation_mode=”regression”,
-norm_y_weights=False and algorithm=”nipals”.</p>
+<p>PLSRegression is also known as PLS2 or PLS1, depending on the number of
+targets.</p>
 <p>Read more in the <a class="reference internal" href="../cross_decomposition.html#cross-decomposition"><span class="std std-ref">User Guide</span></a>.</p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.8.</span></p>
@@ -185,100 +183,57 @@ norm_y_weights=False and algorithm=”nipals”.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>n_components</strong><span class="classifier">int, default=2</span></dt><dd><p>Number of components to keep.</p>
+<dt><strong>n_components</strong><span class="classifier">int, default=2</span></dt><dd><p>Number of components to keep. Should be in <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">min(n_samples,</span>
+<span class="pre">n_features,</span> <span class="pre">n_targets)]</span></code>.</p>
 </dd>
-<dt><strong>scale</strong><span class="classifier">boolean, default=True</span></dt><dd><p>whether to scale the data</p>
+<dt><strong>scale</strong><span class="classifier">bool, default=True</span></dt><dd><p>Whether to scale <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">Y</span></code>.</p>
 </dd>
-<dt><strong>max_iter</strong><span class="classifier">int, default=500</span></dt><dd><p>the maximum number of iterations of the NIPALS inner loop (used
-only if algorithm=”nipals”)</p>
+<dt><strong>algorithm</strong><span class="classifier">{‘nipals’, ‘svd’}, default=’nipals’</span></dt><dd><p>The algorithm used to estimate the first singular vectors of the
+cross-covariance matrix. ‘nipals’ uses the power method while ‘svd’
+will compute the whole SVD.</p>
 </dd>
-<dt><strong>tol</strong><span class="classifier">non-negative real, default=1e-06</span></dt><dd><p>Tolerance used in the iterative algorithm default 1e-06.</p>
+<dt><strong>max_iter</strong><span class="classifier">int, default=500</span></dt><dd><p>the maximum number of iterations of the power method when
+<code class="docutils literal notranslate"><span class="pre">algorithm='nipals'</span></code>. Ignored otherwise.</p>
 </dd>
-<dt><strong>copy</strong><span class="classifier">boolean, default=True</span></dt><dd><p>Whether the deflation should be done on a copy. Let the default
-value to True unless you don’t care about side effect</p>
+<dt><strong>tol</strong><span class="classifier">real, default 1e-06</span></dt><dd><p>The tolerance used as convergence criteria in the power method: the
+algorithm stops whenever the squared norm of <code class="docutils literal notranslate"><span class="pre">u_i</span> <span class="pre">-</span> <span class="pre">u_{i-1}</span></code> is less
+than <code class="docutils literal notranslate"><span class="pre">tol</span></code>, where <code class="docutils literal notranslate"><span class="pre">u</span></code> corresponds to the left singular vector.</p>
+</dd>
+<dt><strong>copy</strong><span class="classifier">bool, default=True</span></dt><dd><p>Whether to copy <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">Y</span></code> in fit before applying centering, and
+potentially scaling. If False, these operations will be done inplace,
+modifying both arrays.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>x_weights_</strong><span class="classifier">ndarray of shape (p, n_components)</span></dt><dd><p>X block weights vectors.</p>
+<dt><strong>x_weights_</strong><span class="classifier">ndarray of shape (n_features, n_components)</span></dt><dd><p>The left singular vectors of the cross-covariance matrices of each
+iteration.</p>
 </dd>
-<dt><strong>y_weights_</strong><span class="classifier">ndarray of shape (q, n_components)</span></dt><dd><p>Y block weights vectors.</p>
+<dt><strong>y_weights_</strong><span class="classifier">ndarray of shape (n_targets, n_components)</span></dt><dd><p>The right singular vectors of the cross-covariance matrices of each
+iteration.</p>
 </dd>
-<dt><strong>x_loadings_</strong><span class="classifier">ndarray of shape (p, n_components)</span></dt><dd><p>X block loadings vectors.</p>
+<dt><strong>x_loadings_</strong><span class="classifier">ndarray of shape (n_features, n_components)</span></dt><dd><p>The loadings of <code class="docutils literal notranslate"><span class="pre">X</span></code>.</p>
 </dd>
-<dt><strong>y_loadings_</strong><span class="classifier">ndarray of shape (q, n_components)</span></dt><dd><p>Y block loadings vectors.</p>
+<dt><strong>y_loadings_</strong><span class="classifier">ndarray of shape (n_targets, n_components)</span></dt><dd><p>The loadings of <code class="docutils literal notranslate"><span class="pre">Y</span></code>.</p>
 </dd>
-<dt><strong>x_scores_</strong><span class="classifier">ndarray of shape (n_samples, n_components)</span></dt><dd><p>X scores.</p>
+<dt><strong>x_scores_</strong><span class="classifier">ndarray of shape (n_samples, n_components)</span></dt><dd><p>The transformed training samples.</p>
 </dd>
-<dt><strong>y_scores_</strong><span class="classifier">ndarray of shape (n_samples, n_components)</span></dt><dd><p>Y scores.</p>
+<dt><strong>y_scores_</strong><span class="classifier">ndarray of shape (n_samples, n_components)</span></dt><dd><p>The transformed training targets.</p>
 </dd>
-<dt><strong>x_rotations_</strong><span class="classifier">ndarray of shape (p, n_components)</span></dt><dd><p>X block to latents rotations.</p>
+<dt><strong>x_rotations_</strong><span class="classifier">ndarray of shape (n_features, n_components)</span></dt><dd><p>The projection matrix used to transform <code class="docutils literal notranslate"><span class="pre">X</span></code>.</p>
 </dd>
-<dt><strong>y_rotations_</strong><span class="classifier">ndarray of shape (q, n_components)</span></dt><dd><p>Y block to latents rotations.</p>
+<dt><strong>y_rotations_</strong><span class="classifier">ndarray of shape (n_features, n_components)</span></dt><dd><p>The projection matrix used to transform <code class="docutils literal notranslate"><span class="pre">Y</span></code>.</p>
 </dd>
-<dt><strong>x_mean_</strong><span class="classifier">ndarray of shape (p,)</span></dt><dd><p>X mean for each predictor.</p>
+<dt><strong>coef_</strong><span class="classifier">ndarray of shape (n_features, n_targets)</span></dt><dd><p>The coefficients of the linear model such that <code class="docutils literal notranslate"><span class="pre">Y</span></code> is approximated as
+<code class="docutils literal notranslate"><span class="pre">Y</span> <span class="pre">=</span> <span class="pre">X</span> <span class="pre">&#64;</span> <span class="pre">coef_</span></code>.</p>
 </dd>
-<dt><strong>y_mean_</strong><span class="classifier">ndarray of shape (q,)</span></dt><dd><p>Y mean for each response variable.</p>
-</dd>
-<dt><strong>x_std_</strong><span class="classifier">ndarray of shape (p,)</span></dt><dd><p>X standard deviation for each predictor.</p>
-</dd>
-<dt><strong>y_std_</strong><span class="classifier">ndarray of shape (q,)</span></dt><dd><p>Y standard deviation for each response variable.</p>
-</dd>
-<dt><strong>coef_</strong><span class="classifier">ndarray of shape (p, q)</span></dt><dd><p>The coefficients of the linear model: <code class="docutils literal notranslate"><span class="pre">Y</span> <span class="pre">=</span> <span class="pre">X</span> <span class="pre">coef_</span> <span class="pre">+</span> <span class="pre">Err</span></code></p>
-</dd>
-<dt><strong>n_iter_</strong><span class="classifier">ndarray of shape (n_components,)</span></dt><dd><p>Number of iterations of the NIPALS inner loop for each
-component.</p>
+<dt><strong>n_iter_</strong><span class="classifier">list of shape (n_components,)</span></dt><dd><p>Number of iterations of the power method, for each
+component. Empty if <code class="docutils literal notranslate"><span class="pre">algorithm='svd'</span></code>.</p>
 </dd>
 </dl>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>Matrices:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">T</span><span class="p">:</span> <span class="n">x_scores_</span>
-<span class="n">U</span><span class="p">:</span> <span class="n">y_scores_</span>
-<span class="n">W</span><span class="p">:</span> <span class="n">x_weights_</span>
-<span class="n">C</span><span class="p">:</span> <span class="n">y_weights_</span>
-<span class="n">P</span><span class="p">:</span> <span class="n">x_loadings_</span>
-<span class="n">Q</span><span class="p">:</span> <span class="n">y_loadings_</span>
-</pre></div>
-</div>
-<p>Are computed such that:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">T</span> <span class="n">P</span><span class="o">.</span><span class="n">T</span> <span class="o">+</span> <span class="n">Err</span> <span class="ow">and</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">U</span> <span class="n">Q</span><span class="o">.</span><span class="n">T</span> <span class="o">+</span> <span class="n">Err</span>
-<span class="n">T</span><span class="p">[:,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">Xk</span> <span class="n">W</span><span class="p">[:,</span> <span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_components</span><span class="p">)</span>
-<span class="n">U</span><span class="p">[:,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">Yk</span> <span class="n">C</span><span class="p">[:,</span> <span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_components</span><span class="p">)</span>
-<span class="n">x_rotations_</span> <span class="o">=</span> <span class="n">W</span> <span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">T</span> <span class="n">W</span><span class="p">)</span><span class="o">^</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">y_rotations_</span> <span class="o">=</span> <span class="n">C</span> <span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">T</span> <span class="n">C</span><span class="p">)</span><span class="o">^</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>where Xk and Yk are residual matrices at iteration k.</p>
-<p><a class="reference external" href="http://www.eigenvector.com/Docs/Wise_pls_properties.pdf">Slides explaining
-PLS</a></p>
-<p>For each component k, find weights u, v that optimizes:
-<code class="docutils literal notranslate"><span class="pre">max</span> <span class="pre">corr(Xk</span> <span class="pre">u,</span> <span class="pre">Yk</span> <span class="pre">v)</span> <span class="pre">*</span> <span class="pre">std(Xk</span> <span class="pre">u)</span> <span class="pre">std(Yk</span> <span class="pre">u)</span></code>, such that <code class="docutils literal notranslate"><span class="pre">|u|</span> <span class="pre">=</span> <span class="pre">1</span></code></p>
-<p>Note that it maximizes both the correlations between the scores and the
-intra-block variances.</p>
-<p>The residual matrix of X (Xk+1) block is obtained by the deflation on
-the current X score: x_score.</p>
-<p>The residual matrix of Y (Yk+1) block is obtained by deflation on the
-current X score. This performs the PLS regression known as PLS2. This
-mode is prediction oriented.</p>
-<p>This implementation provides the same results that 3 PLS packages
-provided in the R language (R-project):</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>“mixOmics” with function pls(X, Y, mode = “regression”)</p></li>
-<li><p>“plspm ” with function plsreg2(X, Y)</p></li>
-<li><p>“pls” with function oscorespls.fit(X, Y)</p></li>
-</ul>
-</div></blockquote>
-<p class="rubric">References</p>
-<p>Jacob A. Wegelin. A survey of Partial Least Squares (PLS) methods, with
-emphasis on the two-block case. Technical Report 371, Department of
-Statistics, University of Washington, Seattle, 2000.</p>
-<p>In french but still a reference:
-Tenenhaus, M. (1998). La regression PLS: theorie et pratique. Paris:
-Editions Technic.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.cross_decomposition</span> <span class="kn">import</span> <span class="n">PLSRegression</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.</span><span class="p">,</span><span class="mf">2.</span><span class="p">,</span><span class="mf">2.</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.</span><span class="p">,</span><span class="mf">5.</span><span class="p">,</span><span class="mf">4.</span><span class="p">]]</span>
@@ -309,7 +264,7 @@ Editions Technic.</p>
 <td><p>Transform data back to its original space.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sklearn.cross_decomposition.PLSRegression.predict" title="sklearn.cross_decomposition.PLSRegression.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X[, copy])</p></td>
-<td><p>Apply the dimension reduction learned on the train data.</p></td>
+<td><p>Predict targets of given samples</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sklearn.cross_decomposition.PLSRegression.score" title="sklearn.cross_decomposition.PLSRegression.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(X, y[, sample_weight])</p></td>
 <td><p>Return the coefficient of determination <span class="math notranslate nohighlight">\(R^2\)</span> of the prediction.</p></td>
@@ -318,13 +273,13 @@ Editions Technic.</p>
 <td><p>Set the parameters of this estimator.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sklearn.cross_decomposition.PLSRegression.transform" title="sklearn.cross_decomposition.PLSRegression.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X[, Y, copy])</p></td>
-<td><p>Apply the dimension reduction learned on the train data.</p></td>
+<td><p>Apply the dimension reduction</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py method">
 <dt id="sklearn.cross_decomposition.PLSRegression.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">Y</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9007dc237/sklearn/cross_decomposition/_pls.py#L270"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cross_decomposition.PLSRegression.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">Y</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8061aace1/sklearn/cross_decomposition/_pls.py#L154"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cross_decomposition.PLSRegression.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit model to data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -332,7 +287,7 @@ Editions Technic.</p>
 <dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Training vectors, where n_samples is the number of samples and
 n_features is the number of predictors.</p>
 </dd>
-<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples, n_targets)</span></dt><dd><p>Target vectors, where n_samples is the number of samples and
+<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples,) or (n_samples, n_targets)</span></dt><dd><p>Target vectors, where n_samples is the number of samples and
 n_targets is the number of response variables.</p>
 </dd>
 </dl>
@@ -342,7 +297,7 @@ n_targets is the number of response variables.</p>
 
 <dl class="py method">
 <dt id="sklearn.cross_decomposition.PLSRegression.fit_transform">
-<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9007dc237/sklearn/cross_decomposition/_pls.py#L506"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cross_decomposition.PLSRegression.fit_transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8061aace1/sklearn/cross_decomposition/_pls.py#L387"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cross_decomposition.PLSRegression.fit_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Learn and apply the dimension reduction on the train data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -365,7 +320,7 @@ n_targets is the number of response variables.</p>
 
 <dl class="py method">
 <dt id="sklearn.cross_decomposition.PLSRegression.get_params">
-<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9007dc237/sklearn/base.py#L186"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cross_decomposition.PLSRegression.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8061aace1/sklearn/base.py#L186"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cross_decomposition.PLSRegression.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -386,7 +341,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt id="sklearn.cross_decomposition.PLSRegression.inverse_transform">
-<code class="sig-name descname">inverse_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9007dc237/sklearn/cross_decomposition/_pls.py#L454"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cross_decomposition.PLSRegression.inverse_transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">inverse_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8061aace1/sklearn/cross_decomposition/_pls.py#L336"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cross_decomposition.PLSRegression.inverse_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform data back to its original space.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -408,15 +363,14 @@ and n_components is the number of pls components.</p>
 
 <dl class="py method">
 <dt id="sklearn.cross_decomposition.PLSRegression.predict">
-<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">copy</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9007dc237/sklearn/cross_decomposition/_pls.py#L481"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cross_decomposition.PLSRegression.predict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Apply the dimension reduction learned on the train data.</p>
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">copy</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8061aace1/sklearn/cross_decomposition/_pls.py#L363"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cross_decomposition.PLSRegression.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predict targets of given samples</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Training vectors, where n_samples is the number of samples and
-n_features is the number of predictors.</p>
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Samples</p>
 </dd>
-<dt><strong>copy</strong><span class="classifier">boolean, default=True</span></dt><dd><p>Whether to copy X and Y, or perform in-place normalization.</p>
+<dt><strong>copy</strong><span class="classifier">bool, default=True</span></dt><dd><p>Whether to copy X and Y, or perform in-place normalization.</p>
 </dd>
 </dl>
 </dd>
@@ -428,7 +382,7 @@ be an issue in high dimensional space.</p>
 
 <dl class="py method">
 <dt id="sklearn.cross_decomposition.PLSRegression.score">
-<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9007dc237/sklearn/base.py#L506"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cross_decomposition.PLSRegression.score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8061aace1/sklearn/base.py#L506"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cross_decomposition.PLSRegression.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the coefficient of determination <span class="math notranslate nohighlight">\(R^2\)</span> of the
 prediction.</p>
 <p>The coefficient <span class="math notranslate nohighlight">\(R^2\)</span> is defined as <span class="math notranslate nohighlight">\((1 - \frac{u}{v})\)</span>,
@@ -471,7 +425,7 @@ regressors (except for
 
 <dl class="py method">
 <dt id="sklearn.cross_decomposition.PLSRegression.set_params">
-<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9007dc237/sklearn/base.py#L218"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cross_decomposition.PLSRegression.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8061aace1/sklearn/base.py#L218"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cross_decomposition.PLSRegression.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as <a class="reference internal" href="sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>). The latter have
@@ -495,18 +449,16 @@ possible to update each component of a nested object.</p>
 
 <dl class="py method">
 <dt id="sklearn.cross_decomposition.PLSRegression.transform">
-<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">Y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">copy</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9007dc237/sklearn/cross_decomposition/_pls.py#L416"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cross_decomposition.PLSRegression.transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Apply the dimension reduction learned on the train data.</p>
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">Y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">copy</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8061aace1/sklearn/cross_decomposition/_pls.py#L300"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cross_decomposition.PLSRegression.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply the dimension reduction</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Training vectors, where n_samples is the number of samples and
-n_features is the number of predictors.</p>
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Samples to transform</p>
 </dd>
-<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples, n_targets), default=None</span></dt><dd><p>Target vectors, where n_samples is the number of samples and
-n_targets is the number of response variables.</p>
+<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples, n_targets), default=None</span></dt><dd><p>Target vectors</p>
 </dd>
-<dt><strong>copy</strong><span class="classifier">boolean, default=True</span></dt><dd><p>Whether to copy X and Y, or perform in-place normalization.</p>
+<dt><strong>copy</strong><span class="classifier">bool, default=True</span></dt><dd><p>Whether to copy X and Y, or perform in-place normalization.</p>
 </dd>
 </dl>
 </dd>
