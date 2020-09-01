@@ -182,7 +182,12 @@
 <li><a class="reference internal" href="#log-loss">3.3.2.11. Log loss</a></li>
 <li><a class="reference internal" href="#matthews-correlation-coefficient">3.3.2.12. Matthews correlation coefficient</a></li>
 <li><a class="reference internal" href="#multi-label-confusion-matrix">3.3.2.13. Multi-label confusion matrix</a></li>
-<li><a class="reference internal" href="#receiver-operating-characteristic-roc">3.3.2.14. Receiver operating characteristic (ROC)</a></li>
+<li><a class="reference internal" href="#receiver-operating-characteristic-roc">3.3.2.14. Receiver operating characteristic (ROC)</a><ul>
+<li><a class="reference internal" href="#binary-case">3.3.2.14.1. Binary case</a></li>
+<li><a class="reference internal" href="#multi-class-case">3.3.2.14.2. Multi-class case</a></li>
+<li><a class="reference internal" href="#multi-label-case">3.3.2.14.3. Multi-label case</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#detection-error-tradeoff-det">3.3.2.15. Detection error tradeoff (DET)</a></li>
 <li><a class="reference internal" href="#zero-one-loss">3.3.2.16. Zero one loss</a></li>
 <li><a class="reference internal" href="#brier-score-loss">3.3.2.17. Brier score loss</a></li>
@@ -1647,20 +1652,42 @@ operating characteristic (ROC) curve, which is also denoted by
 AUC or AUROC.  By computing the
 area under the roc curve, the curve information is summarized in one number.
 For more information see the <a class="reference external" href="https://en.wikipedia.org/wiki/Receiver_operating_characteristic#Area_under_the_curve">Wikipedia article on AUC</a>.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">roc_auc_score</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y_scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_scores</span><span class="p">)</span>
-<span class="go">0.75</span>
-</pre></div>
-</div>
-<p>In multi-label classification, the <a class="reference internal" href="generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score" title="sklearn.metrics.roc_auc_score"><code class="xref py py-func docutils literal notranslate"><span class="pre">roc_auc_score</span></code></a> function is
-extended by averaging over the labels as <a class="reference internal" href="#average"><span class="std std-ref">above</span></a>.</p>
 <p>Compared to metrics such as the subset accuracy, the Hamming loss, or the
 F1 score, ROC doesn’t require optimizing a threshold for each label.</p>
-<p>The <a class="reference internal" href="generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score" title="sklearn.metrics.roc_auc_score"><code class="xref py py-func docutils literal notranslate"><span class="pre">roc_auc_score</span></code></a> function can also be used in multi-class
-classification. Two averaging strategies are currently supported: the
+<div class="section" id="binary-case">
+<span id="roc-auc-binary"></span><h4><span class="section-number">3.3.2.14.1. </span>Binary case<a class="headerlink" href="#binary-case" title="Permalink to this headline">¶</a></h4>
+<p>In the <strong>binary case</strong>, you can either provide the probability estimates, using
+the <code class="docutils literal notranslate"><span class="pre">classifier.predict_proba()</span></code> method, or the non-thresholded decision values
+given by the <code class="docutils literal notranslate"><span class="pre">classifier.decision_function()</span></code> method. In the case of providing
+the probability estimates, the probability of the class with the
+“greater label” should be provided. The “greater label” corresponds to
+<code class="docutils literal notranslate"><span class="pre">classifier.classes_[1]</span></code> and thus <code class="docutils literal notranslate"><span class="pre">classifier.predict_proba(X)[:,</span> <span class="pre">1]</span></code>.
+Therefore, the <code class="docutils literal notranslate"><span class="pre">y_score</span></code> parameter is of size (n_samples,).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_breast_cancer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">roc_auc_score</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_breast_cancer</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">solver</span><span class="o">=</span><span class="s2">&quot;liblinear&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">classes_</span>
+<span class="go">array([0, 1])</span>
+</pre></div>
+</div>
+<p>We can use the probability estimates corresponding to <code class="docutils literal notranslate"><span class="pre">clf.classes_[1]</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y_score</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_score</span><span class="p">)</span>
+<span class="go">0.99...</span>
+</pre></div>
+</div>
+<p>Otherwise, we can use the non-thresholded decision values</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">clf</span><span class="o">.</span><span class="n">decision_function</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+<span class="go">0.99...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="multi-class-case">
+<span id="roc-auc-multiclass"></span><h4><span class="section-number">3.3.2.14.2. </span>Multi-class case<a class="headerlink" href="#multi-class-case" title="Permalink to this headline">¶</a></h4>
+<p>The <a class="reference internal" href="generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score" title="sklearn.metrics.roc_auc_score"><code class="xref py py-func docutils literal notranslate"><span class="pre">roc_auc_score</span></code></a> function can also be used in <strong>multi-class
+classification</strong>. Two averaging strategies are currently supported: the
 one-vs-one algorithm computes the average of the pairwise ROC AUC scores, and
 the one-vs-rest algorithm computes the average of the ROC AUC scores for each
 class against all other classes. In both cases, the predicted labels are
@@ -1698,6 +1725,32 @@ Like OvO, OvR supports two types of averaging: <code class="docutils literal not
 <code class="docutils literal notranslate"><span class="pre">max_fpr</span></code> of <a class="reference internal" href="generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score" title="sklearn.metrics.roc_auc_score"><code class="xref py py-func docutils literal notranslate"><span class="pre">roc_auc_score</span></code></a> can be used to summarize the ROC curve up
 to the given limit.</p>
 <a class="reference external image-reference" href="../auto_examples/model_selection/plot_roc.html"><img alt="../_images/sphx_glr_plot_roc_0021.png" class="align-center" src="../_images/sphx_glr_plot_roc_0021.png" style="width: 480.0px; height: 360.0px;" /></a>
+</div>
+<div class="section" id="multi-label-case">
+<span id="roc-auc-multilabel"></span><h4><span class="section-number">3.3.2.14.3. </span>Multi-label case<a class="headerlink" href="#multi-label-case" title="Permalink to this headline">¶</a></h4>
+<p>In <strong>multi-label classification</strong>, the <a class="reference internal" href="generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score" title="sklearn.metrics.roc_auc_score"><code class="xref py py-func docutils literal notranslate"><span class="pre">roc_auc_score</span></code></a> function is
+extended by averaging over the labels as <a class="reference internal" href="#average"><span class="std std-ref">above</span></a>. In this case,
+you should provide a <code class="docutils literal notranslate"><span class="pre">y_score</span></code> of shape <code class="docutils literal notranslate"><span class="pre">(n_samples,</span> <span class="pre">n_classes)</span></code>. Thus, when
+using the probability estimates, one needs to select the probability of the
+class with the greater label for each output.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_multilabel_classification</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.multioutput</span> <span class="kn">import</span> <span class="n">MultiOutputClassifier</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_multilabel_classification</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inner_clf</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">solver</span><span class="o">=</span><span class="s2">&quot;liblinear&quot;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">MultiOutputClassifier</span><span class="p">(</span><span class="n">inner_clf</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_score</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">([</span><span class="n">y_pred</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">y_pred</span> <span class="ow">in</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_score</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="go">array([0.82..., 0.86..., 0.94..., 0.85... , 0.94...])</span>
+</pre></div>
+</div>
+<p>And the decision values do not require such processing.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">RidgeClassifierCV</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">RidgeClassifierCV</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_score</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">decision_function</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_score</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="go">array([0.81..., 0.84... , 0.93..., 0.87..., 0.94...])</span>
+</pre></div>
+</div>
 <div class="topic">
 <p class="topic-title">Examples:</p>
 <ul class="simple">
@@ -1741,6 +1794,7 @@ In Data Mining, 2001.
 Proceedings IEEE International Conference, pp. 131-138.</p>
 </dd>
 </dl>
+</div>
 </div>
 </div>
 <div class="section" id="detection-error-tradeoff-det">
