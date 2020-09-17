@@ -157,7 +157,11 @@
             <div class="sk-sidebar-toc">
               <ul>
 <li><a class="reference internal" href="#">6.9. Transforming the prediction target (<code class="docutils literal notranslate"><span class="pre">y</span></code>)</a><ul>
-<li><a class="reference internal" href="#label-binarization">6.9.1. Label binarization</a></li>
+<li><a class="reference internal" href="#label-binarization">6.9.1. Label binarization</a><ul>
+<li><a class="reference internal" href="#labelbinarizer">6.9.1.1. LabelBinarizer</a></li>
+<li><a class="reference internal" href="#multilabelbinarizer">6.9.1.2. MultiLabelBinarizer</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#label-encoding">6.9.2. Label encoding</a></li>
 </ul>
 </li>
@@ -177,8 +181,10 @@ you want to transform the prediction target for learning, but evaluate the
 model in the original (untransformed) space.</p>
 <div class="section" id="label-binarization">
 <h2><span class="section-number">6.9.1. </span>Label binarization<a class="headerlink" href="#label-binarization" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference internal" href="generated/sklearn.preprocessing.LabelBinarizer.html#sklearn.preprocessing.LabelBinarizer" title="sklearn.preprocessing.LabelBinarizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">LabelBinarizer</span></code></a> is a utility class to help create a label indicator
-matrix from a list of multi-class labels:</p>
+<div class="section" id="labelbinarizer">
+<h3><span class="section-number">6.9.1.1. </span>LabelBinarizer<a class="headerlink" href="#labelbinarizer" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="generated/sklearn.preprocessing.LabelBinarizer.html#sklearn.preprocessing.LabelBinarizer" title="sklearn.preprocessing.LabelBinarizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">LabelBinarizer</span></code></a> is a utility class to help create a <a class="reference internal" href="../glossary.html#term-label-indicator-matrix"><span class="xref std std-term">label
+indicator matrix</span></a> from a list of <a class="reference internal" href="../glossary.html#term-multiclass"><span class="xref std std-term">multiclass</span></a> labels:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">lb</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">LabelBinarizer</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">lb</span><span class="o">.</span><span class="n">fit</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
@@ -190,14 +196,41 @@ matrix from a list of multi-class labels:</p>
 <span class="go">       [0, 0, 0, 1]])</span>
 </pre></div>
 </div>
-<p>For multiple labels per instance, use <a class="reference internal" href="generated/sklearn.preprocessing.MultiLabelBinarizer.html#sklearn.preprocessing.MultiLabelBinarizer" title="sklearn.preprocessing.MultiLabelBinarizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiLabelBinarizer</span></code></a>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lb</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">MultiLabelBinarizer</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lb</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)])</span>
-<span class="go">array([[1, 1, 0],</span>
-<span class="go">       [0, 0, 1]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lb</span><span class="o">.</span><span class="n">classes_</span>
-<span class="go">array([1, 2, 3])</span>
+<p>Using this format can enable multiclass classification in estimators
+that support the label indicator matrix format.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>LabelBinarizer is not needed if you are using an estimator that
+already supports <a class="reference internal" href="../glossary.html#term-multiclass"><span class="xref std std-term">multiclass</span></a> data.</p>
+</div>
+<p>For more information about multiclass classification, refer to
+<a class="reference internal" href="multiclass.html#multiclass-classification"><span class="std std-ref">Multiclass classification</span></a>.</p>
+</div>
+<div class="section" id="multilabelbinarizer">
+<h3><span class="section-number">6.9.1.2. </span>MultiLabelBinarizer<a class="headerlink" href="#multilabelbinarizer" title="Permalink to this headline">¶</a></h3>
+<p>In <a class="reference internal" href="../glossary.html#term-multilabel"><span class="xref std std-term">multilabel</span></a> learning, the joint set of binary classification tasks is
+expressed with a label binary indicator array: each sample is one row of a 2d
+array of shape (n_samples, n_classes) with binary values where the one, i.e. the
+non zero elements, corresponds to the subset of labels for that sample. An array
+such as <code class="docutils literal notranslate"><span class="pre">np.array([[1,</span> <span class="pre">0,</span> <span class="pre">0],</span> <span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">1],</span> <span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]])</span></code> represents label 0 in the
+first sample, labels 1 and 2 in the second sample, and no labels in the third
+sample.</p>
+<p>Producing multilabel data as a list of sets of labels may be more intuitive.
+The <a class="reference internal" href="generated/sklearn.preprocessing.MultiLabelBinarizer.html#sklearn.preprocessing.MultiLabelBinarizer" title="sklearn.preprocessing.MultiLabelBinarizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiLabelBinarizer</span></code></a>
+transformer can be used to convert between a collection of collections of
+labels and the indicator format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MultiLabelBinarizer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">MultiLabelBinarizer</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="go">array([[0, 0, 1, 1, 1],</span>
+<span class="go">       [0, 0, 1, 0, 0],</span>
+<span class="go">       [1, 1, 0, 1, 0],</span>
+<span class="go">       [1, 1, 1, 1, 1],</span>
+<span class="go">       [1, 1, 1, 0, 0]])</span>
 </pre></div>
+</div>
+<p>For more information about multilabel classification, refer to
+<a class="reference internal" href="multiclass.html#multilabel-classification"><span class="std std-ref">Multilabel classification</span></a>.</p>
 </div>
 </div>
 <div class="section" id="label-encoding">

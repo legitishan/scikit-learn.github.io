@@ -9,7 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   
-  <title>1.12. Multiclass and multilabel algorithms &mdash; scikit-learn 0.24.dev0 documentation</title>
+  <title>1.12. Multiclass and multioutput algorithms &mdash; scikit-learn 0.24.dev0 documentation</title>
   
   <link rel="canonical" href="http://scikit-learn.org/stable/modules/multiclass.html" />
 
@@ -156,25 +156,30 @@
         </div>
             <div class="sk-sidebar-toc">
               <ul>
-<li><a class="reference internal" href="#">1.12. Multiclass and multilabel algorithms</a><ul>
-<li><a class="reference internal" href="#multilabel-classification-format">1.12.1. Multilabel classification format</a></li>
-<li><a class="reference internal" href="#one-vs-the-rest">1.12.2. One-Vs-The-Rest</a><ul>
-<li><a class="reference internal" href="#multiclass-learning">1.12.2.1. Multiclass learning</a></li>
-<li><a class="reference internal" href="#multilabel-learning">1.12.2.2. Multilabel learning</a></li>
+<li><a class="reference internal" href="#">1.12. Multiclass and multioutput algorithms</a><ul>
+<li><a class="reference internal" href="#multiclass-classification">1.12.1. Multiclass classification</a><ul>
+<li><a class="reference internal" href="#target-format">1.12.1.1. Target format</a></li>
+<li><a class="reference internal" href="#onevsrestclassifier">1.12.1.2. OneVsRestClassifier</a></li>
+<li><a class="reference internal" href="#onevsoneclassifier">1.12.1.3. OneVsOneClassifier</a></li>
+<li><a class="reference internal" href="#outputcodeclassifier">1.12.1.4. OutputCodeClassifier</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#one-vs-one">1.12.3. One-Vs-One</a><ul>
-<li><a class="reference internal" href="#id1">1.12.3.1. Multiclass learning</a></li>
+<li><a class="reference internal" href="#multilabel-classification">1.12.2. Multilabel classification</a><ul>
+<li><a class="reference internal" href="#id5">1.12.2.1. Target format</a></li>
+<li><a class="reference internal" href="#multioutputclassifier">1.12.2.2. MultiOutputClassifier</a></li>
+<li><a class="reference internal" href="#classifierchain">1.12.2.3. ClassifierChain</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#error-correcting-output-codes">1.12.4. Error-Correcting Output-Codes</a><ul>
-<li><a class="reference internal" href="#id3">1.12.4.1. Multiclass learning</a></li>
+<li><a class="reference internal" href="#multiclass-multioutput-classification">1.12.3. Multiclass-multioutput classification</a><ul>
+<li><a class="reference internal" href="#id8">1.12.3.1. Target format</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#multioutput-regression">1.12.5. Multioutput regression</a></li>
-<li><a class="reference internal" href="#multioutput-classification">1.12.6. Multioutput classification</a></li>
-<li><a class="reference internal" href="#classifier-chain">1.12.7. Classifier Chain</a></li>
-<li><a class="reference internal" href="#regressor-chain">1.12.8. Regressor Chain</a></li>
+<li><a class="reference internal" href="#multioutput-regression">1.12.4. Multioutput regression</a><ul>
+<li><a class="reference internal" href="#id10">1.12.4.1. Target format</a></li>
+<li><a class="reference internal" href="#multioutputregressor">1.12.4.2. MultiOutputRegressor</a></li>
+<li><a class="reference internal" href="#regressorchain">1.12.4.3. RegressorChain</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -185,167 +190,37 @@
     <div id="sk-page-content-wrapper">
       <div class="sk-page-content container-fluid body px-md-3" role="main">
         
-  <div class="section" id="multiclass-and-multilabel-algorithms">
-<span id="multiclass"></span><h1><span class="section-number">1.12. </span>Multiclass and multilabel algorithms<a class="headerlink" href="#multiclass-and-multilabel-algorithms" title="Permalink to this headline">¶</a></h1>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>All classifiers in scikit-learn do multiclass classification
-out-of-the-box. You don’t need to use the <a class="reference internal" href="classes.html#module-sklearn.multiclass" title="sklearn.multiclass"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.multiclass</span></code></a> module
-unless you want to experiment with different multiclass strategies.</p>
-</div>
-<p>The <a class="reference internal" href="classes.html#module-sklearn.multiclass" title="sklearn.multiclass"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.multiclass</span></code></a> module implements <em>meta-estimators</em> to solve
-<code class="docutils literal notranslate"><span class="pre">multiclass</span></code> and <code class="docutils literal notranslate"><span class="pre">multilabel</span></code> classification problems
-by decomposing such problems into binary classification problems. <code class="docutils literal notranslate"><span class="pre">multioutput</span></code>
-regression is also supported.</p>
-<ul>
-<li><p><strong>Multiclass classification</strong>: classification task with more than two classes.
-Each sample can only be labelled as one class.</p>
-<p>For example, classification using features extracted from a set of images of
-fruit, where each image may either be of an orange, an apple, or a pear.
-Each image is one sample and is labelled as one of the 3 possible classes.
-Multiclass classification makes the assumption that each sample is assigned
-to one and only one label - one sample cannot, for example, be both a pear
-and an apple.</p>
-<p>Valid <a class="reference internal" href="../glossary.html#term-multiclass"><span class="xref std std-term">multiclass</span></a> representations for
-<code class="xref py py-func docutils literal notranslate"><span class="pre">type_of_target</span></code> (<code class="docutils literal notranslate"><span class="pre">y</span></code>) are:</p>
-<blockquote>
-<div><ul>
-<li><p>1d or column vector containing more than two discrete values. An
-example of a vector <code class="docutils literal notranslate"><span class="pre">y</span></code> for 3 samples:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;apple&#39;</span><span class="p">,</span> <span class="s1">&#39;pear&#39;</span><span class="p">,</span> <span class="s1">&#39;apple&#39;</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-<span class="go">[&#39;apple&#39; &#39;pear&#39; &#39;apple&#39;]</span>
-</pre></div>
-</div>
-</li>
-<li><p>sparse <a class="reference internal" href="../glossary.html#term-binary"><span class="xref std std-term">binary</span></a> matrix of shape <code class="docutils literal notranslate"><span class="pre">(n_samples,</span> <span class="pre">n_classes)</span></code> with a
-single element per row, where each column represents one class. An
-example of a sparse <a class="reference internal" href="../glossary.html#term-binary"><span class="xref std std-term">binary</span></a> matrix <code class="docutils literal notranslate"><span class="pre">y</span></code> for 3 samples, where
-the columns, in order, are orange, apple and pear:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">sparse</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">row_ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">col_ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y_sparse</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="n">row_ind</span><span class="p">,</span> <span class="n">col_ind</span><span class="p">)))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">y_sparse</span><span class="p">)</span>
-<span class="go">  (0, 1)        1.0</span>
-<span class="go">  (1, 2)        1.0</span>
-<span class="go">  (2, 1)        1.0</span>
-</pre></div>
-</div>
-</li>
-</ul>
-</div></blockquote>
-</li>
-<li><p><strong>Multilabel classification</strong>: classification task labelling each sample with
-<code class="docutils literal notranslate"><span class="pre">x</span></code> labels from <code class="docutils literal notranslate"><span class="pre">n_classes</span></code> possible classes, where <code class="docutils literal notranslate"><span class="pre">x</span></code> can be 0 to
-<code class="docutils literal notranslate"><span class="pre">n_classes</span></code> inclusive. This can be thought of as predicting properties of a
-sample that are not mutually exclusive. Formally, a binary output is assigned
-to each class, for every sample. Positive classes are indicated with 1 and
-negative classes with 0 or -1. It is thus comparable to running <code class="docutils literal notranslate"><span class="pre">n_classes</span></code>
-binary classification tasks, for example with
-<a class="reference internal" href="generated/sklearn.multioutput.MultiOutputClassifier.html#sklearn.multioutput.MultiOutputClassifier" title="sklearn.multioutput.MultiOutputClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiOutputClassifier</span></code></a>. This approach treats
-each label independently whereas multilabel classifiers <em>may</em> treat the
-multiple classes simultaneously, accounting for correlated behavior among
-them.</p>
-<p>For example, prediction of the topics relevant to a text document or video.
-The document or video may be about one of ‘religion’, ‘politics’, ‘finance’
-or ‘education’, several of the topic classes or all of the topic classes.</p>
-<p>A valid representation of <a class="reference internal" href="../glossary.html#term-multilabel"><span class="xref std std-term">multilabel</span></a> <code class="docutils literal notranslate"><span class="pre">y</span></code> is an either dense or sparse
-<a class="reference internal" href="../glossary.html#term-binary"><span class="xref std std-term">binary</span></a> matrix of shape <code class="docutils literal notranslate"><span class="pre">(n_samples,</span> <span class="pre">n_classes)</span></code>. Each column
-represents a class. The <code class="docutils literal notranslate"><span class="pre">1</span></code>’s in each row denote the positive classes a
-sample has been labelled with. An example of a dense matrix <code class="docutils literal notranslate"><span class="pre">y</span></code> for 3
-samples:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-<span class="go">[[1 0 0 1]</span>
-<span class="go"> [0 0 1 1]</span>
-<span class="go"> [0 0 0 0]]</span>
-</pre></div>
-</div>
-<p>An example of the same <code class="docutils literal notranslate"><span class="pre">y</span></code> in sparse matrix form:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y_sparse</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">y_sparse</span><span class="p">)</span>
-<span class="go">  (0, 0)    1</span>
-<span class="go">  (0, 3)    1</span>
-<span class="go">  (1, 2)    1</span>
-<span class="go">  (1, 3)    1</span>
-</pre></div>
-</div>
-</li>
-<li><p><strong>Multioutput regression</strong>: predicts multiple numerical properties for each
-sample. Each property is a numerical variable and the number of properties
-to be predicted for each sample is greater than or equal to 2. Some estimators
-that support multioutput regression are faster than just running <code class="docutils literal notranslate"><span class="pre">n_output</span></code>
-estimators.</p>
-<p>For example, prediction of both wind speed and wind direction, in degrees,
-using data obtained at a certain location. Each sample would be data
-obtained at one location and both wind speed and direction would be
-output for each sample.</p>
-<p>A valid representation of <a class="reference internal" href="../glossary.html#term-multioutput"><span class="xref std std-term">multioutput</span></a> <code class="docutils literal notranslate"><span class="pre">y</span></code> is a dense matrix of shape
-<code class="docutils literal notranslate"><span class="pre">(n_samples,</span> <span class="pre">n_classes)</span></code> of floats. A column wise concatenation of
-<a class="reference internal" href="../glossary.html#term-continuous"><span class="xref std std-term">continuous</span></a> variables. An example of <code class="docutils literal notranslate"><span class="pre">y</span></code> for 3 samples:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">31.4</span><span class="p">,</span> <span class="mi">94</span><span class="p">],</span> <span class="p">[</span><span class="mf">40.5</span><span class="p">,</span> <span class="mi">109</span><span class="p">],</span> <span class="p">[</span><span class="mf">25.0</span><span class="p">,</span> <span class="mi">30</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-<span class="go">[[ 31.4  94. ]</span>
-<span class="go"> [ 40.5 109. ]</span>
-<span class="go"> [ 25.   30. ]]</span>
-</pre></div>
-</div>
-</li>
-<li><p><strong>Multioutput-multiclass classification</strong>
-(also known as <strong>multitask classification</strong>):
-classification task which labels each sample with a set of <strong>non-binary</strong>
-properties. Both the number of properties and the number of
-classes per property is greater than 2. A single estimator thus
-handles several joint classification tasks. This is both a generalization of
-the multi<em>label</em> classification task, which only considers binary
-attributes, as well as a generalization of the multi<em>class</em> classification
-task, where only one property is considered.</p>
-<p>For example, classification of the properties “type of fruit” and “colour”
-for a set of images of fruit. The property “type of fruit” has the possible
-classes: “apple”, “pear” and “orange”. The property “colour” has the
-possible classes: “green”, “red”, “yellow” and “orange”. Each sample is an
-image of a fruit, a label is output for both properties and each label is
-one of the possible classes of the corresponding property.</p>
-<p>A valid representation of <a class="reference internal" href="../glossary.html#term-multioutput"><span class="xref std std-term">multioutput</span></a> <code class="docutils literal notranslate"><span class="pre">y</span></code> is a dense matrix of shape
-<code class="docutils literal notranslate"><span class="pre">(n_samples,</span> <span class="pre">n_classes)</span></code> of class labels. A column wise concatenation of 1d
-<a class="reference internal" href="../glossary.html#term-multiclass"><span class="xref std std-term">multiclass</span></a> variables. An example of <code class="docutils literal notranslate"><span class="pre">y</span></code> for 3 samples:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="s1">&#39;apple&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;pear&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-<span class="go">[[&#39;apple&#39; &#39;green&#39;]</span>
-<span class="go"> [&#39;orange&#39; &#39;orange&#39;]</span>
-<span class="go"> [&#39;pear&#39; &#39;green&#39;]]</span>
-</pre></div>
-</div>
-<p>Note that all classifiers handling multioutput-multiclass (also known as
-multitask classification) tasks, support the multilabel classification task
-as a special case. Multitask classification is similar to the multioutput
-classification task with different model formulations. For more information,
-see the relevant estimator documentation.</p>
-</li>
-</ul>
-<p>All scikit-learn classifiers are capable of multiclass classification,
-but the meta-estimators offered by <a class="reference internal" href="classes.html#module-sklearn.multiclass" title="sklearn.multiclass"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.multiclass</span></code></a>
-permit changing the way they handle more than two classes
-because this may have an effect on classifier performance
-(either in terms of generalization error or required computational resources).</p>
-<p><strong>Summary</strong></p>
+  <div class="section" id="multiclass-and-multioutput-algorithms">
+<span id="multiclass"></span><h1><span class="section-number">1.12. </span>Multiclass and multioutput algorithms<a class="headerlink" href="#multiclass-and-multioutput-algorithms" title="Permalink to this headline">¶</a></h1>
+<p>This section of the user guide covers functionality related to multi-learning
+problems, including <a class="reference internal" href="../glossary.html#term-multiclass"><span class="xref std std-term">multiclass</span></a>, <a class="reference internal" href="../glossary.html#term-multilabel"><span class="xref std std-term">multilabel</span></a>, and
+<a class="reference internal" href="../glossary.html#term-multioutput"><span class="xref std std-term">multioutput</span></a> classification and regression.</p>
+<p>The modules in this section implement <a class="reference internal" href="../glossary.html#term-meta-estimators"><span class="xref std std-term">meta-estimators</span></a>, which require a
+base estimator to be provided in their constructor. Meta-estimators extend the
+functionality of the base estimator to support multi-learning problems, which
+is accomplished by transforming the multi-learning problem into a set of
+simpler problems, then fitting one estimator per problem.</p>
+<p>This section covers two modules: <a class="reference internal" href="classes.html#module-sklearn.multiclass" title="sklearn.multiclass"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.multiclass</span></code></a> and
+<a class="reference internal" href="classes.html#module-sklearn.multioutput" title="sklearn.multioutput"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.multioutput</span></code></a>. The chart below demonstrates the problem types
+that each module is responsible for, and the corresponding meta-estimators
+that each module provides.</p>
+<img alt="../_images/multi_org_chart.png" class="align-center" src="../_images/multi_org_chart.png" />
+<p>The table below provides a quick reference on the differences between problem
+types. More detailed explanations can be found in subsequent sections of this
+guide.</p>
 <table class="docutils align-default">
 <colgroup>
+<col style="width: 23%" />
+<col style="width: 18%" />
 <col style="width: 20%" />
-<col style="width: 15%" />
-<col style="width: 15%" />
-<col style="width: 49%" />
+<col style="width: 39%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"></th>
-<th class="head"><p>Number of
-targets</p></th>
-<th class="head"><p>Target
-cardinality</p></th>
+<th class="head"><p>Number of targets</p></th>
+<th class="head"><p>Target cardinality</p></th>
 <th class="head"><p>Valid
-<code class="xref py py-func docutils literal notranslate"><span class="pre">type_of_target</span></code></p></th>
+<a class="reference internal" href="generated/sklearn.utils.multiclass.type_of_target.html#sklearn.utils.multiclass.type_of_target" title="sklearn.utils.multiclass.type_of_target"><code class="xref py py-func docutils literal notranslate"><span class="pre">type_of_target</span></code></a></p></th>
 </tr>
 </thead>
 <tbody>
@@ -353,44 +228,32 @@ cardinality</p></th>
 classification</p></td>
 <td><p>1</p></td>
 <td><p>&gt;2</p></td>
-<td><ul class="simple">
-<li><p>‘multiclass’</p></li>
-</ul>
-</td>
+<td><p>‘multiclass’</p></td>
 </tr>
 <tr class="row-odd"><td><p>Multilabel
 classification</p></td>
 <td><p>&gt;1</p></td>
 <td><p>2 (0 or 1)</p></td>
-<td><ul class="simple">
-<li><p>‘multilabel-indicator’</p></li>
-</ul>
-</td>
+<td><p>‘multilabel-indicator’</p></td>
 </tr>
-<tr class="row-even"><td><p>Multioutput
-regression</p></td>
-<td><p>&gt;1</p></td>
-<td><p>Continuous</p></td>
-<td><ul class="simple">
-<li><p>‘continuous-multioutput’</p></li>
-</ul>
-</td>
-</tr>
-<tr class="row-odd"><td><p>Multioutput-
-multiclass
+<tr class="row-even"><td><p>Multiclass-multioutput
 classification</p></td>
 <td><p>&gt;1</p></td>
 <td><p>&gt;2</p></td>
-<td><ul class="simple">
-<li><p>‘multiclass-multioutput’</p></li>
-</ul>
-</td>
+<td><p>‘multiclass-multioutput’</p></td>
+</tr>
+<tr class="row-odd"><td><p>Multioutput
+regression</p></td>
+<td><p>&gt;1</p></td>
+<td><p>Continuous</p></td>
+<td><p>‘continuous-multioutput’</p></td>
 </tr>
 </tbody>
 </table>
-<p>Below is a summary of the classifiers supported by scikit-learn
-grouped by strategy; you don’t need the meta-estimators in this class
-if you’re using one of these, unless you want custom multiclass behavior:</p>
+<p>Below is a summary of scikit-learn estimators that have multi-learning support
+built-in, grouped by strategy. You don’t need the meta-estimators provided by
+this section if you’re using one of these estimators. However, meta-estimators
+can provide additional strategies beyond what is built-in:</p>
 <ul class="simple">
 <li><p><strong>Inherently multiclass:</strong></p>
 <ul>
@@ -457,46 +320,81 @@ if you’re using one of these, unless you want custom multiclass behavior:</p>
 </ul>
 </li>
 </ul>
+<div class="section" id="multiclass-classification">
+<span id="id1"></span><h2><span class="section-number">1.12.1. </span>Multiclass classification<a class="headerlink" href="#multiclass-classification" title="Permalink to this headline">¶</a></h2>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>At present, no metric in <a class="reference internal" href="classes.html#module-sklearn.metrics" title="sklearn.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.metrics</span></code></a>
-supports the multioutput-multiclass classification task.</p>
+<p>All classifiers in scikit-learn do multiclass classification
+out-of-the-box. You don’t need to use the <a class="reference internal" href="classes.html#module-sklearn.multiclass" title="sklearn.multiclass"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.multiclass</span></code></a> module
+unless you want to experiment with different multiclass strategies.</p>
 </div>
-<div class="section" id="multilabel-classification-format">
-<h2><span class="section-number">1.12.1. </span>Multilabel classification format<a class="headerlink" href="#multilabel-classification-format" title="Permalink to this headline">¶</a></h2>
-<p>In multilabel learning, the joint set of binary classification tasks is
-expressed with label binary indicator array: each sample is one row of a 2d
-array of shape (n_samples, n_classes) with binary values: the one, i.e. the non
-zero elements, corresponds to the subset of labels. An array such as
-<code class="docutils literal notranslate"><span class="pre">np.array([[1,</span> <span class="pre">0,</span> <span class="pre">0],</span> <span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">1],</span> <span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]])</span></code> represents label 0 in the first
-sample, labels 1 and 2 in the second sample, and no labels in the third sample.</p>
-<p>Producing multilabel data as a list of sets of labels may be more intuitive.
-The <a class="reference internal" href="generated/sklearn.preprocessing.MultiLabelBinarizer.html#sklearn.preprocessing.MultiLabelBinarizer" title="sklearn.preprocessing.MultiLabelBinarizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiLabelBinarizer</span></code></a> transformer can be used
-to convert between a collection of collections of labels and the indicator format.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MultiLabelBinarizer</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">MultiLabelBinarizer</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-<span class="go">array([[0, 0, 1, 1, 1],</span>
-<span class="go">       [0, 0, 1, 0, 0],</span>
-<span class="go">       [1, 1, 0, 1, 0],</span>
-<span class="go">       [1, 1, 1, 1, 1],</span>
-<span class="go">       [1, 1, 1, 0, 0]])</span>
+<p><strong>Multiclass classification</strong> is a classification task with more than two
+classes. Each sample can only be labeled as one class.</p>
+<p>For example, classification using features extracted from a set of images of
+fruit, where each image may either be of an orange, an apple, or a pear.
+Each image is one sample and is labeled as one of the 3 possible classes.
+Multiclass classification makes the assumption that each sample is assigned
+to one and only one label - one sample cannot, for example, be both a pear
+and an apple.</p>
+<p>While all scikit-learn classifiers are capable of multiclass classification,
+the meta-estimators offered by <a class="reference internal" href="classes.html#module-sklearn.multiclass" title="sklearn.multiclass"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.multiclass</span></code></a>
+permit changing the way they handle more than two classes
+because this may have an effect on classifier performance
+(either in terms of generalization error or required computational resources).</p>
+<div class="section" id="target-format">
+<h3><span class="section-number">1.12.1.1. </span>Target format<a class="headerlink" href="#target-format" title="Permalink to this headline">¶</a></h3>
+<p>Valid <a class="reference internal" href="../glossary.html#term-multiclass"><span class="xref std std-term">multiclass</span></a> representations for
+<a class="reference internal" href="generated/sklearn.utils.multiclass.type_of_target.html#sklearn.utils.multiclass.type_of_target" title="sklearn.utils.multiclass.type_of_target"><code class="xref py py-func docutils literal notranslate"><span class="pre">type_of_target</span></code></a> (<code class="docutils literal notranslate"><span class="pre">y</span></code>) are:</p>
+<blockquote>
+<div><ul>
+<li><p>1d or column vector containing more than two discrete values. An
+example of a vector <code class="docutils literal notranslate"><span class="pre">y</span></code> for 4 samples:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;apple&#39;</span><span class="p">,</span> <span class="s1">&#39;pear&#39;</span><span class="p">,</span> <span class="s1">&#39;apple&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="go">[&#39;apple&#39; &#39;pear&#39; &#39;apple&#39; &#39;orange&#39;]</span>
 </pre></div>
 </div>
+</li>
+<li><p>Dense or sparse <a class="reference internal" href="../glossary.html#term-binary"><span class="xref std std-term">binary</span></a> matrix of shape <code class="docutils literal notranslate"><span class="pre">(n_samples,</span> <span class="pre">n_classes)</span></code>
+with a single sample per row, where each column represents one class. An
+example of both a dense and sparse <a class="reference internal" href="../glossary.html#term-binary"><span class="xref std std-term">binary</span></a> matrix <code class="docutils literal notranslate"><span class="pre">y</span></code> for 4
+samples, where the columns, in order, are apple, orange, and pear:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">LabelBinarizer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;apple&#39;</span><span class="p">,</span> <span class="s1">&#39;pear&#39;</span><span class="p">,</span> <span class="s1">&#39;apple&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_dense</span> <span class="o">=</span> <span class="n">LabelBinarizer</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">y_dense</span><span class="p">)</span>
+<span class="go">  [[1 0 0]</span>
+<span class="go">   [0 0 1]</span>
+<span class="go">   [1 0 0]</span>
+<span class="go">   [0 1 0]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">sparse</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_sparse</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">y_dense</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">y_sparse</span><span class="p">)</span>
+<span class="go">    (0, 0)        1</span>
+<span class="go">    (1, 2)        1</span>
+<span class="go">    (2, 0)        1</span>
+<span class="go">    (3, 1)        1</span>
+</pre></div>
 </div>
-<div class="section" id="one-vs-the-rest">
-<span id="ovr-classification"></span><h2><span class="section-number">1.12.2. </span>One-Vs-The-Rest<a class="headerlink" href="#one-vs-the-rest" title="Permalink to this headline">¶</a></h2>
-<p>This strategy, also known as <strong>one-vs-all</strong>, is implemented in
-<code class="xref py py-class docutils literal notranslate"><span class="pre">OneVsRestClassifier</span></code>.  The strategy consists in fitting one classifier
-per class. For each classifier, the class is fitted against all the other
-classes. In addition to its computational efficiency (only <code class="docutils literal notranslate"><span class="pre">n_classes</span></code>
-classifiers are needed), one advantage of this approach is its
-interpretability. Since each class is represented by one and only one classifier,
-it is possible to gain knowledge about the class by inspecting its
+</li>
+</ul>
+</div></blockquote>
+<p>For more information about <a class="reference internal" href="generated/sklearn.preprocessing.LabelBinarizer.html#sklearn.preprocessing.LabelBinarizer" title="sklearn.preprocessing.LabelBinarizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">LabelBinarizer</span></code></a>,
+refer to <a class="reference internal" href="preprocessing_targets.html#preprocessing-targets"><span class="std std-ref">Transforming the prediction target (y)</span></a>.</p>
+</div>
+<div class="section" id="onevsrestclassifier">
+<span id="ovr-classification"></span><h3><span class="section-number">1.12.1.2. </span>OneVsRestClassifier<a class="headerlink" href="#onevsrestclassifier" title="Permalink to this headline">¶</a></h3>
+<p>The <strong>one-vs-rest</strong> strategy, also known as <strong>one-vs-all</strong>, is implemented in
+<a class="reference internal" href="generated/sklearn.multiclass.OneVsRestClassifier.html#sklearn.multiclass.OneVsRestClassifier" title="sklearn.multiclass.OneVsRestClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">OneVsRestClassifier</span></code></a>.  The strategy consists in
+fitting one classifier per class. For each classifier, the class is fitted
+against all the other classes. In addition to its computational efficiency
+(only <code class="docutils literal notranslate"><span class="pre">n_classes</span></code> classifiers are needed), one advantage of this approach is
+its interpretability. Since each class is represented by one and only one
+classifier, it is possible to gain knowledge about the class by inspecting its
 corresponding classifier. This is the most commonly used strategy and is a fair
 default choice.</p>
-<div class="section" id="multiclass-learning">
-<h3><span class="section-number">1.12.2.1. </span>Multiclass learning<a class="headerlink" href="#multiclass-learning" title="Permalink to this headline">¶</a></h3>
 <p>Below is an example of multiclass learning using OvR:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.multiclass</span> <span class="kn">import</span> <span class="n">OneVsRestClassifier</span>
@@ -512,12 +410,9 @@ default choice.</p>
 <span class="go">       2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2])</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="multilabel-learning">
-<h3><span class="section-number">1.12.2.2. </span>Multilabel learning<a class="headerlink" href="#multilabel-learning" title="Permalink to this headline">¶</a></h3>
-<p><code class="xref py py-class docutils literal notranslate"><span class="pre">OneVsRestClassifier</span></code> also supports multilabel classification.
-To use this feature, feed the classifier an indicator matrix, in which cell
-[i, j] indicates the presence of label j in sample i.</p>
+<p><a class="reference internal" href="generated/sklearn.multiclass.OneVsRestClassifier.html#sklearn.multiclass.OneVsRestClassifier" title="sklearn.multiclass.OneVsRestClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">OneVsRestClassifier</span></code></a> also supports multilabel
+classification. To use this feature, feed the classifier an indicator matrix,
+in which cell [i, j] indicates the presence of label j in sample i.</p>
 <div class="figure align-center">
 <a class="reference external image-reference" href="../auto_examples/miscellaneous/plot_multilabel.html"><img alt="../_images/sphx_glr_plot_multilabel_0011.png" src="../_images/sphx_glr_plot_multilabel_0011.png" style="width: 600.0px; height: 450.0px;" /></a>
 </div>
@@ -528,15 +423,14 @@ To use this feature, feed the classifier an indicator matrix, in which cell
 </ul>
 </div>
 </div>
-</div>
-<div class="section" id="one-vs-one">
-<span id="ovo-classification"></span><h2><span class="section-number">1.12.3. </span>One-Vs-One<a class="headerlink" href="#one-vs-one" title="Permalink to this headline">¶</a></h2>
-<p><code class="xref py py-class docutils literal notranslate"><span class="pre">OneVsOneClassifier</span></code> constructs one classifier per pair of classes.
-At prediction time, the class which received the most votes is selected.
-In the event of a tie (among two classes with an equal number of votes), it
-selects the class with the highest aggregate classification confidence by
-summing over the pair-wise classification confidence levels computed by the
-underlying binary classifiers.</p>
+<div class="section" id="onevsoneclassifier">
+<span id="ovo-classification"></span><h3><span class="section-number">1.12.1.3. </span>OneVsOneClassifier<a class="headerlink" href="#onevsoneclassifier" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="generated/sklearn.multiclass.OneVsOneClassifier.html#sklearn.multiclass.OneVsOneClassifier" title="sklearn.multiclass.OneVsOneClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">OneVsOneClassifier</span></code></a> constructs one classifier per
+pair of classes. At prediction time, the class which received the most votes
+is selected. In the event of a tie (among two classes with an equal number of
+votes), it selects the class with the highest aggregate classification
+confidence by summing over the pair-wise classification confidence levels
+computed by the underlying binary classifiers.</p>
 <p>Since it requires to fit <code class="docutils literal notranslate"><span class="pre">n_classes</span> <span class="pre">*</span> <span class="pre">(n_classes</span> <span class="pre">-</span> <span class="pre">1)</span> <span class="pre">/</span> <span class="pre">2</span></code> classifiers,
 this method is usually slower than one-vs-the-rest, due to its
 O(n_classes^2) complexity. However, this method may be advantageous for
@@ -545,8 +439,6 @@ algorithms such as kernel algorithms which don’t scale well with
 a small subset of the data whereas, with one-vs-the-rest, the complete
 dataset is used <code class="docutils literal notranslate"><span class="pre">n_classes</span></code> times. The decision function is the result
 of a monotonic transformation of the one-versus-one classification.</p>
-<div class="section" id="id1">
-<h3><span class="section-number">1.12.3.1. </span>Multiclass learning<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>Below is an example of multiclass learning using OvO:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.multiclass</span> <span class="kn">import</span> <span class="n">OneVsOneClassifier</span>
@@ -570,26 +462,25 @@ Christopher M. Bishop, page 183, (First Edition)</p></li>
 </ul>
 </div>
 </div>
-</div>
-<div class="section" id="error-correcting-output-codes">
-<span id="ecoc"></span><h2><span class="section-number">1.12.4. </span>Error-Correcting Output-Codes<a class="headerlink" href="#error-correcting-output-codes" title="Permalink to this headline">¶</a></h2>
-<p>Output-code based strategies are fairly different from one-vs-the-rest and
-one-vs-one. With these strategies, each class is represented in a Euclidean
-space, where each dimension can only be 0 or 1. Another way to put it is
-that each class is represented by a binary code (an array of 0 and 1). The
-matrix which keeps track of the location/code of each class is called the
-code book. The code size is the dimensionality of the aforementioned space.
-Intuitively, each class should be represented by a code as unique as
-possible and a good code book should be designed to optimize classification
-accuracy. In this implementation, we simply use a randomly-generated code
-book as advocated in <a class="footnote-reference brackets" href="#id4" id="id2">3</a> although more elaborate methods may be added in the
-future.</p>
+<div class="section" id="outputcodeclassifier">
+<span id="ecoc"></span><h3><span class="section-number">1.12.1.4. </span>OutputCodeClassifier<a class="headerlink" href="#outputcodeclassifier" title="Permalink to this headline">¶</a></h3>
+<p>Error-Correcting Output Code-based strategies are fairly different from
+one-vs-the-rest and one-vs-one. With these strategies, each class is
+represented in a Euclidean space, where each dimension can only be 0 or 1.
+Another way to put it is that each class is represented by a binary code (an
+array of 0 and 1). The matrix which keeps track of the location/code of each
+class is called the code book. The code size is the dimensionality of the
+aforementioned space. Intuitively, each class should be represented by a code
+as unique as possible and a good code book should be designed to optimize
+classification accuracy. In this implementation, we simply use a
+randomly-generated code book as advocated in <a class="footnote-reference brackets" href="#id3" id="id2">3</a> although more elaborate
+methods may be added in the future.</p>
 <p>At fitting time, one binary classifier per bit in the code book is fitted.
 At prediction time, the classifiers are used to project new points in the
 class space and the class closest to the points is chosen.</p>
-<p>In <code class="xref py py-class docutils literal notranslate"><span class="pre">OutputCodeClassifier</span></code>, the <code class="docutils literal notranslate"><span class="pre">code_size</span></code> attribute allows the user to
-control the number of classifiers which will be used. It is a percentage of the
-total number of classes.</p>
+<p>In <a class="reference internal" href="generated/sklearn.multiclass.OutputCodeClassifier.html#sklearn.multiclass.OutputCodeClassifier" title="sklearn.multiclass.OutputCodeClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">OutputCodeClassifier</span></code></a>, the <code class="docutils literal notranslate"><span class="pre">code_size</span></code>
+attribute allows the user to control the number of classifiers which will be
+used. It is a percentage of the total number of classes.</p>
 <p>A number between 0 and 1 will require fewer classifiers than
 one-vs-the-rest. In theory, <code class="docutils literal notranslate"><span class="pre">log2(n_classes)</span> <span class="pre">/</span> <span class="pre">n_classes</span></code> is sufficient to
 represent each class unambiguously. However, in practice, it may not lead to
@@ -600,8 +491,6 @@ the mistakes made by other classifiers, hence the name “error-correcting”.
 In practice, however, this may not happen as classifier mistakes will
 typically be correlated. The error-correcting output codes have a similar
 effect to bagging.</p>
-<div class="section" id="id3">
-<h3><span class="section-number">1.12.4.1. </span>Multiclass learning<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <p>Below is an example of multiclass learning using Output-Codes:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.multiclass</span> <span class="kn">import</span> <span class="n">OutputCodeClassifier</span>
@@ -628,7 +517,7 @@ Journal of Artificial Intelligence Research 2,
 1995.</p></li>
 </ul>
 <dl class="footnote brackets">
-<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">3</a></span></dt>
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id2">3</a></span></dt>
 <dd><p>“The error coding method and PICTs”,
 James G., Hastie T.,
 Journal of Computational and Graphical statistics 7,
@@ -643,44 +532,60 @@ Hastie T., Tibshirani R., Friedman J., page 606 (second-edition)
 </div>
 </div>
 </div>
-<div class="section" id="multioutput-regression">
-<h2><span class="section-number">1.12.5. </span>Multioutput regression<a class="headerlink" href="#multioutput-regression" title="Permalink to this headline">¶</a></h2>
-<p>Multioutput regression support can be added to any regressor with
-<code class="xref py py-class docutils literal notranslate"><span class="pre">MultiOutputRegressor</span></code>.  This strategy consists of fitting one
-regressor per target. Since each target is represented by exactly one
-regressor it is possible to gain knowledge about the target by
-inspecting its corresponding regressor. As
-<code class="xref py py-class docutils literal notranslate"><span class="pre">MultiOutputRegressor</span></code> fits one regressor per target it can not
-take advantage of correlations between targets.</p>
-<p>Below is an example of multioutput regression:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_regression</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.multioutput</span> <span class="kn">import</span> <span class="n">MultiOutputRegressor</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">GradientBoostingRegressor</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_regression</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n_targets</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">MultiOutputRegressor</span><span class="p">(</span><span class="n">GradientBoostingRegressor</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-<span class="go">array([[-154.75474165, -147.03498585,  -50.03812219],</span>
-<span class="go">       [   7.12165031,    5.12914884,  -81.46081961],</span>
-<span class="go">       [-187.8948621 , -100.44373091,   13.88978285],</span>
-<span class="go">       [-141.62745778,   95.02891072, -191.48204257],</span>
-<span class="go">       [  97.03260883,  165.34867495,  139.52003279],</span>
-<span class="go">       [ 123.92529176,   21.25719016,   -7.84253   ],</span>
-<span class="go">       [-122.25193977,  -85.16443186, -107.12274212],</span>
-<span class="go">       [ -30.170388  ,  -94.80956739,   12.16979946],</span>
-<span class="go">       [ 140.72667194,  176.50941682,  -17.50447799],</span>
-<span class="go">       [ 149.37967282,  -81.15699552,   -5.72850319]])</span>
+<div class="section" id="multilabel-classification">
+<span id="id4"></span><h2><span class="section-number">1.12.2. </span>Multilabel classification<a class="headerlink" href="#multilabel-classification" title="Permalink to this headline">¶</a></h2>
+<p><strong>Multilabel classification</strong> (closely related to <strong>multioutput</strong>
+<strong>classification</strong>) is a classification task labeling each sample with <code class="docutils literal notranslate"><span class="pre">m</span></code>
+labels from <code class="docutils literal notranslate"><span class="pre">n_classes</span></code> possible classes, where <code class="docutils literal notranslate"><span class="pre">m</span></code> can be 0 to
+<code class="docutils literal notranslate"><span class="pre">n_classes</span></code> inclusive. This can be thought of as predicting properties of a
+sample that are not mutually exclusive. Formally, a binary output is assigned
+to each class, for every sample. Positive classes are indicated with 1 and
+negative classes with 0 or -1. It is thus comparable to running <code class="docutils literal notranslate"><span class="pre">n_classes</span></code>
+binary classification tasks, for example with
+<a class="reference internal" href="generated/sklearn.multioutput.MultiOutputClassifier.html#sklearn.multioutput.MultiOutputClassifier" title="sklearn.multioutput.MultiOutputClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiOutputClassifier</span></code></a>. This approach treats
+each label independently whereas multilabel classifiers <em>may</em> treat the
+multiple classes simultaneously, accounting for correlated behavior among
+them.</p>
+<p>For example, prediction of the topics relevant to a text document or video.
+The document or video may be about one of ‘religion’, ‘politics’, ‘finance’
+or ‘education’, several of the topic classes or all of the topic classes.</p>
+<div class="section" id="id5">
+<h3><span class="section-number">1.12.2.1. </span>Target format<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>A valid representation of <a class="reference internal" href="../glossary.html#term-multilabel"><span class="xref std std-term">multilabel</span></a> <code class="docutils literal notranslate"><span class="pre">y</span></code> is an either dense or sparse
+<a class="reference internal" href="../glossary.html#term-binary"><span class="xref std std-term">binary</span></a> matrix of shape <code class="docutils literal notranslate"><span class="pre">(n_samples,</span> <span class="pre">n_classes)</span></code>. Each column
+represents a class. The <code class="docutils literal notranslate"><span class="pre">1</span></code>’s in each row denote the positive classes a
+sample has been labeled with. An example of a dense matrix <code class="docutils literal notranslate"><span class="pre">y</span></code> for 3
+samples:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="go">[[1 0 0 1]</span>
+<span class="go"> [0 0 1 1]</span>
+<span class="go"> [0 0 0 0]]</span>
+</pre></div>
+</div>
+<p>Dense binary matrices can also be created using
+<a class="reference internal" href="generated/sklearn.preprocessing.MultiLabelBinarizer.html#sklearn.preprocessing.MultiLabelBinarizer" title="sklearn.preprocessing.MultiLabelBinarizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiLabelBinarizer</span></code></a>. For more information,
+refer to <a class="reference internal" href="preprocessing_targets.html#preprocessing-targets"><span class="std std-ref">Transforming the prediction target (y)</span></a>.</p>
+<p>An example of the same <code class="docutils literal notranslate"><span class="pre">y</span></code> in sparse matrix form:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y_sparse</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">y_sparse</span><span class="p">)</span>
+<span class="go">  (0, 0)      1</span>
+<span class="go">  (0, 3)      1</span>
+<span class="go">  (1, 2)      1</span>
+<span class="go">  (1, 3)      1</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="multioutput-classification">
-<h2><span class="section-number">1.12.6. </span>Multioutput classification<a class="headerlink" href="#multioutput-classification" title="Permalink to this headline">¶</a></h2>
-<p>Multioutput classification support can be added to any classifier with
-<code class="xref py py-class docutils literal notranslate"><span class="pre">MultiOutputClassifier</span></code>. This strategy consists of fitting one
-classifier per target.  This allows multiple target variable
+<div class="section" id="multioutputclassifier">
+<span id="multioutputclassfier"></span><h3><span class="section-number">1.12.2.2. </span>MultiOutputClassifier<a class="headerlink" href="#multioutputclassifier" title="Permalink to this headline">¶</a></h3>
+<p>Multilabel classification support can be added to any classifier with
+<a class="reference internal" href="generated/sklearn.multioutput.MultiOutputClassifier.html#sklearn.multioutput.MultiOutputClassifier" title="sklearn.multioutput.MultiOutputClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiOutputClassifier</span></code></a>. This strategy consists of
+fitting one classifier per target.  This allows multiple target variable
 classifications. The purpose of this class is to extend estimators
 to be able to estimate a series of target functions (f1,f2,f3…,fn)
 that are trained on a single X predictor matrix to predict a series
 of responses (y1,y2,y3…,yn).</p>
-<p>Below is an example of multioutput classification:</p>
+<p>Below is an example of multilabel classification:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.multioutput</span> <span class="kn">import</span> <span class="n">MultiOutputClassifier</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
@@ -709,11 +614,11 @@ of responses (y1,y2,y3…,yn).</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="classifier-chain">
-<span id="classifierchain"></span><h2><span class="section-number">1.12.7. </span>Classifier Chain<a class="headerlink" href="#classifier-chain" title="Permalink to this headline">¶</a></h2>
-<p>Classifier chains (see <code class="xref py py-class docutils literal notranslate"><span class="pre">ClassifierChain</span></code>) are a way of combining a
-number of binary classifiers into a single multi-label model that is capable
-of exploiting correlations among targets.</p>
+<div class="section" id="classifierchain">
+<span id="id6"></span><h3><span class="section-number">1.12.2.3. </span>ClassifierChain<a class="headerlink" href="#classifierchain" title="Permalink to this headline">¶</a></h3>
+<p>Classifier chains (see <a class="reference internal" href="generated/sklearn.multioutput.ClassifierChain.html#sklearn.multioutput.ClassifierChain" title="sklearn.multioutput.ClassifierChain"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClassifierChain</span></code></a>) are a way
+of combining a number of binary classifiers into a single multi-label model
+that is capable of exploiting correlations among targets.</p>
 <p>For a multi-label classification problem with N classes, N binary
 classifiers are assigned an integer between 0 and N-1. These integers
 define the order of models in the chain. Each classifier is then fit on the
@@ -736,12 +641,107 @@ averaged together.</p>
 </dl>
 </div>
 </div>
-<div class="section" id="regressor-chain">
-<span id="regressorchain"></span><h2><span class="section-number">1.12.8. </span>Regressor Chain<a class="headerlink" href="#regressor-chain" title="Permalink to this headline">¶</a></h2>
-<p>Regressor chains (see <code class="xref py py-class docutils literal notranslate"><span class="pre">RegressorChain</span></code>) is analogous to
-ClassifierChain as a way of combining a number of regressions
-into a single multi-target model that is capable of exploiting
-correlations among targets.</p>
+</div>
+<div class="section" id="multiclass-multioutput-classification">
+<span id="id7"></span><h2><span class="section-number">1.12.3. </span>Multiclass-multioutput classification<a class="headerlink" href="#multiclass-multioutput-classification" title="Permalink to this headline">¶</a></h2>
+<p><strong>Multiclass-multioutput classification</strong>
+(also known as <strong>multitask classification</strong>) is a
+classification task which labels each sample with a set of <strong>non-binary</strong>
+properties. Both the number of properties and the number of
+classes per property is greater than 2. A single estimator thus
+handles several joint classification tasks. This is both a generalization of
+the multi<em>label</em> classification task, which only considers binary
+attributes, as well as a generalization of the multi<em>class</em> classification
+task, where only one property is considered.</p>
+<p>For example, classification of the properties “type of fruit” and “colour”
+for a set of images of fruit. The property “type of fruit” has the possible
+classes: “apple”, “pear” and “orange”. The property “colour” has the
+possible classes: “green”, “red”, “yellow” and “orange”. Each sample is an
+image of a fruit, a label is output for both properties and each label is
+one of the possible classes of the corresponding property.</p>
+<p>Note that all classifiers handling multiclass-multioutput (also known as
+multitask classification) tasks, support the multilabel classification task
+as a special case. Multitask classification is similar to the multioutput
+classification task with different model formulations. For more information,
+see the relevant estimator documentation.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>At present, no metric in <a class="reference internal" href="classes.html#module-sklearn.metrics" title="sklearn.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.metrics</span></code></a>
+supports the multiclass-multioutput classification task.</p>
+</div>
+<div class="section" id="id8">
+<h3><span class="section-number">1.12.3.1. </span>Target format<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<p>A valid representation of <a class="reference internal" href="../glossary.html#term-multioutput"><span class="xref std std-term">multioutput</span></a> <code class="docutils literal notranslate"><span class="pre">y</span></code> is a dense matrix of shape
+<code class="docutils literal notranslate"><span class="pre">(n_samples,</span> <span class="pre">n_classes)</span></code> of class labels. A column wise concatenation of 1d
+<a class="reference internal" href="../glossary.html#term-multiclass"><span class="xref std std-term">multiclass</span></a> variables. An example of <code class="docutils literal notranslate"><span class="pre">y</span></code> for 3 samples:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="s1">&#39;apple&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;pear&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="go">[[&#39;apple&#39; &#39;green&#39;]</span>
+<span class="go"> [&#39;orange&#39; &#39;orange&#39;]</span>
+<span class="go"> [&#39;pear&#39; &#39;green&#39;]]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="multioutput-regression">
+<span id="id9"></span><h2><span class="section-number">1.12.4. </span>Multioutput regression<a class="headerlink" href="#multioutput-regression" title="Permalink to this headline">¶</a></h2>
+<p><strong>Multioutput regression</strong> predicts multiple numerical properties for each
+sample. Each property is a numerical variable and the number of properties
+to be predicted for each sample is greater than or equal to 2. Some estimators
+that support multioutput regression are faster than just running <code class="docutils literal notranslate"><span class="pre">n_output</span></code>
+estimators.</p>
+<p>For example, prediction of both wind speed and wind direction, in degrees,
+using data obtained at a certain location. Each sample would be data
+obtained at one location and both wind speed and direction would be
+output for each sample.</p>
+<div class="section" id="id10">
+<h3><span class="section-number">1.12.4.1. </span>Target format<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<p>A valid representation of <a class="reference internal" href="../glossary.html#term-multioutput"><span class="xref std std-term">multioutput</span></a> <code class="docutils literal notranslate"><span class="pre">y</span></code> is a dense matrix of shape
+<code class="docutils literal notranslate"><span class="pre">(n_samples,</span> <span class="pre">n_classes)</span></code> of floats. A column wise concatenation of
+<a class="reference internal" href="../glossary.html#term-continuous"><span class="xref std std-term">continuous</span></a> variables. An example of <code class="docutils literal notranslate"><span class="pre">y</span></code> for 3 samples:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">31.4</span><span class="p">,</span> <span class="mi">94</span><span class="p">],</span> <span class="p">[</span><span class="mf">40.5</span><span class="p">,</span> <span class="mi">109</span><span class="p">],</span> <span class="p">[</span><span class="mf">25.0</span><span class="p">,</span> <span class="mi">30</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="go">[[ 31.4  94. ]</span>
+<span class="go"> [ 40.5 109. ]</span>
+<span class="go"> [ 25.   30. ]]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="multioutputregressor">
+<span id="id11"></span><h3><span class="section-number">1.12.4.2. </span>MultiOutputRegressor<a class="headerlink" href="#multioutputregressor" title="Permalink to this headline">¶</a></h3>
+<p>Multioutput regression support can be added to any regressor with
+<a class="reference internal" href="generated/sklearn.multioutput.MultiOutputRegressor.html#sklearn.multioutput.MultiOutputRegressor" title="sklearn.multioutput.MultiOutputRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiOutputRegressor</span></code></a>.  This strategy consists of
+fitting one regressor per target. Since each target is represented by exactly
+one regressor it is possible to gain knowledge about the target by
+inspecting its corresponding regressor. As
+<a class="reference internal" href="generated/sklearn.multioutput.MultiOutputRegressor.html#sklearn.multioutput.MultiOutputRegressor" title="sklearn.multioutput.MultiOutputRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">MultiOutputRegressor</span></code></a> fits one regressor per
+target it can not take advantage of correlations between targets.</p>
+<p>Below is an example of multioutput regression:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_regression</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.multioutput</span> <span class="kn">import</span> <span class="n">MultiOutputRegressor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">GradientBoostingRegressor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_regression</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n_targets</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">MultiOutputRegressor</span><span class="p">(</span><span class="n">GradientBoostingRegressor</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="go">array([[-154.75474165, -147.03498585,  -50.03812219],</span>
+<span class="go">       [   7.12165031,    5.12914884,  -81.46081961],</span>
+<span class="go">       [-187.8948621 , -100.44373091,   13.88978285],</span>
+<span class="go">       [-141.62745778,   95.02891072, -191.48204257],</span>
+<span class="go">       [  97.03260883,  165.34867495,  139.52003279],</span>
+<span class="go">       [ 123.92529176,   21.25719016,   -7.84253   ],</span>
+<span class="go">       [-122.25193977,  -85.16443186, -107.12274212],</span>
+<span class="go">       [ -30.170388  ,  -94.80956739,   12.16979946],</span>
+<span class="go">       [ 140.72667194,  176.50941682,  -17.50447799],</span>
+<span class="go">       [ 149.37967282,  -81.15699552,   -5.72850319]])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="regressorchain">
+<span id="id12"></span><h3><span class="section-number">1.12.4.3. </span>RegressorChain<a class="headerlink" href="#regressorchain" title="Permalink to this headline">¶</a></h3>
+<p>Regressor chains (see <a class="reference internal" href="generated/sklearn.multioutput.RegressorChain.html#sklearn.multioutput.RegressorChain" title="sklearn.multioutput.RegressorChain"><code class="xref py py-class docutils literal notranslate"><span class="pre">RegressorChain</span></code></a>) is
+analogous to <a class="reference internal" href="generated/sklearn.multioutput.ClassifierChain.html#sklearn.multioutput.ClassifierChain" title="sklearn.multioutput.ClassifierChain"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClassifierChain</span></code></a> as a way of
+combining a number of regressions into a single multi-target model that is
+capable of exploiting correlations among targets.</p>
+</div>
 </div>
 </div>
 
