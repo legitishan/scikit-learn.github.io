@@ -160,7 +160,6 @@
 <li><a class="reference internal" href="#machine-learning-the-problem-setting">Machine learning: the problem setting</a></li>
 <li><a class="reference internal" href="#loading-an-example-dataset">Loading an example dataset</a></li>
 <li><a class="reference internal" href="#learning-and-predicting">Learning and predicting</a></li>
-<li><a class="reference internal" href="#model-persistence">Model persistence</a></li>
 <li><a class="reference internal" href="#conventions">Conventions</a><ul>
 <li><a class="reference internal" href="#type-casting">Type casting</a></li>
 <li><a class="reference internal" href="#refitting-and-updating-parameters">Refitting and updating parameters</a></li>
@@ -358,49 +357,6 @@ resolution. Do you agree with the classifier?</p>
 <p>A complete example of this classification problem is available as an
 example that you can run and study:
 <a class="reference internal" href="../../auto_examples/classification/plot_digits_classification.html#sphx-glr-auto-examples-classification-plot-digits-classification-py"><span class="std std-ref">Recognizing hand-written digits</span></a>.</p>
-</div>
-<div class="section" id="model-persistence">
-<h2>Model persistence<a class="headerlink" href="#model-persistence" title="Permalink to this headline">¶</a></h2>
-<p>It is possible to save a model in scikit-learn by using Python’s built-in
-persistence model, <a class="reference external" href="https://docs.python.org/2/library/pickle.html">pickle</a>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">svm</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="go">SVC()</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pickle</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">clf</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clf2</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clf2</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">])</span>
-<span class="go">array([0])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="go">0</span>
-</pre></div>
-</div>
-<p>In the specific case of scikit-learn, it may be more interesting to use
-joblib’s replacement for pickle (<code class="docutils literal notranslate"><span class="pre">joblib.dump</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">joblib.load</span></code>),
-which is more efficient on big data but it can only pickle to the disk
-and not to a string:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">dump</span><span class="p">,</span> <span class="n">load</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dump</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="s1">&#39;filename.joblib&#39;</span><span class="p">)</span> 
-</pre></div>
-</div>
-<p>Later, you can reload the pickled model (possibly in another Python process)
-with:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="s1">&#39;filename.joblib&#39;</span><span class="p">)</span> 
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><code class="docutils literal notranslate"><span class="pre">joblib.dump</span></code> and <code class="docutils literal notranslate"><span class="pre">joblib.load</span></code> functions also accept file-like object
-instead of filenames. More information on data persistence with Joblib is
-available <a class="reference external" href="https://joblib.readthedocs.io/en/latest/persistence.html">here</a>.</p>
-</div>
-<p>Note that pickle has some security and maintainability issues. Please refer to
-section <a class="reference internal" href="../../modules/model_persistence.html#model-persistence"><span class="std std-ref">Model persistence</span></a> for more detailed information about model
-persistence with scikit-learn.</p>
 </div>
 <div class="section" id="conventions">
 <h2>Conventions<a class="headerlink" href="#conventions" title="Permalink to this headline">¶</a></h2>
