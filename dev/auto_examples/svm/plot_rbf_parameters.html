@@ -212,13 +212,17 @@ be found on a diagonal of <code class="docutils literal notranslate"><span class
 values) can be made more complex by increasing the importance of classifying
 each point correctly (larger <code class="docutils literal notranslate"><span class="pre">C</span></code> values) hence the diagonal of good
 performing models.</p>
-<p>Finally one can also observe that for some intermediate values of <code class="docutils literal notranslate"><span class="pre">gamma</span></code> we
-get equally performing models when <code class="docutils literal notranslate"><span class="pre">C</span></code> becomes very large: it is not
-necessary to regularize by enforcing a larger margin. The radius of the RBF
-kernel alone acts as a good structural regularizer. In practice though it
-might still be interesting to simplify the decision function with a lower
-value of <code class="docutils literal notranslate"><span class="pre">C</span></code> so as to favor models that use less memory and that are faster
-to predict.</p>
+<p>Finally, one can also observe that for some intermediate values of <code class="docutils literal notranslate"><span class="pre">gamma</span></code> we
+get equally performing models when <code class="docutils literal notranslate"><span class="pre">C</span></code> becomes very large. This suggests that
+the set of support vectors does not change anymore. The radius of the RBF
+kernel alone acts as a good structural regularizer. Increasing <code class="docutils literal notranslate"><span class="pre">C</span></code> further
+doesn’t help, likely because there are no more training points in violation
+(inside the margin or wrongly classified), or at least no better solution can
+be found. Scores being equal, it may make sense to use the smaller <code class="docutils literal notranslate"><span class="pre">C</span></code>
+values, since very high <code class="docutils literal notranslate"><span class="pre">C</span></code> values typically increase fitting time.</p>
+<p>On the other hand, lower <code class="docutils literal notranslate"><span class="pre">C</span></code> values generally lead to more support vectors,
+which may increase prediction time. Therefore, lowering the value of <code class="docutils literal notranslate"><span class="pre">C</span></code>
+involves a trade-off between fitting time and prediction time.</p>
 <p>We should also note that small differences in scores results from the random
 splits of the cross-validation procedure. Those spurious variations can be
 smoothed out by increasing the number of CV iterations <code class="docutils literal notranslate"><span class="pre">n_splits</span></code> at the
@@ -233,23 +237,23 @@ map.</p>
 </ul>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The best parameters are {&#39;C&#39;: 1.0, &#39;gamma&#39;: 0.1} with a score of 0.97
-/home/circleci/project/examples/svm/plot_rbf_parameters.py:172: MatplotlibDeprecationWarning: shading=&#39;flat&#39; when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading=&#39;auto&#39;, &#39;nearest&#39; or &#39;gouraud&#39;, or set rcParams[&#39;pcolor.shading&#39;].  This will become an error two minor releases later.
+/home/circleci/project/examples/svm/plot_rbf_parameters.py:177: MatplotlibDeprecationWarning: shading=&#39;flat&#39; when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading=&#39;auto&#39;, &#39;nearest&#39; or &#39;gouraud&#39;, or set rcParams[&#39;pcolor.shading&#39;].  This will become an error two minor releases later.
   plt.pcolormesh(xx, yy, -Z, cmap=plt.cm.RdBu)
-/home/circleci/project/examples/svm/plot_rbf_parameters.py:172: MatplotlibDeprecationWarning: shading=&#39;flat&#39; when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading=&#39;auto&#39;, &#39;nearest&#39; or &#39;gouraud&#39;, or set rcParams[&#39;pcolor.shading&#39;].  This will become an error two minor releases later.
+/home/circleci/project/examples/svm/plot_rbf_parameters.py:177: MatplotlibDeprecationWarning: shading=&#39;flat&#39; when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading=&#39;auto&#39;, &#39;nearest&#39; or &#39;gouraud&#39;, or set rcParams[&#39;pcolor.shading&#39;].  This will become an error two minor releases later.
   plt.pcolormesh(xx, yy, -Z, cmap=plt.cm.RdBu)
-/home/circleci/project/examples/svm/plot_rbf_parameters.py:172: MatplotlibDeprecationWarning: shading=&#39;flat&#39; when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading=&#39;auto&#39;, &#39;nearest&#39; or &#39;gouraud&#39;, or set rcParams[&#39;pcolor.shading&#39;].  This will become an error two minor releases later.
+/home/circleci/project/examples/svm/plot_rbf_parameters.py:177: MatplotlibDeprecationWarning: shading=&#39;flat&#39; when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading=&#39;auto&#39;, &#39;nearest&#39; or &#39;gouraud&#39;, or set rcParams[&#39;pcolor.shading&#39;].  This will become an error two minor releases later.
   plt.pcolormesh(xx, yy, -Z, cmap=plt.cm.RdBu)
-/home/circleci/project/examples/svm/plot_rbf_parameters.py:172: MatplotlibDeprecationWarning: shading=&#39;flat&#39; when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading=&#39;auto&#39;, &#39;nearest&#39; or &#39;gouraud&#39;, or set rcParams[&#39;pcolor.shading&#39;].  This will become an error two minor releases later.
+/home/circleci/project/examples/svm/plot_rbf_parameters.py:177: MatplotlibDeprecationWarning: shading=&#39;flat&#39; when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading=&#39;auto&#39;, &#39;nearest&#39; or &#39;gouraud&#39;, or set rcParams[&#39;pcolor.shading&#39;].  This will become an error two minor releases later.
   plt.pcolormesh(xx, yy, -Z, cmap=plt.cm.RdBu)
-/home/circleci/project/examples/svm/plot_rbf_parameters.py:172: MatplotlibDeprecationWarning: shading=&#39;flat&#39; when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading=&#39;auto&#39;, &#39;nearest&#39; or &#39;gouraud&#39;, or set rcParams[&#39;pcolor.shading&#39;].  This will become an error two minor releases later.
+/home/circleci/project/examples/svm/plot_rbf_parameters.py:177: MatplotlibDeprecationWarning: shading=&#39;flat&#39; when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading=&#39;auto&#39;, &#39;nearest&#39; or &#39;gouraud&#39;, or set rcParams[&#39;pcolor.shading&#39;].  This will become an error two minor releases later.
   plt.pcolormesh(xx, yy, -Z, cmap=plt.cm.RdBu)
-/home/circleci/project/examples/svm/plot_rbf_parameters.py:172: MatplotlibDeprecationWarning: shading=&#39;flat&#39; when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading=&#39;auto&#39;, &#39;nearest&#39; or &#39;gouraud&#39;, or set rcParams[&#39;pcolor.shading&#39;].  This will become an error two minor releases later.
+/home/circleci/project/examples/svm/plot_rbf_parameters.py:177: MatplotlibDeprecationWarning: shading=&#39;flat&#39; when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading=&#39;auto&#39;, &#39;nearest&#39; or &#39;gouraud&#39;, or set rcParams[&#39;pcolor.shading&#39;].  This will become an error two minor releases later.
   plt.pcolormesh(xx, yy, -Z, cmap=plt.cm.RdBu)
-/home/circleci/project/examples/svm/plot_rbf_parameters.py:172: MatplotlibDeprecationWarning: shading=&#39;flat&#39; when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading=&#39;auto&#39;, &#39;nearest&#39; or &#39;gouraud&#39;, or set rcParams[&#39;pcolor.shading&#39;].  This will become an error two minor releases later.
+/home/circleci/project/examples/svm/plot_rbf_parameters.py:177: MatplotlibDeprecationWarning: shading=&#39;flat&#39; when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading=&#39;auto&#39;, &#39;nearest&#39; or &#39;gouraud&#39;, or set rcParams[&#39;pcolor.shading&#39;].  This will become an error two minor releases later.
   plt.pcolormesh(xx, yy, -Z, cmap=plt.cm.RdBu)
-/home/circleci/project/examples/svm/plot_rbf_parameters.py:172: MatplotlibDeprecationWarning: shading=&#39;flat&#39; when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading=&#39;auto&#39;, &#39;nearest&#39; or &#39;gouraud&#39;, or set rcParams[&#39;pcolor.shading&#39;].  This will become an error two minor releases later.
+/home/circleci/project/examples/svm/plot_rbf_parameters.py:177: MatplotlibDeprecationWarning: shading=&#39;flat&#39; when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading=&#39;auto&#39;, &#39;nearest&#39; or &#39;gouraud&#39;, or set rcParams[&#39;pcolor.shading&#39;].  This will become an error two minor releases later.
   plt.pcolormesh(xx, yy, -Z, cmap=plt.cm.RdBu)
-/home/circleci/project/examples/svm/plot_rbf_parameters.py:172: MatplotlibDeprecationWarning: shading=&#39;flat&#39; when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading=&#39;auto&#39;, &#39;nearest&#39; or &#39;gouraud&#39;, or set rcParams[&#39;pcolor.shading&#39;].  This will become an error two minor releases later.
+/home/circleci/project/examples/svm/plot_rbf_parameters.py:177: MatplotlibDeprecationWarning: shading=&#39;flat&#39; when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading=&#39;auto&#39;, &#39;nearest&#39; or &#39;gouraud&#39;, or set rcParams[&#39;pcolor.shading&#39;].  This will become an error two minor releases later.
   plt.pcolormesh(xx, yy, -Z, cmap=plt.cm.RdBu)
 </pre></div>
 </div>
@@ -388,7 +392,7 @@ map.</p>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  6.517 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  10.486 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-svm-plot-rbf-parameters-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/scikit-learn/scikit-learn/master?urlpath=lab/tree/notebooks/auto_examples/svm/plot_rbf_parameters.ipynb"><img alt="Launch binder" src="../../_images/binder_badge_logo.png" style="width: 150px;" /></a>
