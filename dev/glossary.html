@@ -475,7 +475,7 @@ while being excepted from other <a class="reference internal" href="#term-common
 <p>Some aspects of estimator tags are currently determined through
 the <a class="reference internal" href="#term-duck-typing"><span class="xref std std-term">duck typing</span></a> of methods like <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code> and through
 some special attributes on estimator objects:</p>
-<dl class="glossary simple">
+<dl class="glossary">
 <dt id="term-_estimator_type"><code class="docutils literal notranslate"><span class="pre">_estimator_type</span></code></dt><dd><p>This string-valued attribute identifies an estimator as being a
 classifier, regressor, etc. It is set by mixins such as
 <a class="reference internal" href="modules/generated/sklearn.base.ClassifierMixin.html#sklearn.base.ClassifierMixin" title="sklearn.base.ClassifierMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">base.ClassifierMixin</span></code></a>, but needs to be more explicitly
@@ -491,6 +491,11 @@ Its primary purpose is that when a <a class="reference internal" href="#term-met
 extracts a sub-sample of data intended for a pairwise estimator,
 the data needs to be indexed on both axes, while other data is
 indexed only on the first axis.</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.24: </span>The _pairwise attribute is deprecated in 0.24. From 0.26
+onward, the <code class="docutils literal notranslate"><span class="pre">pairwise</span></code> estimator tag should be used
+instead.</p>
+</div>
 </dd>
 </dl>
 <p>For more detailed info, see <a class="reference internal" href="developers/develop.html#estimator-tags"><span class="std std-ref">Estimator Tags</span></a>.</p>
@@ -703,9 +708,9 @@ indicating (dis)similarity to every sample, and when passed to
 prediction/transformation methods, each row corresponds to a testing
 sample and each column to a training sample.</p>
 <p>Use of precomputed X is usually indicated by setting a <code class="docutils literal notranslate"><span class="pre">metric</span></code>,
-<code class="docutils literal notranslate"><span class="pre">affinity</span></code> or <code class="docutils literal notranslate"><span class="pre">kernel</span></code> parameter to the string ‘precomputed’.  An
-estimator should mark itself as being <a class="reference internal" href="#term-_pairwise"><span class="xref std std-term">_pairwise</span></a> if this is the
-case.</p>
+<code class="docutils literal notranslate"><span class="pre">affinity</span></code> or <code class="docutils literal notranslate"><span class="pre">kernel</span></code> parameter to the string ‘precomputed’. If
+this is the case, then the estimator should set the <code class="docutils literal notranslate"><span class="pre">pairwise</span></code>
+estimator tag as True.</p>
 </dd>
 <dt id="term-rectangular">rectangular</dt><dd><p>Data that can be represented as a matrix with <a class="reference internal" href="#term-samples"><span class="xref std std-term">samples</span></a> on the
 first axis and a fixed, finite set of <a class="reference internal" href="#term-features"><span class="xref std std-term">features</span></a> on the second

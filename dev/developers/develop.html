@@ -405,6 +405,10 @@ a <a class="reference internal" href="../glossary.html#term-_pairwise"><span cla
 the dataset, e.g. when <code class="docutils literal notranslate"><span class="pre">X</span></code> is a precomputed kernel matrix. Specifically,
 the <a class="reference internal" href="../glossary.html#term-_pairwise"><span class="xref std std-term">_pairwise</span></a> property is used by <code class="docutils literal notranslate"><span class="pre">utils.metaestimators._safe_split</span></code>
 to slice rows and columns.</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.24: </span>The _pairwise attribute is deprecated in 0.24. From 0.26 onward,
+the <code class="docutils literal notranslate"><span class="pre">pairwise</span></code> estimator tag should be used instead.</p>
+</div>
 </div>
 <div class="section" id="universal-attributes">
 <h4>Universal attributes<a class="headerlink" href="#universal-attributes" title="Permalink to this headline">¶</a></h4>
@@ -693,6 +697,15 @@ multi-class multi-output.</p>
 stateless and dummy transformers!</p>
 </dd>
 <dt>non_deterministic (default=False)</dt><dd><p>whether the estimator is not deterministic given a fixed <code class="docutils literal notranslate"><span class="pre">random_state</span></code></p>
+</dd>
+<dt>pairwise (default=False)</dt><dd><p>This boolean attribute indicates whether the data (<code class="docutils literal notranslate"><span class="pre">X</span></code>) <a class="reference internal" href="../glossary.html#term-fit"><span class="xref std std-term">fit</span></a> and
+similar methods consists of pairwise measures over samples rather than a
+feature representation for each sample.  It is usually <code class="docutils literal notranslate"><span class="pre">True</span></code> where an
+estimator has a <code class="docutils literal notranslate"><span class="pre">metric</span></code> or <code class="docutils literal notranslate"><span class="pre">affinity</span></code> or <code class="docutils literal notranslate"><span class="pre">kernel</span></code> parameter with value
+‘precomputed’. Its primary purpose is that when a <a class="reference internal" href="../glossary.html#term-meta-estimator"><span class="xref std std-term">meta-estimator</span></a>
+extracts a sub-sample of data intended for a pairwise estimator, the data
+needs to be indexed on both axes, while other data is indexed only on the
+first axis.</p>
 </dd>
 <dt>preserves_dtype (default=``[np.float64]``)</dt><dd><p>applies only on transformers. It corresponds to the data types which will
 be preserved such that <code class="docutils literal notranslate"><span class="pre">X_trans.dtype</span></code> is the same as <code class="docutils literal notranslate"><span class="pre">X.dtype</span></code> after
