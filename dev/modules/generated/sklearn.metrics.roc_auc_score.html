@@ -172,7 +172,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.metrics" title="sklearn.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.metrics</span></code></a>.roc_auc_score<a class="headerlink" href="#sklearn-metrics-roc-auc-score" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="sklearn.metrics.roc_auc_score">
-<code class="sig-prename descclassname">sklearn.metrics.</code><code class="sig-name descname">roc_auc_score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y_true</span></em>, <em class="sig-param"><span class="n">y_score</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">average</span><span class="o">=</span><span class="default_value">'macro'</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">max_fpr</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">multi_class</span><span class="o">=</span><span class="default_value">'raise'</span></em>, <em class="sig-param"><span class="n">labels</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/9120be9d6/sklearn/metrics/_ranking.py#L352"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.metrics.roc_auc_score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sklearn.metrics.</code><code class="sig-name descname">roc_auc_score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y_true</span></em>, <em class="sig-param"><span class="n">y_score</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">average</span><span class="o">=</span><span class="default_value">'macro'</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">max_fpr</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">multi_class</span><span class="o">=</span><span class="default_value">'raise'</span></em>, <em class="sig-param"><span class="n">labels</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f2635e278/sklearn/metrics/_ranking.py#L352"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.metrics.roc_auc_score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute Area Under the Receiver Operating Characteristic Curve (ROC AUC)
 from prediction scores.</p>
 <p>Note: this implementation can be used with binary, multiclass and
@@ -238,25 +238,27 @@ by support (the number of true instances for each label).</p>
 should be either equal to <code class="docutils literal notranslate"><span class="pre">None</span></code> or <code class="docutils literal notranslate"><span class="pre">1.0</span></code> as AUC ROC partial
 computation currently is not supported for multiclass.</p>
 </dd>
-<dt><strong>multi_class</strong><span class="classifier">{‘raise’, ‘ovr’, ‘ovo’}, default=’raise’</span></dt><dd><p>Multiclass only. Determines the type of configuration to use. The
-default value raises an error, so either <code class="docutils literal notranslate"><span class="pre">'ovr'</span></code> or <code class="docutils literal notranslate"><span class="pre">'ovo'</span></code> must be
-passed explicitly.</p>
+<dt><strong>multi_class</strong><span class="classifier">{‘raise’, ‘ovr’, ‘ovo’}, default=’raise’</span></dt><dd><p>Only used for multiclass targets. Determines the type of configuration
+to use. The default value raises an error, so either
+<code class="docutils literal notranslate"><span class="pre">'ovr'</span></code> or <code class="docutils literal notranslate"><span class="pre">'ovo'</span></code> must be passed explicitly.</p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">'ovr'</span></code>:</dt><dd><p>Computes the AUC of each class against the rest <a class="reference internal" href="#r4bb7c4558997-3" id="id2">[3]</a> <a class="reference internal" href="#r4bb7c4558997-4" id="id3">[4]</a>. This
+<dt><code class="docutils literal notranslate"><span class="pre">'ovr'</span></code>:</dt><dd><p>Stands for One-vs-rest. Computes the AUC of each class
+against the rest <a class="reference internal" href="#r4bb7c4558997-3" id="id2">[3]</a> <a class="reference internal" href="#r4bb7c4558997-4" id="id3">[4]</a>. This
 treats the multiclass case in the same way as the multilabel case.
 Sensitive to class imbalance even when <code class="docutils literal notranslate"><span class="pre">average</span> <span class="pre">==</span> <span class="pre">'macro'</span></code>,
 because class imbalance affects the composition of each of the
 ‘rest’ groupings.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">'ovo'</span></code>:</dt><dd><p>Computes the average AUC of all possible pairwise combinations of
-classes <a class="reference internal" href="#r4bb7c4558997-5" id="id4">[5]</a>. Insensitive to class imbalance when
+<dt><code class="docutils literal notranslate"><span class="pre">'ovo'</span></code>:</dt><dd><p>Stands for One-vs-one. Computes the average AUC of all
+possible pairwise combinations of classes <a class="reference internal" href="#r4bb7c4558997-5" id="id4">[5]</a>.
+Insensitive to class imbalance when
 <code class="docutils literal notranslate"><span class="pre">average</span> <span class="pre">==</span> <span class="pre">'macro'</span></code>.</p>
 </dd>
 </dl>
 </dd>
-<dt><strong>labels</strong><span class="classifier">array-like of shape (n_classes,), default=None</span></dt><dd><p>Multiclass only. List of labels that index the classes in <code class="docutils literal notranslate"><span class="pre">y_score</span></code>.
-If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the numerical or lexicographical order of the labels in
-<code class="docutils literal notranslate"><span class="pre">y_true</span></code> is used.</p>
+<dt><strong>labels</strong><span class="classifier">array-like of shape (n_classes,), default=None</span></dt><dd><p>Only used for multiclass targets. List of labels that index the
+classes in <code class="docutils literal notranslate"><span class="pre">y_score</span></code>. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the numerical or lexicographical
+order of the labels in <code class="docutils literal notranslate"><span class="pre">y_true</span></code> is used.</p>
 </dd>
 </dl>
 </dd>
