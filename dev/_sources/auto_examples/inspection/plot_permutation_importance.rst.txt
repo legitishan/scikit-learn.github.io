@@ -86,16 +86,13 @@ with the target variable (``survived``):
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, stratify=y, random_state=42)
 
-    categorical_pipe = Pipeline([
-        ('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
-        ('onehot', OneHotEncoder(handle_unknown='ignore'))
-    ])
+    categorical_encoder = OneHotEncoder(handle_unknown='ignore')
     numerical_pipe = Pipeline([
         ('imputer', SimpleImputer(strategy='mean'))
     ])
 
     preprocessing = ColumnTransformer(
-        [('cat', categorical_pipe, categorical_columns),
+        [('cat', categorical_encoder, categorical_columns),
          ('num', numerical_pipe, numerical_columns)])
 
     rf = Pipeline([
@@ -111,13 +108,9 @@ with the target variable (``survived``):
 
 .. raw:: html
 
-    <style>div.sk-top-container {color: black;background-color: white;}div.sk-toggleable {background-color: white;}label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.2em 0.3em;box-sizing: border-box;text-align: center;}div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}div.sk-estimator {font-family: monospace;background-color: #f0f8ff;margin: 0.25em 0.25em;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;}div.sk-estimator:hover {background-color: #d4ebff;}div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 2em;bottom: 0;left: 50%;}div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;}div.sk-item {z-index: 1;}div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;}div.sk-parallel-item {display: flex;flex-direction: column;position: relative;background-color: white;}div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}div.sk-parallel-item:only-child::after {width: 0;}div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0.2em;box-sizing: border-box;padding-bottom: 0.1em;background-color: white;position: relative;}div.sk-label label {font-family: monospace;font-weight: bold;background-color: white;display: inline-block;line-height: 1.2em;}div.sk-label-container {position: relative;z-index: 2;text-align: center;}div.sk-container {display: inline-block;position: relative;}</style><div class="sk-top-container"><div class="sk-container"><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="e9ac04cf-1f7d-4eaf-85b7-3f80f5278ad5" type="checkbox" ><label class="sk-toggleable__label" for="e9ac04cf-1f7d-4eaf-85b7-3f80f5278ad5">Pipeline</label><div class="sk-toggleable__content"><pre>Pipeline(steps=[('preprocess',
+    <style>div.sk-top-container {color: black;background-color: white;}div.sk-toggleable {background-color: white;}label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.2em 0.3em;box-sizing: border-box;text-align: center;}div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}div.sk-estimator {font-family: monospace;background-color: #f0f8ff;margin: 0.25em 0.25em;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;}div.sk-estimator:hover {background-color: #d4ebff;}div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 2em;bottom: 0;left: 50%;}div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;}div.sk-item {z-index: 1;}div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;}div.sk-parallel-item {display: flex;flex-direction: column;position: relative;background-color: white;}div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}div.sk-parallel-item:only-child::after {width: 0;}div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0.2em;box-sizing: border-box;padding-bottom: 0.1em;background-color: white;position: relative;}div.sk-label label {font-family: monospace;font-weight: bold;background-color: white;display: inline-block;line-height: 1.2em;}div.sk-label-container {position: relative;z-index: 2;text-align: center;}div.sk-container {display: inline-block;position: relative;}</style><div class="sk-top-container"><div class="sk-container"><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="f40bc3e4-8d34-4d81-8f03-f563bbc5af92" type="checkbox" ><label class="sk-toggleable__label" for="f40bc3e4-8d34-4d81-8f03-f563bbc5af92">Pipeline</label><div class="sk-toggleable__content"><pre>Pipeline(steps=[('preprocess',
                      ColumnTransformer(transformers=[('cat',
-                                                      Pipeline(steps=[('imputer',
-                                                                       SimpleImputer(fill_value='missing',
-                                                                                     strategy='constant')),
-                                                                      ('onehot',
-                                                                       OneHotEncoder(handle_unknown='ignore'))]),
+                                                      OneHotEncoder(handle_unknown='ignore'),
                                                       ['pclass', 'sex', 'embarked',
                                                        'random_cat']),
                                                      ('num',
@@ -125,17 +118,12 @@ with the target variable (``survived``):
                                                                        SimpleImputer())]),
                                                       ['age', 'sibsp', 'parch',
                                                        'fare', 'random_num'])])),
-                    ('classifier', RandomForestClassifier(random_state=42))])</pre></div></div></div><div class="sk-serial"><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="2a8490bd-ee80-42b5-8d9c-a57ca14602c0" type="checkbox" ><label class="sk-toggleable__label" for="2a8490bd-ee80-42b5-8d9c-a57ca14602c0">preprocess: ColumnTransformer</label><div class="sk-toggleable__content"><pre>ColumnTransformer(transformers=[('cat',
-                                     Pipeline(steps=[('imputer',
-                                                      SimpleImputer(fill_value='missing',
-                                                                    strategy='constant')),
-                                                     ('onehot',
-                                                      OneHotEncoder(handle_unknown='ignore'))]),
+                    ('classifier', RandomForestClassifier(random_state=42))])</pre></div></div></div><div class="sk-serial"><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="0e610c83-26cc-44d7-9294-2f8ecae7d947" type="checkbox" ><label class="sk-toggleable__label" for="0e610c83-26cc-44d7-9294-2f8ecae7d947">preprocess: ColumnTransformer</label><div class="sk-toggleable__content"><pre>ColumnTransformer(transformers=[('cat', OneHotEncoder(handle_unknown='ignore'),
                                      ['pclass', 'sex', 'embarked', 'random_cat']),
                                     ('num',
                                      Pipeline(steps=[('imputer', SimpleImputer())]),
                                      ['age', 'sibsp', 'parch', 'fare',
-                                      'random_num'])])</pre></div></div></div><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="eb410f05-b7c2-424c-928d-0ad76d985659" type="checkbox" ><label class="sk-toggleable__label" for="eb410f05-b7c2-424c-928d-0ad76d985659">cat</label><div class="sk-toggleable__content"><pre>['pclass', 'sex', 'embarked', 'random_cat']</pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="c6e68bf3-0e0c-4aee-9a3e-cbe0c58e19f3" type="checkbox" ><label class="sk-toggleable__label" for="c6e68bf3-0e0c-4aee-9a3e-cbe0c58e19f3">SimpleImputer</label><div class="sk-toggleable__content"><pre>SimpleImputer(fill_value='missing', strategy='constant')</pre></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="1df6d14c-29cc-4605-831e-f96d876aa9d9" type="checkbox" ><label class="sk-toggleable__label" for="1df6d14c-29cc-4605-831e-f96d876aa9d9">OneHotEncoder</label><div class="sk-toggleable__content"><pre>OneHotEncoder(handle_unknown='ignore')</pre></div></div></div></div></div></div></div></div><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="0563c98d-f45a-44a4-9700-3a14b3906b46" type="checkbox" ><label class="sk-toggleable__label" for="0563c98d-f45a-44a4-9700-3a14b3906b46">num</label><div class="sk-toggleable__content"><pre>['age', 'sibsp', 'parch', 'fare', 'random_num']</pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="50401d2f-3e25-42d7-9be5-932919a86c3e" type="checkbox" ><label class="sk-toggleable__label" for="50401d2f-3e25-42d7-9be5-932919a86c3e">SimpleImputer</label><div class="sk-toggleable__content"><pre>SimpleImputer()</pre></div></div></div></div></div></div></div></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="8281799f-978b-48ed-84d6-2bd745f5135b" type="checkbox" ><label class="sk-toggleable__label" for="8281799f-978b-48ed-84d6-2bd745f5135b">RandomForestClassifier</label><div class="sk-toggleable__content"><pre>RandomForestClassifier(random_state=42)</pre></div></div></div></div></div></div></div>
+                                      'random_num'])])</pre></div></div></div><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="b2be6d0e-2d87-4c35-8eae-ecd7ae3e8ece" type="checkbox" ><label class="sk-toggleable__label" for="b2be6d0e-2d87-4c35-8eae-ecd7ae3e8ece">cat</label><div class="sk-toggleable__content"><pre>['pclass', 'sex', 'embarked', 'random_cat']</pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="4003ff2c-cf82-4cef-92f7-8dbf9ee2c25c" type="checkbox" ><label class="sk-toggleable__label" for="4003ff2c-cf82-4cef-92f7-8dbf9ee2c25c">OneHotEncoder</label><div class="sk-toggleable__content"><pre>OneHotEncoder(handle_unknown='ignore')</pre></div></div></div></div></div></div><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="072399ee-4fa8-41cd-aa88-067f20748c16" type="checkbox" ><label class="sk-toggleable__label" for="072399ee-4fa8-41cd-aa88-067f20748c16">num</label><div class="sk-toggleable__content"><pre>['age', 'sibsp', 'parch', 'fare', 'random_num']</pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="79da93b3-db46-4215-bbeb-cb2bfebd2b35" type="checkbox" ><label class="sk-toggleable__label" for="79da93b3-db46-4215-bbeb-cb2bfebd2b35">SimpleImputer</label><div class="sk-toggleable__content"><pre>SimpleImputer()</pre></div></div></div></div></div></div></div></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="14ca2933-5b11-49eb-bbcf-62631f3c6d95" type="checkbox" ><label class="sk-toggleable__label" for="14ca2933-5b11-49eb-bbcf-62631f3c6d95">RandomForestClassifier</label><div class="sk-toggleable__content"><pre>RandomForestClassifier(random_state=42)</pre></div></div></div></div></div></div></div>
     <br />
     <br />
 
@@ -202,8 +190,7 @@ importances:
 .. code-block:: default
 
     ohe = (rf.named_steps['preprocess']
-             .named_transformers_['cat']
-             .named_steps['onehot'])
+             .named_transformers_['cat'])
     feature_names = ohe.get_feature_names(input_features=categorical_columns)
     feature_names = np.r_[feature_names, numerical_columns]
 
@@ -235,7 +222,7 @@ importances:
 
  .. code-block:: none
 
-    /home/circleci/project/examples/inspection/plot_permutation_importance.py:137: UserWarning: FixedFormatter should only be used together with FixedLocator
+    /home/circleci/project/examples/inspection/plot_permutation_importance.py:133: UserWarning: FixedFormatter should only be used together with FixedLocator
       ax.set_yticklabels(feature_names[sorted_idx])
 
 
@@ -307,7 +294,7 @@ re-running this example with constrained RF with min_samples_leaf=10.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  4.106 seconds)
+   **Total running time of the script:** ( 0 minutes  6.328 seconds)
 
 
 .. _sphx_glr_download_auto_examples_inspection_plot_permutation_importance.py:
