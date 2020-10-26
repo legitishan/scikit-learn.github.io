@@ -9,7 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   
-  <title>10. Common pitfalls &mdash; scikit-learn 0.24.dev0 documentation</title>
+  <title>10. Common pitfalls and recommended practices &mdash; scikit-learn 0.24.dev0 documentation</title>
   
   <link rel="canonical" href="http://scikit-learn.org/stable/common_pitfalls.html" />
 
@@ -216,7 +216,7 @@
                 </li>
               
                 <li>
-                  <a href="" class="sk-toc-active">10. Common pitfalls</a>
+                  <a href="" class="sk-toc-active">10. Common pitfalls and recommended practices</a>
                   
                 </li>
               
@@ -268,8 +268,8 @@
       margin-left: 40px;
   }
 
-</style><div class="section" id="common-pitfalls">
-<span id="id1"></span><h1><span class="section-number">10. </span>Common pitfalls<a class="headerlink" href="#common-pitfalls" title="Permalink to this headline">¶</a></h1>
+</style><div class="section" id="common-pitfalls-and-recommended-practices">
+<span id="common-pitfalls"></span><h1><span class="section-number">10. </span>Common pitfalls and recommended practices<a class="headerlink" href="#common-pitfalls-and-recommended-practices" title="Permalink to this headline">¶</a></h1>
 <p>The purpose of this chapter is to illustrate some common pitfalls and
 anti-patterns that occur when using scikit-learn. It provides
 examples of what <strong>not</strong> to do, along with a corresponding correct
@@ -288,11 +288,11 @@ and the model will not be able to perform effectively.</p>
 single feature:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_regression</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
-<span class="gp">...</span>
+
 <span class="gp">&gt;&gt;&gt; </span><span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_regression</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
-<span class="gp">... </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Wrong</strong></p>
@@ -301,7 +301,7 @@ performance on the test dataset is worse than expected:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
-<span class="gp">...</span>
+
 <span class="gp">&gt;&gt;&gt; </span><span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X_train_transformed</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_transformed</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
@@ -310,11 +310,17 @@ performance on the test dataset is worse than expected:</p>
 </pre></div>
 </div>
 <p><strong>Right</strong></p>
-<p>A <a class="reference internal" href="modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a> makes it easier to chain
-transformations with estimators, and reduces the possibility of
-forgetting a transformation:</p>
+<p>Instead of passing the non-transformed <code class="docutils literal notranslate"><span class="pre">X_test</span></code> to <code class="docutils literal notranslate"><span class="pre">predict</span></code>, we should
+transform the test data, the same way we transformed the training data:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X_test_transformed</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_transformed</span><span class="p">))</span>
+<span class="go">0.90...</span>
+</pre></div>
+</div>
+<p>Alternatively, we recommend using a <a class="reference internal" href="modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>, which makes it easier to chain transformations
+with estimators, and reduces the possibility of forgetting a transformation:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">make_pipeline</span>
-<span class="gp">...</span>
+
 <span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">(),</span> <span class="n">LinearRegression</span><span class="p">())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <span class="go">Pipeline(steps=[(&#39;standardscaler&#39;, StandardScaler()),</span>
@@ -323,41 +329,40 @@ forgetting a transformation:</p>
 <span class="go">0.90...</span>
 </pre></div>
 </div>
+<p>Pipelines also help avoiding another common pitfall: leaking the test data
+into the training data.</p>
 </div>
 <div class="section" id="data-leakage">
-<span id="id2"></span><h2><span class="section-number">10.2. </span>Data leakage<a class="headerlink" href="#data-leakage" title="Permalink to this headline">¶</a></h2>
+<span id="id1"></span><h2><span class="section-number">10.2. </span>Data leakage<a class="headerlink" href="#data-leakage" title="Permalink to this headline">¶</a></h2>
 <p>Data leakage occurs when information that would not be available at prediction
 time is used when building the model. This results in overly optimistic
 performance estimates, for example from <a class="reference internal" href="modules/cross_validation.html#cross-validation"><span class="std std-ref">cross-validation</span></a>, and thus poorer performance when the model is used
 on actually novel data, for example during production.</p>
 <p>A common cause is not keeping the test and train data subsets separate.
 Test data should never be used to make choices about the model.
-The general rule is to never call <code class="docutils literal notranslate"><span class="pre">fit</span></code> on test data. This is particularly
-important for ‘supervised transformations’ where the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method requires
-both the data, <code class="docutils literal notranslate"><span class="pre">X</span></code> and the target values, <code class="docutils literal notranslate"><span class="pre">y</span></code>. While this may
-sound obvious, this is easy to miss in some cases, for example when applying
-certain pre-processing steps.</p>
-<p>Although both train and test data subsets should receive the same preprocessing
-transformation, it is important that these transformations are only learnt
-from the training data. For example, if you have a
+<strong>The general rule is to never call</strong> <code class="docutils literal notranslate"><span class="pre">fit</span></code> <strong>on the test data</strong>. While this
+may sound obvious, this is easy to miss in some cases, for example when
+applying certain pre-processing steps.</p>
+<p>Although both train and test data subsets should receive the same
+preprocessing transformation (as described in the previous section), it is
+important that these transformations are only learnt from the training data.
+For example, if you have a
 normalization step where you divide by the average value, the average should
 be the average of the train subset, <strong>not</strong> the average of all the data. If the
 test subset is included in the average calculation, information from the test
 subset is influencing the model.</p>
-<p>Including the test data when <a class="reference internal" href="modules/grid_search.html#grid-search"><span class="std std-ref">tuning model hyperparameters</span></a>
-will also inadvertently introduce information from the test data into the
-model. Practically, this means that only the train data subset should be fed
-into the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method of <a class="reference internal" href="modules/classes.html#hyper-parameter-optimizers"><span class="std std-ref">Hyper-parameter optimizers</span></a>, as is the case
-with all scikit-learn estimators.</p>
 <p>An example of data leakage during preprocessing is detailed below.</p>
-<div class="topic">
-<p class="topic-title">See Also:</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="auto_examples/model_selection/plot_nested_cross_validation_iris.html#sphx-glr-auto-examples-model-selection-plot-nested-cross-validation-iris-py"><span class="std std-ref">Nested versus non-nested cross-validation</span></a></p></li>
-</ul>
+<div class="section" id="data-leakage-during-pre-processing">
+<h3><span class="section-number">10.2.1. </span>Data leakage during pre-processing<a class="headerlink" href="#data-leakage-during-pre-processing" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We here choose to illustrate data leakage with a feature selection step.
+This risk of leakage is however relevant with almost all transformations
+in scikit-learn, including (but not limited to)
+<a class="reference internal" href="modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler" title="sklearn.preprocessing.StandardScaler"><code class="xref py py-class docutils literal notranslate"><span class="pre">StandardScaler</span></code></a>,
+<a class="reference internal" href="modules/generated/sklearn.impute.SimpleImputer.html#sklearn.impute.SimpleImputer" title="sklearn.impute.SimpleImputer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimpleImputer</span></code></a>, and
+<a class="reference internal" href="modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA" title="sklearn.decomposition.PCA"><code class="xref py py-class docutils literal notranslate"><span class="pre">PCA</span></code></a>.</p>
 </div>
-<div class="section" id="data-leakage-during-feature-selection">
-<h3><span class="section-number">10.2.1. </span>Data leakage during feature selection<a class="headerlink" href="#data-leakage-during-feature-selection" title="Permalink to this headline">¶</a></h3>
 <p>A number of <a class="reference internal" href="modules/feature_selection.html#feature-selection"><span class="std std-ref">Feature selection</span></a> functions are available in scikit-learn.
 They can help remove irrelevant, redundant and noisy features as well as
 improve your model build time and performance. As with any other type of
@@ -386,16 +391,19 @@ much higher than expected accuracy score:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="kn">import</span> <span class="n">SelectKBest</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">GradientBoostingClassifier</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Incorrect preprocessing: the entire data is transformed</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X_selected</span> <span class="o">=</span> <span class="n">SelectKBest</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">X_selected</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">gbc</span> <span class="o">=</span> <span class="n">GradientBoostingClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">gbc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <span class="go">GradientBoostingClassifier(random_state=1)</span>
+
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">gbc</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">score</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Accuracy: </span><span class="si">{</span><span class="n">score</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="go">Accuracy: 0.76</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="go">0.76</span>
 </pre></div>
 </div>
 <p><strong>Right</strong></p>
@@ -408,21 +416,21 @@ data, close to chance:</p>
 <span class="gp">... </span>    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">select</span> <span class="o">=</span> <span class="n">SelectKBest</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X_train_selected</span> <span class="o">=</span> <span class="n">select</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
 <span class="gp">&gt;&gt;&gt; </span><span class="n">gbc</span> <span class="o">=</span> <span class="n">GradientBoostingClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">gbc</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_selected</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <span class="go">GradientBoostingClassifier(random_state=1)</span>
+
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X_test_selected</span> <span class="o">=</span> <span class="n">select</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">gbc</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_selected</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">score</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Accuracy: </span><span class="si">{</span><span class="n">score</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="go">Accuracy: 0.46</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="go">0.46</span>
 </pre></div>
 </div>
-<p>Another way to prevent data leakage is to use the
-<a class="reference internal" href="modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a> to chain together the feature selection
-and model estimators. The pipeline ensures that only the training data is
-used when performing <code class="docutils literal notranslate"><span class="pre">fit</span></code> and the test data is used only for calculating the
-accuracy score:</p>
+<p>Here again, we recommend using a <a class="reference internal" href="modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a> to chain
+together the feature selection and model estimators. The pipeline ensures
+that only the training data is used when performing <code class="docutils literal notranslate"><span class="pre">fit</span></code> and the test data
+is used only for calculating the accuracy score:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">make_pipeline</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
@@ -432,10 +440,10 @@ accuracy score:</p>
 <span class="go">Pipeline(steps=[(&#39;selectkbest&#39;, SelectKBest(k=25)),</span>
 <span class="go">                (&#39;gradientboostingclassifier&#39;,</span>
 <span class="go">                GradientBoostingClassifier(random_state=1))])</span>
+
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">score</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Accuracy: </span><span class="si">{</span><span class="n">score</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="go">Accuracy: 0.46</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="go">0.46</span>
 </pre></div>
 </div>
 <p>The pipeline can also be fed into a cross-validation
@@ -452,19 +460,17 @@ method is used during fitting and predicting:</p>
 <div class="section" id="how-to-avoid-data-leakage">
 <h3><span class="section-number">10.2.2. </span>How to avoid data leakage<a class="headerlink" href="#how-to-avoid-data-leakage" title="Permalink to this headline">¶</a></h3>
 <p>Below are some tips on avoiding data leakage:</p>
-<ul class="simple">
+<ul>
 <li><p>Always split the data into train and test subsets first, particularly
 before any preprocessing steps.</p></li>
-<li><p>Never include test data when using estimator <code class="docutils literal notranslate"><span class="pre">fit</span></code> and <code class="docutils literal notranslate"><span class="pre">fit_transform</span></code>
+<li><p>Never include test data when using the <code class="docutils literal notranslate"><span class="pre">fit</span></code> and <code class="docutils literal notranslate"><span class="pre">fit_transform</span></code>
 methods. Using all the data, e.g., <code class="docutils literal notranslate"><span class="pre">fit(X)</span></code>, can result in overly optimistic
-scores. Only using the test data, e.g., <code class="docutils literal notranslate"><span class="pre">fit(X_test)</span></code>, can harm performance
-as preprocessing or model fitting is only performed using the, generally
-smaller, test subset.
-Conversely, the <code class="docutils literal notranslate"><span class="pre">transform</span></code> method should be used on both train and test
+scores.</p>
+<p>Conversely, the <code class="docutils literal notranslate"><span class="pre">transform</span></code> method should be used on both train and test
 subsets as the same preprocessing should be applied to all the data.
-This can be achieved by using <code class="docutils literal notranslate"><span class="pre">fit_transform</span></code>, which combines the <code class="docutils literal notranslate"><span class="pre">fit</span></code> and
-<code class="docutils literal notranslate"><span class="pre">transform</span></code> methods, on the train subset and <code class="docutils literal notranslate"><span class="pre">transform</span></code> on the test
-subset.</p></li>
+This can be achieved by using <code class="docutils literal notranslate"><span class="pre">fit_transform</span></code> on the train subset and
+<code class="docutils literal notranslate"><span class="pre">transform</span></code> on the test subset.</p>
+</li>
 <li><p>The scikit-learn <a class="reference internal" href="modules/compose.html#pipeline"><span class="std std-ref">pipeline</span></a> is a great way to prevent data
 leakage as it ensures that the appropriate method is performed on the
 correct data subset. The pipeline is ideal for use in cross-validation
