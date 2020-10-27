@@ -478,6 +478,333 @@ and hyper-parameter tuning functions.</p></li>
 </ul>
 </div>
 </div>
+<div class="section" id="controlling-randomness">
+<span id="randomness"></span><h2><span class="section-number">10.3. </span>Controlling randomness<a class="headerlink" href="#controlling-randomness" title="Permalink to this headline">¶</a></h2>
+<p>Some scikit-learn objects are inherently random. These are usually estimators
+(e.g. <a class="reference internal" href="modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier" title="sklearn.ensemble.RandomForestClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">RandomForestClassifier</span></code></a>) and cross-validation
+splitters (e.g. <a class="reference internal" href="modules/generated/sklearn.model_selection.KFold.html#sklearn.model_selection.KFold" title="sklearn.model_selection.KFold"><code class="xref py py-class docutils literal notranslate"><span class="pre">KFold</span></code></a>). The randomness of
+these objects is controlled via their <code class="docutils literal notranslate"><span class="pre">random_state</span></code> parameter, as described
+in the <a class="reference internal" href="glossary.html#term-random_state"><span class="xref std std-term">Glossary</span></a>. This section expands on the glossary
+entry, and describes good practices and common pitfalls w.r.t. to this
+subtle parameter.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Recommendation summary</p>
+<p>For an optimal robustness of cross-validation (CV) results, pass
+<code class="docutils literal notranslate"><span class="pre">RandomState</span></code> instances when creating estimators, or leave <code class="docutils literal notranslate"><span class="pre">random_state</span></code>
+to <code class="docutils literal notranslate"><span class="pre">None</span></code>. Passing integers to CV splitters is usually the safest option
+and is preferable; passing <code class="docutils literal notranslate"><span class="pre">RandomState</span></code> instances to splitters may
+sometimes be useful to achieve very specific use-cases.
+For both estimators and splitters, passing an integer vs passing an
+instance (or <code class="docutils literal notranslate"><span class="pre">None</span></code>) leads to subtle but significant differences,
+especially for CV procedures. These differences are important to
+understand when reporting results.</p>
+<p>For reproducible results across executions, remove any use of
+<code class="docutils literal notranslate"><span class="pre">random_state=None</span></code>.</p>
+</div>
+<div class="section" id="using-none-or-randomstate-instances-and-repeated-calls-to-fit-and-split">
+<h3><span class="section-number">10.3.1. </span>Using <code class="docutils literal notranslate"><span class="pre">None</span></code> or <code class="docutils literal notranslate"><span class="pre">RandomState</span></code> instances, and repeated calls to <code class="docutils literal notranslate"><span class="pre">fit</span></code> and <code class="docutils literal notranslate"><span class="pre">split</span></code><a class="headerlink" href="#using-none-or-randomstate-instances-and-repeated-calls-to-fit-and-split" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">random_state</span></code> parameter determines whether multiple calls to <a class="reference internal" href="glossary.html#term-fit"><span class="xref std std-term">fit</span></a>
+(for estimators) or to <a class="reference internal" href="glossary.html#term-split"><span class="xref std std-term">split</span></a> (for CV splitters) will produce the same
+results, according to these rules:</p>
+<ul class="simple">
+<li><p>If an integer is passed, calling <code class="docutils literal notranslate"><span class="pre">fit</span></code> or <code class="docutils literal notranslate"><span class="pre">split</span></code> multiple times always
+yields the same results.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">None</span></code> or a <code class="docutils literal notranslate"><span class="pre">RandomState</span></code> instance is passed: <code class="docutils literal notranslate"><span class="pre">fit</span></code> and <code class="docutils literal notranslate"><span class="pre">split</span></code> will
+yield different results each time they are called, and the succession of
+calls explores all sources of entropy. <code class="docutils literal notranslate"><span class="pre">None</span></code> is the default value for all
+<code class="docutils literal notranslate"><span class="pre">random_state</span></code> parameters.</p></li>
+</ul>
+<p>We here illustrate these rules for both estimators and CV splitters.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since passing <code class="docutils literal notranslate"><span class="pre">random_state=None</span></code> is equivalent to passing the global
+<code class="docutils literal notranslate"><span class="pre">RandomState</span></code> instance from <code class="docutils literal notranslate"><span class="pre">numpy</span></code>
+(<code class="docutils literal notranslate"><span class="pre">random_state=np.random.mtrand._rand</span></code>), we will not explicitly mention
+<code class="docutils literal notranslate"><span class="pre">None</span></code> here. Everything that applies to instances also applies to using
+<code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</div>
+<div class="section" id="estimators">
+<h4><span class="section-number">10.3.1.1. </span>Estimators<a class="headerlink" href="#estimators" title="Permalink to this headline">¶</a></h4>
+<p>Passing instances means that calling <code class="docutils literal notranslate"><span class="pre">fit</span></code> multiple times will not yield the
+same results, even if the estimator is fitted on the same data and with the
+same hyper-parameters:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">SGDClassifier</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">(</span><span class="n">n_features</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sgd</span> <span class="o">=</span> <span class="n">SGDClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sgd</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">coef_</span>
+<span class="go">array([[ 8.85418642,  4.79084103, -3.13077794,  8.11915045, -0.56479934]])</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sgd</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">coef_</span>
+<span class="go">array([[ 6.70814003,  5.25291366, -7.55212743,  5.18197458,  1.37845099]])</span>
+</pre></div>
+</div>
+<p>We can see from the snippet above that repeatedly calling <code class="docutils literal notranslate"><span class="pre">sgd.fit</span></code> has
+produced different models, even if the data was the same. This is because the
+Random Number Generator (RNG) of the estimator is consumed (i.e. mutated)
+when <code class="docutils literal notranslate"><span class="pre">fit</span></code> is called, and this mutated RNG will be used in the subsequent
+calls to <code class="docutils literal notranslate"><span class="pre">fit</span></code>. In addition, the <code class="docutils literal notranslate"><span class="pre">rng</span></code> object is shared across all objects
+that use it, and as a consequence, these objects become somewhat
+inter-dependent. For example, two estimators that share the same
+<code class="docutils literal notranslate"><span class="pre">RandomState</span></code> instance will influence each other, as we will see later when
+we discuss cloning. This point is important to keep in mind when debugging.</p>
+<p>If we had passed an integer to the <code class="docutils literal notranslate"><span class="pre">random_state</span></code> parameter of the
+<a class="reference internal" href="modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier" title="sklearn.ensemble.RandomForestClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">RandomForestClassifier</span></code></a>, we would have obtained the
+same models, and thus the same scores each time. When we pass an integer, the
+same RNG is used across all calls to <code class="docutils literal notranslate"><span class="pre">fit</span></code>. What internally happens is that
+even though the RNG is consumed when <code class="docutils literal notranslate"><span class="pre">fit</span></code> is called, it is always reset to
+its original state at the beginning of <code class="docutils literal notranslate"><span class="pre">fit</span></code>.</p>
+</div>
+<div class="section" id="cv-splitters">
+<h4><span class="section-number">10.3.1.2. </span>CV splitters<a class="headerlink" href="#cv-splitters" title="Permalink to this headline">¶</a></h4>
+<p>Randomized CV splitters have a similar behavior when a <code class="docutils literal notranslate"><span class="pre">RandomState</span></code>
+instance is passed; calling <code class="docutils literal notranslate"><span class="pre">split</span></code> multiple times yields different data
+splits:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">KFold</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv</span> <span class="o">=</span> <span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="ow">in</span> <span class="n">cv</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
+<span class="go">[0 3 5 6 7] [1 2 4 8 9]</span>
+<span class="go">[1 2 4 8 9] [0 3 5 6 7]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="ow">in</span> <span class="n">cv</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
+<span class="go">[0 4 6 7 8] [1 2 3 5 9]</span>
+<span class="go">[1 2 3 5 9] [0 4 6 7 8]</span>
+</pre></div>
+</div>
+<p>We can see that the splits are different from the second time <code class="docutils literal notranslate"><span class="pre">split</span></code> is
+called. This may lead to unexpected results if you compare the performance of
+multiple estimators by calling <code class="docutils literal notranslate"><span class="pre">split</span></code> many times, as we will see in the next
+section.</p>
+</div>
+</div>
+<div class="section" id="common-pitfalls-and-subtleties">
+<h3><span class="section-number">10.3.2. </span>Common pitfalls and subtleties<a class="headerlink" href="#common-pitfalls-and-subtleties" title="Permalink to this headline">¶</a></h3>
+<p>While the rules that govern the <code class="docutils literal notranslate"><span class="pre">random_state</span></code> parameter are seemingly simple,
+they do however have some subtle implications. In some cases, this can even
+lead to wrong conclusions.</p>
+<div class="section" id="id2">
+<h4><span class="section-number">10.3.2.1. </span>Estimators<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<p><strong>Different `random_state` types lead to different cross-validation
+procedures</strong></p>
+<p>Depending on the type of the <code class="docutils literal notranslate"><span class="pre">random_state</span></code> parameter, estimators will behave
+differently, especially in cross-validation procedures. Consider the
+following snippet:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_val_score</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rf_123</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cross_val_score</span><span class="p">(</span><span class="n">rf_123</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="go">array([0.85, 0.95, 0.95, 0.9 , 0.9 ])</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rf_inst</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cross_val_score</span><span class="p">(</span><span class="n">rf_inst</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="go">array([0.9 , 0.95, 0.95, 0.9 , 0.9 ])</span>
+</pre></div>
+</div>
+<p>We see that the cross-validated scores of <code class="docutils literal notranslate"><span class="pre">rf_123</span></code> and <code class="docutils literal notranslate"><span class="pre">rf_inst</span></code> are
+different, as should be expected since we didn’t pass the same <code class="docutils literal notranslate"><span class="pre">random_state</span></code>
+parameter. However, the difference between these scores is more subtle than
+it looks, and <strong>the cross-validation procedures that were performed by</strong>
+<a class="reference internal" href="modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score" title="sklearn.model_selection.cross_val_score"><code class="xref py py-func docutils literal notranslate"><span class="pre">cross_val_score</span></code></a> <strong>significantly differ in
+each case</strong>:</p>
+<ul class="simple">
+<li><p>Since <code class="docutils literal notranslate"><span class="pre">rf_123</span></code> was passed an integer, every call to <code class="docutils literal notranslate"><span class="pre">fit</span></code> uses the same RNG:
+this means that all random characteristics of the random forest estimator
+will be the same for each of the 5 folds of the CV procedure. In
+particular, the (randomly chosen) subset of features of the estimator will
+be the same across all folds.</p></li>
+<li><p>Since <code class="docutils literal notranslate"><span class="pre">rf_inst</span></code> was passed a <code class="docutils literal notranslate"><span class="pre">RandomState</span></code> instance, each call to <code class="docutils literal notranslate"><span class="pre">fit</span></code>
+starts from a different RNG. As a result, the random subset of features
+will be different for each folds.</p></li>
+</ul>
+<p>While having a constant estimator RNG across folds isn’t inherently wrong, we
+usually want CV results that are robust w.r.t. the estimator’s randomness. As
+a result, passing an instance instead of an integer may be preferable, since
+it will allow the estimator RNG to vary for each fold.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Here, <a class="reference internal" href="modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score" title="sklearn.model_selection.cross_val_score"><code class="xref py py-func docutils literal notranslate"><span class="pre">cross_val_score</span></code></a> will use a
+non-randomized CV splitter (as is the default), so both estimators will
+be evaluated on the same splits. This section is not about variability in
+the splits. Also, whether we pass an integer or an instance to
+<a class="reference internal" href="modules/generated/sklearn.datasets.make_classification.html#sklearn.datasets.make_classification" title="sklearn.datasets.make_classification"><code class="xref py py-func docutils literal notranslate"><span class="pre">make_classification</span></code></a> isn’t relevant for our
+illustration purpose: what matters is what we pass to the
+<a class="reference internal" href="modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier" title="sklearn.ensemble.RandomForestClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">RandomForestClassifier</span></code></a> estimator.</p>
+</div>
+<p><strong>Cloning</strong></p>
+<p>Another subtle side effect of passing <code class="docutils literal notranslate"><span class="pre">RandomState</span></code> instances is how
+<code class="xref py py-func docutils literal notranslate"><span class="pre">clone</span></code> will work:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">clone</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">clone</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Since a <code class="docutils literal notranslate"><span class="pre">RandomState</span></code> instance was passed to <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> are not clones
+in the strict sense, but rather clones in the statistical sense: <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>
+will still be different models, even when calling <code class="docutils literal notranslate"><span class="pre">fit(X,</span> <span class="pre">y)</span></code> on the same
+data. Moreover, <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> will influence each-other since they share the
+same internal RNG: calling <code class="docutils literal notranslate"><span class="pre">a.fit</span></code> will consume <code class="docutils literal notranslate"><span class="pre">b</span></code>’s RNG, and calling
+<code class="docutils literal notranslate"><span class="pre">b.fit</span></code> will consume <code class="docutils literal notranslate"><span class="pre">a</span></code>’s RNG, since they are the same. This bit is true for
+any estimators that share a <code class="docutils literal notranslate"><span class="pre">random_state</span></code> parameter; it is not specific to
+clones.</p>
+<p>If an integer were passed, <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> would be exact clones and they would not
+influence each other.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Even though <code class="xref py py-func docutils literal notranslate"><span class="pre">clone</span></code> is rarely used in user code, it is
+called pervasively throughout scikit-learn codebase: in particular, most
+meta-estimators that accept non-fitted estimators call
+<code class="xref py py-func docutils literal notranslate"><span class="pre">clone</span></code> internally
+(<a class="reference internal" href="modules/generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV" title="sklearn.model_selection.GridSearchCV"><code class="xref py py-class docutils literal notranslate"><span class="pre">GridSearchCV</span></code></a>,
+<a class="reference internal" href="modules/generated/sklearn.ensemble.StackingClassifier.html#sklearn.ensemble.StackingClassifier" title="sklearn.ensemble.StackingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">StackingClassifier</span></code></a>,
+<a class="reference internal" href="modules/generated/sklearn.calibration.CalibratedClassifierCV.html#sklearn.calibration.CalibratedClassifierCV" title="sklearn.calibration.CalibratedClassifierCV"><code class="xref py py-class docutils literal notranslate"><span class="pre">CalibratedClassifierCV</span></code></a>, etc.).</p>
+</div>
+</div>
+<div class="section" id="id3">
+<h4><span class="section-number">10.3.2.2. </span>CV splitters<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<p>When passed a <code class="docutils literal notranslate"><span class="pre">RandomState</span></code> instance, CV splitters yield different splits
+each time <code class="docutils literal notranslate"><span class="pre">split</span></code> is called. When comparing different estimators, this can
+lead to overestimating the variance of the difference in performance between
+the estimators:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">GaussianNB</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.discriminant_analysis</span> <span class="kn">import</span> <span class="n">LinearDiscriminantAnalysis</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">KFold</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_val_score</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cv</span> <span class="o">=</span> <span class="n">KFold</span><span class="p">(</span><span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lda</span> <span class="o">=</span> <span class="n">LinearDiscriminantAnalysis</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nb</span> <span class="o">=</span> <span class="n">GaussianNB</span><span class="p">()</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">est</span> <span class="ow">in</span> <span class="p">(</span><span class="n">lda</span><span class="p">,</span> <span class="n">nb</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">cross_val_score</span><span class="p">(</span><span class="n">est</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">))</span>
+<span class="go">[0.8  0.75 0.75 0.7  0.85]</span>
+<span class="go">[0.85 0.95 0.95 0.85 0.95]</span>
+</pre></div>
+</div>
+<p>Directly comparing the performance of the
+<a class="reference internal" href="modules/generated/sklearn.discriminant_analysis.LinearDiscriminantAnalysis.html#sklearn.discriminant_analysis.LinearDiscriminantAnalysis" title="sklearn.discriminant_analysis.LinearDiscriminantAnalysis"><code class="xref py py-class docutils literal notranslate"><span class="pre">LinearDiscriminantAnalysis</span></code></a> estimator
+vs the <a class="reference internal" href="modules/generated/sklearn.naive_bayes.GaussianNB.html#sklearn.naive_bayes.GaussianNB" title="sklearn.naive_bayes.GaussianNB"><code class="xref py py-class docutils literal notranslate"><span class="pre">GaussianNB</span></code></a> estimator <strong>on each fold</strong> would
+be a mistake: <strong>the splits on which the estimators are evaluated are
+different</strong>. Indeed, <a class="reference internal" href="modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score" title="sklearn.model_selection.cross_val_score"><code class="xref py py-func docutils literal notranslate"><span class="pre">cross_val_score</span></code></a> will
+internally call <code class="docutils literal notranslate"><span class="pre">cv.split</span></code> on the same
+<a class="reference internal" href="modules/generated/sklearn.model_selection.KFold.html#sklearn.model_selection.KFold" title="sklearn.model_selection.KFold"><code class="xref py py-class docutils literal notranslate"><span class="pre">KFold</span></code></a> instance, but the splits will be
+different each time. This is also true for any tool that performs model
+selection via cross-validation, e.g.
+<a class="reference internal" href="modules/generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV" title="sklearn.model_selection.GridSearchCV"><code class="xref py py-class docutils literal notranslate"><span class="pre">GridSearchCV</span></code></a> and
+<a class="reference internal" href="modules/generated/sklearn.model_selection.RandomizedSearchCV.html#sklearn.model_selection.RandomizedSearchCV" title="sklearn.model_selection.RandomizedSearchCV"><code class="xref py py-class docutils literal notranslate"><span class="pre">RandomizedSearchCV</span></code></a>: scores are not
+comparable fold-to-fold across different calls to <code class="docutils literal notranslate"><span class="pre">search.fit</span></code>, since
+<code class="docutils literal notranslate"><span class="pre">cv.split</span></code> would have been called multiple times. Within a single call to
+<code class="docutils literal notranslate"><span class="pre">search.fit</span></code>, however, fold-to-fold comparison is possible since the search
+estimator only calls <code class="docutils literal notranslate"><span class="pre">cv.split</span></code> once.</p>
+<p>For comparable fold-to-fold results in all scenarios, one should pass an
+integer to the CV splitter: <code class="docutils literal notranslate"><span class="pre">cv</span> <span class="pre">=</span> <span class="pre">KFold(shuffle=True,</span> <span class="pre">random_state=0)</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>While fold-to-fold comparison is not advisable with <code class="docutils literal notranslate"><span class="pre">RandomState</span></code>
+instances, one can however expect that average scores allow to conclude
+whether one estimator is better than another, as long as enough folds and
+data are used.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>What matters in this example is what was passed to
+<a class="reference internal" href="modules/generated/sklearn.model_selection.KFold.html#sklearn.model_selection.KFold" title="sklearn.model_selection.KFold"><code class="xref py py-class docutils literal notranslate"><span class="pre">KFold</span></code></a>. Whether we pass a <code class="docutils literal notranslate"><span class="pre">RandomState</span></code>
+instance or an integer to <a class="reference internal" href="modules/generated/sklearn.datasets.make_classification.html#sklearn.datasets.make_classification" title="sklearn.datasets.make_classification"><code class="xref py py-func docutils literal notranslate"><span class="pre">make_classification</span></code></a>
+is not relevant for our illustration purpose. Also, neither
+<a class="reference internal" href="modules/generated/sklearn.discriminant_analysis.LinearDiscriminantAnalysis.html#sklearn.discriminant_analysis.LinearDiscriminantAnalysis" title="sklearn.discriminant_analysis.LinearDiscriminantAnalysis"><code class="xref py py-class docutils literal notranslate"><span class="pre">LinearDiscriminantAnalysis</span></code></a> nor
+<a class="reference internal" href="modules/generated/sklearn.naive_bayes.GaussianNB.html#sklearn.naive_bayes.GaussianNB" title="sklearn.naive_bayes.GaussianNB"><code class="xref py py-class docutils literal notranslate"><span class="pre">GaussianNB</span></code></a> are randomized estimators.</p>
+</div>
+</div>
+</div>
+<div class="section" id="general-recommendations">
+<h3><span class="section-number">10.3.3. </span>General recommendations<a class="headerlink" href="#general-recommendations" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="getting-reproducible-results-across-multiple-executions">
+<h4><span class="section-number">10.3.3.1. </span>Getting reproducible results across multiple executions<a class="headerlink" href="#getting-reproducible-results-across-multiple-executions" title="Permalink to this headline">¶</a></h4>
+<p>In order to obtain reproducible (i.e. constant) results across multiple
+<em>program executions</em>, we need to remove all uses of <code class="docutils literal notranslate"><span class="pre">random_state=None</span></code>, which
+is the default. The recommended way is to declare a <code class="docutils literal notranslate"><span class="pre">rng</span></code> variable at the top
+of the program, and pass it down to any object that accepts a <code class="docutils literal notranslate"><span class="pre">random_state</span></code>
+parameter:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>
+<span class="gp">... </span>                                                    <span class="n">random_state</span><span class="o">=</span><span class="n">rng</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+<span class="go">0.84</span>
+</pre></div>
+</div>
+<p>We are now guaranteed that the result of this script will always be 0.84, no
+matter how many times we run it. Changing the global <code class="docutils literal notranslate"><span class="pre">rng</span></code> variable to a
+different value should affect the results, as expected.</p>
+<p>It is also possible to declare the <code class="docutils literal notranslate"><span class="pre">rng</span></code> variable as an integer. This may
+however lead to less robust cross-validation results, as we will see in the
+next section.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We do not recommend setting the global <code class="docutils literal notranslate"><span class="pre">numpy</span></code> seed by calling
+<code class="docutils literal notranslate"><span class="pre">np.random.seed(0)</span></code>. See <a class="reference external" href="https://stackoverflow.com/questions/5836335/consistently-create-same-random-numpy-array/5837352#comment6712034_5837352">here</a>
+for a discussion.</p>
+</div>
+</div>
+<div class="section" id="robustness-of-cross-validation-results">
+<h4><span class="section-number">10.3.3.2. </span>Robustness of cross-validation results<a class="headerlink" href="#robustness-of-cross-validation-results" title="Permalink to this headline">¶</a></h4>
+<p>When we evaluate a randomized estimator performance by cross-validation, we
+want to make sure that the estimator can yield accurate predictions for new
+data, but we also want to make sure that the estimator is robust w.r.t. its
+random initialization. For example, we would like the random weights
+initialization of a <code class="xref py py-class docutils literal notranslate"><span class="pre">SGDCLassifier</span></code> to be
+consistently good across all folds: otherwise, when we train that estimator
+on new data, we might get unlucky and the random initialization may lead to
+bad performance. Similarly, we want a random forest to be robust w.r.t the
+set of randomly selected features that each tree will be using.</p>
+<p>For these reasons, it is preferable to evaluate the cross-validation
+preformance by letting the estimator use a different RNG on each fold. This
+is done by passing a <code class="docutils literal notranslate"><span class="pre">RandomState</span></code> instance (or <code class="docutils literal notranslate"><span class="pre">None</span></code>) to the estimator
+initialization.</p>
+<p>When we pass an integer, the estimator will use the same RNG on each fold: if
+if the estimator performs well (or bad), as evaluated by CV, it might just be
+because we got lucky (or unlucky) with that specific seed. Passing instances
+leads to more robust CV results, and makes the comparison between various
+algorithms fairer. It also helps limiting the temptation to treat the
+estimator’s RNG as a hyper-parameter that can be tuned.</p>
+<p>Whether we pass <code class="docutils literal notranslate"><span class="pre">RandomState</span></code> instances or integers to CV splitters has no
+impact on robustness, as long as <code class="docutils literal notranslate"><span class="pre">split</span></code> is only called once. When <code class="docutils literal notranslate"><span class="pre">split</span></code>
+is called multiple times, fold-to-fold comparison isn’t possible anymore. As
+a result, passing integer to CV splitters is usually safer and covers most
+use-cases.</p>
+</div>
+</div>
+</div>
 </div>
 
 
