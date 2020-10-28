@@ -181,7 +181,7 @@
 <li><a class="reference internal" href="#optics">2.3.8. OPTICS</a></li>
 <li><a class="reference internal" href="#birch">2.3.9. Birch</a></li>
 <li><a class="reference internal" href="#clustering-performance-evaluation">2.3.10. Clustering performance evaluation</a><ul>
-<li><a class="reference internal" href="#adjusted-rand-index">2.3.10.1. Adjusted Rand index</a><ul>
+<li><a class="reference internal" href="#rand-index">2.3.10.1. Rand index</a><ul>
 <li><a class="reference internal" href="#advantages">2.3.10.1.1. Advantages</a></li>
 <li><a class="reference internal" href="#drawbacks">2.3.10.1.2. Drawbacks</a></li>
 <li><a class="reference internal" href="#mathematical-formulation">2.3.10.1.3. Mathematical formulation</a></li>
@@ -226,6 +226,7 @@
 <li><a class="reference internal" href="#id36">2.3.10.8.2. Drawbacks</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#pair-confusion-matrix">2.3.10.9. Pair Confusion Matrix</a></li>
 </ul>
 </li>
 </ul>
@@ -260,9 +261,9 @@ in the <a class="reference internal" href="classes.html#module-sklearn.metrics.p
 </div>
 <div class="section" id="overview-of-clustering-methods">
 <h2><span class="section-number">2.3.1. </span>Overview of clustering methods<a class="headerlink" href="#overview-of-clustering-methods" title="Permalink to this headline">¶</a></h2>
-<div class="figure align-center" id="id37">
+<div class="figure align-center" id="id38">
 <a class="reference external image-reference" href="../auto_examples/cluster/plot_cluster_comparison.html"><img alt="../_images/sphx_glr_plot_cluster_comparison_0011.png" src="../_images/sphx_glr_plot_cluster_comparison_0011.png" style="width: 1050.0px; height: 625.0px;" /></a>
-<p class="caption"><span class="caption-text">A comparison of the clustering algorithms in scikit-learn</span><a class="headerlink" href="#id37" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">A comparison of the clustering algorithms in scikit-learn</span><a class="headerlink" href="#id38" title="Permalink to this image">¶</a></p>
 </div>
 <table class="colwidths-given docutils align-default">
 <colgroup>
@@ -1121,80 +1122,113 @@ if this clustering define separations of the data similar to some ground
 truth set of classes or satisfying some assumption such that members
 belong to the same class are more similar than members of different
 classes according to some similarity metric.</p>
-<div class="section" id="adjusted-rand-index">
-<span id="adjusted-rand-score"></span><h3><span class="section-number">2.3.10.1. </span>Adjusted Rand index<a class="headerlink" href="#adjusted-rand-index" title="Permalink to this headline">¶</a></h3>
-<p>Given the knowledge of the ground truth class assignments <code class="docutils literal notranslate"><span class="pre">labels_true</span></code>
-and our clustering algorithm assignments of the same samples
-<code class="docutils literal notranslate"><span class="pre">labels_pred</span></code>, the <strong>adjusted Rand index</strong> is a function that measures
-the <strong>similarity</strong> of the two assignments, ignoring permutations and <strong>with
-chance normalization</strong>:</p>
+<div class="section" id="rand-index">
+<span id="adjusted-rand-score"></span><span id="rand-score"></span><h3><span class="section-number">2.3.10.1. </span>Rand index<a class="headerlink" href="#rand-index" title="Permalink to this headline">¶</a></h3>
+<p>Given the knowledge of the ground truth class assignments
+<code class="docutils literal notranslate"><span class="pre">labels_true</span></code> and our clustering algorithm assignments of the same
+samples <code class="docutils literal notranslate"><span class="pre">labels_pred</span></code>, the <strong>(adjusted or unadjusted) Rand index</strong>
+is a function that measures the <strong>similarity</strong> of the two assignments,
+ignoring permutations:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">labels_true</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">labels_pred</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="n">metrics</span><span class="o">.</span><span class="n">adjusted_rand_score</span><span class="p">(</span><span class="n">labels_true</span><span class="p">,</span> <span class="n">labels_pred</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metrics</span><span class="o">.</span><span class="n">rand_score</span><span class="p">(</span><span class="n">labels_true</span><span class="p">,</span> <span class="n">labels_pred</span><span class="p">)</span>
+<span class="go">0.66...</span>
+</pre></div>
+</div>
+<p>The Rand index does not ensure to obtain a value close to 0.0 for a
+random labelling. The adjusted Rand index <strong>corrects for chance</strong> and
+will give such a baseline.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metrics</span><span class="o">.</span><span class="n">adjusted_rand_score</span><span class="p">(</span><span class="n">labels_true</span><span class="p">,</span> <span class="n">labels_pred</span><span class="p">)</span>
 <span class="go">0.24...</span>
 </pre></div>
 </div>
-<p>One can permute 0 and 1 in the predicted labels, rename 2 to 3, and get
-the same score:</p>
+<p>As with all clustering metrics, one can permute 0 and 1 in the predicted
+labels, rename 2 to 3, and get the same score:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">labels_pred</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metrics</span><span class="o">.</span><span class="n">rand_score</span><span class="p">(</span><span class="n">labels_true</span><span class="p">,</span> <span class="n">labels_pred</span><span class="p">)</span>
+<span class="go">0.66...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">metrics</span><span class="o">.</span><span class="n">adjusted_rand_score</span><span class="p">(</span><span class="n">labels_true</span><span class="p">,</span> <span class="n">labels_pred</span><span class="p">)</span>
 <span class="go">0.24...</span>
 </pre></div>
 </div>
-<p>Furthermore, <a class="reference internal" href="generated/sklearn.metrics.adjusted_rand_score.html#sklearn.metrics.adjusted_rand_score" title="sklearn.metrics.adjusted_rand_score"><code class="xref py py-func docutils literal notranslate"><span class="pre">adjusted_rand_score</span></code></a> is <strong>symmetric</strong>: swapping the argument
-does not change the score. It can thus be used as a <strong>consensus
-measure</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metrics</span><span class="o">.</span><span class="n">adjusted_rand_score</span><span class="p">(</span><span class="n">labels_pred</span><span class="p">,</span> <span class="n">labels_true</span><span class="p">)</span>
+<p>Furthermore, both <a class="reference internal" href="generated/sklearn.metrics.rand_score.html#sklearn.metrics.rand_score" title="sklearn.metrics.rand_score"><code class="xref py py-func docutils literal notranslate"><span class="pre">rand_score</span></code></a> <a class="reference internal" href="generated/sklearn.metrics.adjusted_rand_score.html#sklearn.metrics.adjusted_rand_score" title="sklearn.metrics.adjusted_rand_score"><code class="xref py py-func docutils literal notranslate"><span class="pre">adjusted_rand_score</span></code></a> are
+<strong>symmetric</strong>: swapping the argument does not change the scores. They can
+thus be used as <strong>consensus measures</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metrics</span><span class="o">.</span><span class="n">rand_score</span><span class="p">(</span><span class="n">labels_pred</span><span class="p">,</span> <span class="n">labels_true</span><span class="p">)</span>
+<span class="go">0.66...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metrics</span><span class="o">.</span><span class="n">adjusted_rand_score</span><span class="p">(</span><span class="n">labels_pred</span><span class="p">,</span> <span class="n">labels_true</span><span class="p">)</span>
 <span class="go">0.24...</span>
 </pre></div>
 </div>
 <p>Perfect labeling is scored 1.0:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">labels_pred</span> <span class="o">=</span> <span class="n">labels_true</span><span class="p">[:]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metrics</span><span class="o">.</span><span class="n">rand_score</span><span class="p">(</span><span class="n">labels_true</span><span class="p">,</span> <span class="n">labels_pred</span><span class="p">)</span>
+<span class="go">1.0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">metrics</span><span class="o">.</span><span class="n">adjusted_rand_score</span><span class="p">(</span><span class="n">labels_true</span><span class="p">,</span> <span class="n">labels_pred</span><span class="p">)</span>
 <span class="go">1.0</span>
 </pre></div>
 </div>
-<p>Bad (e.g. independent labelings) have negative or close to 0.0 scores:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">labels_true</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">labels_pred</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<p>Poorly agreeing labels (e.g. independent labelings) have lower scores,
+and for the adjusted Rand index the score will be negative or close to
+zero. However, for the unadjusted Rand index the score, while lower,
+will not necessarily be close to zero.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">labels_true</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">labels_pred</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metrics</span><span class="o">.</span><span class="n">rand_score</span><span class="p">(</span><span class="n">labels_true</span><span class="p">,</span> <span class="n">labels_pred</span><span class="p">)</span>
+<span class="go">0.39...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">metrics</span><span class="o">.</span><span class="n">adjusted_rand_score</span><span class="p">(</span><span class="n">labels_true</span><span class="p">,</span> <span class="n">labels_pred</span><span class="p">)</span>
-<span class="go">-0.12...</span>
+<span class="go">-0.07...</span>
 </pre></div>
 </div>
 <div class="section" id="advantages">
 <h4><span class="section-number">2.3.10.1.1. </span>Advantages<a class="headerlink" href="#advantages" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
-<li><p><strong>Random (uniform) label assignments have a ARI score close to 0.0</strong>
-for any value of <code class="docutils literal notranslate"><span class="pre">n_clusters</span></code> and <code class="docutils literal notranslate"><span class="pre">n_samples</span></code> (which is not the
-case for raw Rand index or the V-measure for instance).</p></li>
-<li><p><strong>Bounded range [-1, 1]</strong>: negative values are bad (independent
-labelings), similar clusterings have a positive ARI, 1.0 is the perfect
-match score.</p></li>
-<li><p><strong>No assumption is made on the cluster structure</strong>: can be used
-to compare clustering algorithms such as k-means which assumes isotropic
-blob shapes with results of spectral clustering algorithms which can
-find cluster with “folded” shapes.</p></li>
+<li><p><strong>Interpretability</strong>: The unadjusted Rand index is proportional
+to the number of sample pairs whose labels are the same in both
+<code class="docutils literal notranslate"><span class="pre">labels_pred</span></code> and <code class="docutils literal notranslate"><span class="pre">labels_true</span></code>, or are different in both.</p></li>
+<li><p><strong>Random (uniform) label assignments have an adjusted Rand index
+score close to 0.0</strong> for any value of <code class="docutils literal notranslate"><span class="pre">n_clusters</span></code> and
+<code class="docutils literal notranslate"><span class="pre">n_samples</span></code> (which is not the case for the unadjusted Rand index
+or the V-measure for instance).</p></li>
+<li><p><strong>Bounded range</strong>: Lower values indicate different labelings,
+similar clusterings have a high (adjusted or unadjusted) Rand index,
+1.0 is the perfect match score. The score range is [0, 1] for the
+unadjusted Rand index and [-1, 1] for the adjusted Rand index.</p></li>
+<li><p><strong>No assumption is made on the cluster structure</strong>: The (adjusted or
+unadjusted) Rand index can be used to compare all kinds of
+clustering algorithms, and can be used to compare clustering
+algorithms such as k-means which assumes isotropic blob shapes with
+results of spectral clustering algorithms which can find cluster
+with “folded” shapes.</p></li>
 </ul>
 </div>
 <div class="section" id="drawbacks">
 <h4><span class="section-number">2.3.10.1.2. </span>Drawbacks<a class="headerlink" href="#drawbacks" title="Permalink to this headline">¶</a></h4>
 <ul>
-<li><p>Contrary to inertia, <strong>ARI requires knowledge of the ground truth
-classes</strong> while is almost never available in practice or requires manual
-assignment by human annotators (as in the supervised learning setting).</p>
-<p>However ARI can also be useful in a purely unsupervised setting as a
-building block for a Consensus Index that can be used for clustering
-model selection (TODO).</p>
+<li><p>Contrary to inertia, the <strong>(adjusted or unadjusted) Rand index
+requires knowledge of the ground truth classes</strong> which is almost
+never available in practice or requires manual assignment by human
+annotators (as in the supervised learning setting).</p>
+<p>However (adjusted or unadjusted) Rand index can also be useful in a
+purely unsupervised setting as a building block for a Consensus
+Index that can be used for clustering model selection (TODO).</p>
 </li>
+<li><p>The <strong>unadjusted Rand index is often close to 1.0</strong> even if the
+clusterings themselves differ significantly. This can be understood
+when interpreting the Rand index as the accuracy of element pair
+labeling resulting from the clusterings: In practice there often is
+a majority of element pairs that are assigned the <code class="docutils literal notranslate"><span class="pre">different</span></code> pair
+label under both the predicted and the ground truth clustering
+resulting in a high proportion of pair labels that agree, which
+leads subsequently to a high score.</p></li>
 </ul>
 <div class="topic">
 <p class="topic-title">Examples:</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="../auto_examples/cluster/plot_adjusted_for_chance_measures.html#sphx-glr-auto-examples-cluster-plot-adjusted-for-chance-measures-py"><span class="std std-ref">Adjustment for chance in clustering performance evaluation</span></a>: Analysis of
-the impact of the dataset size on the value of clustering measures
-for random assignments.</p></li>
+<li><p><a class="reference internal" href="../auto_examples/cluster/plot_adjusted_for_chance_measures.html#sphx-glr-auto-examples-cluster-plot-adjusted-for-chance-measures-py"><span class="std std-ref">Adjustment for chance in clustering performance evaluation</span></a>:
+Analysis of the impact of the dataset size on the value of
+clustering measures for random assignments.</p></li>
 </ul>
 </div>
 </div>
@@ -1208,12 +1242,14 @@ in C and in the same set in K</p></li>
 <li><p><span class="math notranslate nohighlight">\(b\)</span>, the number of pairs of elements that are in different sets
 in C and in different sets in K</p></li>
 </ul>
-<p>The raw (unadjusted) Rand index is then given by:</p>
+<p>The unadjusted Rand index is then given by:</p>
 <div class="math notranslate nohighlight">
 \[\text{RI} = \frac{a + b}{C_2^{n_{samples}}}\]</div>
-<p>Where <span class="math notranslate nohighlight">\(C_2^{n_{samples}}\)</span> is the total number of possible pairs
-in the dataset (without ordering).</p>
-<p>However the RI score does not guarantee that random label assignments
+<p>where <span class="math notranslate nohighlight">\(C_2^{n_{samples}}\)</span> is the total number of possible pairs
+in the dataset. It does not matter if the calculation is performed on
+ordered pairs or unordered pairs as long as the calculation is
+performed consistently.</p>
+<p>However, the Rand index does not guarantee that random label assignments
 will get a value close to zero (esp. if the number of clusters is in
 the same order of magnitude as the number of samples).</p>
 <p>To counter this effect we can discount the expected RI <span class="math notranslate nohighlight">\(E[\text{RI}]\)</span> of
@@ -1225,6 +1261,9 @@ random labelings by defining the adjusted Rand index as follows:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://link.springer.com/article/10.1007%2FBF01908075">Comparing Partitions</a>
 L. Hubert and P. Arabie, Journal of Classification 1985</p></li>
+<li><p><a class="reference external" href="https://psycnet.apa.org/record/2004-17801-007">Properties of the Hubert-Arabie adjusted Rand index</a>
+D. Steinley, Psychological Methods 2004</p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Rand_index">Wikipedia entry for the Rand index</a></p></li>
 <li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Rand_index#Adjusted_Rand_index">Wikipedia entry for the adjusted Rand index</a></p></li>
 </ul>
 </div>
@@ -1901,6 +1940,80 @@ optimisation.</p></li>
 <li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Contingency_table">Wikipedia entry for contingency matrix</a></p></li>
 </ul>
 </div>
+</div>
+</div>
+<div class="section" id="pair-confusion-matrix">
+<span id="id37"></span><h3><span class="section-number">2.3.10.9. </span>Pair Confusion Matrix<a class="headerlink" href="#pair-confusion-matrix" title="Permalink to this headline">¶</a></h3>
+<p>The pair confusion matrix
+(<a class="reference internal" href="generated/sklearn.metrics.cluster.pair_confusion_matrix.html#sklearn.metrics.cluster.pair_confusion_matrix" title="sklearn.metrics.cluster.pair_confusion_matrix"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.metrics.cluster.pair_confusion_matrix</span></code></a>) is a 2x2
+similarity matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}C = \left[\begin{matrix}
+C_{00} &amp; C_{01} \\
+C_{10} &amp; C_{11}
+\end{matrix}\right]\end{split}\]</div>
+<p>between two clusterings computed by considering all pairs of samples and
+counting pairs that are assigned into the same or into different clusters
+under the true and predicted clusterings.</p>
+<p>It has the following entries:</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(C_{00}\)</span> : number of pairs with both clusterings having the samples
+not clustered together</p>
+<p><span class="math notranslate nohighlight">\(C_{10}\)</span> : number of pairs with the true label clustering having the
+samples clustered together but the other clustering not having the samples
+clustered together</p>
+<p><span class="math notranslate nohighlight">\(C_{01}\)</span> : number of pairs with the true label clustering not having
+the samples clustered together but the other clustering having the samples
+clustered together</p>
+<p><span class="math notranslate nohighlight">\(C_{11}\)</span> : number of pairs with both clusterings having the samples
+clustered together</p>
+</div></blockquote>
+<p>Considering a pair of samples that is clustered together a positive pair,
+then as in binary classification the count of true negatives is
+<span class="math notranslate nohighlight">\(C_{00}\)</span>, false negatives is <span class="math notranslate nohighlight">\(C_{10}\)</span>, true positives is
+<span class="math notranslate nohighlight">\(C_{11}\)</span> and false positives is <span class="math notranslate nohighlight">\(C_{01}\)</span>.</p>
+<p>Perfectly matching labelings have all non-zero entries on the
+diagonal regardless of actual label values:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.metrics.cluster</span> <span class="kn">import</span> <span class="n">pair_confusion_matrix</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pair_confusion_matrix</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="go">array([[8, 0],</span>
+<span class="go">       [0, 4]])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pair_confusion_matrix</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="go">array([[8, 0],</span>
+<span class="go">       [0, 4]])</span>
+</pre></div>
+</div>
+<p>Labelings that assign all classes members to the same clusters
+are complete but may not always be pure, hence penalized, and
+have some off-diagonal non-zero entries:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pair_confusion_matrix</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="go">array([[8, 2],</span>
+<span class="go">       [0, 2]])</span>
+</pre></div>
+</div>
+<p>The matrix is not symmetric:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pair_confusion_matrix</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="go">array([[8, 0],</span>
+<span class="go">       [2, 2]])</span>
+</pre></div>
+</div>
+<p>If classes members are completely split across different clusters, the
+assignment is totally incomplete, hence the matrix has all zero
+diagonal entries:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pair_confusion_matrix</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="go">array([[ 0,  0],</span>
+<span class="go">       [12,  0]])</span>
+</pre></div>
+</div>
+<div class="topic">
+<p class="topic-title">References</p>
+<ul class="simple">
+<li><p>L. Hubert and P. Arabie, Comparing Partitions, Journal of
+Classification 1985
+&lt;<a class="reference external" href="https://link.springer.com/article/10.1007%2FBF01908075">https://link.springer.com/article/10.1007%2FBF01908075</a>&gt;_</p></li>
+</ul>
 </div>
 </div>
 </div>

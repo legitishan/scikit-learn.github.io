@@ -141,7 +141,7 @@
         </div>
         <div class="btn-group w-100 mb-2" role="group" aria-label="rellinks">
             <a href="sklearn.metrics.completeness_score.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="sklearn.metrics.completeness_score">Prev</a><a href="../classes.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="API Reference">Up</a>
-            <a href="sklearn.metrics.fowlkes_mallows_score.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="sklearn.metrics.fowlkes_mallows_score">Next</a>
+            <a href="sklearn.metrics.cluster.pair_confusion_matrix.html" role="button" class="btn sk-btn-rellink py-1" sk-rellink-tooltip="sklearn.metrics.cluster.pair_confusion_matrix">Next</a>
         </div>
         <div class="alert alert-danger p-1 mb-2" role="alert">
           <p class="text-center mb-0">
@@ -169,23 +169,28 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.metrics.cluster" title="sklearn.metrics.cluster"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.metrics.cluster</span></code></a>.contingency_matrix<a class="headerlink" href="#sklearn-metrics-cluster-contingency-matrix" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="sklearn.metrics.cluster.contingency_matrix">
-<code class="sig-prename descclassname">sklearn.metrics.cluster.</code><code class="sig-name descname">contingency_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">labels_true</span></em>, <em class="sig-param"><span class="n">labels_pred</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sparse</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/476847080/sklearn/metrics/cluster/_supervised.py#L93"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.metrics.cluster.contingency_matrix" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sklearn.metrics.cluster.</code><code class="sig-name descname">contingency_matrix</code><span class="sig-paren">(</span><em class="sig-param">labels_true</em>, <em class="sig-param">labels_pred</em>, <em class="sig-param">*</em>, <em class="sig-param">eps=None</em>, <em class="sig-param">sparse=False</em>, <em class="sig-param">dtype=&lt;class 'int'&gt;</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/662cc647d/sklearn/metrics/cluster/_supervised.py#L87"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.metrics.cluster.contingency_matrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build a contingency matrix describing the relationship between labels.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>labels_true</strong><span class="classifier">int array, shape = [n_samples]</span></dt><dd><p>Ground truth class labels to be used as a reference</p>
+<dt><strong>labels_true</strong><span class="classifier">int array, shape = [n_samples]</span></dt><dd><p>Ground truth class labels to be used as a reference.</p>
 </dd>
-<dt><strong>labels_pred</strong><span class="classifier">array-like of shape (n_samples,)</span></dt><dd><p>Cluster labels to evaluate</p>
+<dt><strong>labels_pred</strong><span class="classifier">array-like of shape (n_samples,)</span></dt><dd><p>Cluster labels to evaluate.</p>
 </dd>
 <dt><strong>eps</strong><span class="classifier">float, default=None</span></dt><dd><p>If a float, that value is added to all values in the contingency
 matrix. This helps to stop NaN propagation.
 If <code class="docutils literal notranslate"><span class="pre">None</span></code>, nothing is adjusted.</p>
 </dd>
-<dt><strong>sparse</strong><span class="classifier">bool, default=False</span></dt><dd><p>If True, return a sparse CSR continency matrix. If <code class="docutils literal notranslate"><span class="pre">eps</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">None</span></code>,
-and <code class="docutils literal notranslate"><span class="pre">sparse</span> <span class="pre">is</span> <span class="pre">True</span></code>, will throw ValueError.</p>
+<dt><strong>sparse</strong><span class="classifier">bool, default=False</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, return a sparse CSR continency matrix. If <code class="docutils literal notranslate"><span class="pre">eps</span></code> is not
+<code class="docutils literal notranslate"><span class="pre">None</span></code> and <code class="docutils literal notranslate"><span class="pre">sparse</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code> will raise ValueError.</p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.18.</span></p>
+</div>
+</dd>
+<dt><strong>dtype</strong><span class="classifier">numeric type, default=np.int</span></dt><dd><p>Output dtype. Ignored if <code class="docutils literal notranslate"><span class="pre">eps</span></code> is not <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.24.</span></p>
 </div>
 </dd>
 </dl>
@@ -194,9 +199,10 @@ and <code class="docutils literal notranslate"><span class="pre">sparse</span> <
 <dd class="field-even"><dl class="simple">
 <dt><strong>contingency</strong><span class="classifier">{array-like, sparse}, shape=[n_classes_true, n_classes_pred]</span></dt><dd><p>Matrix <span class="math notranslate nohighlight">\(C\)</span> such that <span class="math notranslate nohighlight">\(C_{i, j}\)</span> is the number of samples in
 true class <span class="math notranslate nohighlight">\(i\)</span> and in predicted class <span class="math notranslate nohighlight">\(j\)</span>. If
-<code class="docutils literal notranslate"><span class="pre">eps</span> <span class="pre">is</span> <span class="pre">None</span></code>, the dtype of this array will be integer. If <code class="docutils literal notranslate"><span class="pre">eps</span></code> is
-given, the dtype will be float.
-Will be a <code class="docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code> if <code class="docutils literal notranslate"><span class="pre">sparse=True</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">eps</span> <span class="pre">is</span> <span class="pre">None</span></code>, the dtype of this array will be integer unless set
+otherwise with the <code class="docutils literal notranslate"><span class="pre">dtype</span></code> argument. If <code class="docutils literal notranslate"><span class="pre">eps</span></code> is given, the dtype
+will be float.
+Will be a <code class="docutils literal notranslate"><span class="pre">sklearn.sparse.csr_matrix</span></code> if <code class="docutils literal notranslate"><span class="pre">sparse=True</span></code>.</p>
 </dd>
 </dl>
 </dd>
