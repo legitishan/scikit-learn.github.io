@@ -244,31 +244,46 @@ boundary (the support vectors).</p>
 in [0, 1]. Denoting the output of the classifier for a given sample by <span class="math notranslate nohighlight">\(f_i\)</span>,
 the calibrator tries to predict <span class="math notranslate nohighlight">\(p(y_i = 1 | f_i)\)</span>.</p>
 <p>The samples that are used to fit the calibrator should not be the same
-samples used to fit the classifier, as this would
-introduce bias. The classifier performance on its training data would be
-better than for novel data. Using the classifier output from training data
+samples used to fit the classifier, as this would introduce bias.
+This is because performance of the classifier on its training data would be
+better than for novel data. Using the classifier output of training data
 to fit the calibrator would thus result in a biased calibrator that maps to
 probabilities closer to 0 and 1 than it should.</p>
 </div>
 <div class="section" id="usage">
 <h2><span class="section-number">1.16.3. </span>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
 <p>The <a class="reference internal" href="generated/sklearn.calibration.CalibratedClassifierCV.html#sklearn.calibration.CalibratedClassifierCV" title="sklearn.calibration.CalibratedClassifierCV"><code class="xref py py-class docutils literal notranslate"><span class="pre">CalibratedClassifierCV</span></code></a> class is used to calibrate a classifier.</p>
-<p><a class="reference internal" href="generated/sklearn.calibration.CalibratedClassifierCV.html#sklearn.calibration.CalibratedClassifierCV" title="sklearn.calibration.CalibratedClassifierCV"><code class="xref py py-class docutils literal notranslate"><span class="pre">CalibratedClassifierCV</span></code></a> uses a cross-validation approach to fit both
-the classifier and the regressor. The data is split into k
-<code class="docutils literal notranslate"><span class="pre">(train_set,</span> <span class="pre">test_set)</span></code> couples (as determined by <code class="docutils literal notranslate"><span class="pre">cv</span></code>). The classifier
-(<code class="docutils literal notranslate"><span class="pre">base_estimator</span></code>) is trained on the train set, and its predictions on the
-test set are used to fit a regressor. This ensures that the data used to fit
-the classifier is always disjoint from the data used to fit the calibrator.
-After fitting, we end up with k
-<code class="docutils literal notranslate"><span class="pre">(classifier,</span> <span class="pre">regressor)</span></code> couples where each regressor maps the output of
-its corresponding classifier into [0, 1]. Each couple is exposed in the
-<code class="docutils literal notranslate"><span class="pre">calibrated_classifiers_</span></code> attribute, where each entry is a calibrated
+<p><a class="reference internal" href="generated/sklearn.calibration.CalibratedClassifierCV.html#sklearn.calibration.CalibratedClassifierCV" title="sklearn.calibration.CalibratedClassifierCV"><code class="xref py py-class docutils literal notranslate"><span class="pre">CalibratedClassifierCV</span></code></a> uses a cross-validation approach to ensure
+unbiased data is always used to fit the calibrator. The data is split into k
+<code class="docutils literal notranslate"><span class="pre">(train_set,</span> <span class="pre">test_set)</span></code> couples (as determined by <code class="docutils literal notranslate"><span class="pre">cv</span></code>). When <code class="docutils literal notranslate"><span class="pre">ensemble=True</span></code>
+(default), the following procedure is repeated independently for each
+cross-validation split: a clone of <code class="docutils literal notranslate"><span class="pre">base_estimator</span></code> is first trained on the
+train subset. Then its predictions on the test subset are used to fit a
+calibrator (either a sigmoid or isotonic regressor). This results in an
+ensemble of k <code class="docutils literal notranslate"><span class="pre">(classifier,</span> <span class="pre">calibrator)</span></code> couples where each calibrator maps
+the output of its corresponding classifier into [0, 1]. Each couple is exposed
+in the <code class="docutils literal notranslate"><span class="pre">calibrated_classifiers_</span></code> attribute, where each entry is a calibrated
 classifier with a <a class="reference internal" href="../glossary.html#term-predict_proba"><span class="xref std std-term">predict_proba</span></a> method that outputs calibrated
 probabilities. The output of <a class="reference internal" href="../glossary.html#term-predict_proba"><span class="xref std std-term">predict_proba</span></a> for the main
 <a class="reference internal" href="generated/sklearn.calibration.CalibratedClassifierCV.html#sklearn.calibration.CalibratedClassifierCV" title="sklearn.calibration.CalibratedClassifierCV"><code class="xref py py-class docutils literal notranslate"><span class="pre">CalibratedClassifierCV</span></code></a> instance corresponds to the average of the
-predicted probabilities of the <code class="docutils literal notranslate"><span class="pre">k</span></code> estimators in the
-<code class="docutils literal notranslate"><span class="pre">calibrated_classifiers_</span></code> list. The output of <a class="reference internal" href="../glossary.html#term-predict"><span class="xref std std-term">predict</span></a> is the class
-that has the highest probability.</p>
+predicted probabilities of the <code class="docutils literal notranslate"><span class="pre">k</span></code> estimators in the <code class="docutils literal notranslate"><span class="pre">calibrated_classifiers_</span></code>
+list. The output of <a class="reference internal" href="../glossary.html#term-predict"><span class="xref std std-term">predict</span></a> is the class that has the highest
+probability.</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">ensemble=False</span></code>, cross-validation is used to obtain ‘unbiased’
+predictions for all the data, via
+<a class="reference internal" href="generated/sklearn.model_selection.cross_val_predict.html#sklearn.model_selection.cross_val_predict" title="sklearn.model_selection.cross_val_predict"><code class="xref py py-func docutils literal notranslate"><span class="pre">cross_val_predict</span></code></a>.
+These unbiased predictions are then used to train the calibrator. The attribute
+<code class="docutils literal notranslate"><span class="pre">calibrated_classifiers_</span></code> consists of only one <code class="docutils literal notranslate"><span class="pre">(classifier,</span> <span class="pre">calibrator)</span></code>
+couple where the classifier is the <code class="docutils literal notranslate"><span class="pre">base_estimator</span></code> trained on all the data.
+In this case the output of <a class="reference internal" href="../glossary.html#term-predict_proba"><span class="xref std std-term">predict_proba</span></a> for
+<a class="reference internal" href="generated/sklearn.calibration.CalibratedClassifierCV.html#sklearn.calibration.CalibratedClassifierCV" title="sklearn.calibration.CalibratedClassifierCV"><code class="xref py py-class docutils literal notranslate"><span class="pre">CalibratedClassifierCV</span></code></a> is the predicted probabilities obtained
+from the single <code class="docutils literal notranslate"><span class="pre">(classifier,</span> <span class="pre">calibrator)</span></code> couple.</p>
+<p>The main advantage of <code class="docutils literal notranslate"><span class="pre">ensemble=True</span></code> is to benefit from the traditional
+ensembling effect (similar to <a class="reference internal" href="ensemble.html#bagging"><span class="std std-ref">Bagging meta-estimator</span></a>). The resulting ensemble should
+both be well calibrated and slightly more accurate than with <code class="docutils literal notranslate"><span class="pre">ensemble=False</span></code>.
+The main advantage of using <code class="docutils literal notranslate"><span class="pre">ensemble=False</span></code> is computational: it reduces the
+overall fit time by training only a single base classifier and calibrator
+pair, decreases the final model size and increases prediction speed.</p>
 <p>Alternatively an already fitted classifier can be calibrated by setting
 <code class="docutils literal notranslate"><span class="pre">cv=&quot;prefit&quot;</span></code>. In this case, the data is not split and all of it is used to
 fit the regressor. It is up to the user to
