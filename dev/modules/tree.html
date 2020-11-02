@@ -184,7 +184,7 @@
 <p><strong>Decision Trees (DTs)</strong> are a non-parametric supervised learning method used
 for <a class="reference internal" href="#tree-classification"><span class="std std-ref">classification</span></a> and <a class="reference internal" href="#tree-regression"><span class="std std-ref">regression</span></a>. The goal is to create a model that predicts the value of a
 target variable by learning simple decision rules inferred from the data
-features.</p>
+features. A tree can be seen as a piecewise constant approximation.</p>
 <p>For instance, in the example below, decision trees learn from data to
 approximate a sine curve with a set of if-then-else decision rules. The deeper
 the tree, the more complex the decision rules and the fitter the model.</p>
@@ -229,6 +229,9 @@ necessary to avoid this problem.</p></li>
 data might result in a completely different tree being generated.
 This problem is mitigated by using decision trees within an
 ensemble.</p></li>
+<li><p>Predictions of decision trees are neither smooth nor continuous, but
+piecewise constant approximations as seen in the above figure. Therefore,
+they are not good at extrapolation.</p></li>
 <li><p>The problem of learning an optimal decision tree is known to be
 NP-complete under several aspects of optimality and even for simple
 concepts. Consequently, practical decision-tree learning algorithms
@@ -535,60 +538,70 @@ implementation does not support categorical variables for now.</p>
 <div class="section" id="mathematical-formulation">
 <span id="tree-mathematical-formulation"></span><h2><span class="section-number">1.10.7. </span>Mathematical formulation<a class="headerlink" href="#mathematical-formulation" title="Permalink to this headline">¶</a></h2>
 <p>Given training vectors <span class="math notranslate nohighlight">\(x_i \in R^n\)</span>, i=1,…, l and a label vector
-<span class="math notranslate nohighlight">\(y \in R^l\)</span>, a decision tree recursively partitions the space such
-that the samples with the same labels are grouped together.</p>
-<p>Let the data at node <span class="math notranslate nohighlight">\(m\)</span> be represented by <span class="math notranslate nohighlight">\(Q\)</span>. For
-each candidate split <span class="math notranslate nohighlight">\(\theta = (j, t_m)\)</span> consisting of a
+<span class="math notranslate nohighlight">\(y \in R^l\)</span>, a decision tree recursively partitions the feature space
+such that the samples with the same labels or similar target values are grouped
+together.</p>
+<p>Let the data at node <span class="math notranslate nohighlight">\(m\)</span> be represented by <span class="math notranslate nohighlight">\(Q_m\)</span> with <span class="math notranslate nohighlight">\(N_m\)</span>
+samples. For each candidate split <span class="math notranslate nohighlight">\(\theta = (j, t_m)\)</span> consisting of a
 feature <span class="math notranslate nohighlight">\(j\)</span> and threshold <span class="math notranslate nohighlight">\(t_m\)</span>, partition the data into
-<span class="math notranslate nohighlight">\(Q_{left}(\theta)\)</span> and <span class="math notranslate nohighlight">\(Q_{right}(\theta)\)</span> subsets</p>
+<span class="math notranslate nohighlight">\(Q_m^{left}(\theta)\)</span> and <span class="math notranslate nohighlight">\(Q_m^{right}(\theta)\)</span> subsets</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}Q_{left}(\theta) = {(x, y) | x_j &lt;= t_m}\\Q_{right}(\theta) = Q \setminus Q_{left}(\theta)\end{aligned}\end{align} \]</div>
-<p>The impurity at <span class="math notranslate nohighlight">\(m\)</span> is computed using an impurity function
-<span class="math notranslate nohighlight">\(H()\)</span>, the choice of which depends on the task being solved
-(classification or regression)</p>
+\[ \begin{align}\begin{aligned}Q_m^{left}(\theta) = \{(x, y) | x_j &lt;= t_m\}\\Q_m^{right}(\theta) = Q_m \setminus Q_m^{left}(\theta)\end{aligned}\end{align} \]</div>
+<p>The quality of a candidate split of node <span class="math notranslate nohighlight">\(m\)</span> is then computed using an
+impurity function or loss function <span class="math notranslate nohighlight">\(H()\)</span>, the choice of which depends on
+the task being solved (classification or regression)</p>
 <div class="math notranslate nohighlight">
-\[G(Q, \theta) = \frac{n_{left}}{N_m} H(Q_{left}(\theta))
-+ \frac{n_{right}}{N_m} H(Q_{right}(\theta))\]</div>
+\[G(Q_m, \theta) = \frac{N_m^{left}}{N_m} H(Q_m^{left}(\theta))
++ \frac{N_m^{right}}{N_m} H(Q_m^{right}(\theta))\]</div>
 <p>Select the parameters that minimises the impurity</p>
 <div class="math notranslate nohighlight">
-\[\theta^* = \operatorname{argmin}_\theta  G(Q, \theta)\]</div>
-<p>Recurse for subsets <span class="math notranslate nohighlight">\(Q_{left}(\theta^*)\)</span> and
-<span class="math notranslate nohighlight">\(Q_{right}(\theta^*)\)</span> until the maximum allowable depth is reached,
+\[\theta^* = \operatorname{argmin}_\theta  G(Q_m, \theta)\]</div>
+<p>Recurse for subsets <span class="math notranslate nohighlight">\(Q_m^{left}(\theta^*)\)</span> and
+<span class="math notranslate nohighlight">\(Q_m^{right}(\theta^*)\)</span> until the maximum allowable depth is reached,
 <span class="math notranslate nohighlight">\(N_m &lt; \min_{samples}\)</span> or <span class="math notranslate nohighlight">\(N_m = 1\)</span>.</p>
 <div class="section" id="classification-criteria">
 <h3><span class="section-number">1.10.7.1. </span>Classification criteria<a class="headerlink" href="#classification-criteria" title="Permalink to this headline">¶</a></h3>
 <p>If a target is a classification outcome taking on values 0,1,…,K-1,
-for node <span class="math notranslate nohighlight">\(m\)</span>, representing a region <span class="math notranslate nohighlight">\(R_m\)</span> with <span class="math notranslate nohighlight">\(N_m\)</span>
-observations, let</p>
+for node <span class="math notranslate nohighlight">\(m\)</span>, let</p>
 <div class="math notranslate nohighlight">
-\[p_{mk} = 1/ N_m \sum_{x_i \in R_m} I(y_i = k)\]</div>
-<p>be the proportion of class k observations in node <span class="math notranslate nohighlight">\(m\)</span></p>
-<p>Common measures of impurity are Gini</p>
+\[p_{mk} = 1/ N_m \sum_{y \in Q_m} I(y = k)\]</div>
+<p>be the proportion of class k observations in node <span class="math notranslate nohighlight">\(m\)</span>. If <span class="math notranslate nohighlight">\(m\)</span> is a
+terminal node, <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code> for this region is set to <span class="math notranslate nohighlight">\(p_{mk}\)</span>.
+Common measures of impurity are the following.</p>
+<p>Gini:</p>
 <div class="math notranslate nohighlight">
-\[H(X_m) = \sum_k p_{mk} (1 - p_{mk})\]</div>
-<p>Entropy</p>
+\[H(Q_m) = \sum_k p_{mk} (1 - p_{mk})\]</div>
+<p>Entropy:</p>
 <div class="math notranslate nohighlight">
-\[H(X_m) = - \sum_k p_{mk} \log(p_{mk})\]</div>
-<p>and Misclassification</p>
+\[H(Q_m) = - \sum_k p_{mk} \log(p_{mk})\]</div>
+<p>Misclassification:</p>
 <div class="math notranslate nohighlight">
-\[H(X_m) = 1 - \max(p_{mk})\]</div>
-<p>where <span class="math notranslate nohighlight">\(X_m\)</span> is the training data in node <span class="math notranslate nohighlight">\(m\)</span></p>
+\[H(Q_m) = 1 - \max(p_{mk})\]</div>
 </div>
 <div class="section" id="regression-criteria">
 <h3><span class="section-number">1.10.7.2. </span>Regression criteria<a class="headerlink" href="#regression-criteria" title="Permalink to this headline">¶</a></h3>
-<p>If the target is a continuous value, then for node <span class="math notranslate nohighlight">\(m\)</span>,
-representing a region <span class="math notranslate nohighlight">\(R_m\)</span> with <span class="math notranslate nohighlight">\(N_m\)</span> observations, common
-criteria to minimise as for determining locations for future
-splits are Mean Squared Error, which minimizes the L2 error
-using mean values at terminal nodes, and Mean Absolute Error, which
-minimizes the L1 error using median values at terminal nodes.</p>
+<p>If the target is a continuous value, then for node <span class="math notranslate nohighlight">\(m\)</span>, common
+criteria to minimize as for determining locations for future splits are Mean
+Squared Error (MSE or L2 error), Poisson deviance as well as Mean Absolute
+Error (MAE or L1 error). MSE and Poisson deviance both set the predicted value
+of terminal nodes to the learned mean value <span class="math notranslate nohighlight">\(\bar{y}_m\)</span> of the node
+whereas the MAE sets the predicted value of terminal nodes to the median
+<span class="math notranslate nohighlight">\(median(y)_m\)</span>.</p>
 <p>Mean Squared Error:</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\bar{y}_m = \frac{1}{N_m} \sum_{i \in N_m} y_i\\H(X_m) = \frac{1}{N_m} \sum_{i \in N_m} (y_i - \bar{y}_m)^2\end{aligned}\end{align} \]</div>
+\[ \begin{align}\begin{aligned}\bar{y}_m = \frac{1}{N_m} \sum_{y \in Q_m} y\\H(Q_m) = \frac{1}{N_m} \sum_{y \in Q_m} (y - \bar{y}_m)^2\end{aligned}\end{align} \]</div>
+<p>Half Poisson deviance:</p>
+<div class="math notranslate nohighlight">
+\[H(Q_m) = \frac{1}{N_m} \sum_{y \in Q_m} (y \log\frac{y}{\bar{y}_m}
+- y + \bar{y}_m)\]</div>
+<p>Setting <code class="docutils literal notranslate"><span class="pre">criterion=&quot;poisson&quot;</span></code> might be a good choice if your target is a count
+or a frequency (count per some unit). In any case, <span class="math notranslate nohighlight">\(y &gt;= 0\)</span> is a
+necessary condition to use this criterion. Note that it fits much slower than
+the MSE criterion.</p>
 <p>Mean Absolute Error:</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}median(y)_m = \underset{i \in N_m}{\mathrm{median}}(y_i)\\H(X_m) = \frac{1}{N_m} \sum_{i \in N_m} |y_i - median(y)_m|\end{aligned}\end{align} \]</div>
-<p>where <span class="math notranslate nohighlight">\(X_m\)</span> is the training data in node <span class="math notranslate nohighlight">\(m\)</span></p>
+\[ \begin{align}\begin{aligned}median(y)_m = \underset{y \in Q_m}{\mathrm{median}}(y)\\H(Q_m) = \frac{1}{N_m} \sum_{y \in Q_m} |y - median(y)_m|\end{aligned}\end{align} \]</div>
+<p>Note that it fits much slower than the MSE criterion.</p>
 </div>
 </div>
 <div class="section" id="minimal-cost-complexity-pruning">
