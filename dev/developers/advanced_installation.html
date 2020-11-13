@@ -188,6 +188,7 @@
 <li><a class="reference internal" href="#building-with-intel-c-compiler-icc-using-oneapi-on-linux">Building with Intel C Compiler (ICC) using oneAPI on Linux</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#parallel-builds">Parallel builds</a></li>
 </ul>
 </li>
 </ul>
@@ -571,6 +572,19 @@ repository:</p>
 </pre></div>
 </div>
 </div>
+</div>
+<div class="section" id="parallel-builds">
+<h2>Parallel builds<a class="headerlink" href="#parallel-builds" title="Permalink to this headline">¶</a></h2>
+<p>It is possible to build scikit-learn compiled extensions in parallel by setting
+and environment variable as follows before calling the <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code> or
+<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">build_ext</span></code> commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">SKLEARN_BUILD_PARALLEL</span><span class="o">=</span><span class="mi">3</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">verbose</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">build</span><span class="o">-</span><span class="n">isolation</span> <span class="o">--</span><span class="n">editable</span> <span class="o">.</span>
+</pre></div>
+</div>
+<p>On a machine with 2 CPU cores, it can be beneficial to use a parallelism level
+of 3 to overlap IO bound tasks (reading and writing files on disk) with CPU
+bound tasks (actually compiling).</p>
 </div>
 </div>
 
