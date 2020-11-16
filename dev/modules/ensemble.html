@@ -191,21 +191,22 @@
 <li><a class="reference internal" href="#id25">1.11.5.1. Usage</a></li>
 <li><a class="reference internal" href="#missing-values-support">1.11.5.2. Missing values support</a></li>
 <li><a class="reference internal" href="#sample-weight-support">1.11.5.3. Sample weight support</a></li>
-<li><a class="reference internal" href="#monotonic-constraints">1.11.5.4. Monotonic Constraints</a></li>
-<li><a class="reference internal" href="#low-level-parallelism">1.11.5.5. Low-level parallelism</a></li>
-<li><a class="reference internal" href="#why-it-s-faster">1.11.5.6. Why it’s faster</a></li>
+<li><a class="reference internal" href="#categorical-features-support">1.11.5.4. Categorical Features Support</a></li>
+<li><a class="reference internal" href="#monotonic-constraints">1.11.5.5. Monotonic Constraints</a></li>
+<li><a class="reference internal" href="#low-level-parallelism">1.11.5.6. Low-level parallelism</a></li>
+<li><a class="reference internal" href="#why-it-s-faster">1.11.5.7. Why it’s faster</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#voting-classifier">1.11.6. Voting Classifier</a><ul>
 <li><a class="reference internal" href="#majority-class-labels-majority-hard-voting">1.11.6.1. Majority Class Labels (Majority/Hard Voting)</a></li>
-<li><a class="reference internal" href="#id28">1.11.6.2. Usage</a></li>
+<li><a class="reference internal" href="#id29">1.11.6.2. Usage</a></li>
 <li><a class="reference internal" href="#weighted-average-probabilities-soft-voting">1.11.6.3. Weighted Average Probabilities (Soft Voting)</a></li>
 <li><a class="reference internal" href="#using-the-votingclassifier-with-gridsearchcv">1.11.6.4. Using the <code class="docutils literal notranslate"><span class="pre">VotingClassifier</span></code> with <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code></a></li>
-<li><a class="reference internal" href="#id29">1.11.6.5. Usage</a></li>
+<li><a class="reference internal" href="#id30">1.11.6.5. Usage</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#voting-regressor">1.11.7. Voting Regressor</a><ul>
-<li><a class="reference internal" href="#id31">1.11.7.1. Usage</a></li>
+<li><a class="reference internal" href="#id32">1.11.7.1. Usage</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#stacked-generalization">1.11.8. Stacked generalization</a></li>
@@ -648,7 +649,7 @@ On-Line Learning and an Application to Boosting”, 1997.</p>
 <li><p>Drucker. “Improving Regressors using Boosting Techniques”, 1997.</p></li>
 </ol>
 </dd>
-<dt class="label" id="htf"><span class="brackets">HTF</span><span class="fn-backref">(<a href="#id10">1</a>,<a href="#id20">2</a>,<a href="#id33">3</a>)</span></dt>
+<dt class="label" id="htf"><span class="brackets">HTF</span><span class="fn-backref">(<a href="#id10">1</a>,<a href="#id20">2</a>,<a href="#id34">3</a>)</span></dt>
 <dd><p>T. Hastie, R. Tibshirani and J. Friedman, “Elements of
 Statistical Learning Ed. 2”, Springer, 2009.</p>
 </dd>
@@ -1192,8 +1193,65 @@ multiplying the gradients (and the hessians) by the sample weights. Note that
 the binning stage (specifically the quantiles computation) does not take the
 weights into account.</p>
 </div>
+<div class="section" id="categorical-features-support">
+<span id="categorical-support-gbdt"></span><h3><span class="section-number">1.11.5.4. </span>Categorical Features Support<a class="headerlink" href="#categorical-features-support" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="generated/sklearn.ensemble.HistGradientBoostingClassifier.html#sklearn.ensemble.HistGradientBoostingClassifier" title="sklearn.ensemble.HistGradientBoostingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingClassifier</span></code></a> and
+<a class="reference internal" href="generated/sklearn.ensemble.HistGradientBoostingRegressor.html#sklearn.ensemble.HistGradientBoostingRegressor" title="sklearn.ensemble.HistGradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingRegressor</span></code></a> have native support for categorical
+features: they can consider splits on non-ordered, categorical data.</p>
+<p>For datasets with categorical features, using the native categorical support
+is often better than relying on one-hot encoding
+(<a class="reference internal" href="generated/sklearn.preprocessing.OneHotEncoder.html#sklearn.preprocessing.OneHotEncoder" title="sklearn.preprocessing.OneHotEncoder"><code class="xref py py-class docutils literal notranslate"><span class="pre">OneHotEncoder</span></code></a>), because one-hot encoding
+requires more tree depth to achieve equivalent splits. It is also usually
+better to rely on the native categorical support rather than to treat
+categorical features as continuous (ordinal), which happens for ordinal-encoded
+categorical data, since categories are nominal quantities where order does not
+matter.</p>
+<p>To enable categorical support, a boolean mask can be passed to the
+<code class="docutils literal notranslate"><span class="pre">categorical_features</span></code> parameter, indicating which feature is categorical. In
+the following, the first feature will be treated as categorical and the
+second feature as numerical:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gbdt</span> <span class="o">=</span> <span class="n">HistGradientBoostingClassifier</span><span class="p">(</span><span class="n">categorical_features</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Equivalently, one can pass a list of integers indicating the indices of the
+categorical features:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gbdt</span> <span class="o">=</span> <span class="n">HistGradientBoostingClassifier</span><span class="p">(</span><span class="n">categorical_features</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>The cardinality of each categorical feature should be less than the <code class="docutils literal notranslate"><span class="pre">max_bins</span></code>
+parameter, and each categorical feature is expected to be encoded in
+<code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">max_bins</span> <span class="pre">-</span> <span class="pre">1]</span></code>. To that end, it might be useful to pre-process the data
+with an <a class="reference internal" href="generated/sklearn.preprocessing.OrdinalEncoder.html#sklearn.preprocessing.OrdinalEncoder" title="sklearn.preprocessing.OrdinalEncoder"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrdinalEncoder</span></code></a> as done in
+<a class="reference internal" href="../auto_examples/ensemble/plot_gradient_boosting_categorical.html#sphx-glr-auto-examples-ensemble-plot-gradient-boosting-categorical-py"><span class="std std-ref">Categorical Feature Support in Gradient Boosting</span></a>.</p>
+<p>If there are missing values during training, the missing values will be
+treated as a proper category. If there are no missing values during training,
+then at prediction time, missing values are mapped to the child node that has
+the most samples (just like for continuous features). When predicting,
+categories that were not seen during fit time will be treated as missing
+values.</p>
+<p><strong>Split finding with categorical features</strong>: The canonical way of considering
+categorical splits in a tree is to consider
+all of the <span class="math notranslate nohighlight">\(2^{K - 1} - 1\)</span> partitions, where <span class="math notranslate nohighlight">\(K\)</span> is the number of
+categories. This can quickly become prohibitive when <span class="math notranslate nohighlight">\(K\)</span> is large.
+Fortunately, since gradient boosting trees are always regression trees (even
+for classification problems), there exist a faster strategy that can yield
+equivalent splits. First, the categories of a feature are sorted according to
+the variance of the target, for each category <code class="docutils literal notranslate"><span class="pre">k</span></code>. Once the categories are
+sorted, one can consider <em>continuous partitions</em>, i.e. treat the categories
+as if they were ordered continuous values (see Fisher <a class="reference internal" href="#fisher1958" id="id27"><span>[Fisher1958]</span></a> for a
+formal proof). As a result, only <span class="math notranslate nohighlight">\(K - 1\)</span> splits need to be considered
+instead of <span class="math notranslate nohighlight">\(2^{K - 1} - 1\)</span>. The initial sorting is a
+<span class="math notranslate nohighlight">\(\mathcal{O}(K \log(K))\)</span> operation, leading to a total complexity of
+<span class="math notranslate nohighlight">\(\mathcal{O}(K \log(K) + K)\)</span>, instead of <span class="math notranslate nohighlight">\(\mathcal{O}(2^K)\)</span>.</p>
+<div class="topic">
+<p class="topic-title">Examples:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../auto_examples/ensemble/plot_gradient_boosting_categorical.html#sphx-glr-auto-examples-ensemble-plot-gradient-boosting-categorical-py"><span class="std std-ref">Categorical Feature Support in Gradient Boosting</span></a></p></li>
+</ul>
+</div>
+</div>
 <div class="section" id="monotonic-constraints">
-<span id="monotonic-cst-gbdt"></span><h3><span class="section-number">1.11.5.4. </span>Monotonic Constraints<a class="headerlink" href="#monotonic-constraints" title="Permalink to this headline">¶</a></h3>
+<span id="monotonic-cst-gbdt"></span><h3><span class="section-number">1.11.5.5. </span>Monotonic Constraints<a class="headerlink" href="#monotonic-constraints" title="Permalink to this headline">¶</a></h3>
 <p>Depending on the problem at hand, you may have prior knowledge indicating
 that a given feature should in general have a positive (or negative) effect
 on the target value. For example, all else being equal, a higher credit
@@ -1223,6 +1281,11 @@ respectively:</p>
 that the feature is supposed to have a positive / negative effect on the
 probability to belong to the positive class. Monotonic constraints are not
 supported for multiclass context.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since categories are unordered quantities, it is not possible to enforce
+monotonic constraints on categorical features.</p>
+</div>
 <div class="topic">
 <p class="topic-title">Examples:</p>
 <ul class="simple">
@@ -1231,7 +1294,7 @@ supported for multiclass context.</p>
 </div>
 </div>
 <div class="section" id="low-level-parallelism">
-<h3><span class="section-number">1.11.5.5. </span>Low-level parallelism<a class="headerlink" href="#low-level-parallelism" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">1.11.5.6. </span>Low-level parallelism<a class="headerlink" href="#low-level-parallelism" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference internal" href="generated/sklearn.ensemble.HistGradientBoostingClassifier.html#sklearn.ensemble.HistGradientBoostingClassifier" title="sklearn.ensemble.HistGradientBoostingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingClassifier</span></code></a> and
 <a class="reference internal" href="generated/sklearn.ensemble.HistGradientBoostingRegressor.html#sklearn.ensemble.HistGradientBoostingRegressor" title="sklearn.ensemble.HistGradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingRegressor</span></code></a> have implementations that use OpenMP
 for parallelization through Cython. For more details on how to control the
@@ -1249,7 +1312,7 @@ parallelized over samples</p></li>
 </ul>
 </div>
 <div class="section" id="why-it-s-faster">
-<h3><span class="section-number">1.11.5.6. </span>Why it’s faster<a class="headerlink" href="#why-it-s-faster" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">1.11.5.7. </span>Why it’s faster<a class="headerlink" href="#why-it-s-faster" title="Permalink to this headline">¶</a></h3>
 <p>The bottleneck of a gradient boosting procedure is building the decision
 trees. Building a traditional decision tree (as in the other GBDTs
 <a class="reference internal" href="generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier" title="sklearn.ensemble.GradientBoostingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradientBoostingClassifier</span></code></a> and <a class="reference internal" href="generated/sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor" title="sklearn.ensemble.GradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradientBoostingRegressor</span></code></a>)
@@ -1293,12 +1356,15 @@ Boosting System”</a></p>
 <dd><p>Ke et. al. <a class="reference external" href="https://papers.nips.cc/paper/6907-lightgbm-a-highly-efficient-gradient-boosting-decision-tree">“LightGBM: A Highly Efficient Gradient
 BoostingDecision Tree”</a></p>
 </dd>
+<dt class="label" id="fisher1958"><span class="brackets"><a class="fn-backref" href="#id27">Fisher1958</a></span></dt>
+<dd><p>Walter D. Fisher. <a class="reference external" href="http://www.csiss.org/SPACE/workshops/2004/SAC/files/fisher.pdf">“On Grouping for Maximum Homogeneity”</a></p>
+</dd>
 </dl>
 </div>
 </div>
 </div>
 <div class="section" id="voting-classifier">
-<span id="id27"></span><h2><span class="section-number">1.11.6. </span>Voting Classifier<a class="headerlink" href="#voting-classifier" title="Permalink to this headline">¶</a></h2>
+<span id="id28"></span><h2><span class="section-number">1.11.6. </span>Voting Classifier<a class="headerlink" href="#voting-classifier" title="Permalink to this headline">¶</a></h2>
 <p>The idea behind the <a class="reference internal" href="generated/sklearn.ensemble.VotingClassifier.html#sklearn.ensemble.VotingClassifier" title="sklearn.ensemble.VotingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">VotingClassifier</span></code></a> is to combine
 conceptually different machine learning classifiers and use a majority vote
 or the average predicted probabilities (soft vote) to predict the class labels.
@@ -1325,8 +1391,8 @@ based on the ascending sort order. E.g., in the following scenario</p>
 </ul>
 <p>the class label 1 will be assigned to the sample.</p>
 </div>
-<div class="section" id="id28">
-<h3><span class="section-number">1.11.6.2. </span>Usage<a class="headerlink" href="#id28" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id29">
+<h3><span class="section-number">1.11.6.2. </span>Usage<a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h3>
 <p>The following example shows how to fit the majority rule classifier:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_val_score</span>
@@ -1462,8 +1528,8 @@ hyperparameters of the individual estimators:</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="id29">
-<h3><span class="section-number">1.11.6.5. </span>Usage<a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id30">
+<h3><span class="section-number">1.11.6.5. </span>Usage<a class="headerlink" href="#id30" title="Permalink to this headline">¶</a></h3>
 <p>In order to predict the class labels based on the predicted
 class-probabilities (scikit-learn estimators in the VotingClassifier
 must support <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code> method):</p>
@@ -1483,13 +1549,13 @@ must support <code class="docutils literal notranslate"><span class="pre">predic
 </div>
 </div>
 <div class="section" id="voting-regressor">
-<span id="id30"></span><h2><span class="section-number">1.11.7. </span>Voting Regressor<a class="headerlink" href="#voting-regressor" title="Permalink to this headline">¶</a></h2>
+<span id="id31"></span><h2><span class="section-number">1.11.7. </span>Voting Regressor<a class="headerlink" href="#voting-regressor" title="Permalink to this headline">¶</a></h2>
 <p>The idea behind the <a class="reference internal" href="generated/sklearn.ensemble.VotingRegressor.html#sklearn.ensemble.VotingRegressor" title="sklearn.ensemble.VotingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">VotingRegressor</span></code></a> is to combine conceptually
 different machine learning regressors and return the average predicted values.
 Such a regressor can be useful for a set of equally well performing models
 in order to balance out their individual weaknesses.</p>
-<div class="section" id="id31">
-<h3><span class="section-number">1.11.7.1. </span>Usage<a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id32">
+<h3><span class="section-number">1.11.7.1. </span>Usage<a class="headerlink" href="#id32" title="Permalink to this headline">¶</a></h3>
 <p>The following example shows how to fit the VotingRegressor:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_diabetes</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">GradientBoostingRegressor</span>
@@ -1522,7 +1588,7 @@ in order to balance out their individual weaknesses.</p>
 <div class="section" id="stacked-generalization">
 <span id="stacking"></span><h2><span class="section-number">1.11.8. </span>Stacked generalization<a class="headerlink" href="#stacked-generalization" title="Permalink to this headline">¶</a></h2>
 <p>Stacked generalization is a method for combining estimators to reduce their
-biases <a class="reference internal" href="#w1992" id="id32"><span>[W1992]</span></a> <a class="reference internal" href="#htf" id="id33"><span>[HTF]</span></a>. More precisely, the predictions of each individual
+biases <a class="reference internal" href="#w1992" id="id33"><span>[W1992]</span></a> <a class="reference internal" href="#htf" id="id34"><span>[HTF]</span></a>. More precisely, the predictions of each individual
 estimator are stacked together and used as input to a final estimator to
 compute the prediction. This final estimator is trained through
 cross-validation.</p>
@@ -1634,7 +1700,7 @@ a <a class="reference internal" href="generated/sklearn.ensemble.StackingClassif
 <div class="topic">
 <p class="topic-title">References</p>
 <dl class="citation">
-<dt class="label" id="w1992"><span class="brackets"><a class="fn-backref" href="#id32">W1992</a></span></dt>
+<dt class="label" id="w1992"><span class="brackets"><a class="fn-backref" href="#id33">W1992</a></span></dt>
 <dd><p>Wolpert, David H. “Stacked generalization.” Neural networks 5.2
 (1992): 241-259.</p>
 </dd>
