@@ -9,9 +9,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   
-  <title>1.14. Semi-Supervised &mdash; scikit-learn 0.24.dev0 documentation</title>
+  <title>1.14. Semi-supervised learning &mdash; scikit-learn 0.24.dev0 documentation</title>
   
-  <link rel="canonical" href="http://scikit-learn.org/stable/modules/label_propagation.html" />
+  <link rel="canonical" href="http://scikit-learn.org/stable/modules/semi_supervised.html" />
 
   
   <link rel="shortcut icon" href="../_static/favicon.ico"/>
@@ -156,8 +156,9 @@
         </div>
             <div class="sk-sidebar-toc">
               <ul>
-<li><a class="reference internal" href="#">1.14. Semi-Supervised</a><ul>
-<li><a class="reference internal" href="#label-propagation">1.14.1. Label Propagation</a></li>
+<li><a class="reference internal" href="#">1.14. Semi-supervised learning</a><ul>
+<li><a class="reference internal" href="#self-training">1.14.1. Self Training</a></li>
+<li><a class="reference internal" href="#label-propagation">1.14.2. Label Propagation</a></li>
 </ul>
 </li>
 </ul>
@@ -168,8 +169,8 @@
     <div id="sk-page-content-wrapper">
       <div class="sk-page-content container-fluid body px-md-3" role="main">
         
-  <div class="section" id="semi-supervised">
-<span id="id1"></span><h1><span class="section-number">1.14. </span>Semi-Supervised<a class="headerlink" href="#semi-supervised" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="semi-supervised-learning">
+<span id="semi-supervised"></span><h1><span class="section-number">1.14. </span>Semi-supervised learning<a class="headerlink" href="#semi-supervised-learning" title="Permalink to this headline">¶</a></h1>
 <p><a class="reference external" href="https://en.wikipedia.org/wiki/Semi-supervised_learning">Semi-supervised learning</a> is a situation
 in which in your training data some of the samples are not labeled. The
 semi-supervised estimators in <a class="reference internal" href="classes.html#module-sklearn.semi_supervised" title="sklearn.semi_supervised"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.semi_supervised</span></code></a> are able to
@@ -180,11 +181,61 @@ labeled points and a large amount of unlabeled points.</p>
 <div class="topic">
 <p class="topic-title">Unlabeled entries in <code class="docutils literal notranslate"><span class="pre">y</span></code></p>
 <p>It is important to assign an identifier to unlabeled points along with the
-labeled data when training the model with the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method. The identifier
-that this implementation uses is the integer value <span class="math notranslate nohighlight">\(-1\)</span>.</p>
+labeled data when training the model with the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method. The
+identifier that this implementation uses is the integer value <span class="math notranslate nohighlight">\(-1\)</span>.
+Note that for string labels, the dtype of <code class="docutils literal notranslate"><span class="pre">y</span></code> should be object so that it
+can contain both strings and integers.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Semi-supervised algorithms need to make assumptions about the distribution
+of the dataset in order to achieve performance gains. See <a class="reference external" href="https://en.wikipedia.org/wiki/Semi-supervised_learning#Assumptions_used">here</a>
+for more details.</p>
+</div>
+<div class="section" id="self-training">
+<span id="id2"></span><h2><span class="section-number">1.14.1. </span>Self Training<a class="headerlink" href="#self-training" title="Permalink to this headline">¶</a></h2>
+<p>This self-training implementation is based on Yarowsky’s <a class="footnote-reference brackets" href="#id4" id="id3">1</a> algorithm. Using
+this algorithm, a given supervised classifier can function as a semi-supervised
+classifier, allowing it to learn from unlabeled data.</p>
+<p><a class="reference internal" href="generated/sklearn.semi_supervised.SelfTrainingClassifier.html#sklearn.semi_supervised.SelfTrainingClassifier" title="sklearn.semi_supervised.SelfTrainingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">SelfTrainingClassifier</span></code></a> can be called with any classifier that
+implements <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code>, passed as the parameter <code class="docutils literal notranslate"><span class="pre">base_classifier</span></code>. In
+each iteration, the <code class="docutils literal notranslate"><span class="pre">base_classifier</span></code> predicts labels for the unlabeled
+samples and adds a subset of these labels to the labeled dataset.</p>
+<p>The choice of this subset is determined by the selection criterion. This
+selection can be done using a <code class="docutils literal notranslate"><span class="pre">threshold</span></code> on the prediction probabilities, or
+by choosing the <code class="docutils literal notranslate"><span class="pre">k_best</span></code> samples according to the prediction probabilities.</p>
+<p>The labels used for the final fit as well as the iteration in which each sample
+was labeled are available as attributes. The optional <code class="docutils literal notranslate"><span class="pre">max_iter</span></code> parameter
+specifies how many times the loop is executed at most.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">max_iter</span></code> parameter may be set to <code class="docutils literal notranslate"><span class="pre">None</span></code>, causing the algorithm to iterate
+until all samples have labels or no new samples are selected in that iteration.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When using the self-training classifier, the
+<a class="reference internal" href="calibration.html#calibration"><span class="std std-ref">calibration</span></a> of the classifier is important.</p>
+</div>
+<div class="topic">
+<p class="topic-title">Examples</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../auto_examples/semi_supervised/plot_self_training_varying_threshold.html#sphx-glr-auto-examples-semi-supervised-plot-self-training-varying-threshold-py"><span class="std std-ref">Effect of varying threshold for self-training</span></a></p></li>
+<li><p><a class="reference internal" href="../auto_examples/semi_supervised/plot_semi_supervised_versus_svm_iris.html#sphx-glr-auto-examples-semi-supervised-plot-semi-supervised-versus-svm-iris-py"><span class="std std-ref">Decision boundary of semi-supervised classifiers versus SVM on the Iris dataset</span></a></p></li>
+</ul>
+</div>
+<div class="topic">
+<p class="topic-title">References</p>
+<dl class="footnote brackets">
+<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id3">1</a></span></dt>
+<dd><p>David Yarowsky. 1995. Unsupervised word sense disambiguation rivaling
+supervised methods. In Proceedings of the 33rd annual meeting on
+Association for Computational Linguistics (ACL ‘95). Association for
+Computational Linguistics, Stroudsburg, PA, USA, 189-196. DOI:
+<a class="reference external" href="https://doi.org/10.3115/981658.981684">https://doi.org/10.3115/981658.981684</a></p>
+</dd>
+</dl>
+</div>
 </div>
 <div class="section" id="label-propagation">
-<span id="id2"></span><h2><span class="section-number">1.14.1. </span>Label Propagation<a class="headerlink" href="#label-propagation" title="Permalink to this headline">¶</a></h2>
+<span id="id5"></span><h2><span class="section-number">1.14.2. </span>Label Propagation<a class="headerlink" href="#label-propagation" title="Permalink to this headline">¶</a></h2>
 <p>Label propagation denotes a few variations of semi-supervised graph
 inference algorithms.</p>
 <dl class="simple">
@@ -197,12 +248,12 @@ inference algorithms.</p>
 <p><code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> provides two label propagation models:
 <a class="reference internal" href="generated/sklearn.semi_supervised.LabelPropagation.html#sklearn.semi_supervised.LabelPropagation" title="sklearn.semi_supervised.LabelPropagation"><code class="xref py py-class docutils literal notranslate"><span class="pre">LabelPropagation</span></code></a> and <a class="reference internal" href="generated/sklearn.semi_supervised.LabelSpreading.html#sklearn.semi_supervised.LabelSpreading" title="sklearn.semi_supervised.LabelSpreading"><code class="xref py py-class docutils literal notranslate"><span class="pre">LabelSpreading</span></code></a>. Both work by
 constructing a similarity graph over all items in the input dataset.</p>
-<div class="figure align-center" id="id3">
+<div class="figure align-center" id="id6">
 <a class="reference external image-reference" href="../auto_examples/semi_supervised/plot_label_propagation_structure.html"><img alt="../_images/sphx_glr_plot_label_propagation_structure_0011.png" src="../_images/sphx_glr_plot_label_propagation_structure_0011.png" style="width: 510.0px; height: 240.0px;" /></a>
 <p class="caption"><span class="caption-text"><strong>An illustration of label-propagation:</strong> <em>the structure of unlabeled
 observations is consistent with the class structure, and thus the
 class label can be propagated to the unlabeled observations of the
-training set.</em></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+training set.</em></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
 </div>
 <p><a class="reference internal" href="generated/sklearn.semi_supervised.LabelPropagation.html#sklearn.semi_supervised.LabelPropagation" title="sklearn.semi_supervised.LabelPropagation"><code class="xref py py-class docutils literal notranslate"><span class="pre">LabelPropagation</span></code></a> and <a class="reference internal" href="generated/sklearn.semi_supervised.LabelSpreading.html#sklearn.semi_supervised.LabelSpreading" title="sklearn.semi_supervised.LabelSpreading"><code class="xref py py-class docutils literal notranslate"><span class="pre">LabelSpreading</span></code></a>
 differ in modifications to the similarity matrix that graph and the
@@ -240,7 +291,7 @@ which can drastically reduce running times.</p>
 <div class="topic">
 <p class="topic-title">Examples</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="../auto_examples/semi_supervised/plot_label_propagation_versus_svm_iris.html#sphx-glr-auto-examples-semi-supervised-plot-label-propagation-versus-svm-iris-py"><span class="std std-ref">Decision boundary of label propagation versus SVM on the Iris dataset</span></a></p></li>
+<li><p><a class="reference internal" href="../auto_examples/semi_supervised/plot_semi_supervised_versus_svm_iris.html#sphx-glr-auto-examples-semi-supervised-plot-semi-supervised-versus-svm-iris-py"><span class="std std-ref">Decision boundary of semi-supervised classifiers versus SVM on the Iris dataset</span></a></p></li>
 <li><p><a class="reference internal" href="../auto_examples/semi_supervised/plot_label_propagation_structure.html#sphx-glr-auto-examples-semi-supervised-plot-label-propagation-structure-py"><span class="std std-ref">Label Propagation learning a complex structure</span></a></p></li>
 <li><p><a class="reference internal" href="../auto_examples/semi_supervised/plot_label_propagation_digits.html#sphx-glr-auto-examples-semi-supervised-plot-label-propagation-digits-py"><span class="std std-ref">Label Propagation digits: Demonstrating performance</span></a></p></li>
 <li><p><a class="reference internal" href="../auto_examples/semi_supervised/plot_label_propagation_digits_active_learning.html#sphx-glr-auto-examples-semi-supervised-plot-label-propagation-digits-active-learning-py"><span class="std std-ref">Label Propagation digits active learning</span></a></p></li>
@@ -248,9 +299,9 @@ which can drastically reduce running times.</p>
 </div>
 <div class="topic">
 <p class="topic-title">References</p>
-<p>[1] Yoshua Bengio, Olivier Delalleau, Nicolas Le Roux. In Semi-Supervised
+<p>[2] Yoshua Bengio, Olivier Delalleau, Nicolas Le Roux. In Semi-Supervised
 Learning (2006), pp. 193-216</p>
-<p>[2] Olivier Delalleau, Yoshua Bengio, Nicolas Le Roux. Efficient
+<p>[3] Olivier Delalleau, Yoshua Bengio, Nicolas Le Roux. Efficient
 Non-Parametric Function Induction in Semi-Supervised Learning. AISTAT 2005
 <a class="reference external" href="https://research.microsoft.com/en-us/people/nicolasl/efficient_ssl.pdf">https://research.microsoft.com/en-us/people/nicolasl/efficient_ssl.pdf</a></p>
 </div>
@@ -262,7 +313,7 @@ Non-Parametric Function Induction in Semi-Supervised Learning. AISTAT 2005
     <div class="container">
       <footer class="sk-content-footer">
             &copy; 2007 - 2020, scikit-learn developers (BSD License).
-          <a href="../_sources/modules/label_propagation.rst.txt" rel="nofollow">Show this page source</a>
+          <a href="../_sources/modules/semi_supervised.rst.txt" rel="nofollow">Show this page source</a>
       </footer>
     </div>
   </div>
