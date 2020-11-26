@@ -181,33 +181,33 @@ and adding them to the training set.</p>
 <p>The classifier will continue iterating until either max_iter is reached, or
 no pseudo-labels were added to the training set in the previous iteration.</p>
 <p>Read more in the <a class="reference internal" href="../semi_supervised.html#self-training"><span class="std std-ref">User Guide</span></a>.</p>
-<dl class="field-list">
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl>
+<dd class="field-odd"><dl class="simple">
 <dt><strong>base_estimator</strong><span class="classifier">estimator object</span></dt><dd><p>An estimator object implementing <code class="docutils literal notranslate"><span class="pre">fit</span></code> and <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code>.
 Invoking the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method will fit a clone of the passed estimator,
 which will be stored in the <code class="docutils literal notranslate"><span class="pre">base_estimator_</span></code> attribute.</p>
 </dd>
-<dt><strong>criterion</strong><span class="classifier">{‘threshold’, ‘k_best’}, optional     (default=’threshold’)</span></dt><dd><p>The selection criterion used to select which labels to add to the
+<dt><strong>criterion</strong><span class="classifier">{‘threshold’, ‘k_best’}, default=’threshold’</span></dt><dd><p>The selection criterion used to select which labels to add to the
 training set. If ‘threshold’, pseudo-labels with prediction
 probabilities above <code class="docutils literal notranslate"><span class="pre">threshold</span></code> are added to the dataset. If ‘k_best’,
 the <code class="docutils literal notranslate"><span class="pre">k_best</span></code> pseudo-labels with highest prediction probabilities are
 added to the dataset. When using the ‘threshold’ criterion, a
 <a class="reference internal" href="../calibration.html#calibration"><span class="std std-ref">well calibrated classifier</span></a> should be used.</p>
 </dd>
-<dt><strong>threshold</strong><span class="classifier">float, optional (default=0.75)</span></dt><dd><p>The decision threshold for use with <code class="docutils literal notranslate"><span class="pre">criterion='threshold'</span></code>.
+<dt><strong>threshold</strong><span class="classifier">float, default=0.75</span></dt><dd><p>The decision threshold for use with <code class="docutils literal notranslate"><span class="pre">criterion='threshold'</span></code>.
 Should be in [0, 1). When using the ‘threshold’ criterion, a
 <a class="reference internal" href="../calibration.html#calibration"><span class="std std-ref">well calibrated classifier</span></a> should be used.</p>
 </dd>
-<dt><strong>k_best</strong><span class="classifier">int, optional (default=10)</span></dt><dd><p>The amount of samples to add in each iteration. Only used when
+<dt><strong>k_best</strong><span class="classifier">int, default=10</span></dt><dd><p>The amount of samples to add in each iteration. Only used when
 <code class="docutils literal notranslate"><span class="pre">criterion</span></code> is k_best’.</p>
 </dd>
-<dt><strong>max_iter</strong><span class="classifier">int or <code class="docutils literal notranslate"><span class="pre">None</span></code>, optional (default=10)</span></dt><dd><p>Maximum number of iterations allowed. Should be greater than or equal
+<dt><strong>max_iter</strong><span class="classifier">int or None, default=10</span></dt><dd><p>Maximum number of iterations allowed. Should be greater than or equal
 to 0. If it is <code class="docutils literal notranslate"><span class="pre">None</span></code>, the classifier will continue to predict labels
 until no new pseudo-labels are added, or all unlabeled samples have
 been labeled.</p>
 </dd>
-<dt><strong>verbose: bool, (default=False)</strong></dt><dd><p>Enable verbose output.</p>
+<dt><strong>verbose: bool, default=False</strong></dt><dd><p>Enable verbose output.</p>
 </dd>
 </dl>
 </dd>
@@ -215,13 +215,13 @@ been labeled.</p>
 <dd class="field-even"><dl class="simple">
 <dt><strong>base_estimator_</strong><span class="classifier">estimator object</span></dt><dd><p>The fitted estimator.</p>
 </dd>
-<dt><strong>classes_</strong><span class="classifier">array or list of array of shape (n_classes,)</span></dt><dd><p>Class labels for each output. (Taken from the trained
-<code class="docutils literal notranslate"><span class="pre">base_estimator_</span></code>)</p>
+<dt><strong>classes_</strong><span class="classifier">ndarray or list of ndarray of shape (n_classes,)</span></dt><dd><p>Class labels for each output. (Taken from the trained
+<code class="docutils literal notranslate"><span class="pre">base_estimator_</span></code>).</p>
 </dd>
-<dt><strong>transduction_</strong><span class="classifier">array, shape=(n_samples,)</span></dt><dd><p>The labels used for the final fit of the classifier, including
+<dt><strong>transduction_</strong><span class="classifier">ndarray of shape (n_samples,)</span></dt><dd><p>The labels used for the final fit of the classifier, including
 pseudo-labels added during fit.</p>
 </dd>
-<dt><strong>labeled_iter_</strong><span class="classifier">array, shape=(n_samples,)</span></dt><dd><p>The iteration in which each sample was labeled. When a sample has
+<dt><strong>labeled_iter_</strong><span class="classifier">ndarray of shape (n_samples,)</span></dt><dd><p>The iteration in which each sample was labeled. When a sample has
 iteration 0, the sample was already labeled in the original dataset.
 When a sample has iteration -1, the sample was not labeled in any
 iteration.</p>
@@ -269,7 +269,7 @@ Computational Linguistics, Stroudsburg, PA, USA, 189-196. DOI:
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sklearn.semi_supervised.SelfTrainingClassifier.decision_function" title="sklearn.semi_supervised.SelfTrainingClassifier.decision_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decision_function</span></code></a>(X)</p></td>
-<td><p>Calls decision function of the base_estimator.</p></td>
+<td><p>Calls decision function of the <code class="docutils literal notranslate"><span class="pre">base_estimator</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sklearn.semi_supervised.SelfTrainingClassifier.fit" title="sklearn.semi_supervised.SelfTrainingClassifier.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X, y)</p></td>
 <td><p>Fits this <code class="docutils literal notranslate"><span class="pre">SelfTrainingClassifier</span></code> to a dataset.</p></td>
@@ -287,7 +287,7 @@ Computational Linguistics, Stroudsburg, PA, USA, 189-196. DOI:
 <td><p>Predict probability for each possible outcome.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sklearn.semi_supervised.SelfTrainingClassifier.score" title="sklearn.semi_supervised.SelfTrainingClassifier.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(X, y)</p></td>
-<td><p>Calls score on the base_estimator.</p></td>
+<td><p>Calls score on the <code class="docutils literal notranslate"><span class="pre">base_estimator</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sklearn.semi_supervised.SelfTrainingClassifier.set_params" title="sklearn.semi_supervised.SelfTrainingClassifier.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**params)</p></td>
 <td><p>Set the parameters of this estimator.</p></td>
@@ -296,18 +296,18 @@ Computational Linguistics, Stroudsburg, PA, USA, 189-196. DOI:
 </table>
 <dl class="py method">
 <dt id="sklearn.semi_supervised.SelfTrainingClassifier.decision_function">
-<code class="sig-name descname">decision_function</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/68268eb60/sklearn/semi_supervised/_self_training.py#L293"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.semi_supervised.SelfTrainingClassifier.decision_function" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calls decision function of the base_estimator.</p>
+<code class="sig-name descname">decision_function</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/68268eb60/sklearn/semi_supervised/_self_training.py#L292"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.semi_supervised.SelfTrainingClassifier.decision_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls decision function of the <code class="docutils literal notranslate"><span class="pre">base_estimator</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like, shape=(n_samples, n_features)</span></dt><dd><p>array representing the data</p>
+<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Array representing the data.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>y</strong><span class="classifier">array-like, shape=(n_samples, n_features)</span></dt><dd><p>result of the decision function of the base_estimator</p>
+<dt><strong>y</strong><span class="classifier">ndarray of shape (n_samples, n_features)</span></dt><dd><p>Result of the decision function of the <code class="docutils literal notranslate"><span class="pre">base_estimator</span></code>.</p>
 </dd>
 </dl>
 </dd>
@@ -316,21 +316,21 @@ Computational Linguistics, Stroudsburg, PA, USA, 189-196. DOI:
 
 <dl class="py method">
 <dt id="sklearn.semi_supervised.SelfTrainingClassifier.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/68268eb60/sklearn/semi_supervised/_self_training.py#L141"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.semi_supervised.SelfTrainingClassifier.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/68268eb60/sklearn/semi_supervised/_self_training.py#L140"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.semi_supervised.SelfTrainingClassifier.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fits this <code class="docutils literal notranslate"><span class="pre">SelfTrainingClassifier</span></code> to a dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like, shape = (n_samples, n_features)</span></dt><dd><p>array representing the data</p>
+<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Array representing the data.</p>
 </dd>
-<dt><strong>y</strong><span class="classifier">array-like, shape = (n_samples,)</span></dt><dd><p>array representing the labels. Unlabeled samples should have the
+<dt><strong>y</strong><span class="classifier">{array-like, sparse matrix} of shape (n_samples,)</span></dt><dd><p>Array representing the labels. Unlabeled samples should have the
 label -1.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>self</strong><span class="classifier">object</span></dt><dd><p>returns an instance of self.</p>
+<dt><strong>self</strong><span class="classifier">object</span></dt><dd><p>Returns an instance of self.</p>
 </dd>
 </dl>
 </dd>
@@ -360,18 +360,18 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt id="sklearn.semi_supervised.SelfTrainingClassifier.predict">
-<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/68268eb60/sklearn/semi_supervised/_self_training.py#L260"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.semi_supervised.SelfTrainingClassifier.predict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/68268eb60/sklearn/semi_supervised/_self_training.py#L259"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.semi_supervised.SelfTrainingClassifier.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Predict the classes of X.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like, shape=(n_samples, n_features)</span></dt><dd><p>array representing the data</p>
+<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Array representing the data.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>y</strong><span class="classifier">array-like, shape=(n_samples,)</span></dt><dd><p>array with predicted labels</p>
+<dt><strong>y</strong><span class="classifier">ndarray of shape (n_samples,)</span></dt><dd><p>Array with predicted labels.</p>
 </dd>
 </dl>
 </dd>
@@ -380,18 +380,18 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt id="sklearn.semi_supervised.SelfTrainingClassifier.predict_log_proba">
-<code class="sig-name descname">predict_log_proba</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/68268eb60/sklearn/semi_supervised/_self_training.py#L310"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.semi_supervised.SelfTrainingClassifier.predict_log_proba" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">predict_log_proba</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/68268eb60/sklearn/semi_supervised/_self_training.py#L309"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.semi_supervised.SelfTrainingClassifier.predict_log_proba" title="Permalink to this definition">¶</a></dt>
 <dd><p>Predict log probability for each possible outcome.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like, shape=(n_samples, n_features)</span></dt><dd><p>array representing the data</p>
+<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Array representing the data.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>y</strong><span class="classifier">array-like, shape=(n_samples, n_features)</span></dt><dd><p>array with log prediction probabilities</p>
+<dt><strong>y</strong><span class="classifier">ndarray of shape (n_samples, n_features)</span></dt><dd><p>Array with log prediction probabilities.</p>
 </dd>
 </dl>
 </dd>
@@ -400,18 +400,18 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt id="sklearn.semi_supervised.SelfTrainingClassifier.predict_proba">
-<code class="sig-name descname">predict_proba</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/68268eb60/sklearn/semi_supervised/_self_training.py#L277"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.semi_supervised.SelfTrainingClassifier.predict_proba" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">predict_proba</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/68268eb60/sklearn/semi_supervised/_self_training.py#L276"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.semi_supervised.SelfTrainingClassifier.predict_proba" title="Permalink to this definition">¶</a></dt>
 <dd><p>Predict probability for each possible outcome.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like, shape=(n_samples, n_features)</span></dt><dd><p>array representing the data</p>
+<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Array representing the data.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>y</strong><span class="classifier">array-like, shape=(n_samples, n_features)</span></dt><dd><p>array with prediction probabilities</p>
+<dt><strong>y</strong><span class="classifier">ndarray of shape (n_samples, n_features)</span></dt><dd><p>Array with prediction probabilities.</p>
 </dd>
 </dl>
 </dd>
@@ -420,20 +420,20 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt id="sklearn.semi_supervised.SelfTrainingClassifier.score">
-<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/68268eb60/sklearn/semi_supervised/_self_training.py#L327"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.semi_supervised.SelfTrainingClassifier.score" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calls score on the base_estimator.</p>
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/68268eb60/sklearn/semi_supervised/_self_training.py#L326"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.semi_supervised.SelfTrainingClassifier.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls score on the <code class="docutils literal notranslate"><span class="pre">base_estimator</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like, shape=(n_samples, n_features)</span></dt><dd><p>array representing the data</p>
+<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Array representing the data.</p>
 </dd>
-<dt><strong>y</strong><span class="classifier">array-like, shape=(n_samples,)</span></dt><dd><p>array representing the labels</p>
+<dt><strong>y</strong><span class="classifier">array-like of shape (n_samples,)</span></dt><dd><p>Array representing the labels.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>score</strong><span class="classifier">float</span></dt><dd><p>result of calling score on the base_estimator</p>
+<dt><strong>score</strong><span class="classifier">float</span></dt><dd><p>Result of calling score on the <code class="docutils literal notranslate"><span class="pre">base_estimator</span></code>.</p>
 </dd>
 </dl>
 </dd>
