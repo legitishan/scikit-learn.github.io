@@ -223,7 +223,6 @@ permissions given to maintainers, which includes:</p>
 <li><p>become a member of the <em>scikit-learn</em> team on conda-forge by editing the
 <code class="docutils literal notranslate"><span class="pre">recipe/meta.yaml</span></code> file on
 <code class="docutils literal notranslate"><span class="pre">https://github.com/conda-forge/scikit-learn-feedstock</span></code></p></li>
-<li><p><em>maintainer</em> on <code class="docutils literal notranslate"><span class="pre">https://github.com/MacPython/scikit-learn-wheels</span></code></p></li>
 </ul>
 </div>
 <div class="section" id="preparing-a-release-pr">
@@ -281,48 +280,39 @@ only when ready to release. On master, increment the version in the same
 place (when branching for release). This means while we’re in the release
 candidate period, the latest stable is two versions behind the master
 branch, instead of one.</p></li>
-<li><p>At this point all relevant PRs should have been merged into the <code class="docutils literal notranslate"><span class="pre">0.99.X</span></code>
-branch. Create the source tarball:</p>
-<ul>
-<li><p>Wipe clean your repo:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git clean -xfd</span>
-</pre></div></div></li>
-<li><p>Generate the tarball:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">python setup.py sdist</span>
-</pre></div></div></li>
-<li><p>You can also test a binary dist build using:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">python setup.py bdist_wheel</span>
-</pre></div></div></li>
-<li><p>You can test if PyPi is going to accept the package using:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">twine check dist/*</span>
-</pre></div></div></li>
-</ul>
-<p>You can run <code class="docutils literal notranslate"><span class="pre">twine</span> <span class="pre">check</span></code> after step 5 (fetching artifacts) as well.</p>
-<p>The result should be in the <code class="docutils literal notranslate"><span class="pre">dist/</span></code> folder. We will upload it later
-with the wheels. Check that you can install it in a new virtualenv and
-that the tests pass.</p>
-</li>
 <li><p>Proceed with caution. Ideally, tags should be created when you’re almost
 certain that the release is ready, since adding a tag to the main repo can
-trigger certain automated processes. You can test upload the <code class="docutils literal notranslate"><span class="pre">sdist</span></code> to
-<code class="docutils literal notranslate"><span class="pre">test.pypi.org</span></code>, and test the next step by setting <code class="docutils literal notranslate"><span class="pre">BUILD_COMMIT</span></code> to the
-branch name (<code class="docutils literal notranslate"><span class="pre">0.99.X</span></code> for instance) in a PR to the wheel building repo.
-Once all works, you can proceed with tagging. Create the tag and push it (if
+trigger certain automated processes. You can create a PR in the main repo
+and trigger the wheel builder with the <code class="docutils literal notranslate"><span class="pre">[cd</span> <span class="pre">build]</span></code> commit marker using
+the command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git commit --allow-empty -m <span class="s2">&quot;Trigger wheel builder workflow: [cd build]&quot;</span></span>
+</pre></div></div><p>The wheel building workflow is managed by GitHub Actions and the results be browsed at:
+<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/actions?query=workflow%3A%22Wheel+builder%22">https://github.com/scikit-learn/scikit-learn/actions?query=workflow%3A%22Wheel+builder%22</a></p>
+<p>Once all works, you can proceed with tagging. Create the tag and push it (if
 it’s an RC, it can be <code class="docutils literal notranslate"><span class="pre">0.xxrc1</span></code> for instance):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git tag -a <span class="m">0</span>.99  <span class="c1"># in the 0.99.X branch</span></span>
 <span class="prompt1">git push git@github.com:scikit-learn/scikit-learn.git <span class="m">0</span>.99</span>
 </pre></div></div></li>
-<li><p>Update the dependency versions and set <code class="docutils literal notranslate"><span class="pre">BUILD_COMMIT</span></code> variable to the
-release tag at:</p>
-<p><a class="reference external" href="https://github.com/MacPython/scikit-learn-wheels">https://github.com/MacPython/scikit-learn-wheels</a></p>
-<p>Once the CI has completed successfully, collect the generated binary wheel
-packages and upload them to PyPI by running the following commands in the
-scikit-learn source folder (checked out at the release tag):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">rm -r dist <span class="c1"># only if there&#39;s anything other than the sdist tar.gz there</span></span>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Before building the wheels, make sure that the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file is
+up to date and using the oldest version of <code class="docutils literal notranslate"><span class="pre">numpy</span></code> for each Python version
+to avoid ABI incompatibility issues. Moreover, a new line have to be included
+in the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file for each new supported version of Python.</p>
+</div>
+<ol class="arabic" start="4">
+<li><p>Once the CD has completed successfully, collect the generated binary
+wheel packages and upload them to PyPI by running the following commands
+in the scikit-learn source folder (checked out at the release tag):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">rm -r dist</span>
 <span class="prompt1">pip install -U wheelhouse_uploader twine</span>
 <span class="prompt1">python setup.py fetch_artifacts</span>
-</pre></div></div></li>
-<li><p>Check the content of the <code class="docutils literal notranslate"><span class="pre">dist/</span></code> folder: it should contain all the wheels
+</pre></div></div><p>This command will download all the binary packages accumulated in the <a class="reference external" href="https://anaconda.org/scikit-learn-wheels-staging/scikit-learn/files">staging area on the anaconda.org
+hosting service</a> and put them in
+your local <code class="docutils literal notranslate"><span class="pre">./dist</span></code> folder.</p>
+</li>
+<li><p>Check the content of the <code class="docutils literal notranslate"><span class="pre">./dist</span></code> folder: it should contain all the wheels
 along with the source tarball (“scikit-learn-RRR.tar.gz”).</p>
 <p>Make sure that you do not have developer versions or older versions of
 the scikit-learn package in that folder.</p>
@@ -350,8 +340,6 @@ and the <code class="docutils literal notranslate"><span class="pre">latestStabl
 <p>The following GitHub checklist might be helpful in a release PR:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>* [ ] update news and what&#39;s new date in master and release branch
 * [ ] create tag
-* [ ] update dependencies and release tag at
-  https://github.com/MacPython/scikit-learn-wheels
 * [ ] twine the wheels to PyPI when that&#39;s green
 * [ ] https://github.com/scikit-learn/scikit-learn/releases draft
 * [ ] confirm bot detected at
