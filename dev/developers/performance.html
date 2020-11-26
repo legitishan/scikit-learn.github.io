@@ -245,11 +245,13 @@ parallelism</strong> that is amenable to <strong>multi-processing</strong> by us
 </ol>
 </div></blockquote>
 <p>When using Cython, use either</p>
-<blockquote>
-<div><p>$ python setup.py build_ext -i
-$ python setup.py install</p>
-</div></blockquote>
-<p>to generate C files. You are responsible for adding .c/.cpp extensions along
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">python setup.py build_ext -i</span>
+<span class="prompt1">python setup.py install</span>
+</pre></div></div><p>to generate C files. You are responsible for adding .c/.cpp extensions along
 with build parameters in each submodule <code class="docutils literal notranslate"><span class="pre">setup.py</span></code>.</p>
 <p>C/C++ generated files are embedded in distributed stable packages. The goal is
 to make it possible to install scikit-learn stable version
@@ -343,24 +345,18 @@ trying to optimize their implementation).</p>
 Python code: it takes around 100% of the accumulated time of the module. In
 order to better understand the profile of this specific function, let
 us install <code class="docutils literal notranslate"><span class="pre">line_profiler</span></code> and wire it to IPython:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install line_profiler
-</pre></div>
-</div>
-<ul>
-<li><p><strong>Under IPython 0.13+</strong>, first create a configuration profile:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ipython profile create
-</pre></div>
-</div>
-<p>Then register the line_profiler extension in
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">pip install line_profiler</span>
+</pre></div></div><ul class="simple">
+<li><p><strong>Under IPython 0.13+</strong>, first create a configuration profile:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ipython profile create</span>
+</pre></div></div><p>Then register the line_profiler extension in
 <code class="docutils literal notranslate"><span class="pre">~/.ipython/profile_default/ipython_config.py</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">c</span><span class="o">.</span><span class="n">TerminalIPythonApp</span><span class="o">.</span><span class="n">extensions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;line_profiler&#39;</span><span class="p">)</span>
 <span class="n">c</span><span class="o">.</span><span class="n">InteractiveShellApp</span><span class="o">.</span><span class="n">extensions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;line_profiler&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>This will register the <code class="docutils literal notranslate"><span class="pre">%lprun</span></code> magic command in the IPython terminal
-application and the other frontends such as qtconsole and notebook.</p>
-</li>
-</ul>
+<p>This will register the <code class="docutils literal notranslate"><span class="pre">%lprun</span></code> magic command in the IPython terminal application and the other frontends such as qtconsole and notebook.</p>
 <p>Now restart IPython and let us use this new toy:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_digits</span>
 
@@ -416,16 +412,13 @@ pin-point the most expensive expressions that would deserve additional care.</p>
 <p>You can analyze in detail the memory usage of any Python code with the help of
 <a class="reference external" href="https://pypi.org/project/memory_profiler/">memory_profiler</a>. First,
 install the latest version:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install -U memory_profiler
-</pre></div>
-</div>
-<p>Then, setup the magics in a manner similar to <code class="docutils literal notranslate"><span class="pre">line_profiler</span></code>.</p>
-<ul>
-<li><p><strong>Under IPython 0.11+</strong>, first create a configuration profile:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ipython profile create
-</pre></div>
-</div>
-<p>Then register the extension in
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">pip install -U memory_profiler</span>
+</pre></div></div><p>Then, setup the magics in a manner similar to <code class="docutils literal notranslate"><span class="pre">line_profiler</span></code>.</p>
+<ul class="simple">
+<li><p><strong>Under IPython 0.11+</strong>, first create a configuration profile:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ipython profile create</span>
+</pre></div></div><p>Then register the extension in
 <code class="docutils literal notranslate"><span class="pre">~/.ipython/profile_default/ipython_config.py</span></code>
 alongside the line profiler:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">c</span><span class="o">.</span><span class="n">TerminalIPythonApp</span><span class="o">.</span><span class="n">extensions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;memory_profiler&#39;</span><span class="p">)</span>
@@ -433,10 +426,7 @@ alongside the line profiler:</p>
 </pre></div>
 </div>
 <p>This will register the <code class="docutils literal notranslate"><span class="pre">%memit</span></code> and <code class="docutils literal notranslate"><span class="pre">%mprun</span></code> magic commands in the
-IPython terminal application and the other frontends such as qtconsole and
-notebook.</p>
-</li>
-</ul>
+IPython terminal application and the other frontends such as qtconsole and   notebook.</p>
 <p><code class="docutils literal notranslate"><span class="pre">%mprun</span></code> is useful to examine, line-by-line, the memory usage of key
 functions in your program. It is very similar to <code class="docutils literal notranslate"><span class="pre">%lprun</span></code>, discussed in the
 previous section. For example, from the <code class="docutils literal notranslate"><span class="pre">memory_profiler</span></code> <code class="docutils literal notranslate"><span class="pre">examples</span></code>
@@ -541,14 +531,11 @@ recompile everything.</p>
 <h4>kcachegrind<a class="headerlink" href="#kcachegrind" title="Permalink to this headline">¶</a></h4>
 <p><code class="docutils literal notranslate"><span class="pre">yep</span></code> can be used to create a profiling report.
 <code class="docutils literal notranslate"><span class="pre">kcachegrind</span></code> provides a graphical environment to visualize this report:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run yep to profile some python script</span>
-<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">yep</span> <span class="o">-</span><span class="n">c</span> <span class="n">my_file</span><span class="o">.</span><span class="n">py</span>
-
-<span class="c1"># open my_file.py.callgrin with kcachegrind</span>
-<span class="n">kcachegrind</span> <span class="n">my_file</span><span class="o">.</span><span class="n">py</span><span class="o">.</span><span class="n">prof</span>
-</pre></div>
-</div>
-<div class="admonition note">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="c1"># Run yep to profile some python script</span></span>
+<span class="prompt1">python -m yep -c my_file.py</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="c1"># open my_file.py.callgrin with kcachegrind</span></span>
+<span class="prompt1">kcachegrind my_file.py.prof</span>
+</pre></div></div><div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><code class="docutils literal notranslate"><span class="pre">yep</span></code> can be executed with the argument <code class="docutils literal notranslate"><span class="pre">--lines</span></code> or <code class="docutils literal notranslate"><span class="pre">-l</span></code> to compile
 a profiling report ‘line by line’.</p>

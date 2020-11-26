@@ -458,7 +458,7 @@ total cost over the entire trees (by summing the cost at each node) of
 <div class="section" id="tips-on-practical-use">
 <h2><span class="section-number">1.10.5. </span>Tips on practical use<a class="headerlink" href="#tips-on-practical-use" title="Permalink to this headline">¶</a></h2>
 <blockquote>
-<div><ul class="simple">
+<div><ul>
 <li><p>Decision trees tend to overfit on data with a large number of features.
 Getting the right ratio of samples to number of features is important, since
 a tree with few samples in high dimensional space is very likely to overfit.</p></li>
@@ -484,7 +484,12 @@ While <code class="docutils literal notranslate"><span class="pre">min_samples_s
 <code class="docutils literal notranslate"><span class="pre">min_samples_leaf</span></code> guarantees that each leaf has a minimum size, avoiding
 low-variance, over-fit leaf nodes in regression problems.  For
 classification with few classes, <code class="docutils literal notranslate"><span class="pre">min_samples_leaf=1</span></code> is often the best
-choice.</p></li>
+choice.</p>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">min_samples_split</span></code> considers samples directly and independent of
+<code class="docutils literal notranslate"><span class="pre">sample_weight</span></code>, if provided (e.g. a node with m weighted samples is still
+treated as having exactly m samples). Consider <code class="docutils literal notranslate"><span class="pre">min_weight_fraction_leaf</span></code> or
+<code class="docutils literal notranslate"><span class="pre">min_impurity_decrease</span></code> if accounting for sample weights is required at splits.</p>
+</li>
 <li><p>Balance your dataset before training to prevent the tree from being biased
 toward the classes that are dominant. Class balancing can be done by
 sampling an equal number of samples from each class, or preferably by

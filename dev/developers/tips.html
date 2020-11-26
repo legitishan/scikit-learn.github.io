@@ -215,30 +215,27 @@ will be displayed as a color background behind the line number.</p>
 <p>The full test suite takes fairly long to run. For faster iterations,
 it is possibly to select a subset of tests using pytest selectors.
 In particular, one can run a <a class="reference external" href="https://docs.pytest.org/en/latest/example/markers.html#selecting-tests-based-on-their-node-id">single test based on its node ID</a>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pytest</span> <span class="o">-</span><span class="n">v</span> <span class="n">sklearn</span><span class="o">/</span><span class="n">linear_model</span><span class="o">/</span><span class="n">tests</span><span class="o">/</span><span class="n">test_logistic</span><span class="o">.</span><span class="n">py</span><span class="p">::</span><span class="n">test_sparsify</span>
-</pre></div>
-</div>
-<p>or use the <a class="reference external" href="https://docs.pytest.org/en/latest/example/markers.html#using-k-expr-to-select-tests-based-on-their-name">-k pytest parameter</a>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">pytest -v sklearn/linear_model/tests/test_logistic.py::test_sparsify</span>
+</pre></div></div><p>or use the <a class="reference external" href="https://docs.pytest.org/en/latest/example/markers.html#using-k-expr-to-select-tests-based-on-their-name">-k pytest parameter</a>
 to select tests based on their name. For instance,:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pytest</span> <span class="n">sklearn</span><span class="o">/</span><span class="n">tests</span><span class="o">/</span><span class="n">test_common</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">v</span> <span class="o">-</span><span class="n">k</span> <span class="n">LogisticRegression</span>
-</pre></div>
-</div>
-<p>will run all <a class="reference internal" href="../glossary.html#term-common-tests"><span class="xref std std-term">common tests</span></a> for the <code class="docutils literal notranslate"><span class="pre">LogisticRegression</span></code> estimator.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">pytest sklearn/tests/test_common.py -v -k LogisticRegression</span>
+</pre></div></div><p>will run all <a class="reference internal" href="../glossary.html#term-common-tests"><span class="xref std std-term">common tests</span></a> for the <code class="docutils literal notranslate"><span class="pre">LogisticRegression</span></code> estimator.</p>
 <p>When a unit test fails, the following tricks can make debugging easier:</p>
 <blockquote>
-<div><ol class="arabic">
+<div><ol class="arabic simple">
 <li><p>The command line argument <code class="docutils literal notranslate"><span class="pre">pytest</span> <span class="pre">-l</span></code> instructs pytest to print the local
 variables when a failure occurs.</p></li>
 <li><p>The argument <code class="docutils literal notranslate"><span class="pre">pytest</span> <span class="pre">--pdb</span></code> drops into the Python debugger on failure. To
 instead drop into the rich IPython debugger <code class="docutils literal notranslate"><span class="pre">ipdb</span></code>, you may set up a
-shell alias to:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pytest</span> <span class="o">--</span><span class="n">pdbcls</span><span class="o">=</span><span class="n">IPython</span><span class="o">.</span><span class="n">terminal</span><span class="o">.</span><span class="n">debugger</span><span class="p">:</span><span class="n">TerminalPdb</span> <span class="o">--</span><span class="n">capture</span> <span class="n">no</span>
-</pre></div>
-</div>
-</li>
+shell alias to:</p></li>
 </ol>
 </div></blockquote>
-<p>Other <code class="docutils literal notranslate"><span class="pre">pytest</span></code> options that may become useful include:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">pytest --pdbcls<span class="o">=</span>IPython.terminal.debugger:TerminalPdb --capture no</span>
+</pre></div></div><p>Other <code class="docutils literal notranslate"><span class="pre">pytest</span></code> options that may become useful include:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">-x</span></code> which exits on the first failed test</p></li>
@@ -372,20 +369,17 @@ A very useful tool when debugging these sorts of errors is
 <p>Valgrind is a command-line tool that can trace memory errors in a variety of
 code. Follow these steps:</p>
 <blockquote>
-<div><ol class="arabic">
+<div><ol class="arabic simple">
 <li><p>Install <a class="reference external" href="http://valgrind.org">valgrind</a> on your system.</p></li>
 <li><p>Download the python valgrind suppression file: <a class="reference external" href="https://github.com/python/cpython/blob/master/Misc/valgrind-python.supp">valgrind-python.supp</a>.</p></li>
 <li><p>Follow the directions in the <a class="reference external" href="https://github.com/python/cpython/blob/master/Misc/README.valgrind">README.valgrind</a> file to customize your
 python suppressions. If you don’t, you will have spurious output coming
 related to the python interpreter instead of your own code.</p></li>
-<li><p>Run valgrind as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$&gt; valgrind -v --suppressions=valgrind-python.supp python my_test_script.py
-</pre></div>
-</div>
-</li>
+<li><p>Run valgrind as follows:</p></li>
 </ol>
 </div></blockquote>
-<p>The result will be a list of all the memory-related errors, which reference
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">valgrind -v --suppressions<span class="o">=</span>valgrind-python.supp python my_test_script.py</span>
+</pre></div></div><p>The result will be a list of all the memory-related errors, which reference
 lines in the C-code generated by cython from your .pyx file. If you examine
 the referenced lines in the .c file, you will see comments which indicate the
 corresponding location in your .pyx source file. Hopefully the output will
@@ -408,31 +402,23 @@ ppc64le, after changing the Docker image and Miniforge paths appropriately.</p>
 </div>
 <p>Prepare a folder on the host filesystem and download the necessary tools and
 source code:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="n">arm64</span>
-<span class="n">pushd</span> <span class="n">arm64</span>
-<span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">conda</span><span class="o">-</span><span class="n">forge</span><span class="o">/</span><span class="n">miniforge</span><span class="o">/</span><span class="n">releases</span><span class="o">/</span><span class="n">latest</span><span class="o">/</span><span class="n">download</span><span class="o">/</span><span class="n">Miniforge3</span><span class="o">-</span><span class="n">Linux</span><span class="o">-</span><span class="n">aarch64</span><span class="o">.</span><span class="n">sh</span>
-<span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">scikit</span><span class="o">-</span><span class="n">learn</span><span class="o">/</span><span class="n">scikit</span><span class="o">-</span><span class="n">learn</span><span class="o">.</span><span class="n">git</span>
-</pre></div>
-</div>
-<p>Use docker to install QEMU user mode and run an ARM64v8 container with access
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">mkdir arm64</span>
+<span class="prompt1"><span class="nb">pushd</span> arm64</span>
+<span class="prompt1">wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-aarch64.sh</span>
+<span class="prompt1">git clone https://github.com/scikit-learn/scikit-learn.git</span>
+</pre></div></div><p>Use docker to install QEMU user mode and run an ARM64v8 container with access
 to your shared folder under the <code class="docutils literal notranslate"><span class="pre">/io</span></code> mount point:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-docker run -v`pwd`:/io --rm -it arm64v8/ubuntu /bin/bash
-</pre></div>
-</div>
-<p>In the container, install miniforge3 for the ARM64 (a.k.a. aarch64)
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker run --rm --privileged multiarch/qemu-user-static --reset -p yes</span>
+<span class="prompt1">docker run -v<span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>:/io --rm -it arm64v8/ubuntu /bin/bash</span>
+</pre></div></div><p>In the container, install miniforge3 for the ARM64 (a.k.a. aarch64)
 architecture:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bash</span> <span class="n">Miniforge3</span><span class="o">-</span><span class="n">Linux</span><span class="o">-</span><span class="n">aarch64</span><span class="o">.</span><span class="n">sh</span>
-<span class="c1"># Choose to install miniforge3 under: `/io/miniforge3`</span>
-</pre></div>
-</div>
-<p>Whenever you restart a new container, you will need to reinit the conda env
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">bash Miniforge3-Linux-aarch64.sh</span>
+<span class="prompt1"><span class="c1"># Choose to install miniforge3 under: `/io/miniforge3`</span></span>
+</pre></div></div><p>Whenever you restart a new container, you will need to reinit the conda env
 previously installed under <code class="docutils literal notranslate"><span class="pre">/io/miniforge3</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">io</span><span class="o">/</span><span class="n">miniforge3</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">conda</span> <span class="n">init</span>
-<span class="n">source</span> <span class="o">/</span><span class="n">root</span><span class="o">/.</span><span class="n">bashrc</span>
-</pre></div>
-</div>
-<p>as the <code class="docutils literal notranslate"><span class="pre">/root</span></code> home folder is part of the ephemeral docker container. Every
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">/io/miniforge3/bin/conda init</span>
+<span class="prompt1"><span class="nb">source</span> /root/.bashrc</span>
+</pre></div></div><p>as the <code class="docutils literal notranslate"><span class="pre">/root</span></code> home folder is part of the ephemeral docker container. Every
 file or directory stored under <code class="docutils literal notranslate"><span class="pre">/io</span></code> is persistent on the other hand.</p>
 <p>You can then build scikit-learn as usual (you will need to install compiler
 tools and dependencies using apt or conda as usual). Building scikit-learn
