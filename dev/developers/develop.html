@@ -673,12 +673,12 @@ for working with multiclass and multilabel problems.</p>
 of estimators that allow programmatic inspection of their capabilities, such as
 sparse matrix support, supported output types and supported methods. The
 estimator tags are a dictionary returned by the method <code class="docutils literal notranslate"><span class="pre">_get_tags()</span></code>. These
-tags are used by the common tests and the
-<a class="reference internal" href="../modules/generated/sklearn.utils.estimator_checks.check_estimator.html#sklearn.utils.estimator_checks.check_estimator" title="sklearn.utils.estimator_checks.check_estimator"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.utils.estimator_checks.check_estimator</span></code></a> function to decide what
-tests to run and what input data is appropriate. Tags can depend on estimator
-parameters or even system architecture and can in general only be determined at
-runtime. The default values for the estimator tags are defined in the
-<code class="docutils literal notranslate"><span class="pre">BaseEstimator</span></code> class.</p>
+tags are used in the common checks run by the
+<a class="reference internal" href="../modules/generated/sklearn.utils.estimator_checks.check_estimator.html#sklearn.utils.estimator_checks.check_estimator" title="sklearn.utils.estimator_checks.check_estimator"><code class="xref py py-func docutils literal notranslate"><span class="pre">check_estimator</span></code></a> function and the
+<a class="reference internal" href="../modules/generated/sklearn.utils.estimator_checks.parametrize_with_checks.html#sklearn.utils.estimator_checks.parametrize_with_checks" title="sklearn.utils.estimator_checks.parametrize_with_checks"><code class="xref py py-func docutils literal notranslate"><span class="pre">parametrize_with_checks</span></code></a> decorator.
+Tags determine which checks to run and what input data is appropriate. Tags
+can depend on estimator parameters or even system architecture and can in
+general only be determined at runtime.</p>
 <p>The current set of estimator tags are:</p>
 <dl class="simple">
 <dt>allow_nan (default=False)</dt><dd><p>whether the estimator supports data with missing values encoded as np.NaN</p>
@@ -762,8 +762,10 @@ during testing, in particular for <code class="docutils literal notranslate"><sp
 of the <code class="docutils literal notranslate"><span class="pre">'sparse'</span></code> tag.</p>
 </dd>
 </dl>
-<p>To override the tags of a child class, one must define the <code class="docutils literal notranslate"><span class="pre">_more_tags()</span></code>
-method and return a dict with the desired tags, e.g:</p>
+<p>It is unlikely that the default values for each tag will suit the needs of your
+specific estimator. Additional tags can be created or default tags can be
+overridden by defining a <code class="docutils literal notranslate"><span class="pre">_more_tags()</span></code> method which returns a dict with the
+desired overridden tags or new tags. For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyMultiOutputEstimator</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">_more_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -771,6 +773,12 @@ method and return a dict with the desired tags, e.g:</p>
                 <span class="s1">&#39;non_deterministic&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
 </pre></div>
 </div>
+<p>Any tag that is not in <code class="docutils literal notranslate"><span class="pre">_more_tags()</span></code> will just fall-back to the default values
+documented above.</p>
+<p>Even if it is not recommended, it is possible to override the method
+<code class="docutils literal notranslate"><span class="pre">_get_tags()</span></code>. Note however that <strong>all tags must be present in the dict</strong>. If
+any of the keys documented above is not present in the output of <code class="docutils literal notranslate"><span class="pre">_get_tags()</span></code>,
+an error will occur.</p>
 <p>In addition to the tags, estimators also need to declare any non-optional
 parameters to <code class="docutils literal notranslate"><span class="pre">__init__</span></code> in the <code class="docutils literal notranslate"><span class="pre">_required_parameters</span></code> class attribute,
 which is a list or tuple.  If <code class="docutils literal notranslate"><span class="pre">_required_parameters</span></code> is only
