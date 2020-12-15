@@ -778,6 +778,22 @@ selected with the <code class="docutils literal notranslate"><span class="pre">s
 constant-width bins. The ‘quantile’ strategy uses the quantiles values to have
 equally populated bins in each feature. The ‘kmeans’ strategy defines bins based
 on a k-means clustering procedure performed on each feature independently.</p>
+<p>Be aware that one can specify custom bins by passing a callable defining the
+discretization strategy to <a class="reference internal" href="generated/sklearn.preprocessing.FunctionTransformer.html#sklearn.preprocessing.FunctionTransformer" title="sklearn.preprocessing.FunctionTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">FunctionTransformer</span></code></a>.
+For instance, we can use the Pandas function <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.cut.html#pandas.cut" title="(in pandas v1.1.5)"><code class="xref py py-func docutils literal notranslate"><span class="pre">pandas.cut</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bins</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;infant&#39;</span><span class="p">,</span> <span class="s1">&#39;kid&#39;</span><span class="p">,</span> <span class="s1">&#39;teen&#39;</span><span class="p">,</span> <span class="s1">&#39;adult&#39;</span><span class="p">,</span> <span class="s1">&#39;senior citizen&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transformer</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">FunctionTransformer</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">,</span> <span class="n">kw_args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;bins&#39;</span><span class="p">:</span> <span class="n">bins</span><span class="p">,</span> <span class="s1">&#39;labels&#39;</span><span class="p">:</span> <span class="n">labels</span><span class="p">,</span> <span class="s1">&#39;retbins&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">97</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transformer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="go">[&#39;infant&#39;, &#39;kid&#39;, &#39;teen&#39;, &#39;adult&#39;, &#39;senior citizen&#39;]</span>
+<span class="go">Categories (5, object): [&#39;infant&#39; &lt; &#39;kid&#39; &lt; &#39;teen&#39; &lt; &#39;adult&#39; &lt; &#39;senior citizen&#39;]</span>
+</pre></div>
+</div>
 <div class="topic">
 <p class="topic-title">Examples:</p>
 <ul class="simple">
