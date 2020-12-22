@@ -1,5 +1,5 @@
 (function() {
-    var latestStable = '0.23';
+    var latestStable = '0.24';
     var goodPaths = ['stable', 'dev', latestStable];
     var showWarning = (msg) => {
         $('.body[role=main]').prepend(
