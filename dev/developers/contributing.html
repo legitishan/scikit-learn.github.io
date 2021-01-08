@@ -848,6 +848,8 @@ list_param : list of int
 typed_ndarray : ndarray of shape (n_samples,), dtype=np.int32
 
 sample_weight : array-like of shape (n_samples,), default=None
+
+multioutput_array : ndarray of shape (n_samples, n_classes) or list of such arrays
 </pre></div>
 </div>
 <p>In general have the following in mind:</p>
@@ -864,10 +866,18 @@ can also be a <code class="docutils literal notranslate"><span class="pre">list<
 <li><p>Specify <code class="docutils literal notranslate"><span class="pre">dataframe</span></code> when “frame-like” features are being used, such
 as the column names.</p></li>
 <li><p>When specifying the data type of a list, use <code class="docutils literal notranslate"><span class="pre">of</span></code> as a delimiter:
-<code class="docutils literal notranslate"><span class="pre">list</span> <span class="pre">of</span> <span class="pre">int</span></code>.</p></li>
+<code class="docutils literal notranslate"><span class="pre">list</span> <span class="pre">of</span> <span class="pre">int</span></code>. When the parameter supports arrays giving details
+about the shape and/or data type and a list of such arrays, you can
+use one of <code class="docutils literal notranslate"><span class="pre">array-like</span> <span class="pre">of</span> <span class="pre">shape</span> <span class="pre">(n_samples,)</span> <span class="pre">or</span> <span class="pre">list</span> <span class="pre">of</span> <span class="pre">such</span> <span class="pre">arrays</span></code>.</p></li>
 <li><p>When specifying the dtype of an ndarray, use e.g. <code class="docutils literal notranslate"><span class="pre">dtype=np.int32</span></code>
 after defining the shape:
-<code class="docutils literal notranslate"><span class="pre">ndarray</span> <span class="pre">of</span> <span class="pre">shape</span> <span class="pre">(n_samples,),</span> <span class="pre">dtype=np.int32</span></code>.</p></li>
+<code class="docutils literal notranslate"><span class="pre">ndarray</span> <span class="pre">of</span> <span class="pre">shape</span> <span class="pre">(n_samples,),</span> <span class="pre">dtype=np.int32</span></code>. You can specify
+multiple dtype as a set:
+<code class="docutils literal notranslate"><span class="pre">array-like</span> <span class="pre">of</span> <span class="pre">shape</span> <span class="pre">(n_samples,),</span> <span class="pre">dtype={np.float64,</span> <span class="pre">np.float32}</span></code>.
+If one wants to mention arbitrary precision, use <code class="docutils literal notranslate"><span class="pre">integral</span></code> and
+<code class="docutils literal notranslate"><span class="pre">floating</span></code> rather than the Python dtype <code class="docutils literal notranslate"><span class="pre">int</span></code> and <code class="docutils literal notranslate"><span class="pre">float</span></code>. When both
+<code class="docutils literal notranslate"><span class="pre">int</span></code> and <code class="docutils literal notranslate"><span class="pre">floating</span></code> are supported, there is no need to specify the
+dtype.</p></li>
 <li><p>When the default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span></code> only needs to be specified at the
 end with <code class="docutils literal notranslate"><span class="pre">default=None</span></code>. Be sure to include in the docstring, what it
 means for the parameter or attribute to be <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
