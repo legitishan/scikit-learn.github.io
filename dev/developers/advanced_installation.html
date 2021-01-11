@@ -371,6 +371,9 @@ to enable OpenMP support:</p>
 <li><p>either install <code class="docutils literal notranslate"><span class="pre">conda-forge::compilers</span></code> with conda;</p></li>
 <li><p>or install <code class="docutils literal notranslate"><span class="pre">libomp</span></code> with Homebrew to extend the default Apple clang compiler.</p></li>
 </ul>
+<p>For Apple Silicon M1 hardware, only the conda-forge method below is known to
+work at the time of writing (January 2021). You can install the <code class="docutils literal notranslate"><span class="pre">macos/arm64</span></code>
+distribution of conda using the <a class="reference external" href="https://github.com/conda-forge/miniforge#miniforge">miniforge installer</a></p>
 <div class="section" id="macos-compilers-from-conda-forge">
 <h4>macOS compilers from conda-forge<a class="headerlink" href="#macos-compilers-from-conda-forge" title="Permalink to this headline">¶</a></h4>
 <p>If you use the conda package manager (version &gt;= 4.7), you can install the
@@ -381,7 +384,7 @@ OpenMP-enabled C/C++ compilers based on the llvm toolchain.</p>
 </pre></div></div><p>It is recommended to use a dedicated <a class="reference external" href="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">conda environment</a> to build
 scikit-learn from source:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">conda create -n sklearn-dev -c conda-forge python numpy scipy cython <span class="se">\</span>
-    joblib threadpoolctl pytest <span class="s2">&quot;compilers&gt;=1.0.4,!=1.1.0&quot;</span> llvm-openmp</span>
+    joblib threadpoolctl pytest compilers llvm-openmp</span>
 <span class="prompt1">conda activate sklearn-dev</span>
 <span class="prompt1">make clean</span>
 <span class="prompt1">pip install --verbose --no-build-isolation --editable .</span>
