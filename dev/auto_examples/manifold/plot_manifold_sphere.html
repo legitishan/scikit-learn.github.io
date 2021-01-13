@@ -190,26 +190,26 @@ it does not seeks an isotropic representation of the data in
 the low-dimensional space. Here the manifold problem matches fairly
 that of representing a flat map of the Earth, as with
 <a class="reference external" href="https://en.wikipedia.org/wiki/Map_projection">map projection</a></p>
-<img alt="Manifold Learning with 1000 points, 10 neighbors, LLE (0.11 sec), LTSA (0.15 sec), Hessian LLE (0.23 sec), Modified LLE (0.17 sec), Isomap (0.35 sec), MDS (1.2 sec), Spectral Embedding (0.073 sec), t-SNE (6.1 sec)" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_manifold_sphere_001.png" />
+<img alt="Manifold Learning with 1000 points, 10 neighbors, LLE (0.062 sec), LTSA (0.088 sec), Hessian LLE (0.17 sec), Modified LLE (0.19 sec), Isomap (0.28 sec), MDS (1 sec), Spectral Embedding (0.046 sec), t-SNE (4.3 sec)" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_manifold_sphere_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/circleci/project/sklearn/utils/validation.py:70: FutureWarning: Pass n_neighbors=10, n_components=2 as keyword args. From version 1.0 (renaming of 0.25) passing these as positional arguments will result in an error
   warnings.warn(f&quot;Pass {args_msg} as keyword args. From version &quot;
-standard: 0.11 sec
+standard: 0.062 sec
 /home/circleci/project/sklearn/utils/validation.py:70: FutureWarning: Pass n_neighbors=10, n_components=2 as keyword args. From version 1.0 (renaming of 0.25) passing these as positional arguments will result in an error
   warnings.warn(f&quot;Pass {args_msg} as keyword args. From version &quot;
-ltsa: 0.15 sec
+ltsa: 0.088 sec
 /home/circleci/project/sklearn/utils/validation.py:70: FutureWarning: Pass n_neighbors=10, n_components=2 as keyword args. From version 1.0 (renaming of 0.25) passing these as positional arguments will result in an error
   warnings.warn(f&quot;Pass {args_msg} as keyword args. From version &quot;
-hessian: 0.23 sec
+hessian: 0.17 sec
 /home/circleci/project/sklearn/utils/validation.py:70: FutureWarning: Pass n_neighbors=10, n_components=2 as keyword args. From version 1.0 (renaming of 0.25) passing these as positional arguments will result in an error
   warnings.warn(f&quot;Pass {args_msg} as keyword args. From version &quot;
-modified: 0.17 sec
+modified: 0.19 sec
 /home/circleci/project/sklearn/utils/validation.py:70: FutureWarning: Pass n_neighbors=10 as keyword args. From version 1.0 (renaming of 0.25) passing these as positional arguments will result in an error
   warnings.warn(f&quot;Pass {args_msg} as keyword args. From version &quot;
-ISO: 0.35 sec
-MDS: 1.2 sec
-Spectral Embedding: 0.073 sec
-t-SNE: 6.1 sec
+ISO: 0.28 sec
+MDS: 1 sec
+Spectral Embedding: 0.046 sec
+t-SNE: 4.3 sec
 </pre></div>
 </div>
 <div class="line-block">
@@ -239,15 +239,15 @@ t-SNE: 6.1 sec
 
 <span class="c1"># Create our sphere.</span>
 <span class="n">random_state</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.utils.check_random_state.html#sklearn.utils.check_random_state" title="sklearn.utils.check_random_state" class="sphx-glr-backref-module-sklearn-utils sphx-glr-backref-type-py-function"><span class="n">check_random_state</span></a><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">p</span> <span class="o">=</span> <span class="n">random_state</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="mf">0.55</span><span class="p">)</span>
-<span class="n">t</span> <span class="o">=</span> <span class="n">random_state</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">random_state</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/constants.html#numpy.pi" title="numpy.pi" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">pi</span></a> <span class="o">-</span> <span class="mf">0.55</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">random_state</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/constants.html#numpy.pi" title="numpy.pi" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">pi</span></a>
 
 <span class="c1"># Sever the poles from the sphere.</span>
-<span class="n">indices</span> <span class="o">=</span> <span class="p">((</span><span class="n">t</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">8</span><span class="p">)))</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">t</span> <span class="o">&gt;</span> <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">8</span><span class="p">))))</span>
+<span class="n">indices</span> <span class="o">=</span> <span class="p">((</span><span class="n">t</span> <span class="o">&lt;</span> <span class="p">(</span><a href="https://numpy.org/doc/stable/reference/constants.html#numpy.pi" title="numpy.pi" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">pi</span></a> <span class="o">-</span> <span class="p">(</span><a href="https://numpy.org/doc/stable/reference/constants.html#numpy.pi" title="numpy.pi" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">pi</span></a> <span class="o">/</span> <span class="mi">8</span><span class="p">)))</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">t</span> <span class="o">&gt;</span> <span class="p">((</span><a href="https://numpy.org/doc/stable/reference/constants.html#numpy.pi" title="numpy.pi" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">pi</span></a> <span class="o">/</span> <span class="mi">8</span><span class="p">))))</span>
 <span class="n">colors</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
-<span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">indices</span><span class="p">])</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">indices</span><span class="p">]),</span> \
-    <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">indices</span><span class="p">])</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">indices</span><span class="p">]),</span> \
-    <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">indices</span><span class="p">])</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.sin.html#numpy.sin" title="numpy.sin" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">indices</span><span class="p">])</span> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.cos.html#numpy.cos" title="numpy.cos" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">cos</span></a><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">indices</span><span class="p">]),</span> \
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.sin.html#numpy.sin" title="numpy.sin" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">indices</span><span class="p">])</span> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.sin.html#numpy.sin" title="numpy.sin" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">indices</span><span class="p">]),</span> \
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.cos.html#numpy.cos" title="numpy.cos" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">cos</span></a><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">indices</span><span class="p">])</span>
 
 <span class="c1"># Plot our dataset.</span>
 <span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="matplotlib.pyplot.figure" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
@@ -258,7 +258,7 @@ t-SNE: 6.1 sec
 <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="n">indices</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">rainbow</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">)</span>
 
-<span class="n">sphere_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+<span class="n">sphere_data</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
 
 <span class="c1"># Perform Locally Linear Embedding Manifold learning</span>
 <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;standard&#39;</span><span class="p">,</span> <span class="s1">&#39;ltsa&#39;</span><span class="p">,</span> <span class="s1">&#39;hessian&#39;</span><span class="p">,</span> <span class="s1">&#39;modified&#39;</span><span class="p">]</span>
@@ -339,7 +339,7 @@ t-SNE: 6.1 sec
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  9.245 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  6.756 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-manifold-plot-manifold-sphere-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/scikit-learn/scikit-learn/master?urlpath=lab/tree/notebooks/auto_examples/manifold/plot_manifold_sphere.ipynb"><img alt="Launch binder" src="../../_images/binder_badge_logo.png" style="width: 150px;" /></a>

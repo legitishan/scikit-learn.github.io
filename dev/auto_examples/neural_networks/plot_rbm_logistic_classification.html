@@ -190,14 +190,14 @@ example shows that the features extracted by the BernoulliRBM help improve the
 classification accuracy.</p>
 <img alt="100 components extracted by RBM" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_rbm_logistic_classification_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[BernoulliRBM] Iteration 1, pseudo-likelihood = -25.39, time = 0.27s
-[BernoulliRBM] Iteration 2, pseudo-likelihood = -23.77, time = 0.29s
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[BernoulliRBM] Iteration 1, pseudo-likelihood = -25.39, time = 0.24s
+[BernoulliRBM] Iteration 2, pseudo-likelihood = -23.77, time = 0.27s
 [BernoulliRBM] Iteration 3, pseudo-likelihood = -22.94, time = 0.25s
-[BernoulliRBM] Iteration 4, pseudo-likelihood = -21.89, time = 0.24s
-[BernoulliRBM] Iteration 5, pseudo-likelihood = -21.54, time = 0.24s
-[BernoulliRBM] Iteration 6, pseudo-likelihood = -21.19, time = 0.24s
-[BernoulliRBM] Iteration 7, pseudo-likelihood = -20.74, time = 0.25s
-[BernoulliRBM] Iteration 8, pseudo-likelihood = -20.47, time = 0.23s
+[BernoulliRBM] Iteration 4, pseudo-likelihood = -21.89, time = 0.25s
+[BernoulliRBM] Iteration 5, pseudo-likelihood = -21.54, time = 0.26s
+[BernoulliRBM] Iteration 6, pseudo-likelihood = -21.19, time = 0.25s
+[BernoulliRBM] Iteration 7, pseudo-likelihood = -20.74, time = 0.26s
+[BernoulliRBM] Iteration 8, pseudo-likelihood = -20.47, time = 0.25s
 [BernoulliRBM] Iteration 9, pseudo-likelihood = -20.42, time = 0.25s
 [BernoulliRBM] Iteration 10, pseudo-likelihood = -20.15, time = 0.26s
 Logistic regression using RBM features:
@@ -285,16 +285,16 @@ weighted avg       0.78      0.78      0.78      1797
     <span class="k">def</span> <span class="nf">shift</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
         <span class="k">return</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.convolve.html#scipy.ndimage.convolve" title="scipy.ndimage.convolve" class="sphx-glr-backref-module-scipy-ndimage sphx-glr-backref-type-py-function"><span class="n">convolve</span></a><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">)),</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;constant&#39;</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">w</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
 
-    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">X</span><span class="p">]</span> <span class="o">+</span>
-                       <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">apply_along_axis</span><span class="p">(</span><span class="n">shift</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">vector</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.concatenate.html#numpy.concatenate" title="numpy.concatenate" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span></a><span class="p">([</span><span class="n">X</span><span class="p">]</span> <span class="o">+</span>
+                       <span class="p">[</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.apply_along_axis.html#numpy.apply_along_axis" title="numpy.apply_along_axis" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">apply_along_axis</span></a><span class="p">(</span><span class="n">shift</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">vector</span><span class="p">)</span>
                         <span class="k">for</span> <span class="n">vector</span> <span class="ow">in</span> <span class="n">direction_vectors</span><span class="p">])</span>
-    <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">Y</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">Y</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.concatenate.html#numpy.concatenate" title="numpy.concatenate" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span></a><span class="p">([</span><span class="n">Y</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span>
 
 
 <span class="c1"># Load Data</span>
 <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.datasets.load_digits.html#sklearn.datasets.load_digits" title="sklearn.datasets.load_digits" class="sphx-glr-backref-module-sklearn-datasets sphx-glr-backref-type-py-function"><span class="n">datasets</span><span class="o">.</span><span class="n">load_digits</span></a><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="s1">&#39;float32&#39;</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.asarray.html#numpy.asarray" title="numpy.asarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">asarray</span></a><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="s1">&#39;float32&#39;</span><span class="p">)</span>
 <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">nudge_dataset</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 <span class="n">X</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.0001</span><span class="p">)</span>  <span class="c1"># 0-1 scaling</span>
 
@@ -356,7 +356,7 @@ weighted avg       0.78      0.78      0.78      1797
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  8.587 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  8.823 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-neural-networks-plot-rbm-logistic-classification-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/scikit-learn/scikit-learn/master?urlpath=lab/tree/notebooks/auto_examples/neural_networks/plot_rbm_logistic_classification.ipynb"><img alt="Launch binder" src="../../_images/binder_badge_logo.png" style="width: 150px;" /></a>
