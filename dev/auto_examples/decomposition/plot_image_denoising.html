@@ -195,7 +195,7 @@ it can produce a suggestive output with very high speed, and thus be useful
 for other tasks such as object classification, where performance is not
 necessarily related to visualisation.</p>
 <ul class="sphx-glr-horizontal">
-<li><img alt="Dictionary learned from face patches Train time 3.8s on 22692 patches" class="sphx-glr-multi-img" src="../../_images/sphx_glr_plot_image_denoising_001.png" />
+<li><img alt="Dictionary learned from face patches Train time 3.7s on 22692 patches" class="sphx-glr-multi-img" src="../../_images/sphx_glr_plot_image_denoising_001.png" />
 </li>
 <li><img alt="Distorted image, Image, Difference (norm: 11.65)" class="sphx-glr-multi-img" src="../../_images/sphx_glr_plot_image_denoising_002.png" />
 </li>
@@ -203,7 +203,7 @@ necessarily related to visualisation.</p>
 </li>
 <li><img alt="Orthogonal Matching Pursuit 2 atoms (time: 2.2s), Image, Difference (norm: 9.64)" class="sphx-glr-multi-img" src="../../_images/sphx_glr_plot_image_denoising_004.png" />
 </li>
-<li><img alt="Least-angle regression 5 atoms (time: 24.6s), Image, Difference (norm: 14.04)" class="sphx-glr-multi-img" src="../../_images/sphx_glr_plot_image_denoising_005.png" />
+<li><img alt="Least-angle regression 5 atoms (time: 24.4s), Image, Difference (norm: 14.04)" class="sphx-glr-multi-img" src="../../_images/sphx_glr_plot_image_denoising_005.png" />
 </li>
 <li><img alt="Thresholding  alpha=0.1 (time: 0.2s), Image, Difference (norm: 14.98)" class="sphx-glr-multi-img" src="../../_images/sphx_glr_plot_image_denoising_006.png" />
 </li>
@@ -213,21 +213,21 @@ necessarily related to visualisation.</p>
 Extracting reference patches...
 done in 0.01s.
 Learning the dictionary...
-done in 3.80s.
+done in 3.72s.
 Extracting noisy patches...
-done in 0.01s.
+done in 0.00s.
 Orthogonal Matching Pursuit
 1 atom...
-done in 1.03s.
+done in 0.98s.
 Orthogonal Matching Pursuit
 2 atoms...
-done in 2.22s.
+done in 2.23s.
 Least-angle regression
 5 atoms...
-done in 24.63s.
+done in 24.43s.
 Thresholding
  alpha=0.1...
-done in 0.19s.
+done in 0.20s.
 </pre></div>
 </div>
 <div class="line-block">
@@ -264,7 +264,7 @@ done in 0.19s.
 <span class="c1"># Distort the right half of the image</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Distorting image...&#39;</span><span class="p">)</span>
 <span class="n">distorted</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.misc.face.html#scipy.misc.face" title="scipy.misc.face" class="sphx-glr-backref-module-scipy-misc sphx-glr-backref-type-py-function"><span class="n">face</span></a><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">distorted</span><span class="p">[:,</span> <span class="n">width</span> <span class="o">//</span> <span class="mi">2</span><span class="p">:]</span> <span class="o">+=</span> <span class="mf">0.075</span> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.randn.html#numpy.random.randn" title="numpy.random.randn" class="sphx-glr-backref-module-numpy-random sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span></a><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">distorted</span><span class="p">[:,</span> <span class="n">width</span> <span class="o">//</span> <span class="mi">2</span><span class="p">:]</span> <span class="o">+=</span> <span class="mf">0.075</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
 
 <span class="c1"># Extract all reference patches from the left half of the image</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Extracting reference patches...&#39;</span><span class="p">)</span>
@@ -272,8 +272,8 @@ done in 0.19s.
 <span class="n">patch_size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
 <span class="n">data</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.feature_extraction.image.extract_patches_2d.html#sklearn.feature_extraction.image.extract_patches_2d" title="sklearn.feature_extraction.image.extract_patches_2d" class="sphx-glr-backref-module-sklearn-feature_extraction-image sphx-glr-backref-type-py-function"><span class="n">extract_patches_2d</span></a><span class="p">(</span><span class="n">distorted</span><span class="p">[:,</span> <span class="p">:</span><span class="n">width</span> <span class="o">//</span> <span class="mi">2</span><span class="p">],</span> <span class="n">patch_size</span><span class="p">)</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">data</span> <span class="o">-=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.mean.html#numpy.mean" title="numpy.mean" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">mean</span></a><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">data</span> <span class="o">/=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.std.html#numpy.std" title="numpy.std" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">std</span></a><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">-=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;done in </span><span class="si">%.2f</span><span class="s1">s.&#39;</span> <span class="o">%</span> <span class="p">(</span><a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span></a><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">))</span>
 
 <span class="c1"># #############################################################################</span>
@@ -314,7 +314,7 @@ done in 0.19s.
     <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplot.html#matplotlib.pyplot.subplot" title="matplotlib.pyplot.subplot" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
     <span class="n">difference</span> <span class="o">=</span> <span class="n">image</span> <span class="o">-</span> <span class="n">reference</span>
 
-    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="matplotlib.pyplot.title" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s1">&#39;Difference (norm: </span><span class="si">%.2f</span><span class="s1">)&#39;</span> <span class="o">%</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.sqrt.html#numpy.sqrt" title="numpy.sqrt" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.sum.html#numpy.sum" title="numpy.sum" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">sum</span></a><span class="p">(</span><span class="n">difference</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)))</span>
+    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="matplotlib.pyplot.title" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s1">&#39;Difference (norm: </span><span class="si">%.2f</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">difference</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)))</span>
     <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.imshow.html#matplotlib.pyplot.imshow" title="matplotlib.pyplot.imshow" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span></a><span class="p">(</span><span class="n">difference</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">PuOr</span><span class="p">,</span>
                <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span>
     <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xticks.html#matplotlib.pyplot.xticks" title="matplotlib.pyplot.xticks" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">xticks</span></a><span class="p">(())</span>
@@ -331,7 +331,7 @@ done in 0.19s.
 <span class="n">t0</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span></a><span class="p">()</span>
 <span class="n">data</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.feature_extraction.image.extract_patches_2d.html#sklearn.feature_extraction.image.extract_patches_2d" title="sklearn.feature_extraction.image.extract_patches_2d" class="sphx-glr-backref-module-sklearn-feature_extraction-image sphx-glr-backref-type-py-function"><span class="n">extract_patches_2d</span></a><span class="p">(</span><span class="n">distorted</span><span class="p">[:,</span> <span class="n">width</span> <span class="o">//</span> <span class="mi">2</span><span class="p">:],</span> <span class="n">patch_size</span><span class="p">)</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">intercept</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.mean.html#numpy.mean" title="numpy.mean" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">mean</span></a><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">intercept</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">data</span> <span class="o">-=</span> <span class="n">intercept</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;done in </span><span class="si">%.2f</span><span class="s1">s.&#39;</span> <span class="o">%</span> <span class="p">(</span><a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span></a><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">))</span>
 
@@ -351,7 +351,7 @@ done in 0.19s.
     <span class="n">t0</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span></a><span class="p">()</span>
     <span class="n">dico</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="n">transform_algorithm</span><span class="o">=</span><span class="n">transform_algorithm</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="n">code</span> <span class="o">=</span> <span class="n">dico</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-    <span class="n">patches</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot" title="numpy.dot" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">dot</span></a><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span>
+    <span class="n">patches</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span>
 
     <span class="n">patches</span> <span class="o">+=</span> <span class="n">intercept</span>
     <span class="n">patches</span> <span class="o">=</span> <span class="n">patches</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="o">*</span><span class="n">patch_size</span><span class="p">)</span>
@@ -368,7 +368,7 @@ done in 0.19s.
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  35.433 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  34.868 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-decomposition-plot-image-denoising-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/scikit-learn/scikit-learn/master?urlpath=lab/tree/notebooks/auto_examples/decomposition/plot_image_denoising.ipynb"><img alt="Launch binder" src="../../_images/binder_badge_logo.png" style="width: 150px;" /></a>

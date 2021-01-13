@@ -185,7 +185,7 @@ due to a noise effect and would not carry over to a held-out test set.</p>
 <p>Note that in practice, one would not search over this many different parameters
 simultaneously using grid search, but pick only the ones deemed most important.</p>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>RandomizedSearchCV took 31.38 seconds for 20 candidates parameter settings.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>RandomizedSearchCV took 20.54 seconds for 20 candidates parameter settings.
 Model with rank: 1
 Mean validation score: 0.920 (std: 0.028)
 Parameters: {&#39;alpha&#39;: 0.07316411520495676, &#39;average&#39;: False, &#39;l1_ratio&#39;: 0.29007760721044407}
@@ -198,7 +198,7 @@ Model with rank: 3
 Mean validation score: 0.918 (std: 0.031)
 Parameters: {&#39;alpha&#39;: 0.00025790124268693137, &#39;average&#39;: True, &#39;l1_ratio&#39;: 0.5699649107012649}
 
-GridSearchCV took 142.12 seconds for 100 candidate parameter settings.
+GridSearchCV took 110.80 seconds for 100 candidate parameter settings.
 Model with rank: 1
 Mean validation score: 0.931 (std: 0.026)
 Parameters: {&#39;alpha&#39;: 0.0001, &#39;average&#39;: True, &#39;l1_ratio&#39;: 0.0}
@@ -238,7 +238,7 @@ Parameters: {&#39;alpha&#39;: 0.0001, &#39;average&#39;: True, &#39;l1_ratio&#39
 <span class="c1"># Utility function to report best scores</span>
 <span class="k">def</span> <span class="nf">report</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">n_top</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_top</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="n">candidates</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.flatnonzero.html#numpy.flatnonzero" title="numpy.flatnonzero" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span></a><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;rank_test_score&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span>
+        <span class="n">candidates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;rank_test_score&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Model with rank: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mean validation score: </span><span class="si">{0:.3f}</span><span class="s2"> (std: </span><span class="si">{1:.3f}</span><span class="s2">)&quot;</span>
@@ -266,8 +266,8 @@ Parameters: {&#39;alpha&#39;: 0.0001, &#39;average&#39;: True, &#39;l1_ratio&#39
 
 <span class="c1"># use a full grid over all parameters</span>
 <span class="n">param_grid</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;average&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">],</span>
-              <span class="s1">&#39;l1_ratio&#39;</span><span class="p">:</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.linspace.html#numpy.linspace" title="numpy.linspace" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span>
-              <span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.power.html#numpy.power" title="numpy.power" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">power</span></a><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">))}</span>
+              <span class="s1">&#39;l1_ratio&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span>
+              <span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">))}</span>
 
 <span class="c1"># run grid search</span>
 <span class="n">grid_search</span> <span class="o">=</span> <a href="../../modules/generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV" title="sklearn.model_selection.GridSearchCV" class="sphx-glr-backref-module-sklearn-model_selection sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">GridSearchCV</span></a><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">param_grid</span><span class="o">=</span><span class="n">param_grid</span><span class="p">)</span>
@@ -279,7 +279,7 @@ Parameters: {&#39;alpha&#39;: 0.0001, &#39;average&#39;: True, &#39;l1_ratio&#39
 <span class="n">report</span><span class="p">(</span><span class="n">grid_search</span><span class="o">.</span><span class="n">cv_results_</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 2 minutes  53.598 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 2 minutes  11.405 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-model-selection-plot-randomized-search-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/scikit-learn/scikit-learn/master?urlpath=lab/tree/notebooks/auto_examples/model_selection/plot_randomized_search.ipynb"><img alt="Launch binder" src="../../_images/binder_badge_logo.png" style="width: 150px;" /></a>
