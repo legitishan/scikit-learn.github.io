@@ -9,7 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   
-  <title>8.3. Parallelism, resource management, and configuration &mdash; scikit-learn 0.24.0 documentation</title>
+  <title>8.3. Parallelism, resource management, and configuration &mdash; scikit-learn 0.24.1 documentation</title>
   
   <link rel="canonical" href="http://scikit-learn.org/stable/computing/parallelism.html" />
 
@@ -146,7 +146,7 @@
         </div>
         <div class="alert alert-danger p-1 mb-2" role="alert">
           <p class="text-center mb-0">
-          <strong>scikit-learn 0.24.0</strong><br/>
+          <strong>scikit-learn 0.24.1</strong><br/>
           <a href="http://scikit-learn.org/dev/versions.html">Other versions</a>
           </p>
         </div>
@@ -347,9 +347,11 @@ from anaconda.org are linked by default with MKL.</p>
 threads than the number of CPUs on a machine. Over-subscription happens when
 a program is running too many threads at the same time.</p>
 <p>Suppose you have a machine with 8 CPUs. Consider a case where you’re running
-a <code class="xref py py-class docutils literal notranslate"><span class="pre">GridSearchCV</span></code> (parallelized with joblib) with <code class="docutils literal notranslate"><span class="pre">n_jobs=8</span></code> over
-a <code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingClassifier</span></code> (parallelized with OpenMP). Each
-instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingClassifier</span></code> will spawn 8 threads
+a <a class="reference internal" href="../modules/generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV" title="sklearn.model_selection.GridSearchCV"><code class="xref py py-class docutils literal notranslate"><span class="pre">GridSearchCV</span></code></a> (parallelized with joblib)
+with <code class="docutils literal notranslate"><span class="pre">n_jobs=8</span></code> over a
+<a class="reference internal" href="../modules/generated/sklearn.ensemble.HistGradientBoostingClassifier.html#sklearn.ensemble.HistGradientBoostingClassifier" title="sklearn.ensemble.HistGradientBoostingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingClassifier</span></code></a> (parallelized with
+OpenMP). Each instance of
+<a class="reference internal" href="../modules/generated/sklearn.ensemble.HistGradientBoostingClassifier.html#sklearn.ensemble.HistGradientBoostingClassifier" title="sklearn.ensemble.HistGradientBoostingClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistGradientBoostingClassifier</span></code></a> will spawn 8 threads
 (since you have 8 CPUs). That’s a total of <code class="docutils literal notranslate"><span class="pre">8</span> <span class="pre">*</span> <span class="pre">8</span> <span class="pre">=</span> <span class="pre">64</span></code> threads, which
 leads to oversubscription of physical CPU resources and to scheduling
 overhead.</p>
@@ -360,9 +362,10 @@ is the default), joblib will tell its child <strong>processes</strong> to limit 
 number of threads they can use, so as to avoid oversubscription. In practice
 the heuristic that joblib uses is to tell the processes to use <code class="docutils literal notranslate"><span class="pre">max_threads</span>
 <span class="pre">=</span> <span class="pre">n_cpus</span> <span class="pre">//</span> <span class="pre">n_jobs</span></code>, via their corresponding environment variable. Back to
-our example from above, since the joblib backend of <code class="xref py py-class docutils literal notranslate"><span class="pre">GridSearchCV</span></code>
-is <code class="docutils literal notranslate"><span class="pre">loky</span></code>, each process will only be able to use 1 thread instead of 8,
-thus mitigating the oversubscription issue.</p>
+our example from above, since the joblib backend of
+<a class="reference internal" href="../modules/generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV" title="sklearn.model_selection.GridSearchCV"><code class="xref py py-class docutils literal notranslate"><span class="pre">GridSearchCV</span></code></a> is <code class="docutils literal notranslate"><span class="pre">loky</span></code>, each process will
+only be able to use 1 thread instead of 8, thus mitigating the
+oversubscription issue.</p>
 <p>Note that:</p>
 <ul class="simple">
 <li><p>Manually setting one of the environment variables (<code class="docutils literal notranslate"><span class="pre">OMP_NUM_THREADS</span></code>,
@@ -427,7 +430,8 @@ for reproducibility.</p>
 </dd>
 <dt class="field-odd">SKLEARN_SKIP_NETWORK_TESTS</dt>
 <dd class="field-odd"><p>When this environment variable is set to a non zero value, the tests
-that need network access are skipped.</p>
+that need network access are skipped. When this environment variable is
+not set then network tests are skipped.</p>
 </dd>
 </dl>
 </div>
