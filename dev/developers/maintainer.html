@@ -248,8 +248,8 @@ tag under that branch.</p>
 branch:</p>
 <blockquote>
 <div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="c1"># Assuming upstream is an alias for the main scikit-learn repo:</span></span>
-<span class="prompt1">git fetch upstream master</span>
-<span class="prompt1">git checkout upstream/master</span>
+<span class="prompt1">git fetch upstream main</span>
+<span class="prompt1">git checkout upstream/main</span>
 <span class="prompt1">git checkout -b <span class="m">0</span>.99.X</span>
 <span class="prompt1">git push --set-upstream upstream <span class="m">0</span>.99.X</span>
 </pre></div></div><p>Again, <code class="docutils literal notranslate"><span class="pre">X</span></code> is literal here, and <code class="docutils literal notranslate"><span class="pre">99</span></code> is replaced by the release number.
@@ -265,11 +265,11 @@ or feature should be excluded.</p>
 in the description of the Pull Request to track progress.</p>
 <p>This PR will be used to push commits related to the release as explained in
 <a class="reference internal" href="#making-a-release"><span class="std std-ref">Making a release</span></a>.</p>
-<p>You can also create a second PR from master and targeting master to increment
+<p>You can also create a second PR from main and targeting main to increment
 the <code class="docutils literal notranslate"><span class="pre">__version__</span></code> variable in <code class="docutils literal notranslate"><span class="pre">sklearn/__init__.py</span></code> to increment the dev
 version. This means while we’re in the release candidate period, the latest
-stable is two versions behind the master branch, instead of one. In this PR
-targeting master you should also include a new file for the matching version
+stable is two versions behind the main branch, instead of one. In this PR
+targeting main you should also include a new file for the matching version
 under the <code class="docutils literal notranslate"><span class="pre">doc/whats_new/</span></code> folder so PRs that target the next version can
 contribute their changelog entries to this file in parallel to the release
 process.</p>
@@ -280,10 +280,10 @@ process.</p>
 changes only. Any PR resulting in a behavior change which is not a bug fix
 should be excluded.</p>
 <p>First, create a branch, <strong>on your own fork</strong> (to release e.g. <code class="docutils literal notranslate"><span class="pre">0.99.3</span></code>):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="c1"># assuming master and upstream/master are the same</span></span>
-<span class="prompt1">git checkout -b release-0.99.3 master</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="c1"># assuming main and upstream/main are the same</span></span>
+<span class="prompt1">git checkout -b release-0.99.3 main</span>
 </pre></div></div><p>Then, create a PR <strong>to the</strong> <code class="docutils literal notranslate"><span class="pre">scikit-learn/0.99.X</span></code> <strong>branch</strong> (not to
-master!) with all the desired changes:</p>
+main!) with all the desired changes:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git rebase -i upstream/0.99.2</span>
 </pre></div></div><p>Copy the <a class="reference internal" href="#release-checklist"><span class="std std-ref">Release checklist</span></a> templates in the description of the Pull
 Request to track progress.</p>
@@ -298,7 +298,7 @@ understand what’s included.</p>
 <li><p>Ensure that you have checked out the branch of the release PR as explained
 in <a class="reference internal" href="#preparing-a-release-pr"><span class="std std-ref">Preparing a release PR</span></a> above.</p></li>
 <li><p>Update docs. Note that this is for the final release, not necessarily for
-the RC releases. These changes should be made in master and cherry-picked
+the RC releases. These changes should be made in main and cherry-picked
 into the release branch, only before the final release.</p>
 <ul>
 <li><p>Edit the <code class="docutils literal notranslate"><span class="pre">doc/whats_new/v0.99.rst</span></code> file to add release title and list of
@@ -408,7 +408,7 @@ and the <code class="docutils literal notranslate"><span class="pre">latestStabl
 <span id="id3"></span><h3>Release checklist<a class="headerlink" href="#release-checklist" title="Permalink to this headline">¶</a></h3>
 <p>The following GitHub checklist might be helpful in a release PR:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>* [ ] update news and what&#39;s new date in release branch
-* [ ] update news and what&#39;s new date and sklearn dev0 version in master branch
+* [ ] update news and what&#39;s new date and sklearn dev0 version in main branch
 * [ ] check that the for the release wheels can be built successfully
 * [ ] merge the PR with `[cd build]` commit message to upload wheels to the staging repo
 * [ ] upload the wheels and source tarball to https://test.pypi.org
@@ -476,9 +476,9 @@ via the web UI at <a class="reference external" href="https://www.travis-ci.org/
 experimental features / estimators that are subject to change without
 deprecation cycle.</p>
 <p>To create an experimental module, you can just copy and modify the content of
-<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/experimental/enable_hist_gradient_boosting.py">enable_hist_gradient_boosting.py</a>,
+<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/experimental/enable_hist_gradient_boosting.py">enable_hist_gradient_boosting.py</a>,
 or
-<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/experimental/enable_iterative_imputer.py">enable_iterative_imputer.py</a>.</p>
+<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/experimental/enable_iterative_imputer.py">enable_iterative_imputer.py</a>.</p>
 <p>Note that the public import path must be to a public subpackage (like
 <code class="docutils literal notranslate"><span class="pre">sklearn/ensemble</span></code> or <code class="docutils literal notranslate"><span class="pre">sklearn/impute</span></code>), not just a <code class="docutils literal notranslate"><span class="pre">.py</span></code> module.
 Also, the (private) experimental features that are imported must be in a
@@ -488,11 +488,11 @@ submodule/subpackage of the public subpackage, e.g.
 in the future when the features aren’t experimental anymore.</p>
 <p>To avoid type checker (e.g. mypy) errors a direct import of experimental
 estimators should be done in the parent module, protected by the
-<code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">typing.TYPE_CHECKING</span></code> check. See <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/ensemble/__init__.py">sklearn/ensemble/__init__.py</a>,
-or <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/impute/__init__.py">sklearn/impute/__init__.py</a>
+<code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">typing.TYPE_CHECKING</span></code> check. See <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/ensemble/__init__.py">sklearn/ensemble/__init__.py</a>,
+or <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/impute/__init__.py">sklearn/impute/__init__.py</a>
 for an example.</p>
 <p>Please also write basic tests following those in
-<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/experimental/tests/test_enable_hist_gradient_boosting.py">test_enable_hist_gradient_boosting.py</a>.</p>
+<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/experimental/tests/test_enable_hist_gradient_boosting.py">test_enable_hist_gradient_boosting.py</a>.</p>
 <p>Make sure every user-facing code you write explicitly mentions that the feature
 is experimental, and add a <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">noqa</span></code> comment to avoid pep8-related warnings:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># To use this experimental feature, we need to explicitly ask for it:</span>

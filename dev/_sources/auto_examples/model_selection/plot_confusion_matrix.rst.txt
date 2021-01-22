@@ -94,7 +94,7 @@ using :ref:`grid_search`.
 
     from sklearn import svm, datasets
     from sklearn.model_selection import train_test_split
-    from sklearn.metrics import plot_confusion_matrix
+    from sklearn.metrics import ConfusionMatrixDisplay
 
     # import some data to play with
     iris = datasets.load_iris()
@@ -115,10 +115,10 @@ using :ref:`grid_search`.
     titles_options = [("Confusion matrix, without normalization", None),
                       ("Normalized confusion matrix", 'true')]
     for title, normalize in titles_options:
-        disp = plot_confusion_matrix(classifier, X_test, y_test,
-                                     display_labels=class_names,
-                                     cmap=plt.cm.Blues,
-                                     normalize=normalize)
+        disp = ConfusionMatrixDisplay.from_estimator(
+            classifier, X_test, y_test, display_labels=class_names,
+            cmap=plt.cm.Blues, normalize=normalize
+        )
         disp.ax_.set_title(title)
 
         print(title)
@@ -129,7 +129,7 @@ using :ref:`grid_search`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.215 seconds)
+   **Total running time of the script:** ( 0 minutes  0.210 seconds)
 
 
 .. _sphx_glr_download_auto_examples_model_selection_plot_confusion_matrix.py:
@@ -144,7 +144,7 @@ using :ref:`grid_search`.
   .. container:: binder-badge
 
     .. image:: images/binder_badge_logo.svg
-      :target: https://mybinder.org/v2/gh/scikit-learn/scikit-learn/master?urlpath=lab/tree/notebooks/auto_examples/model_selection/plot_confusion_matrix.ipynb
+      :target: https://mybinder.org/v2/gh/scikit-learn/scikit-learn/main?urlpath=lab/tree/notebooks/auto_examples/model_selection/plot_confusion_matrix.ipynb
       :alt: Launch binder
       :width: 150 px
 
