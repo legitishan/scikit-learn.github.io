@@ -426,16 +426,16 @@ synchronized with the latest changes:</p>
 repository properly configured. The next steps now describe the process of
 modifying code and submitting a PR:</p>
 <ol class="arabic" start="7">
-<li><p>Synchronize your master branch with the upstream master branch:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git checkout master</span>
-<span class="prompt1">git pull upstream master</span>
+<li><p>Synchronize your main branch with the upstream main branch:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git checkout main</span>
+<span class="prompt1">git pull upstream main</span>
 </pre></div></div></li>
 <li><p>Create a feature branch to hold your development changes:</p>
 <blockquote>
 <div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git checkout -b my_feature</span>
 </pre></div></div></div></blockquote>
 <p>and start making changes. Always use a feature branch. It’s good
-practice to never work on the <code class="docutils literal notranslate"><span class="pre">master</span></code> branch!</p>
+practice to never work on the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch!</p>
 </li>
 <li><p>(<strong>Optional</strong>) Install <a class="reference external" href="https://pre-commit.com/#install">pre-commit</a> to
 run code style checks before each commit:</p>
@@ -469,7 +469,7 @@ each time, only the files you have modified.</p>
 <p>It is often helpful to keep your local feature branch synchronized with the
 latest changes of the main scikit-learn repository:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git fetch upstream</span>
-<span class="prompt1">git merge upstream/master</span>
+<span class="prompt1">git merge upstream/main</span>
 </pre></div></div><p>Subsequently, you might need to solve the conflicts. You can refer to the
 <a class="reference external" href="https://help.github.com/articles/resolving-a-merge-conflict-using-the-command-line/">Git documentation related to resolving merge conflict using the command
 line</a>.</p>
@@ -534,12 +534,12 @@ accepted</strong>. Bug-fixes or new features should be provided with
 verify the correct behavior of the fix or feature. In this manner, further
 modifications on the code base are granted to be consistent with the
 desired behavior. In the case of bug fixes, at the time of the PR, the
-non-regression tests should fail for the code base in the master branch
+non-regression tests should fail for the code base in the main branch
 and pass for the PR code.</p></li>
 <li><p><strong>Make sure that your PR does not add PEP8 violations</strong>. To check the
 code that you changed, you can run the following command (see
 <a class="reference internal" href="#upstream"><span class="std std-ref">above</span></a> to set up the upstream remote):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git diff upstream/master -u -- <span class="s2">&quot;*.py&quot;</span> <span class="p">|</span> flake8 --diff</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git diff upstream/main -u -- <span class="s2">&quot;*.py&quot;</span> <span class="p">|</span> flake8 --diff</span>
 </pre></div></div><p>or <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">flake8-diff</span></code> which should work on unix-like system.</p>
 </li>
 <li><p>Follow the <a class="reference internal" href="develop.html#coding-guidelines"><span class="std std-ref">Coding guidelines</span></a>.</p></li>
@@ -557,7 +557,7 @@ the keywords (e.g., <code class="docutils literal notranslate"><span class="pre"
 <li><p>PRs should often substantiate the change, through benchmarks of
 performance and efficiency (see <a class="reference internal" href="#monitoring-performances"><span class="std std-ref">Monitoring performance</span></a>) or through
 examples of usage. Examples also illustrate the features and intricacies of
-the library to users. Have a look at other examples in the <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/tree/master/examples">examples/</a>
+the library to users. Have a look at other examples in the <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/tree/main/examples">examples/</a>
 directory for reference. Examples should demonstrate why the new
 functionality is useful in practice and, if possible, compare it to other
 methods available in scikit-learn.</p></li>
@@ -980,18 +980,18 @@ scikit-learn. Make sure it is up to date:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git fetch upstream</span>
 </pre></div></div><p>In the benchmark suite, the benchmarks are organized following the same
 structure as scikit-learn. For example, you can compare the performance of a
-specific estimator between upstream/master and the branch you are working on:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">asv continuous -b LogisticRegression upstream/master HEAD</span>
+specific estimator between upstream/main and the branch you are working on:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">asv continuous -b LogisticRegression upstream/main HEAD</span>
 </pre></div></div><p>The command uses conda by default for creating the benchmark environments. If
 you want to use virtualenv instead, use the <code class="docutils literal notranslate"><span class="pre">-E</span></code> flag:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">asv continuous -E virtualenv -b LogisticRegression upstream/master HEAD</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">asv continuous -E virtualenv -b LogisticRegression upstream/main HEAD</span>
 </pre></div></div><p>You can also specify a whole module to benchmark:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">asv continuous -b linear_model upstream/master HEAD</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">asv continuous -b linear_model upstream/main HEAD</span>
 </pre></div></div><p>You can replace <code class="docutils literal notranslate"><span class="pre">HEAD</span></code> by any local branch. By default it will only report the
 benchmarks that have change by at least 10%. You can control this ratio with
 the <code class="docutils literal notranslate"><span class="pre">-f</span></code> flag.</p>
 <p>To run the full benchmark suite, simply remove the <code class="docutils literal notranslate"><span class="pre">-b</span></code> flag :</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">asv continuous upstream/master HEAD</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">asv continuous upstream/main HEAD</span>
 </pre></div></div><p>However this can take up to two hours. The <code class="docutils literal notranslate"><span class="pre">-b</span></code> flag also accepts a regular
 expression for a more complex subset of benchmarks to run.</p>
 <p>To run the benchmarks without comparing to another branch, use the <code class="docutils literal notranslate"><span class="pre">run</span></code>
@@ -1237,7 +1237,7 @@ instructive?</p></li>
 <div class="section" id="reading-the-existing-code-base">
 <h2>Reading the existing code base<a class="headerlink" href="#reading-the-existing-code-base" title="Permalink to this headline">¶</a></h2>
 <p>Reading and digesting an existing code base is always a difficult exercise
-that takes time and experience to master. Even though we try to write simple
+that takes time and experience to main. Even though we try to write simple
 code in general, understanding the code can seem overwhelming at first,
 given the sheer size of the project. Here is a list of tips that may help
 make this task easier and faster (in no particular order).</p>
