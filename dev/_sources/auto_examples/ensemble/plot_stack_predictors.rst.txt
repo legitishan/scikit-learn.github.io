@@ -33,16 +33,19 @@ stacked together and a final linear penalized regressor is used to output the
 prediction. We compare the performance of each individual regressor with the
 stacking strategy. Stacking slightly improves the overall performance.
 
-.. GENERATED FROM PYTHON SOURCE LINES 18-25
+.. GENERATED FROM PYTHON SOURCE LINES 18-28
 
 .. code-block:: default
 
-    print(__doc__)
 
     # Authors: Guillaume Lemaitre <g.lemaitre58@gmail.com>
     #          Maria Telenczuk    <https://github.com/maikia>
     # License: BSD 3 clause
 
+    print(__doc__)
+
+    from sklearn import set_config
+    set_config(display='diagram')
 
 
 
@@ -51,7 +54,7 @@ stacking strategy. Stacking slightly improves the overall performance.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 26-42
+.. GENERATED FROM PYTHON SOURCE LINES 29-45
 
 Download the dataset
 #############################################################################
@@ -70,7 +73,7 @@ Download the dataset
  .. _`Ames Housing`: http://jse.amstat.org/v19n3/decock.pdf
  .. _`OpenML`: https://www.openml.org/d/42165
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-71
+.. GENERATED FROM PYTHON SOURCE LINES 45-74
 
 .. code-block:: default
 
@@ -110,88 +113,154 @@ Download the dataset
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 72-87
+.. GENERATED FROM PYTHON SOURCE LINES 75-81
 
 Make pipeline to preprocess the data
 #############################################################################
 
  Before we can use Ames dataset we still need to do some preprocessing.
- First, the dataset has many missing values. To impute them, we will exchange
- categorical missing values with the new category 'missing' while the
- numerical missing values with the 'mean' of the column. We will also encode
- the categories with either :class:`~sklearn.preprocessing.OneHotEncoder
- <sklearn.preprocessing.OneHotEncoder>` or
- :class:`~sklearn.preprocessing.OrdinalEncoder
- <sklearn.preprocessing.OrdinalEncoder>` depending for which type of model we
- will use them (linear or non-linear model). To facilitate this preprocessing
- we will make two pipelines.
- You can skip this section if your data is ready to use and does
- not need preprocessing
+ First, we will select the categorical and numerical columns of the dataset to
+ construct the first step of the pipeline.
 
-.. GENERATED FROM PYTHON SOURCE LINES 87-139
+.. GENERATED FROM PYTHON SOURCE LINES 81-88
 
 .. code-block:: default
 
+
+    from sklearn.compose import make_column_selector
+
+    cat_selector = make_column_selector(dtype_include=object)
+    num_selector = make_column_selector(dtype_include=np.number)
+    cat_selector(X)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+
+    ['HeatingQC', 'Street', 'Heating', 'MasVnrType', 'Foundation', 'ExterQual', 'Condition2', 'GarageType', 'HouseStyle', 'MiscFeature']
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 89-91
+
+.. code-block:: default
+
+    num_selector(X)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+
+    ['YrSold', 'YearRemodAdd', 'BsmtUnfSF', 'MasVnrArea', 'MSSubClass', 'GarageCars', 'OverallQual', 'TotalBsmtSF', 'BsmtFinSF1', 'MoSold']
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 92-101
+
+Then, we will need to design preprocessing pipelines which depends on the
+ending regressor. If the ending regressor is a linear model, one needs to
+one-hot encode the categories. If the ending regressor is a tree-based model
+an ordinal encoder will be sufficient. Besides, numerical values need to be
+standardized for a linear model while the raw numerical data can be treated
+as is by a tree-based model. However, both models need an imputer to
+handle missing values.
+
+We will first design the pipeline required for the tree-based models.
+
+.. GENERATED FROM PYTHON SOURCE LINES 101-115
+
+.. code-block:: default
 
 
     from sklearn.compose import make_column_transformer
     from sklearn.impute import SimpleImputer
     from sklearn.pipeline import make_pipeline
-    from sklearn.preprocessing import OneHotEncoder
     from sklearn.preprocessing import OrdinalEncoder
+
+    cat_tree_processor = OrdinalEncoder(
+        handle_unknown="use_encoded_value", unknown_value=-1)
+    num_tree_processor = SimpleImputer(strategy="mean", add_indicator=True)
+
+    tree_preprocessor = make_column_transformer(
+        (num_tree_processor, num_selector), (cat_tree_processor, cat_selector))
+    tree_preprocessor
+
+
+
+
+
+
+.. raw:: html
+
+    <div class="output_subarea output_html rendered_html output_result">
+    <style>div.sk-top-container {color: black;background-color: white;}div.sk-toggleable {background-color: white;}label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.2em 0.3em;box-sizing: border-box;text-align: center;}div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}div.sk-estimator {font-family: monospace;background-color: #f0f8ff;margin: 0.25em 0.25em;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;}div.sk-estimator:hover {background-color: #d4ebff;}div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 2em;bottom: 0;left: 50%;}div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;}div.sk-item {z-index: 1;}div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;}div.sk-parallel-item {display: flex;flex-direction: column;position: relative;background-color: white;}div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}div.sk-parallel-item:only-child::after {width: 0;}div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0.2em;box-sizing: border-box;padding-bottom: 0.1em;background-color: white;position: relative;}div.sk-label label {font-family: monospace;font-weight: bold;background-color: white;display: inline-block;line-height: 1.2em;}div.sk-label-container {position: relative;z-index: 2;text-align: center;}div.sk-container {display: inline-block;position: relative;}</style><div class="sk-top-container"><div class="sk-container"><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="49146397-e6e9-4d9e-9d59-e3e69afdb8db" type="checkbox" ><label class="sk-toggleable__label" for="49146397-e6e9-4d9e-9d59-e3e69afdb8db">ColumnTransformer</label><div class="sk-toggleable__content"><pre>ColumnTransformer(transformers=[('simpleimputer',
+                                     SimpleImputer(add_indicator=True),
+                                     <sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905c550>),
+                                    ('ordinalencoder',
+                                     OrdinalEncoder(handle_unknown='use_encoded_value',
+                                                    unknown_value=-1),
+                                     <sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905cf40>)])</pre></div></div></div><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="e2208d33-7be0-4ec6-ba95-516f7afb227d" type="checkbox" ><label class="sk-toggleable__label" for="e2208d33-7be0-4ec6-ba95-516f7afb227d">simpleimputer</label><div class="sk-toggleable__content"><pre><sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905c550></pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="2a104bc9-b3c6-48a9-a308-85dfcf11c9d8" type="checkbox" ><label class="sk-toggleable__label" for="2a104bc9-b3c6-48a9-a308-85dfcf11c9d8">SimpleImputer</label><div class="sk-toggleable__content"><pre>SimpleImputer(add_indicator=True)</pre></div></div></div></div></div></div><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="128e95fd-d7a8-4277-9a52-8c8d2ccb6a06" type="checkbox" ><label class="sk-toggleable__label" for="128e95fd-d7a8-4277-9a52-8c8d2ccb6a06">ordinalencoder</label><div class="sk-toggleable__content"><pre><sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905cf40></pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="f8d48fd6-3604-4462-b994-414c32d1032c" type="checkbox" ><label class="sk-toggleable__label" for="f8d48fd6-3604-4462-b994-414c32d1032c">OrdinalEncoder</label><div class="sk-toggleable__content"><pre>OrdinalEncoder(handle_unknown='use_encoded_value', unknown_value=-1)</pre></div></div></div></div></div></div></div></div></div></div>
+    </div>
+    <br />
+    <br />
+
+.. GENERATED FROM PYTHON SOURCE LINES 116-118
+
+Then, we will now define the preprocessor used when the ending regressor
+is a linear model.
+
+.. GENERATED FROM PYTHON SOURCE LINES 118-130
+
+.. code-block:: default
+
+
+    from sklearn.preprocessing import OneHotEncoder
     from sklearn.preprocessing import StandardScaler
 
+    cat_linear_processor = OneHotEncoder(handle_unknown="ignore")
+    num_linear_processor = make_pipeline(
+        StandardScaler(), SimpleImputer(strategy="mean", add_indicator=True))
 
-    cat_cols = X.columns[X.dtypes == 'O']
-    num_cols = X.columns[X.dtypes == 'float64']
-
-    categories = [
-        X[column].unique() for column in X[cat_cols]]
-
-    for cat in categories:
-        cat[cat == None] = 'missing'  # noqa
-
-    cat_proc_nlin = make_pipeline(
-        SimpleImputer(missing_values=None, strategy='constant',
-                      fill_value='missing'),
-        OrdinalEncoder(categories=categories)
-        )
-
-    num_proc_nlin = make_pipeline(SimpleImputer(strategy='mean'))
-
-    cat_proc_lin = make_pipeline(
-        SimpleImputer(missing_values=None,
-                      strategy='constant',
-                      fill_value='missing'),
-        OneHotEncoder(categories=categories)
-    )
-
-    num_proc_lin = make_pipeline(
-        SimpleImputer(strategy='mean'),
-        StandardScaler()
-    )
-
-    # transformation to use for non-linear estimators
-    processor_nlin = make_column_transformer(
-        (cat_proc_nlin, cat_cols),
-        (num_proc_nlin, num_cols),
-        remainder='passthrough')
-
-    # transformation to use for linear estimators
-    processor_lin = make_column_transformer(
-        (cat_proc_lin, cat_cols),
-        (num_proc_lin, num_cols),
-        remainder='passthrough')
+    linear_preprocessor = make_column_transformer(
+        (num_linear_processor, num_selector), (cat_linear_processor, cat_selector))
+    linear_preprocessor
 
 
 
 
 
 
+.. raw:: html
 
+    <div class="output_subarea output_html rendered_html output_result">
+    <style>div.sk-top-container {color: black;background-color: white;}div.sk-toggleable {background-color: white;}label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.2em 0.3em;box-sizing: border-box;text-align: center;}div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}div.sk-estimator {font-family: monospace;background-color: #f0f8ff;margin: 0.25em 0.25em;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;}div.sk-estimator:hover {background-color: #d4ebff;}div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 2em;bottom: 0;left: 50%;}div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;}div.sk-item {z-index: 1;}div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;}div.sk-parallel-item {display: flex;flex-direction: column;position: relative;background-color: white;}div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}div.sk-parallel-item:only-child::after {width: 0;}div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0.2em;box-sizing: border-box;padding-bottom: 0.1em;background-color: white;position: relative;}div.sk-label label {font-family: monospace;font-weight: bold;background-color: white;display: inline-block;line-height: 1.2em;}div.sk-label-container {position: relative;z-index: 2;text-align: center;}div.sk-container {display: inline-block;position: relative;}</style><div class="sk-top-container"><div class="sk-container"><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="b9caf18a-c2e3-46b2-a69f-8e25f4e0823e" type="checkbox" ><label class="sk-toggleable__label" for="b9caf18a-c2e3-46b2-a69f-8e25f4e0823e">ColumnTransformer</label><div class="sk-toggleable__content"><pre>ColumnTransformer(transformers=[('pipeline',
+                                     Pipeline(steps=[('standardscaler',
+                                                      StandardScaler()),
+                                                     ('simpleimputer',
+                                                      SimpleImputer(add_indicator=True))]),
+                                     <sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905c550>),
+                                    ('onehotencoder',
+                                     OneHotEncoder(handle_unknown='ignore'),
+                                     <sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905cf40>)])</pre></div></div></div><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="4cd64d0e-6943-4ed4-b870-c62769e51ae5" type="checkbox" ><label class="sk-toggleable__label" for="4cd64d0e-6943-4ed4-b870-c62769e51ae5">pipeline</label><div class="sk-toggleable__content"><pre><sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905c550></pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="e17f0e56-330d-4599-b4d0-95546559ea8a" type="checkbox" ><label class="sk-toggleable__label" for="e17f0e56-330d-4599-b4d0-95546559ea8a">StandardScaler</label><div class="sk-toggleable__content"><pre>StandardScaler()</pre></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="141b2b4f-016c-4072-a545-7eb46012f11d" type="checkbox" ><label class="sk-toggleable__label" for="141b2b4f-016c-4072-a545-7eb46012f11d">SimpleImputer</label><div class="sk-toggleable__content"><pre>SimpleImputer(add_indicator=True)</pre></div></div></div></div></div></div></div></div><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="da0cc1b0-17e3-4d24-9781-6b2cea5ce443" type="checkbox" ><label class="sk-toggleable__label" for="da0cc1b0-17e3-4d24-9781-6b2cea5ce443">onehotencoder</label><div class="sk-toggleable__content"><pre><sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905cf40></pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="f96bd16d-2e16-45e8-a35b-24174fa37436" type="checkbox" ><label class="sk-toggleable__label" for="f96bd16d-2e16-45e8-a35b-24174fa37436">OneHotEncoder</label><div class="sk-toggleable__content"><pre>OneHotEncoder(handle_unknown='ignore')</pre></div></div></div></div></div></div></div></div></div></div>
+    </div>
+    <br />
+    <br />
 
-
-.. GENERATED FROM PYTHON SOURCE LINES 140-156
+.. GENERATED FROM PYTHON SOURCE LINES 131-149
 
 Stack of predictors on a single data set
 #############################################################################
@@ -205,51 +274,196 @@ Stack of predictors on a single data set
  Here, we combine 3 learners (linear and non-linear) and use a ridge regressor
  to combine their outputs together.
 
- Note: although we will make new pipelines with the processors which we wrote
- in the previous section for the 3 learners, the final estimator RidgeCV()
- does not need preprocessing of the data as it will be fed with the already
- preprocessed output from the 3 learners.
+ .. note::
+    Although we will make new pipelines with the processors which we wrote in
+    the previous section for the 3 learners, the final estimator
+    :class:`~sklearn.linear_model.RidgeCV()` does not need preprocessing of
+    the data as it will be fed with the already preprocessed output from the 3
+    learners.
 
-.. GENERATED FROM PYTHON SOURCE LINES 156-184
+.. GENERATED FROM PYTHON SOURCE LINES 149-155
 
 .. code-block:: default
 
 
+    from sklearn.linear_model import LassoCV
+
+    lasso_pipeline = make_pipeline(linear_preprocessor, LassoCV())
+    lasso_pipeline
+
+
+
+
+
+
+.. raw:: html
+
+    <div class="output_subarea output_html rendered_html output_result">
+    <style>div.sk-top-container {color: black;background-color: white;}div.sk-toggleable {background-color: white;}label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.2em 0.3em;box-sizing: border-box;text-align: center;}div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}div.sk-estimator {font-family: monospace;background-color: #f0f8ff;margin: 0.25em 0.25em;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;}div.sk-estimator:hover {background-color: #d4ebff;}div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 2em;bottom: 0;left: 50%;}div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;}div.sk-item {z-index: 1;}div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;}div.sk-parallel-item {display: flex;flex-direction: column;position: relative;background-color: white;}div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}div.sk-parallel-item:only-child::after {width: 0;}div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0.2em;box-sizing: border-box;padding-bottom: 0.1em;background-color: white;position: relative;}div.sk-label label {font-family: monospace;font-weight: bold;background-color: white;display: inline-block;line-height: 1.2em;}div.sk-label-container {position: relative;z-index: 2;text-align: center;}div.sk-container {display: inline-block;position: relative;}</style><div class="sk-top-container"><div class="sk-container"><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="aff38db5-f3bd-4daf-8233-85ad5bca30b1" type="checkbox" ><label class="sk-toggleable__label" for="aff38db5-f3bd-4daf-8233-85ad5bca30b1">Pipeline</label><div class="sk-toggleable__content"><pre>Pipeline(steps=[('columntransformer',
+                     ColumnTransformer(transformers=[('pipeline',
+                                                      Pipeline(steps=[('standardscaler',
+                                                                       StandardScaler()),
+                                                                      ('simpleimputer',
+                                                                       SimpleImputer(add_indicator=True))]),
+                                                      <sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905c550>),
+                                                     ('onehotencoder',
+                                                      OneHotEncoder(handle_unknown='ignore'),
+                                                      <sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905cf40>)])),
+                    ('lassocv', LassoCV())])</pre></div></div></div><div class="sk-serial"><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="d74f4042-c599-45e6-ba68-5cae6cf92e1c" type="checkbox" ><label class="sk-toggleable__label" for="d74f4042-c599-45e6-ba68-5cae6cf92e1c">columntransformer: ColumnTransformer</label><div class="sk-toggleable__content"><pre>ColumnTransformer(transformers=[('pipeline',
+                                     Pipeline(steps=[('standardscaler',
+                                                      StandardScaler()),
+                                                     ('simpleimputer',
+                                                      SimpleImputer(add_indicator=True))]),
+                                     <sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905c550>),
+                                    ('onehotencoder',
+                                     OneHotEncoder(handle_unknown='ignore'),
+                                     <sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905cf40>)])</pre></div></div></div><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="04f4c473-1517-4f35-bbfe-d24b0a51e8c6" type="checkbox" ><label class="sk-toggleable__label" for="04f4c473-1517-4f35-bbfe-d24b0a51e8c6">pipeline</label><div class="sk-toggleable__content"><pre><sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905c550></pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="d1355d9d-fbaa-4047-8b34-c94716a178f6" type="checkbox" ><label class="sk-toggleable__label" for="d1355d9d-fbaa-4047-8b34-c94716a178f6">StandardScaler</label><div class="sk-toggleable__content"><pre>StandardScaler()</pre></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="80c96f20-bb9e-4c42-9043-3c9773782be8" type="checkbox" ><label class="sk-toggleable__label" for="80c96f20-bb9e-4c42-9043-3c9773782be8">SimpleImputer</label><div class="sk-toggleable__content"><pre>SimpleImputer(add_indicator=True)</pre></div></div></div></div></div></div></div></div><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="ff4811f3-ecfb-4cf9-83f8-7f15394a9cd0" type="checkbox" ><label class="sk-toggleable__label" for="ff4811f3-ecfb-4cf9-83f8-7f15394a9cd0">onehotencoder</label><div class="sk-toggleable__content"><pre><sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905cf40></pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="08823ac7-499a-41d0-8c72-3ac93c5a35ee" type="checkbox" ><label class="sk-toggleable__label" for="08823ac7-499a-41d0-8c72-3ac93c5a35ee">OneHotEncoder</label><div class="sk-toggleable__content"><pre>OneHotEncoder(handle_unknown='ignore')</pre></div></div></div></div></div></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="5ff0161f-870f-4ff4-b1b7-364b96142829" type="checkbox" ><label class="sk-toggleable__label" for="5ff0161f-870f-4ff4-b1b7-364b96142829">LassoCV</label><div class="sk-toggleable__content"><pre>LassoCV()</pre></div></div></div></div></div></div></div>
+    </div>
+    <br />
+    <br />
+
+.. GENERATED FROM PYTHON SOURCE LINES 156-162
+
+.. code-block:: default
+
+    from sklearn.ensemble import RandomForestRegressor
+
+    rf_pipeline = make_pipeline(
+        tree_preprocessor, RandomForestRegressor(random_state=42))
+    rf_pipeline
+
+
+
+
+
+
+.. raw:: html
+
+    <div class="output_subarea output_html rendered_html output_result">
+    <style>div.sk-top-container {color: black;background-color: white;}div.sk-toggleable {background-color: white;}label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.2em 0.3em;box-sizing: border-box;text-align: center;}div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}div.sk-estimator {font-family: monospace;background-color: #f0f8ff;margin: 0.25em 0.25em;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;}div.sk-estimator:hover {background-color: #d4ebff;}div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 2em;bottom: 0;left: 50%;}div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;}div.sk-item {z-index: 1;}div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;}div.sk-parallel-item {display: flex;flex-direction: column;position: relative;background-color: white;}div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}div.sk-parallel-item:only-child::after {width: 0;}div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0.2em;box-sizing: border-box;padding-bottom: 0.1em;background-color: white;position: relative;}div.sk-label label {font-family: monospace;font-weight: bold;background-color: white;display: inline-block;line-height: 1.2em;}div.sk-label-container {position: relative;z-index: 2;text-align: center;}div.sk-container {display: inline-block;position: relative;}</style><div class="sk-top-container"><div class="sk-container"><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="4df14213-a6cb-4092-8e28-4a78c4cc9b1d" type="checkbox" ><label class="sk-toggleable__label" for="4df14213-a6cb-4092-8e28-4a78c4cc9b1d">Pipeline</label><div class="sk-toggleable__content"><pre>Pipeline(steps=[('columntransformer',
+                     ColumnTransformer(transformers=[('simpleimputer',
+                                                      SimpleImputer(add_indicator=True),
+                                                      <sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905c550>),
+                                                     ('ordinalencoder',
+                                                      OrdinalEncoder(handle_unknown='use_encoded_value',
+                                                                     unknown_value=-1),
+                                                      <sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905cf40>)])),
+                    ('randomforestregressor',
+                     RandomForestRegressor(random_state=42))])</pre></div></div></div><div class="sk-serial"><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="98cb5dbf-4e1a-43e1-9951-00a6df7238bc" type="checkbox" ><label class="sk-toggleable__label" for="98cb5dbf-4e1a-43e1-9951-00a6df7238bc">columntransformer: ColumnTransformer</label><div class="sk-toggleable__content"><pre>ColumnTransformer(transformers=[('simpleimputer',
+                                     SimpleImputer(add_indicator=True),
+                                     <sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905c550>),
+                                    ('ordinalencoder',
+                                     OrdinalEncoder(handle_unknown='use_encoded_value',
+                                                    unknown_value=-1),
+                                     <sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905cf40>)])</pre></div></div></div><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="d8da6c55-d68c-42b2-9040-2f752eae624c" type="checkbox" ><label class="sk-toggleable__label" for="d8da6c55-d68c-42b2-9040-2f752eae624c">simpleimputer</label><div class="sk-toggleable__content"><pre><sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905c550></pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="80609f85-095a-431f-8b14-f548cae41d0d" type="checkbox" ><label class="sk-toggleable__label" for="80609f85-095a-431f-8b14-f548cae41d0d">SimpleImputer</label><div class="sk-toggleable__content"><pre>SimpleImputer(add_indicator=True)</pre></div></div></div></div></div></div><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="fd1ab028-f03a-480f-88f9-4e2719ba4a0c" type="checkbox" ><label class="sk-toggleable__label" for="fd1ab028-f03a-480f-88f9-4e2719ba4a0c">ordinalencoder</label><div class="sk-toggleable__content"><pre><sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905cf40></pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="8d08d983-335b-47b5-a634-06dc9c980b35" type="checkbox" ><label class="sk-toggleable__label" for="8d08d983-335b-47b5-a634-06dc9c980b35">OrdinalEncoder</label><div class="sk-toggleable__content"><pre>OrdinalEncoder(handle_unknown='use_encoded_value', unknown_value=-1)</pre></div></div></div></div></div></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="eff84be0-75a2-4be7-9118-bb8c191acdb3" type="checkbox" ><label class="sk-toggleable__label" for="eff84be0-75a2-4be7-9118-bb8c191acdb3">RandomForestRegressor</label><div class="sk-toggleable__content"><pre>RandomForestRegressor(random_state=42)</pre></div></div></div></div></div></div></div>
+    </div>
+    <br />
+    <br />
+
+.. GENERATED FROM PYTHON SOURCE LINES 163-170
+
+.. code-block:: default
 
     from sklearn.experimental import enable_hist_gradient_boosting  # noqa
     from sklearn.ensemble import HistGradientBoostingRegressor
-    from sklearn.ensemble import RandomForestRegressor
+
+    gbdt_pipeline = make_pipeline(
+        tree_preprocessor, HistGradientBoostingRegressor(random_state=0))
+    gbdt_pipeline
+
+
+
+
+
+
+.. raw:: html
+
+    <div class="output_subarea output_html rendered_html output_result">
+    <style>div.sk-top-container {color: black;background-color: white;}div.sk-toggleable {background-color: white;}label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.2em 0.3em;box-sizing: border-box;text-align: center;}div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}div.sk-estimator {font-family: monospace;background-color: #f0f8ff;margin: 0.25em 0.25em;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;}div.sk-estimator:hover {background-color: #d4ebff;}div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 2em;bottom: 0;left: 50%;}div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;}div.sk-item {z-index: 1;}div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;}div.sk-parallel-item {display: flex;flex-direction: column;position: relative;background-color: white;}div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}div.sk-parallel-item:only-child::after {width: 0;}div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0.2em;box-sizing: border-box;padding-bottom: 0.1em;background-color: white;position: relative;}div.sk-label label {font-family: monospace;font-weight: bold;background-color: white;display: inline-block;line-height: 1.2em;}div.sk-label-container {position: relative;z-index: 2;text-align: center;}div.sk-container {display: inline-block;position: relative;}</style><div class="sk-top-container"><div class="sk-container"><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="fa5e0f5f-55e8-4422-8884-dc3e355905f9" type="checkbox" ><label class="sk-toggleable__label" for="fa5e0f5f-55e8-4422-8884-dc3e355905f9">Pipeline</label><div class="sk-toggleable__content"><pre>Pipeline(steps=[('columntransformer',
+                     ColumnTransformer(transformers=[('simpleimputer',
+                                                      SimpleImputer(add_indicator=True),
+                                                      <sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905c550>),
+                                                     ('ordinalencoder',
+                                                      OrdinalEncoder(handle_unknown='use_encoded_value',
+                                                                     unknown_value=-1),
+                                                      <sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905cf40>)])),
+                    ('histgradientboostingregressor',
+                     HistGradientBoostingRegressor(random_state=0))])</pre></div></div></div><div class="sk-serial"><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="74929eee-94d6-495f-8002-29d7dd3b653c" type="checkbox" ><label class="sk-toggleable__label" for="74929eee-94d6-495f-8002-29d7dd3b653c">columntransformer: ColumnTransformer</label><div class="sk-toggleable__content"><pre>ColumnTransformer(transformers=[('simpleimputer',
+                                     SimpleImputer(add_indicator=True),
+                                     <sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905c550>),
+                                    ('ordinalencoder',
+                                     OrdinalEncoder(handle_unknown='use_encoded_value',
+                                                    unknown_value=-1),
+                                     <sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905cf40>)])</pre></div></div></div><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="1a113497-12ff-4c3a-9b69-7b7fae0f1577" type="checkbox" ><label class="sk-toggleable__label" for="1a113497-12ff-4c3a-9b69-7b7fae0f1577">simpleimputer</label><div class="sk-toggleable__content"><pre><sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905c550></pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="bfca40f9-e271-4715-bcb9-7b4951c29a95" type="checkbox" ><label class="sk-toggleable__label" for="bfca40f9-e271-4715-bcb9-7b4951c29a95">SimpleImputer</label><div class="sk-toggleable__content"><pre>SimpleImputer(add_indicator=True)</pre></div></div></div></div></div></div><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="94764f4d-807c-4725-be0c-1113b38945b8" type="checkbox" ><label class="sk-toggleable__label" for="94764f4d-807c-4725-be0c-1113b38945b8">ordinalencoder</label><div class="sk-toggleable__content"><pre><sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905cf40></pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="1a476fa2-62a4-44ae-aa32-7291ad93a190" type="checkbox" ><label class="sk-toggleable__label" for="1a476fa2-62a4-44ae-aa32-7291ad93a190">OrdinalEncoder</label><div class="sk-toggleable__content"><pre>OrdinalEncoder(handle_unknown='use_encoded_value', unknown_value=-1)</pre></div></div></div></div></div></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="bd8f2a39-15c4-4edc-bbb9-7e9a101d59cc" type="checkbox" ><label class="sk-toggleable__label" for="bd8f2a39-15c4-4edc-bbb9-7e9a101d59cc">HistGradientBoostingRegressor</label><div class="sk-toggleable__content"><pre>HistGradientBoostingRegressor(random_state=0)</pre></div></div></div></div></div></div></div>
+    </div>
+    <br />
+    <br />
+
+.. GENERATED FROM PYTHON SOURCE LINES 171-182
+
+.. code-block:: default
+
     from sklearn.ensemble import StackingRegressor
-    from sklearn.linear_model import LassoCV
     from sklearn.linear_model import RidgeCV
-
-
-    lasso_pipeline = make_pipeline(processor_lin,
-                                   LassoCV())
-
-    rf_pipeline = make_pipeline(processor_nlin,
-                                RandomForestRegressor(random_state=42))
-
-    gradient_pipeline = make_pipeline(
-        processor_nlin,
-        HistGradientBoostingRegressor(random_state=0))
 
     estimators = [('Random Forest', rf_pipeline),
                   ('Lasso', lasso_pipeline),
-                  ('Gradient Boosting', gradient_pipeline)]
+                  ('Gradient Boosting', gbdt_pipeline)]
 
-    stacking_regressor = StackingRegressor(estimators=estimators,
-                                           final_estimator=RidgeCV())
-
-
-
+    stacking_regressor = StackingRegressor(
+        estimators=estimators, final_estimator=RidgeCV())
+    stacking_regressor
 
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 185-194
+.. raw:: html
+
+    <div class="output_subarea output_html rendered_html output_result">
+    <style>div.sk-top-container {color: black;background-color: white;}div.sk-toggleable {background-color: white;}label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.2em 0.3em;box-sizing: border-box;text-align: center;}div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}div.sk-estimator {font-family: monospace;background-color: #f0f8ff;margin: 0.25em 0.25em;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;}div.sk-estimator:hover {background-color: #d4ebff;}div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 2em;bottom: 0;left: 50%;}div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;}div.sk-item {z-index: 1;}div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;}div.sk-parallel-item {display: flex;flex-direction: column;position: relative;background-color: white;}div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}div.sk-parallel-item:only-child::after {width: 0;}div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0.2em;box-sizing: border-box;padding-bottom: 0.1em;background-color: white;position: relative;}div.sk-label label {font-family: monospace;font-weight: bold;background-color: white;display: inline-block;line-height: 1.2em;}div.sk-label-container {position: relative;z-index: 2;text-align: center;}div.sk-container {display: inline-block;position: relative;}</style><div class="sk-top-container"><div class="sk-container"><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="4e553268-addd-48a2-9d73-ae02ea094841" type="checkbox" ><label class="sk-toggleable__label" for="4e553268-addd-48a2-9d73-ae02ea094841">StackingRegressor</label><div class="sk-toggleable__content"><pre>StackingRegressor(estimators=[('Random Forest',
+                                   Pipeline(steps=[('columntransformer',
+                                                    ColumnTransformer(transformers=[('simpleimputer',
+                                                                                     SimpleImputer(add_indicator=True),
+                                                                                     <sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905c550>),
+                                                                                    ('ordinalencoder',
+                                                                                     OrdinalEncoder(handle_unknown='use_encoded_value',
+                                                                                                    unknown_value=-1),
+                                                                                     <sklearn.compose...
+                                                                                     <sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905c550>),
+                                                                                    ('ordinalencoder',
+                                                                                     OrdinalEncoder(handle_unknown='use_encoded_value',
+                                                                                                    unknown_value=-1),
+                                                                                     <sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905cf40>)])),
+                                                   ('histgradientboostingregressor',
+                                                    HistGradientBoostingRegressor(random_state=0))]))],
+                      final_estimator=RidgeCV(alphas=array([ 0.1,  1. , 10. ])))</pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-serial"><div class="sk-item"><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><label>Random Forest</label></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-serial"><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="62999bd9-b339-4f05-8415-360011b754f5" type="checkbox" ><label class="sk-toggleable__label" for="62999bd9-b339-4f05-8415-360011b754f5">columntransformer: ColumnTransformer</label><div class="sk-toggleable__content"><pre>ColumnTransformer(transformers=[('simpleimputer',
+                                     SimpleImputer(add_indicator=True),
+                                     <sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905c550>),
+                                    ('ordinalencoder',
+                                     OrdinalEncoder(handle_unknown='use_encoded_value',
+                                                    unknown_value=-1),
+                                     <sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905cf40>)])</pre></div></div></div><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="4b051147-a937-40c9-ab8e-703156c50819" type="checkbox" ><label class="sk-toggleable__label" for="4b051147-a937-40c9-ab8e-703156c50819">simpleimputer</label><div class="sk-toggleable__content"><pre><sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905c550></pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="66c20805-d167-422d-9b1a-20e0d31d1959" type="checkbox" ><label class="sk-toggleable__label" for="66c20805-d167-422d-9b1a-20e0d31d1959">SimpleImputer</label><div class="sk-toggleable__content"><pre>SimpleImputer(add_indicator=True)</pre></div></div></div></div></div></div><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="cc9f4f25-2da5-44d5-b846-2c09c61d207c" type="checkbox" ><label class="sk-toggleable__label" for="cc9f4f25-2da5-44d5-b846-2c09c61d207c">ordinalencoder</label><div class="sk-toggleable__content"><pre><sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905cf40></pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="e9013696-ed3a-4c5f-9054-8603e9bddebb" type="checkbox" ><label class="sk-toggleable__label" for="e9013696-ed3a-4c5f-9054-8603e9bddebb">OrdinalEncoder</label><div class="sk-toggleable__content"><pre>OrdinalEncoder(handle_unknown='use_encoded_value', unknown_value=-1)</pre></div></div></div></div></div></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="ba02f883-5a29-44b3-ae0f-d438363cdb0a" type="checkbox" ><label class="sk-toggleable__label" for="ba02f883-5a29-44b3-ae0f-d438363cdb0a">RandomForestRegressor</label><div class="sk-toggleable__content"><pre>RandomForestRegressor(random_state=42)</pre></div></div></div></div></div></div></div></div><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><label>Lasso</label></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-serial"><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="e5b2864c-9490-4e1f-80c8-abcda5f71379" type="checkbox" ><label class="sk-toggleable__label" for="e5b2864c-9490-4e1f-80c8-abcda5f71379">columntransformer: ColumnTransformer</label><div class="sk-toggleable__content"><pre>ColumnTransformer(transformers=[('pipeline',
+                                     Pipeline(steps=[('standardscaler',
+                                                      StandardScaler()),
+                                                     ('simpleimputer',
+                                                      SimpleImputer(add_indicator=True))]),
+                                     <sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905c550>),
+                                    ('onehotencoder',
+                                     OneHotEncoder(handle_unknown='ignore'),
+                                     <sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905cf40>)])</pre></div></div></div><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="1585be6c-b587-4900-8037-fe66fd3a216e" type="checkbox" ><label class="sk-toggleable__label" for="1585be6c-b587-4900-8037-fe66fd3a216e">pipeline</label><div class="sk-toggleable__content"><pre><sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905c550></pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="a771d88e-40dd-4679-b761-db5585737fd3" type="checkbox" ><label class="sk-toggleable__label" for="a771d88e-40dd-4679-b761-db5585737fd3">StandardScaler</label><div class="sk-toggleable__content"><pre>StandardScaler()</pre></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="b7c870c1-6f25-408f-91b9-4f438b3e5504" type="checkbox" ><label class="sk-toggleable__label" for="b7c870c1-6f25-408f-91b9-4f438b3e5504">SimpleImputer</label><div class="sk-toggleable__content"><pre>SimpleImputer(add_indicator=True)</pre></div></div></div></div></div></div></div></div><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="e4617a36-0aba-4659-aab8-9fb415e7822f" type="checkbox" ><label class="sk-toggleable__label" for="e4617a36-0aba-4659-aab8-9fb415e7822f">onehotencoder</label><div class="sk-toggleable__content"><pre><sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905cf40></pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="0cac2e74-421f-4b6b-adb6-67ab5270285d" type="checkbox" ><label class="sk-toggleable__label" for="0cac2e74-421f-4b6b-adb6-67ab5270285d">OneHotEncoder</label><div class="sk-toggleable__content"><pre>OneHotEncoder(handle_unknown='ignore')</pre></div></div></div></div></div></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="d887e5a7-68ea-4287-8864-59b4c874a3ad" type="checkbox" ><label class="sk-toggleable__label" for="d887e5a7-68ea-4287-8864-59b4c874a3ad">LassoCV</label><div class="sk-toggleable__content"><pre>LassoCV()</pre></div></div></div></div></div></div></div></div><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><label>Gradient Boosting</label></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-serial"><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="90f6f02c-27bc-416b-b317-cb781128a86b" type="checkbox" ><label class="sk-toggleable__label" for="90f6f02c-27bc-416b-b317-cb781128a86b">columntransformer: ColumnTransformer</label><div class="sk-toggleable__content"><pre>ColumnTransformer(transformers=[('simpleimputer',
+                                     SimpleImputer(add_indicator=True),
+                                     <sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905c550>),
+                                    ('ordinalencoder',
+                                     OrdinalEncoder(handle_unknown='use_encoded_value',
+                                                    unknown_value=-1),
+                                     <sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905cf40>)])</pre></div></div></div><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="edca8cac-74c4-4f20-8fd1-9bb1e4e60f67" type="checkbox" ><label class="sk-toggleable__label" for="edca8cac-74c4-4f20-8fd1-9bb1e4e60f67">simpleimputer</label><div class="sk-toggleable__content"><pre><sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905c550></pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="21ff4f79-9e38-4c09-b457-9046e905cf30" type="checkbox" ><label class="sk-toggleable__label" for="21ff4f79-9e38-4c09-b457-9046e905cf30">SimpleImputer</label><div class="sk-toggleable__content"><pre>SimpleImputer(add_indicator=True)</pre></div></div></div></div></div></div><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="46a5d29c-9240-4bd5-a34d-6f428f115486" type="checkbox" ><label class="sk-toggleable__label" for="46a5d29c-9240-4bd5-a34d-6f428f115486">ordinalencoder</label><div class="sk-toggleable__content"><pre><sklearn.compose._column_transformer.make_column_selector object at 0x7fa26905cf40></pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="1bb5b486-6103-4401-bdce-262f5dfce4ec" type="checkbox" ><label class="sk-toggleable__label" for="1bb5b486-6103-4401-bdce-262f5dfce4ec">OrdinalEncoder</label><div class="sk-toggleable__content"><pre>OrdinalEncoder(handle_unknown='use_encoded_value', unknown_value=-1)</pre></div></div></div></div></div></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="849ed4bf-2f53-4e62-bf98-c9d2ca5d5fb2" type="checkbox" ><label class="sk-toggleable__label" for="849ed4bf-2f53-4e62-bf98-c9d2ca5d5fb2">HistGradientBoostingRegressor</label><div class="sk-toggleable__content"><pre>HistGradientBoostingRegressor(random_state=0)</pre></div></div></div></div></div></div></div></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="59e1c68d-de2e-45c4-aa09-c3d2acc2f00f" type="checkbox" ><label class="sk-toggleable__label" for="59e1c68d-de2e-45c4-aa09-c3d2acc2f00f">RidgeCV</label><div class="sk-toggleable__content"><pre>RidgeCV(alphas=array([ 0.1,  1. , 10. ]))</pre></div></div></div></div></div></div></div></div></div>
+    </div>
+    <br />
+    <br />
+
+.. GENERATED FROM PYTHON SOURCE LINES 183-192
 
 Measure and plot the results
 #############################################################################
@@ -261,7 +475,7 @@ Measure and plot the results
  The function ``plot_regression_results`` is used to plot the predicted and
  true targets.
 
-.. GENERATED FROM PYTHON SOURCE LINES 194-253
+.. GENERATED FROM PYTHON SOURCE LINES 192-251
 
 .. code-block:: default
 
@@ -328,14 +542,14 @@ Measure and plot the results
 
 
 .. image:: /auto_examples/ensemble/images/sphx_glr_plot_stack_predictors_001.png
-    :alt: Single predictors versus stacked predictors, Random Forest  Evaluation in 1.05 seconds, Lasso  Evaluation in 0.10 seconds, Gradient Boosting  Evaluation in 0.22 seconds, Stacking Regressor  Evaluation in 2.75 seconds
+    :alt: Single predictors versus stacked predictors, Random Forest  Evaluation in 1.18 seconds, Lasso  Evaluation in 0.19 seconds, Gradient Boosting  Evaluation in 0.33 seconds, Stacking Regressor  Evaluation in 3.92 seconds
     :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 254-257
+.. GENERATED FROM PYTHON SOURCE LINES 252-255
 
 The stacked regressor will combine the strengths of the different regressors.
 However, we also see that training the stacked regressor is much more
@@ -344,7 +558,7 @@ computationally expensive.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  8.493 seconds)
+   **Total running time of the script:** ( 0 minutes  11.147 seconds)
 
 
 .. _sphx_glr_download_auto_examples_ensemble_plot_stack_predictors.py:
