@@ -22,7 +22,7 @@
 Compare BIRCH and MiniBatchKMeans
 =================================
 
-This example compares the timing of Birch (with and without the global
+This example compares the timing of BIRCH (with and without the global
 clustering step) and MiniBatchKMeans on a synthetic dataset having
 100,000 samples and 2 features generated using make_blobs.
 
@@ -36,7 +36,7 @@ step before the final (global) clustering step that further reduces these
 
 
 .. image:: /auto_examples/cluster/images/sphx_glr_plot_birch_vs_minibatchkmeans_001.png
-    :alt: Birch without global clustering, Birch with global clustering, MiniBatchKMeans
+    :alt: BIRCH without global clustering, BIRCH with global clustering, MiniBatchKMeans
     :class: sphx-glr-single-img
 
 
@@ -47,11 +47,11 @@ step before the final (global) clustering step that further reduces these
  .. code-block:: none
 
 
-    Birch without global clustering as the final step took 5.89 seconds
+    BIRCH without global clustering as the final step took 6.79 seconds
     n_clusters : 158
-    Birch with global clustering as the final step took 5.72 seconds
+    BIRCH with global clustering as the final step took 6.30 seconds
     n_clusters : 100
-    Time taken to run MiniBatchKMeans 5.75 seconds
+    Time taken to run MiniBatchKMeans 6.25 seconds
 
 
 
@@ -86,7 +86,7 @@ step before the final (global) clustering step that further reduces these
     n_centres = np.hstack((np.ravel(xx)[:, np.newaxis],
                            np.ravel(yy)[:, np.newaxis]))
 
-    # Generate blobs to do a comparison between MiniBatchKMeans and Birch.
+    # Generate blobs to do a comparison between MiniBatchKMeans and BIRCH.
     X, y = make_blobs(n_samples=100000, centers=n_centres, random_state=0)
 
     # Use all colors that matplotlib provides by default.
@@ -95,7 +95,7 @@ step before the final (global) clustering step that further reduces these
     fig = plt.figure(figsize=(12, 4))
     fig.subplots_adjust(left=0.04, right=0.98, bottom=0.1, top=0.9)
 
-    # Compute clustering with Birch with and without the final clustering step
+    # Compute clustering with BIRCH with and without the final clustering step
     # and plot.
     birch_models = [Birch(threshold=1.7, n_clusters=None),
                     Birch(threshold=1.7, n_clusters=100)]
@@ -105,7 +105,7 @@ step before the final (global) clustering step that further reduces these
         t = time()
         birch_model.fit(X)
         time_ = time() - t
-        print("Birch %s as the final step took %0.2f seconds" % (
+        print("BIRCH %s as the final step took %0.2f seconds" % (
               info, (time() - t)))
 
         # Plot result
@@ -125,7 +125,7 @@ step before the final (global) clustering step that further reduces these
         ax.set_ylim([-25, 25])
         ax.set_xlim([-25, 25])
         ax.set_autoscaley_on(False)
-        ax.set_title('Birch %s' % info)
+        ax.set_title('BIRCH %s' % info)
 
     # Compute clustering with MiniBatchKMeans.
     mbk = MiniBatchKMeans(init='k-means++', n_clusters=100, batch_size=100,
@@ -154,7 +154,7 @@ step before the final (global) clustering step that further reduces these
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  28.138 seconds)
+   **Total running time of the script:** ( 0 minutes  30.966 seconds)
 
 
 .. _sphx_glr_download_auto_examples_cluster_plot_birch_vs_minibatchkmeans.py:
