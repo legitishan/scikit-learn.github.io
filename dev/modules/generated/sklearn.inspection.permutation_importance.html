@@ -173,7 +173,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.inspection" title="sklearn.inspection"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.inspection</span></code></a>.permutation_importance<a class="headerlink" href="#sklearn-inspection-permutation-importance" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="sklearn.inspection.permutation_importance">
-<code class="sig-prename descclassname">sklearn.inspection.</code><code class="sig-name descname">permutation_importance</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">estimator</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">scoring</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n_repeats</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="n">n_jobs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">random_state</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/4aff3857b/sklearn/inspection/_permutation_importance.py#L49"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.inspection.permutation_importance" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sklearn.inspection.</code><code class="sig-name descname">permutation_importance</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">estimator</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">scoring</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n_repeats</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="n">n_jobs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">random_state</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/f58d1ebd2/sklearn/inspection/_permutation_importance.py#L83"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.inspection.permutation_importance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Permutation importance for feature evaluation <a class="reference internal" href="#rd9e56ef97513-bre" id="id1">[BRE]</a>.</p>
 <p>The <a class="reference internal" href="../../glossary.html#term-estimator"><span class="xref std std-term">estimator</span></a> is required to be a fitted estimator. <code class="docutils literal notranslate"><span class="pre">X</span></code> can be the
 data set used to train the estimator or a hold-out set. The permutation
@@ -194,9 +194,23 @@ with <a class="reference internal" href="../../glossary.html#term-scorer"><span 
 </dd>
 <dt><strong>y</strong><span class="classifier">array-like or None, shape (n_samples, ) or (n_samples, n_classes)</span></dt><dd><p>Targets for supervised or <code class="docutils literal notranslate"><span class="pre">None</span></code> for unsupervised.</p>
 </dd>
-<dt><strong>scoring</strong><span class="classifier">string, callable or None, default=None</span></dt><dd><p>Scorer to use. It can be a single
-string (see <a class="reference internal" href="../model_evaluation.html#scoring-parameter"><span class="std std-ref">The scoring parameter: defining model evaluation rules</span></a>) or a callable (see
-<a class="reference internal" href="../model_evaluation.html#scoring"><span class="std std-ref">Defining your scoring strategy from metric functions</span></a>). If None, the estimator’s default scorer is used.</p>
+<dt><strong>scoring</strong><span class="classifier">str, callable, list, tuple, or dict, default=None</span></dt><dd><p>Scorer to use.
+If <code class="docutils literal notranslate"><span class="pre">scoring</span></code> represents a single score, one can use:</p>
+<ul class="simple">
+<li><p>a single string (see <a class="reference internal" href="../model_evaluation.html#scoring-parameter"><span class="std std-ref">The scoring parameter: defining model evaluation rules</span></a>);</p></li>
+<li><p>a callable (see <a class="reference internal" href="../model_evaluation.html#scoring"><span class="std std-ref">Defining your scoring strategy from metric functions</span></a>) that returns a single value.</p></li>
+</ul>
+<p>If <code class="docutils literal notranslate"><span class="pre">scoring</span></code> reprents multiple scores, one can use:</p>
+<ul class="simple">
+<li><p>a list or tuple of unique strings;</p></li>
+<li><p>a callable returning a dictionary where the keys are the metric
+names and the values are the metric scores;</p></li>
+<li><p>a dictionary with metric names as keys and callables a values.</p></li>
+</ul>
+<p>Passing multiple scores to <code class="docutils literal notranslate"><span class="pre">scoring</span></code> is more efficient than calling
+<code class="docutils literal notranslate"><span class="pre">permutation_importance</span></code> for each of the scores as it reuses
+predictions to avoid redundant computation.</p>
+<p>If None, the estimator’s default scorer is used.</p>
 </dd>
 <dt><strong>n_repeats</strong><span class="classifier">int, default=5</span></dt><dd><p>Number of times to permute a feature.</p>
 </dd>
@@ -220,15 +234,18 @@ See :term: <code class="docutils literal notranslate"><span class="pre">Glossary
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl>
-<dt><strong>result</strong><span class="classifier"><a class="reference internal" href="sklearn.utils.Bunch.html#sklearn.utils.Bunch" title="sklearn.utils.Bunch"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bunch</span></code></a></span></dt><dd><p>Dictionary-like object, with the following attributes.</p>
+<dt><strong>result</strong><span class="classifier"><a class="reference internal" href="sklearn.utils.Bunch.html#sklearn.utils.Bunch" title="sklearn.utils.Bunch"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bunch</span></code></a> or dict of such instances</span></dt><dd><p>Dictionary-like object, with the following attributes.</p>
 <dl class="simple">
-<dt>importances_mean<span class="classifier">ndarray, shape (n_features, )</span></dt><dd><p>Mean of feature importance over <code class="docutils literal notranslate"><span class="pre">n_repeats</span></code>.</p>
+<dt>importances_mean<span class="classifier">ndarray of shape (n_features, )</span></dt><dd><p>Mean of feature importance over <code class="docutils literal notranslate"><span class="pre">n_repeats</span></code>.</p>
 </dd>
-<dt>importances_std<span class="classifier">ndarray, shape (n_features, )</span></dt><dd><p>Standard deviation over <code class="docutils literal notranslate"><span class="pre">n_repeats</span></code>.</p>
+<dt>importances_std<span class="classifier">ndarray of shape (n_features, )</span></dt><dd><p>Standard deviation over <code class="docutils literal notranslate"><span class="pre">n_repeats</span></code>.</p>
 </dd>
-<dt>importances<span class="classifier">ndarray, shape (n_features, n_repeats)</span></dt><dd><p>Raw permutation importance scores.</p>
+<dt>importances<span class="classifier">ndarray of shape (n_features, n_repeats)</span></dt><dd><p>Raw permutation importance scores.</p>
 </dd>
 </dl>
+<p>If there are multiple scoring metrics in the scoring parameter
+<code class="docutils literal notranslate"><span class="pre">result</span></code> is a dict with scorer names as keys (e.g. ‘roc_auc’) and
+<code class="docutils literal notranslate"><span class="pre">Bunch</span></code> objects like above as values.</p>
 </dd>
 </dl>
 </dd>

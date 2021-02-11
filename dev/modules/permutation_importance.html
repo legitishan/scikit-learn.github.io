@@ -182,6 +182,16 @@ between the feature and the target, thus the drop in the model score is
 indicative of how much the model depends on the feature. This technique
 benefits from being model agnostic and can be calculated many times with
 different permutations of the feature.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Features that are deemed of <strong>low importance for a bad model</strong> (low
+cross-validation score) could be <strong>very important for a good model</strong>.
+Therefore it is always important to evaluate the predictive power of a model
+using a held-out set (or better with cross-validation) prior to computing
+importances. Permutation importance does not reflect to the intrinsic
+predictive value of a feature by itself but <strong>how important this feature is
+for a particular model</strong>.</p>
+</div>
 <p>The <a class="reference internal" href="generated/sklearn.inspection.permutation_importance.html#sklearn.inspection.permutation_importance" title="sklearn.inspection.permutation_importance"><code class="xref py py-func docutils literal notranslate"><span class="pre">permutation_importance</span></code></a> function calculates the feature importance
 of <a class="reference internal" href="../glossary.html#term-estimators"><span class="xref std std-term">estimators</span></a> for a given dataset. The <code class="docutils literal notranslate"><span class="pre">n_repeats</span></code> parameter sets the
 number of times a feature is randomly shuffled and returns a sample of feature
@@ -227,16 +237,48 @@ held-out testing or validation set. Using a held-out set makes it possible to
 highlight which features contribute the most to the generalization power of the
 inspected model. Features that are important on the training set but not on the
 held-out set might cause the model to overfit.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Features that are deemed of <strong>low importance for a bad model</strong> (low
-cross-validation score) could be <strong>very important for a good model</strong>.
-Therefore it is always important to evaluate the predictive power of a model
-using a held-out set (or better with cross-validation) prior to computing
-importances. Permutation importance does not reflect to the intrinsic
-predictive value of a feature by itself but <strong>how important this feature is
-for a particular model</strong>.</p>
+<p>The permutation feature importance is the decrease in a model score when a single
+feature value is randomly shuffled. The score function to be used for the
+computation of importances can be specified with the <code class="docutils literal notranslate"><span class="pre">scoring</span></code> argument,
+which also accepts multiple scorers. Using multiple scorers is more computationally
+efficient than sequentially calling <a class="reference internal" href="generated/sklearn.inspection.permutation_importance.html#sklearn.inspection.permutation_importance" title="sklearn.inspection.permutation_importance"><code class="xref py py-func docutils literal notranslate"><span class="pre">permutation_importance</span></code></a> several times
+with a different scorer, as it reuses model predictions.</p>
+<p>An example of using multiple scorers is shown below, employing a list of metrics,
+but more input formats are possible, as documented in <a class="reference internal" href="model_evaluation.html#multimetric-scoring"><span class="std std-ref">Using multiple metric evaluation</span></a>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">scoring</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;r2&#39;</span><span class="p">,</span> <span class="s1">&#39;neg_mean_absolute_percentage_error&#39;</span><span class="p">,</span> <span class="s1">&#39;neg_mean_squared_error&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r_multi</span> <span class="o">=</span> <span class="n">permutation_importance</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">model</span><span class="p">,</span> <span class="n">X_val</span><span class="p">,</span> <span class="n">y_val</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="n">scoring</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">r_multi</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">r</span> <span class="o">=</span> <span class="n">r_multi</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">importances_mean</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">importances_mean</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">r</span><span class="o">.</span><span class="n">importances_std</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">diabetes</span><span class="o">.</span><span class="n">feature_names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">&lt;8</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="gp">... </span>                  <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">importances_mean</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="gp">... </span>                  <span class="sa">f</span><span class="s2">&quot; +/- </span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">importances_std</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">r2</span>
+<span class="go">  s5      0.204 +/- 0.050</span>
+<span class="go">  bmi     0.176 +/- 0.048</span>
+<span class="go">  bp      0.088 +/- 0.033</span>
+<span class="go">  sex     0.056 +/- 0.023</span>
+<span class="go">neg_mean_absolute_percentage_error</span>
+<span class="go">  s5      0.081 +/- 0.020</span>
+<span class="go">  bmi     0.064 +/- 0.015</span>
+<span class="go">  bp      0.029 +/- 0.010</span>
+<span class="go">neg_mean_squared_error</span>
+<span class="go">  s5      1013.903 +/- 246.460</span>
+<span class="go">  bmi     872.694 +/- 240.296</span>
+<span class="go">  bp      438.681 +/- 163.025</span>
+<span class="go">  sex     277.382 +/- 115.126</span>
+</pre></div>
 </div>
+<p>The ranking of the features is approximately the same for different metrics even
+if the scales of the importance values are very different. However, this is not
+guaranteed and different metrics might lead to significantly different feature
+importances, in particular for models trained for imbalanced classification problems,
+for which the choice of the classification metric can be critical.</p>
 <div class="section" id="outline-of-the-permutation-importance-algorithm">
 <h2><span class="section-number">4.2.1. </span>Outline of the permutation importance algorithm<a class="headerlink" href="#outline-of-the-permutation-importance-algorithm" title="Permalink to this headline">¶</a></h2>
 <ul>
