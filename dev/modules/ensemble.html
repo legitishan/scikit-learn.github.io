@@ -732,7 +732,8 @@ of classes we strongly recommend to use
 <p><a class="reference internal" href="generated/sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor" title="sklearn.ensemble.GradientBoostingRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">GradientBoostingRegressor</span></code></a> supports a number of
 <a class="reference internal" href="#gradient-boosting-loss"><span class="std std-ref">different loss functions</span></a>
 for regression which can be specified via the argument
-<code class="docutils literal notranslate"><span class="pre">loss</span></code>; the default loss function for regression is least squares (<code class="docutils literal notranslate"><span class="pre">'ls'</span></code>).</p>
+<code class="docutils literal notranslate"><span class="pre">loss</span></code>; the default loss function for regression is squared error
+(<code class="docutils literal notranslate"><span class="pre">'squared_error'</span></code>).</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_friedman1</span>
@@ -741,8 +742,10 @@ for regression which can be specified via the argument
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_friedman1</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">1200</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:</span><span class="mi">200</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="mi">200</span><span class="p">:]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">y</span><span class="p">[:</span><span class="mi">200</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="mi">200</span><span class="p">:]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">est</span> <span class="o">=</span> <span class="n">GradientBoostingRegressor</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">max_depth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;ls&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">est</span> <span class="o">=</span> <span class="n">GradientBoostingRegressor</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;squared_error&#39;</span>
+<span class="gp">... </span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">est</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>
 <span class="go">5.00...</span>
 </pre></div>
@@ -906,8 +909,8 @@ the parameter <code class="docutils literal notranslate"><span class="pre">loss<
 <div><ul class="simple">
 <li><p>Regression</p>
 <ul>
-<li><p>Least squares (<code class="docutils literal notranslate"><span class="pre">'ls'</span></code>): The natural choice for regression due
-to its superior computational properties. The initial model is
+<li><p>Squared error (<code class="docutils literal notranslate"><span class="pre">'squared_error'</span></code>): The natural choice for regression
+due to its superior computational properties. The initial model is
 given by the mean of the target values.</p></li>
 <li><p>Least absolute deviation (<code class="docutils literal notranslate"><span class="pre">'lad'</span></code>): A robust loss function for
 regression. The initial model is given by the median of the
@@ -1104,7 +1107,7 @@ controls the number of iterations of the boosting process:</p>
 <span class="go">0.8965</span>
 </pre></div>
 </div>
-<p>Available losses for regression are ‘least_squares’,
+<p>Available losses for regression are ‘squared_error’,
 ‘least_absolute_deviation’, which is less sensitive to outliers, and
 ‘poisson’, which is well suited to model counts and frequencies. For
 classification, ‘binary_crossentropy’ is used for binary classification and
