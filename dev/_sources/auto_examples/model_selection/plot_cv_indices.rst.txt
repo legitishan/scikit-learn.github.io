@@ -29,14 +29,15 @@ groups in test sets, etc.
 This example visualizes the behavior of several common scikit-learn objects
 for comparison.
 
-.. GENERATED FROM PYTHON SOURCE LINES 13-25
+.. GENERATED FROM PYTHON SOURCE LINES 13-26
 
 .. code-block:: default
 
 
     from sklearn.model_selection import (TimeSeriesSplit, KFold, ShuffleSplit,
                                          StratifiedKFold, GroupShuffleSplit,
-                                         GroupKFold, StratifiedShuffleSplit)
+                                         GroupKFold, StratifiedShuffleSplit,
+                                         StratifiedGroupKFold)
     import numpy as np
     import matplotlib.pyplot as plt
     from matplotlib.patches import Patch
@@ -52,7 +53,7 @@ for comparison.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 26-38
+.. GENERATED FROM PYTHON SOURCE LINES 27-39
 
 Visualize our data
 ------------------
@@ -67,7 +68,7 @@ do not use this information.
 
 To begin, we'll visualize our data.
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-64
+.. GENERATED FROM PYTHON SOURCE LINES 39-65
 
 .. code-block:: default
 
@@ -108,7 +109,7 @@ To begin, we'll visualize our data.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-72
+.. GENERATED FROM PYTHON SOURCE LINES 66-73
 
 Define a function to visualize cross-validation behavior
 --------------------------------------------------------
@@ -118,7 +119,7 @@ cross-validation object. We'll perform 4 splits of the data. On each
 split, we'll visualize the indices chosen for the training set
 (in blue) and the test set (in red).
 
-.. GENERATED FROM PYTHON SOURCE LINES 72-105
+.. GENERATED FROM PYTHON SOURCE LINES 73-106
 
 .. code-block:: default
 
@@ -162,12 +163,12 @@ split, we'll visualize the indices chosen for the training set
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 106-108
+.. GENERATED FROM PYTHON SOURCE LINES 107-109
 
 Let's see how it looks for the :class:`~sklearn.model_selection.KFold`
 cross-validation object:
 
-.. GENERATED FROM PYTHON SOURCE LINES 108-113
+.. GENERATED FROM PYTHON SOURCE LINES 109-114
 
 .. code-block:: default
 
@@ -195,45 +196,70 @@ cross-validation object:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 114-117
+.. GENERATED FROM PYTHON SOURCE LINES 115-124
 
 As you can see, by default the KFold cross-validation iterator does not
 take either datapoint class or group into consideration. We can change this
-by using the ``StratifiedKFold`` like so.
+by using either:
 
-.. GENERATED FROM PYTHON SOURCE LINES 117-122
+- ``StratifiedKFold`` to preserve the percentage of samples for each class.
+- ``GroupKFold`` to ensure that the same group will not appear in two
+  different folds.
+- ``StratifiedGroupKFold`` to keep the constraint of ``GroupKFold`` while
+  attempting to return stratified folds.
+
+.. GENERATED FROM PYTHON SOURCE LINES 124-141
 
 .. code-block:: default
 
 
-    fig, ax = plt.subplots()
-    cv = StratifiedKFold(n_splits)
-    plot_cv_indices(cv, X, y, groups, ax, n_splits)
+    # To better demonstrate the difference, we will assign samples to groups
+    # unevenly:
+
+    uneven_groups = np.sort(np.random.randint(0, 10, n_points))
+
+    cvs = [StratifiedKFold, GroupKFold, StratifiedGroupKFold]
+
+    for cv in cvs:
+        fig, ax = plt.subplots(figsize=(6, 3))
+        plot_cv_indices(cv(n_splits), X, y, uneven_groups, ax, n_splits)
+        ax.legend([Patch(color=cmap_cv(.8)), Patch(color=cmap_cv(.02))],
+                  ['Testing set', 'Training set'], loc=(1.02, .8))
+        # Make the legend fit
+        plt.tight_layout()
+        fig.subplots_adjust(right=.7)
 
 
 
 
-.. image:: /auto_examples/model_selection/images/sphx_glr_plot_cv_indices_003.png
-    :alt: StratifiedKFold
-    :class: sphx-glr-single-img
+.. rst-class:: sphx-glr-horizontal
 
 
-.. rst-class:: sphx-glr-script-out
+    *
 
- Out:
+      .. image:: /auto_examples/model_selection/images/sphx_glr_plot_cv_indices_003.png
+          :alt: StratifiedKFold
+          :class: sphx-glr-multi-img
 
- .. code-block:: none
+    *
+
+      .. image:: /auto_examples/model_selection/images/sphx_glr_plot_cv_indices_004.png
+          :alt: GroupKFold
+          :class: sphx-glr-multi-img
+
+    *
+
+      .. image:: /auto_examples/model_selection/images/sphx_glr_plot_cv_indices_005.png
+          :alt: StratifiedGroupKFold
+          :class: sphx-glr-multi-img
 
 
-    <AxesSubplot:title={'center':'StratifiedKFold'}, xlabel='Sample index', ylabel='CV iteration'>
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 123-135
+.. GENERATED FROM PYTHON SOURCE LINES 142-152
 
-In this case, the cross-validation retained the same ratio of classes across
-each CV split. Next we'll visualize this behavior for a number of CV
-iterators.
+Next we'll visualize this behavior for a number of CV iterators.
 
 Visualize cross-validation indices for many CV objects
 ------------------------------------------------------
@@ -244,12 +270,12 @@ common cross-validation objects, visualizing the behavior of each.
 
 Note how some use the group/class information while others do not.
 
-.. GENERATED FROM PYTHON SOURCE LINES 135-151
+.. GENERATED FROM PYTHON SOURCE LINES 152-168
 
 .. code-block:: default
 
 
-    cvs = [KFold, GroupKFold, ShuffleSplit, StratifiedKFold,
+    cvs = [KFold, GroupKFold, ShuffleSplit, StratifiedKFold, StratifiedGroupKFold,
            GroupShuffleSplit, StratifiedShuffleSplit, TimeSeriesSplit]
 
 
@@ -272,43 +298,49 @@ Note how some use the group/class information while others do not.
 
     *
 
-      .. image:: /auto_examples/model_selection/images/sphx_glr_plot_cv_indices_004.png
+      .. image:: /auto_examples/model_selection/images/sphx_glr_plot_cv_indices_006.png
           :alt: KFold
           :class: sphx-glr-multi-img
 
     *
 
-      .. image:: /auto_examples/model_selection/images/sphx_glr_plot_cv_indices_005.png
+      .. image:: /auto_examples/model_selection/images/sphx_glr_plot_cv_indices_007.png
           :alt: GroupKFold
           :class: sphx-glr-multi-img
 
     *
 
-      .. image:: /auto_examples/model_selection/images/sphx_glr_plot_cv_indices_006.png
+      .. image:: /auto_examples/model_selection/images/sphx_glr_plot_cv_indices_008.png
           :alt: ShuffleSplit
           :class: sphx-glr-multi-img
 
     *
 
-      .. image:: /auto_examples/model_selection/images/sphx_glr_plot_cv_indices_007.png
+      .. image:: /auto_examples/model_selection/images/sphx_glr_plot_cv_indices_009.png
           :alt: StratifiedKFold
           :class: sphx-glr-multi-img
 
     *
 
-      .. image:: /auto_examples/model_selection/images/sphx_glr_plot_cv_indices_008.png
+      .. image:: /auto_examples/model_selection/images/sphx_glr_plot_cv_indices_010.png
+          :alt: StratifiedGroupKFold
+          :class: sphx-glr-multi-img
+
+    *
+
+      .. image:: /auto_examples/model_selection/images/sphx_glr_plot_cv_indices_011.png
           :alt: GroupShuffleSplit
           :class: sphx-glr-multi-img
 
     *
 
-      .. image:: /auto_examples/model_selection/images/sphx_glr_plot_cv_indices_009.png
+      .. image:: /auto_examples/model_selection/images/sphx_glr_plot_cv_indices_012.png
           :alt: StratifiedShuffleSplit
           :class: sphx-glr-multi-img
 
     *
 
-      .. image:: /auto_examples/model_selection/images/sphx_glr_plot_cv_indices_010.png
+      .. image:: /auto_examples/model_selection/images/sphx_glr_plot_cv_indices_013.png
           :alt: TimeSeriesSplit
           :class: sphx-glr-multi-img
 
@@ -319,7 +351,7 @@ Note how some use the group/class information while others do not.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.419 seconds)
+   **Total running time of the script:** ( 0 minutes  1.317 seconds)
 
 
 .. _sphx_glr_download_auto_examples_model_selection_plot_cv_indices.py:
