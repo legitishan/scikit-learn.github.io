@@ -160,15 +160,16 @@
 <li><a class="reference internal" href="#">1.5. Stochastic Gradient Descent</a><ul>
 <li><a class="reference internal" href="#classification">1.5.1. Classification</a></li>
 <li><a class="reference internal" href="#regression">1.5.2. Regression</a></li>
-<li><a class="reference internal" href="#stochastic-gradient-descent-for-sparse-data">1.5.3. Stochastic Gradient Descent for sparse data</a></li>
-<li><a class="reference internal" href="#complexity">1.5.4. Complexity</a></li>
-<li><a class="reference internal" href="#stopping-criterion">1.5.5. Stopping criterion</a></li>
-<li><a class="reference internal" href="#tips-on-practical-use">1.5.6. Tips on Practical Use</a></li>
-<li><a class="reference internal" href="#mathematical-formulation">1.5.7. Mathematical formulation</a><ul>
-<li><a class="reference internal" href="#id5">1.5.7.1. SGD</a></li>
+<li><a class="reference internal" href="#online-one-class-svm">1.5.3. Online One-Class SVM</a></li>
+<li><a class="reference internal" href="#stochastic-gradient-descent-for-sparse-data">1.5.4. Stochastic Gradient Descent for sparse data</a></li>
+<li><a class="reference internal" href="#complexity">1.5.5. Complexity</a></li>
+<li><a class="reference internal" href="#stopping-criterion">1.5.6. Stopping criterion</a></li>
+<li><a class="reference internal" href="#tips-on-practical-use">1.5.7. Tips on Practical Use</a></li>
+<li><a class="reference internal" href="#mathematical-formulation">1.5.8. Mathematical formulation</a><ul>
+<li><a class="reference internal" href="#id5">1.5.8.1. SGD</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#implementation-details">1.5.8. Implementation details</a></li>
+<li><a class="reference internal" href="#implementation-details">1.5.9. Implementation details</a></li>
 </ul>
 </li>
 </ul>
@@ -390,8 +391,47 @@ description above in the classification section).</p>
 SGD with an averaging strategy is available with Stochastic Average
 Gradient (SAG) algorithm, available as a solver in <a class="reference internal" href="generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge" title="sklearn.linear_model.Ridge"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ridge</span></code></a>.</p>
 </div>
+<div class="section" id="online-one-class-svm">
+<span id="sgd-online-one-class-svm"></span><h2><span class="section-number">1.5.3. </span>Online One-Class SVM<a class="headerlink" href="#online-one-class-svm" title="Permalink to this headline">¶</a></h2>
+<p>The class <a class="reference internal" href="generated/sklearn.linear_model.SGDOneClassSVM.html#sklearn.linear_model.SGDOneClassSVM" title="sklearn.linear_model.SGDOneClassSVM"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.linear_model.SGDOneClassSVM</span></code></a> implements an online
+linear version of the One-Class SVM using a stochastic gradient descent.
+Combined with kernel approximation techniques,
+<a class="reference internal" href="generated/sklearn.linear_model.SGDOneClassSVM.html#sklearn.linear_model.SGDOneClassSVM" title="sklearn.linear_model.SGDOneClassSVM"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.linear_model.SGDOneClassSVM</span></code></a> can be used to approximate the
+solution of a kernelized One-Class SVM, implemented in
+<a class="reference internal" href="generated/sklearn.svm.OneClassSVM.html#sklearn.svm.OneClassSVM" title="sklearn.svm.OneClassSVM"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.svm.OneClassSVM</span></code></a>, with a linear complexity in the number of
+samples. Note that the complexity of a kernelized One-Class SVM is at best
+quadratic in the number of samples.
+<a class="reference internal" href="generated/sklearn.linear_model.SGDOneClassSVM.html#sklearn.linear_model.SGDOneClassSVM" title="sklearn.linear_model.SGDOneClassSVM"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.linear_model.SGDOneClassSVM</span></code></a> is thus well suited for datasets
+with a large number of training samples (&gt; 10,000) for which the SGD
+variant can be several orders of magnitude faster.</p>
+<p>Its implementation is based on the implementation of the stochastic
+gradient descent. Indeed, the original optimization problem of the One-Class
+SVM is given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\min_{w, \rho, \xi} &amp; \quad \frac{1}{2}\Vert w \Vert^2 - \rho + \frac{1}{\nu n} \sum_{i=1}^n \xi_i \\
+\text{s.t.} &amp; \quad \langle w, x_i \rangle \geq \rho - \xi_i \quad 1 \leq i \leq n \\
+&amp; \quad \xi_i \geq 0 \quad 1 \leq i \leq n
+\end{aligned}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\nu \in (0, 1]\)</span> is the user-specified parameter controlling the
+proportion of outliers and the proportion of support vectors. Getting rid of
+the slack variables <span class="math notranslate nohighlight">\(\xi_i\)</span> this problem is equivalent to</p>
+<div class="math notranslate nohighlight">
+\[\min_{w, \rho} \frac{1}{2}\Vert w \Vert^2 - \rho + \frac{1}{\nu n} \sum_{i=1}^n \max(0, \rho - \langle w, x_i \rangle) \, .\]</div>
+<p>Multiplying by the constant <span class="math notranslate nohighlight">\(\nu\)</span> and introducing the intercept
+<span class="math notranslate nohighlight">\(b = 1 - \rho\)</span> we obtain the following equivalent optimization problem</p>
+<div class="math notranslate nohighlight">
+\[\min_{w, b} \frac{\nu}{2}\Vert w \Vert^2 + b\nu + \frac{1}{n} \sum_{i=1}^n \max(0, 1 - (\langle w, x_i \rangle + b)) \, .\]</div>
+<p>This is similar to the optimization problems studied in section
+<a class="reference internal" href="#sgd-mathematical-formulation"><span class="std std-ref">Mathematical formulation</span></a> with <span class="math notranslate nohighlight">\(y_i = 1, 1 \leq i \leq n\)</span> and
+<span class="math notranslate nohighlight">\(\alpha = \nu/2\)</span>, <span class="math notranslate nohighlight">\(L\)</span> being the hinge loss function and <span class="math notranslate nohighlight">\(R\)</span>
+being the L2 norm. We just need to add the term <span class="math notranslate nohighlight">\(b\nu\)</span> in the
+optimization loop.</p>
+<p>As <a class="reference internal" href="generated/sklearn.linear_model.SGDClassifier.html#sklearn.linear_model.SGDClassifier" title="sklearn.linear_model.SGDClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">SGDClassifier</span></code></a> and <a class="reference internal" href="generated/sklearn.linear_model.SGDRegressor.html#sklearn.linear_model.SGDRegressor" title="sklearn.linear_model.SGDRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">SGDRegressor</span></code></a>, <a class="reference internal" href="generated/sklearn.linear_model.SGDOneClassSVM.html#sklearn.linear_model.SGDOneClassSVM" title="sklearn.linear_model.SGDOneClassSVM"><code class="xref py py-class docutils literal notranslate"><span class="pre">SGDOneClassSVM</span></code></a>
+supports averaged SGD. Averaging can be enabled by setting <code class="docutils literal notranslate"><span class="pre">average=True</span></code>.</p>
+</div>
 <div class="section" id="stochastic-gradient-descent-for-sparse-data">
-<h2><span class="section-number">1.5.3. </span>Stochastic Gradient Descent for sparse data<a class="headerlink" href="#stochastic-gradient-descent-for-sparse-data" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.5.4. </span>Stochastic Gradient Descent for sparse data<a class="headerlink" href="#stochastic-gradient-descent-for-sparse-data" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The sparse implementation produces slightly different results
@@ -410,7 +450,7 @@ matrix format as defined in <a class="reference external" href="https://docs.sci
 </div>
 </div>
 <div class="section" id="complexity">
-<h2><span class="section-number">1.5.4. </span>Complexity<a class="headerlink" href="#complexity" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.5.5. </span>Complexity<a class="headerlink" href="#complexity" title="Permalink to this headline">¶</a></h2>
 <p>The major advantage of SGD is its efficiency, which is basically
 linear in the number of training examples. If X is a matrix of size (n, p)
 training has a cost of <span class="math notranslate nohighlight">\(O(k n \bar p)\)</span>, where k is the number
@@ -420,7 +460,7 @@ non-zero attributes per sample.</p>
 desired optimization accuracy does not increase as the training set size increases.</p>
 </div>
 <div class="section" id="stopping-criterion">
-<h2><span class="section-number">1.5.5. </span>Stopping criterion<a class="headerlink" href="#stopping-criterion" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.5.6. </span>Stopping criterion<a class="headerlink" href="#stopping-criterion" title="Permalink to this headline">¶</a></h2>
 <p>The classes <a class="reference internal" href="generated/sklearn.linear_model.SGDClassifier.html#sklearn.linear_model.SGDClassifier" title="sklearn.linear_model.SGDClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">SGDClassifier</span></code></a> and <a class="reference internal" href="generated/sklearn.linear_model.SGDRegressor.html#sklearn.linear_model.SGDRegressor" title="sklearn.linear_model.SGDRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">SGDRegressor</span></code></a> provide two
 criteria to stop the algorithm when a given level of convergence is reached:</p>
 <blockquote>
@@ -441,7 +481,7 @@ improvement is evaluated with absolute tolerance <code class="docutils literal n
 stops in any case after a maximum number of iteration <code class="docutils literal notranslate"><span class="pre">max_iter</span></code>.</p>
 </div>
 <div class="section" id="tips-on-practical-use">
-<h2><span class="section-number">1.5.6. </span>Tips on Practical Use<a class="headerlink" href="#tips-on-practical-use" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">1.5.7. </span>Tips on Practical Use<a class="headerlink" href="#tips-on-practical-use" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><ul>
 <li><p>Stochastic Gradient Descent is sensitive to feature scaling, so it
@@ -492,7 +532,7 @@ of the Trade 1998.</p></li>
 </div>
 </div>
 <div class="section" id="mathematical-formulation">
-<span id="sgd-mathematical-formulation"></span><h2><span class="section-number">1.5.7. </span>Mathematical formulation<a class="headerlink" href="#mathematical-formulation" title="Permalink to this headline">¶</a></h2>
+<span id="sgd-mathematical-formulation"></span><h2><span class="section-number">1.5.8. </span>Mathematical formulation<a class="headerlink" href="#mathematical-formulation" title="Permalink to this headline">¶</a></h2>
 <p>We describe here the mathematical details of the SGD procedure. A good
 overview with convergence rates can be found in <a class="footnote-reference brackets" href="#id16" id="id4">12</a>.</p>
 <p>Given a set of training examples <span class="math notranslate nohighlight">\((x_1, y_1), \ldots, (x_n, y_n)\)</span> where
@@ -552,7 +592,7 @@ in a 2-dimensional parameter space (<span class="math notranslate nohighlight">\
 <a class="reference external image-reference" href="../auto_examples/linear_model/plot_sgd_penalties.html"><img alt="../_images/sphx_glr_plot_sgd_penalties_0011.png" src="../_images/sphx_glr_plot_sgd_penalties_0011.png" style="width: 750.0px; height: 750.0px;" /></a>
 </div>
 <div class="section" id="id5">
-<h3><span class="section-number">1.5.7.1. </span>SGD<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">1.5.8.1. </span>SGD<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <p>Stochastic gradient descent is an optimization method for unconstrained
 optimization problems. In contrast to (batch) gradient descent, SGD
 approximates the true gradient of <span class="math notranslate nohighlight">\(E(w,b)\)</span> by considering a
@@ -599,7 +639,7 @@ where <span class="math notranslate nohighlight">\(T\)</span> is the total numbe
 </div>
 </div>
 <div class="section" id="implementation-details">
-<span id="id6"></span><h2><span class="section-number">1.5.8. </span>Implementation details<a class="headerlink" href="#implementation-details" title="Permalink to this headline">¶</a></h2>
+<span id="id6"></span><h2><span class="section-number">1.5.9. </span>Implementation details<a class="headerlink" href="#implementation-details" title="Permalink to this headline">¶</a></h2>
 <p>The implementation of SGD is influenced by the <code class="docutils literal notranslate"><span class="pre">Stochastic</span> <span class="pre">Gradient</span> <span class="pre">SVM</span></code> of
 <a class="footnote-reference brackets" href="#id10" id="id7">7</a>.
 Similar to SvmSGD,

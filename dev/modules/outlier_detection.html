@@ -159,7 +159,10 @@
               <ul>
 <li><a class="reference internal" href="#">2.7. Novelty and Outlier Detection</a><ul>
 <li><a class="reference internal" href="#overview-of-outlier-detection-methods">2.7.1. Overview of outlier detection methods</a></li>
-<li><a class="reference internal" href="#novelty-detection">2.7.2. Novelty Detection</a></li>
+<li><a class="reference internal" href="#novelty-detection">2.7.2. Novelty Detection</a><ul>
+<li><a class="reference internal" href="#scaling-up-the-one-class-svm">2.7.2.1. Scaling up the One-Class SVM</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#id1">2.7.3. Outlier Detection</a><ul>
 <li><a class="reference internal" href="#fitting-an-elliptic-envelope">2.7.3.1. Fitting an elliptic envelope</a></li>
 <li><a class="reference internal" href="#isolation-forest">2.7.3.2. Isolation Forest</a></li>
@@ -288,7 +291,7 @@ Outlier Factor (LOF) does not show a decision boundary in black as it
 has no predict method to be applied on new data when it is used for outlier
 detection.</p>
 <div class="figure align-center">
-<a class="reference external image-reference" href="../auto_examples/miscellaneous/plot_anomaly_comparison.html"><img alt="../_images/sphx_glr_plot_anomaly_comparison_0011.png" src="../_images/sphx_glr_plot_anomaly_comparison_0011.png" style="width: 550.0px; height: 625.0px;" /></a>
+<a class="reference external image-reference" href="../auto_examples/miscellaneous/plot_anomaly_comparison.html"><img alt="../_images/sphx_glr_plot_anomaly_comparison_0011.png" src="../_images/sphx_glr_plot_anomaly_comparison_0011.png" style="width: 700.0px; height: 625.0px;" /></a>
 </div>
 <p><a class="reference internal" href="generated/sklearn.ensemble.IsolationForest.html#sklearn.ensemble.IsolationForest" title="sklearn.ensemble.IsolationForest"><code class="xref py py-class docutils literal notranslate"><span class="pre">ensemble.IsolationForest</span></code></a> and <a class="reference internal" href="generated/sklearn.neighbors.LocalOutlierFactor.html#sklearn.neighbors.LocalOutlierFactor" title="sklearn.neighbors.LocalOutlierFactor"><code class="xref py py-class docutils literal notranslate"><span class="pre">neighbors.LocalOutlierFactor</span></code></a>
 perform reasonably well on the data sets considered here.
@@ -297,9 +300,14 @@ does not perform very well for outlier detection. That being said, outlier
 detection in high-dimension, or without any assumptions on the distribution
 of the inlying data is very challenging. <a class="reference internal" href="generated/sklearn.svm.OneClassSVM.html#sklearn.svm.OneClassSVM" title="sklearn.svm.OneClassSVM"><code class="xref py py-class docutils literal notranslate"><span class="pre">svm.OneClassSVM</span></code></a> may still
 be used with outlier detection but requires fine-tuning of its hyperparameter
-<code class="docutils literal notranslate"><span class="pre">nu</span></code> to handle outliers and prevent overfitting. Finally,
-<a class="reference internal" href="generated/sklearn.covariance.EllipticEnvelope.html#sklearn.covariance.EllipticEnvelope" title="sklearn.covariance.EllipticEnvelope"><code class="xref py py-class docutils literal notranslate"><span class="pre">covariance.EllipticEnvelope</span></code></a> assumes the data is Gaussian and learns
-an ellipse. For more details on the different estimators refer to the example
+<code class="docutils literal notranslate"><span class="pre">nu</span></code> to handle outliers and prevent overfitting.
+<a class="reference internal" href="generated/sklearn.linear_model.SGDOneClassSVM.html#sklearn.linear_model.SGDOneClassSVM" title="sklearn.linear_model.SGDOneClassSVM"><code class="xref py py-class docutils literal notranslate"><span class="pre">linear_model.SGDOneClassSVM</span></code></a> provides an implementation of a
+linear One-Class SVM with a linear complexity in the number of samples. This
+implementation is here used with a kernel approximation technique to obtain
+results similar to <a class="reference internal" href="generated/sklearn.svm.OneClassSVM.html#sklearn.svm.OneClassSVM" title="sklearn.svm.OneClassSVM"><code class="xref py py-class docutils literal notranslate"><span class="pre">svm.OneClassSVM</span></code></a> which uses a Gaussian kernel
+by default. Finally, <a class="reference internal" href="generated/sklearn.covariance.EllipticEnvelope.html#sklearn.covariance.EllipticEnvelope" title="sklearn.covariance.EllipticEnvelope"><code class="xref py py-class docutils literal notranslate"><span class="pre">covariance.EllipticEnvelope</span></code></a> assumes the data is
+Gaussian and learns an ellipse. For more details on the different estimators
+refer to the example
 <a class="reference internal" href="../auto_examples/miscellaneous/plot_anomaly_comparison.html#sphx-glr-auto-examples-miscellaneous-plot-anomaly-comparison-py"><span class="std std-ref">Comparing anomaly detection algorithms for outlier detection on toy datasets</span></a> and the
 sections hereunder.</p>
 <div class="topic">
@@ -357,6 +365,23 @@ frontier learned around some data by a
 </div>
 <div class="figure align-center">
 <a class="reference external image-reference" href="../auto_examples/svm/plot_oneclass.html"><img alt="../_images/sphx_glr_plot_oneclass_0011.png" src="../_images/sphx_glr_plot_oneclass_0011.png" style="width: 480.0px; height: 360.0px;" /></a>
+</div>
+<div class="section" id="scaling-up-the-one-class-svm">
+<h3><span class="section-number">2.7.2.1. </span>Scaling up the One-Class SVM<a class="headerlink" href="#scaling-up-the-one-class-svm" title="Permalink to this headline">¶</a></h3>
+<p>An online linear version of the One-Class SVM is implemented in
+<a class="reference internal" href="generated/sklearn.linear_model.SGDOneClassSVM.html#sklearn.linear_model.SGDOneClassSVM" title="sklearn.linear_model.SGDOneClassSVM"><code class="xref py py-class docutils literal notranslate"><span class="pre">linear_model.SGDOneClassSVM</span></code></a>. This implementation scales linearly with
+the number of samples and can be used with a kernel approximation to
+approximate the solution of a kernelized <a class="reference internal" href="generated/sklearn.svm.OneClassSVM.html#sklearn.svm.OneClassSVM" title="sklearn.svm.OneClassSVM"><code class="xref py py-class docutils literal notranslate"><span class="pre">svm.OneClassSVM</span></code></a> whose
+complexity is at best quadratic in the number of samples. See section
+<a class="reference internal" href="sgd.html#sgd-online-one-class-svm"><span class="std std-ref">Online One-Class SVM</span></a> for more details.</p>
+<div class="topic">
+<p class="topic-title">Examples:</p>
+<ul class="simple">
+<li><p>See <a class="reference internal" href="../auto_examples/linear_model/plot_sgdocsvm_vs_ocsvm.html#sphx-glr-auto-examples-linear-model-plot-sgdocsvm-vs-ocsvm-py"><span class="std std-ref">One-Class SVM versus One-Class SVM using Stochastic Gradient Descent</span></a>
+for an illustration of the approximation of a kernelized One-Class SVM
+with the <code class="docutils literal notranslate"><span class="pre">linear_model.SGDOneClassSVM</span></code> combined with kernel approximation.</p></li>
+</ul>
+</div>
 </div>
 </div>
 <div class="section" id="id1">
@@ -447,8 +472,8 @@ an illustration of the use of IsolationForest.</p></li>
 for a comparison of <a class="reference internal" href="generated/sklearn.ensemble.IsolationForest.html#sklearn.ensemble.IsolationForest" title="sklearn.ensemble.IsolationForest"><code class="xref py py-class docutils literal notranslate"><span class="pre">ensemble.IsolationForest</span></code></a> with
 <a class="reference internal" href="generated/sklearn.neighbors.LocalOutlierFactor.html#sklearn.neighbors.LocalOutlierFactor" title="sklearn.neighbors.LocalOutlierFactor"><code class="xref py py-class docutils literal notranslate"><span class="pre">neighbors.LocalOutlierFactor</span></code></a>,
 <a class="reference internal" href="generated/sklearn.svm.OneClassSVM.html#sklearn.svm.OneClassSVM" title="sklearn.svm.OneClassSVM"><code class="xref py py-class docutils literal notranslate"><span class="pre">svm.OneClassSVM</span></code></a> (tuned to perform like an outlier detection
-method) and a covariance-based outlier detection with
-<a class="reference internal" href="generated/sklearn.covariance.EllipticEnvelope.html#sklearn.covariance.EllipticEnvelope" title="sklearn.covariance.EllipticEnvelope"><code class="xref py py-class docutils literal notranslate"><span class="pre">covariance.EllipticEnvelope</span></code></a>.</p></li>
+method), <a class="reference internal" href="generated/sklearn.linear_model.SGDOneClassSVM.html#sklearn.linear_model.SGDOneClassSVM" title="sklearn.linear_model.SGDOneClassSVM"><code class="xref py py-class docutils literal notranslate"><span class="pre">linear_model.SGDOneClassSVM</span></code></a>, and a covariance-based
+outlier detection with <a class="reference internal" href="generated/sklearn.covariance.EllipticEnvelope.html#sklearn.covariance.EllipticEnvelope" title="sklearn.covariance.EllipticEnvelope"><code class="xref py py-class docutils literal notranslate"><span class="pre">covariance.EllipticEnvelope</span></code></a>.</p></li>
 </ul>
 </div>
 <div class="topic">
