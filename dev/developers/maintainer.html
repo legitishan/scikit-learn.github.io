@@ -476,9 +476,16 @@ via the web UI at <a class="reference external" href="https://www.travis-ci.org/
 experimental features / estimators that are subject to change without
 deprecation cycle.</p>
 <p>To create an experimental module, you can just copy and modify the content of
-<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/experimental/enable_hist_gradient_boosting.py">enable_hist_gradient_boosting.py</a>,
+<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c9c89cfc85dd8dfefd7921c16c87327d03140a06/sklearn/experimental/enable_hist_gradient_boosting.py">enable_hist_gradient_boosting.py</a>,
 or
-<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/experimental/enable_iterative_imputer.py">enable_iterative_imputer.py</a>.</p>
+<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c9c89cfc85dd8dfefd7921c16c87327d03140a06/sklearn/experimental/enable_iterative_imputer.py">enable_iterative_imputer.py</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These are permalink as in 0.24, where these estimators are still
+experimental. They might be stable at the time of reading - hence the
+permalink. See below for instructions on the transition from experimental
+to stable.</p>
+</div>
 <p>Note that the public import path must be to a public subpackage (like
 <code class="docutils literal notranslate"><span class="pre">sklearn/ensemble</span></code> or <code class="docutils literal notranslate"><span class="pre">sklearn/impute</span></code>), not just a <code class="docutils literal notranslate"><span class="pre">.py</span></code> module.
 Also, the (private) experimental features that are imported must be in a
@@ -488,11 +495,11 @@ submodule/subpackage of the public subpackage, e.g.
 in the future when the features aren’t experimental anymore.</p>
 <p>To avoid type checker (e.g. mypy) errors a direct import of experimental
 estimators should be done in the parent module, protected by the
-<code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">typing.TYPE_CHECKING</span></code> check. See <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/ensemble/__init__.py">sklearn/ensemble/__init__.py</a>,
-or <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/impute/__init__.py">sklearn/impute/__init__.py</a>
+<code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">typing.TYPE_CHECKING</span></code> check. See <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c9c89cfc85dd8dfefd7921c16c87327d03140a06/sklearn/ensemble/__init__.py">sklearn/ensemble/__init__.py</a>,
+or <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c9c89cfc85dd8dfefd7921c16c87327d03140a06/sklearn/impute/__init__.py">sklearn/impute/__init__.py</a>
 for an example.</p>
 <p>Please also write basic tests following those in
-<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/experimental/tests/test_enable_hist_gradient_boosting.py">test_enable_hist_gradient_boosting.py</a>.</p>
+<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/c9c89cfc85dd8dfefd7921c16c87327d03140a06/sklearn/experimental/tests/test_enable_hist_gradient_boosting.py">test_enable_hist_gradient_boosting.py</a>.</p>
 <p>Make sure every user-facing code you write explicitly mentions that the feature
 is experimental, and add a <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">noqa</span></code> comment to avoid pep8-related warnings:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># To use this experimental feature, we need to explicitly ask for it:</span>
@@ -506,6 +513,13 @@ able to import the corresponding modules. Note that using <code class="docutils 
 <span class="pre">sklearn.experimental</span> <span class="pre">import</span> <span class="pre">*</span></code> <strong>does not work</strong>.</p>
 <p>Note that some experimental classes / functions are not included in the
 <a class="reference internal" href="../modules/classes.html#module-sklearn.experimental" title="sklearn.experimental"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.experimental</span></code></a> module: <code class="docutils literal notranslate"><span class="pre">sklearn.datasets.fetch_openml</span></code>.</p>
+<p>Once the feature become stable, remove all <code class="docutils literal notranslate"><span class="pre">enable_my_experimental_feature</span></code>
+in the scikit-learn code (even feature highlights etc.) and make the
+<code class="docutils literal notranslate"><span class="pre">enable_my_experimental_feature</span></code> a no-op that just raises a warning:
+<a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/experimental/enable_hist_gradient_boosting.py">enable_hist_gradient_boosting.py</a>.
+The file should stay there indefinitely as we don’t want to break users code:
+we just incentivize them to remove that import with the warning.</p>
+<p>Also update the tests accordingly: <a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/experimental/tests/test_enable_hist_gradient_boosting.py">test_enable_hist_gradient_boosting.py</a>.</p>
 </div>
 </div>
 
