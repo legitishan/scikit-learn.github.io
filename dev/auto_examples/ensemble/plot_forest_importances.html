@@ -5,7 +5,8 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   
@@ -176,7 +177,7 @@
 <p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-ensemble-plot-forest-importances-py"><span class="std std-ref">here</span></a>
 to download the full example code or to run this example in your browser via Binder</p>
 </div>
-<div class="sphx-glr-example-title section" id="feature-importances-with-a-forest-of-trees">
+<section class="sphx-glr-example-title" id="feature-importances-with-a-forest-of-trees">
 <span id="sphx-glr-auto-examples-ensemble-plot-forest-importances-py"></span><h1>Feature importances with a forest of trees<a class="headerlink" href="#feature-importances-with-a-forest-of-trees" title="Permalink to this headline">¶</a></h1>
 <p>This example shows the use of a forest of trees to evaluate the importance of
 features on an artificial classification task. The blue bars are the feature
@@ -188,7 +189,7 @@ remaining are not.</p>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 </pre></div>
 </div>
-<div class="section" id="data-generation-and-model-fitting">
+<section id="data-generation-and-model-fitting">
 <h2>Data generation and model fitting<a class="headerlink" href="#data-generation-and-model-fitting" title="Permalink to this headline">¶</a></h2>
 <p>We generate a synthetic dataset with only 3 informative features. We will
 explicitly not shuffle the dataset to ensure that the informative features
@@ -213,11 +214,11 @@ our dataset into training and testing subsets.</p>
 </pre></div>
 </div>
 <div class="output_subarea output_html rendered_html output_result">
-<style>#sk-36dafd5b-0cdd-47a1-a182-507ccc10d43f {color: black;background-color: white;}#sk-36dafd5b-0cdd-47a1-a182-507ccc10d43f pre{padding: 0;}#sk-36dafd5b-0cdd-47a1-a182-507ccc10d43f div.sk-toggleable {background-color: white;}#sk-36dafd5b-0cdd-47a1-a182-507ccc10d43f label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.2em 0.3em;box-sizing: border-box;text-align: center;}#sk-36dafd5b-0cdd-47a1-a182-507ccc10d43f div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-36dafd5b-0cdd-47a1-a182-507ccc10d43f div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-36dafd5b-0cdd-47a1-a182-507ccc10d43f input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-36dafd5b-0cdd-47a1-a182-507ccc10d43f div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-36dafd5b-0cdd-47a1-a182-507ccc10d43f div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-36dafd5b-0cdd-47a1-a182-507ccc10d43f input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-36dafd5b-0cdd-47a1-a182-507ccc10d43f div.sk-estimator {font-family: monospace;background-color: #f0f8ff;margin: 0.25em 0.25em;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;}#sk-36dafd5b-0cdd-47a1-a182-507ccc10d43f div.sk-estimator:hover {background-color: #d4ebff;}#sk-36dafd5b-0cdd-47a1-a182-507ccc10d43f div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-36dafd5b-0cdd-47a1-a182-507ccc10d43f div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-36dafd5b-0cdd-47a1-a182-507ccc10d43f div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 2em;bottom: 0;left: 50%;}#sk-36dafd5b-0cdd-47a1-a182-507ccc10d43f div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;}#sk-36dafd5b-0cdd-47a1-a182-507ccc10d43f div.sk-item {z-index: 1;}#sk-36dafd5b-0cdd-47a1-a182-507ccc10d43f div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;}#sk-36dafd5b-0cdd-47a1-a182-507ccc10d43f div.sk-parallel-item {display: flex;flex-direction: column;position: relative;background-color: white;}#sk-36dafd5b-0cdd-47a1-a182-507ccc10d43f div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-36dafd5b-0cdd-47a1-a182-507ccc10d43f div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-36dafd5b-0cdd-47a1-a182-507ccc10d43f div.sk-parallel-item:only-child::after {width: 0;}#sk-36dafd5b-0cdd-47a1-a182-507ccc10d43f div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0.2em;box-sizing: border-box;padding-bottom: 0.1em;background-color: white;position: relative;}#sk-36dafd5b-0cdd-47a1-a182-507ccc10d43f div.sk-label label {font-family: monospace;font-weight: bold;background-color: white;display: inline-block;line-height: 1.2em;}#sk-36dafd5b-0cdd-47a1-a182-507ccc10d43f div.sk-label-container {position: relative;z-index: 2;text-align: center;}#sk-36dafd5b-0cdd-47a1-a182-507ccc10d43f div.sk-container {display: inline-block;position: relative;}</style><div id="sk-36dafd5b-0cdd-47a1-a182-507ccc10d43f" class"sk-top-container"><div class="sk-container"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="8a86caff-9a46-42c6-b624-7dd65e446a4b" type="checkbox" checked><label class="sk-toggleable__label" for="8a86caff-9a46-42c6-b624-7dd65e446a4b">RandomForestClassifier</label><div class="sk-toggleable__content"><pre>RandomForestClassifier(random_state=0)</pre></div></div></div></div></div>
+<style>#sk-d7062870-555a-4fc2-94f8-03bfcc57b011 {color: black;background-color: white;}#sk-d7062870-555a-4fc2-94f8-03bfcc57b011 pre{padding: 0;}#sk-d7062870-555a-4fc2-94f8-03bfcc57b011 div.sk-toggleable {background-color: white;}#sk-d7062870-555a-4fc2-94f8-03bfcc57b011 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.2em 0.3em;box-sizing: border-box;text-align: center;}#sk-d7062870-555a-4fc2-94f8-03bfcc57b011 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-d7062870-555a-4fc2-94f8-03bfcc57b011 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-d7062870-555a-4fc2-94f8-03bfcc57b011 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-d7062870-555a-4fc2-94f8-03bfcc57b011 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-d7062870-555a-4fc2-94f8-03bfcc57b011 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-d7062870-555a-4fc2-94f8-03bfcc57b011 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-d7062870-555a-4fc2-94f8-03bfcc57b011 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;margin: 0.25em 0.25em;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;}#sk-d7062870-555a-4fc2-94f8-03bfcc57b011 div.sk-estimator:hover {background-color: #d4ebff;}#sk-d7062870-555a-4fc2-94f8-03bfcc57b011 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-d7062870-555a-4fc2-94f8-03bfcc57b011 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-d7062870-555a-4fc2-94f8-03bfcc57b011 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 2em;bottom: 0;left: 50%;}#sk-d7062870-555a-4fc2-94f8-03bfcc57b011 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;}#sk-d7062870-555a-4fc2-94f8-03bfcc57b011 div.sk-item {z-index: 1;}#sk-d7062870-555a-4fc2-94f8-03bfcc57b011 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;}#sk-d7062870-555a-4fc2-94f8-03bfcc57b011 div.sk-parallel-item {display: flex;flex-direction: column;position: relative;background-color: white;}#sk-d7062870-555a-4fc2-94f8-03bfcc57b011 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-d7062870-555a-4fc2-94f8-03bfcc57b011 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-d7062870-555a-4fc2-94f8-03bfcc57b011 div.sk-parallel-item:only-child::after {width: 0;}#sk-d7062870-555a-4fc2-94f8-03bfcc57b011 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0.2em;box-sizing: border-box;padding-bottom: 0.1em;background-color: white;position: relative;}#sk-d7062870-555a-4fc2-94f8-03bfcc57b011 div.sk-label label {font-family: monospace;font-weight: bold;background-color: white;display: inline-block;line-height: 1.2em;}#sk-d7062870-555a-4fc2-94f8-03bfcc57b011 div.sk-label-container {position: relative;z-index: 2;text-align: center;}#sk-d7062870-555a-4fc2-94f8-03bfcc57b011 div.sk-container {display: inline-block;position: relative;}</style><div id="sk-d7062870-555a-4fc2-94f8-03bfcc57b011" class"sk-top-container"><div class="sk-container"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="2795ed9e-d160-4022-b6f2-53d5b10a3317" type="checkbox" checked><label class="sk-toggleable__label" for="2795ed9e-d160-4022-b6f2-53d5b10a3317">RandomForestClassifier</label><div class="sk-toggleable__content"><pre>RandomForestClassifier(random_state=0)</pre></div></div></div></div></div>
 </div>
 <br />
-<br /></div>
-<div class="section" id="feature-importance-based-on-mean-decrease-in-impurity">
+<br /></section>
+<section id="feature-importance-based-on-mean-decrease-in-impurity">
 <h2>Feature importance based on mean decrease in impurity<a class="headerlink" href="#feature-importance-based-on-mean-decrease-in-impurity" title="Permalink to this headline">¶</a></h2>
 <p>Feature importances are provided by the fitted attribute
 <code class="docutils literal notranslate"><span class="pre">feature_importances_</span></code> and they are computed as the mean and standard
@@ -258,8 +259,8 @@ an alternative below.</p>
 </div>
 <img alt="Feature importances using MDI" class="sphx-glr-single-img" src="../../_images/sphx_glr_plot_forest_importances_001.png" />
 <p>We observe that, as expected, the three first features are found important.</p>
-</div>
-<div class="section" id="feature-importance-based-on-feature-permutation">
+</section>
+<section id="feature-importance-based-on-feature-permutation">
 <h2>Feature importance based on feature permutation<a class="headerlink" href="#feature-importance-based-on-feature-permutation" title="Permalink to this headline">¶</a></h2>
 <p>Permutation feature importance overcomes limitations of the impurity-based
 feature importance: they do not have a bias toward high-cardinality features
@@ -277,7 +278,7 @@ and can be computed on a left-out test set.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Elapsed time to compute the importances: 0.551 seconds
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Elapsed time to compute the importances: 0.707 seconds
 </pre></div>
 </div>
 <p>The computation for full permutation importance is more costly. Features are
@@ -296,7 +297,7 @@ the importance ranking.</p>
 <p>The same features are detected as most important using both methods. Although
 the relative importances vary. As seen on the plots, MDI is less likely than
 permutation importance to fully omit a feature.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.938 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.179 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-ensemble-plot-forest-importances-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/scikit-learn/scikit-learn/main?urlpath=lab/tree/notebooks/auto_examples/ensemble/plot_forest_importances.ipynb"><img alt="Launch binder" src="../../_images/binder_badge_logo.png" style="width: 150px;" /></a>
@@ -309,8 +310,8 @@ permutation importance to fully omit a feature.</p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
-</div>
+</section>
+</section>
 
 
       </div>

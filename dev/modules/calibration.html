@@ -5,7 +5,8 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   
@@ -176,7 +177,7 @@
     <div id="sk-page-content-wrapper">
       <div class="sk-page-content container-fluid body px-md-3" role="main">
         
-  <div class="section" id="probability-calibration">
+  <section id="probability-calibration">
 <span id="calibration"></span><h1><span class="section-number">1.16. </span>Probability calibration<a class="headerlink" href="#probability-calibration" title="Permalink to this headline">¶</a></h1>
 <p>When performing classification you often want not only to predict the class
 label, but also obtain a probability of the respective label. This probability
@@ -194,16 +195,16 @@ For instance, a well calibrated (binary) classifier should classify the samples
 such that among the samples to which it gave a <a class="reference internal" href="../glossary.html#term-predict_proba"><span class="xref std std-term">predict_proba</span></a> value
 close to 0.8,
 approximately 80% actually belong to the positive class.</p>
-<div class="section" id="calibration-curves">
+<section id="calibration-curves">
 <span id="calibration-curve"></span><h2><span class="section-number">1.16.1. </span>Calibration curves<a class="headerlink" href="#calibration-curves" title="Permalink to this headline">¶</a></h2>
 <p>The following plot compares how well the probabilistic predictions of
 different classifiers are calibrated, using <a class="reference internal" href="generated/sklearn.calibration.calibration_curve.html#sklearn.calibration.calibration_curve" title="sklearn.calibration.calibration_curve"><code class="xref py py-func docutils literal notranslate"><span class="pre">calibration_curve</span></code></a>.
 The x axis represents the average predicted probability in each bin. The
 y axis is the <em>fraction of positives</em>, i.e. the proportion of samples whose
 class is the positive class (in each bin).</p>
-<div class="figure align-center">
+<figure class="align-center">
 <a class="reference external image-reference" href="../auto_examples/calibration/plot_compare_calibration.html"><img alt="../_images/sphx_glr_plot_compare_calibration_0011.png" src="../_images/sphx_glr_plot_compare_calibration_0011.png" /></a>
-</div>
+</figure>
 <p><a class="reference internal" href="generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression" title="sklearn.linear_model.LogisticRegression"><code class="xref py py-class docutils literal notranslate"><span class="pre">LogisticRegression</span></code></a> returns well calibrated predictions by default as it directly
 optimizes <a class="reference internal" href="model_evaluation.html#log-loss"><span class="std std-ref">Log loss</span></a>. In contrast, the other methods return biased probabilities;
 with different biases per method:</p>
@@ -236,8 +237,8 @@ sigmoid curve than <a class="reference internal" href="generated/sklearn.ensembl
 typical for maximum-margin methods (compare Niculescu-Mizil and Caruana <a class="footnote-reference brackets" href="#id10" id="id3">1</a>),
 which focus on difficult to classify samples that are close to the decision
 boundary (the support vectors).</p>
-</div>
-<div class="section" id="calibrating-a-classifier">
+</section>
+<section id="calibrating-a-classifier">
 <h2><span class="section-number">1.16.2. </span>Calibrating a classifier<a class="headerlink" href="#calibrating-a-classifier" title="Permalink to this headline">¶</a></h2>
 <p>Calibrating a classifier consists of fitting a regressor (called a
 <em>calibrator</em>) that maps the output of the classifier (as given by
@@ -250,8 +251,8 @@ This is because performance of the classifier on its training data would be
 better than for novel data. Using the classifier output of training data
 to fit the calibrator would thus result in a biased calibrator that maps to
 probabilities closer to 0 and 1 than it should.</p>
-</div>
-<div class="section" id="usage">
+</section>
+<section id="usage">
 <h2><span class="section-number">1.16.3. </span>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
 <p>The <a class="reference internal" href="generated/sklearn.calibration.CalibratedClassifierCV.html#sklearn.calibration.CalibratedClassifierCV" title="sklearn.calibration.CalibratedClassifierCV"><code class="xref py py-class docutils literal notranslate"><span class="pre">CalibratedClassifierCV</span></code></a> class is used to calibrate a classifier.</p>
 <p><a class="reference internal" href="generated/sklearn.calibration.CalibratedClassifierCV.html#sklearn.calibration.CalibratedClassifierCV" title="sklearn.calibration.CalibratedClassifierCV"><code class="xref py py-class docutils literal notranslate"><span class="pre">CalibratedClassifierCV</span></code></a> uses a cross-validation approach to ensure
@@ -302,7 +303,7 @@ independently from calibration loss, a lower Brier score does not necessarily
 mean a better calibrated model.</p>
 <p><a class="reference internal" href="generated/sklearn.calibration.CalibratedClassifierCV.html#sklearn.calibration.CalibratedClassifierCV" title="sklearn.calibration.CalibratedClassifierCV"><code class="xref py py-class docutils literal notranslate"><span class="pre">CalibratedClassifierCV</span></code></a> supports the use of two ‘calibration’
 regressors: ‘sigmoid’ and ‘isotonic’.</p>
-<div class="section" id="sigmoid">
+<section id="sigmoid">
 <h3><span class="section-number">1.16.3.1. </span>Sigmoid<a class="headerlink" href="#sigmoid" title="Permalink to this headline">¶</a></h3>
 <p>The sigmoid regressor is based on Platt’s logistic model <a class="footnote-reference brackets" href="#id12" id="id4">3</a>:</p>
 <div class="math notranslate nohighlight">
@@ -323,8 +324,8 @@ classification problems, where outputs do not have equal variance.</p>
 <p>In general this method is most effective when the un-calibrated model is
 under-confident and has similar calibration errors for both high and low
 outputs.</p>
-</div>
-<div class="section" id="isotonic">
+</section>
+<section id="isotonic">
 <h3><span class="section-number">1.16.3.2. </span>Isotonic<a class="headerlink" href="#isotonic" title="Permalink to this headline">¶</a></h3>
 <p>The ‘isotonic’ method fits a non-parametric isotonic regressor, which outputs
 a step-wise non-decreasing function (see <a class="reference internal" href="classes.html#module-sklearn.isotonic" title="sklearn.isotonic"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.isotonic</span></code></a>). It
@@ -341,8 +342,8 @@ powerful as it can correct any monotonic distortion of the un-calibrated model.
 However, it is more prone to overfitting, especially on small datasets <a class="footnote-reference brackets" href="#id14" id="id7">5</a>.</p>
 <p>Overall, ‘isotonic’ will perform as well as or better than ‘sigmoid’ when
 there is enough data (greater than ~ 1000 samples) to avoid overfitting <a class="footnote-reference brackets" href="#id10" id="id8">1</a>.</p>
-</div>
-<div class="section" id="multiclass-support">
+</section>
+<section id="multiclass-support">
 <h3><span class="section-number">1.16.3.3. </span>Multiclass support<a class="headerlink" href="#multiclass-support" title="Permalink to this headline">¶</a></h3>
 <p>Both isotonic and sigmoid regressors only
 support 1-dimensional data (e.g., binary classification output) but are
@@ -397,9 +398,9 @@ Kull, M., Silva Filho, T. M., &amp; Flach, P. (2017).</p>
 </dd>
 </dl>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
       </div>
