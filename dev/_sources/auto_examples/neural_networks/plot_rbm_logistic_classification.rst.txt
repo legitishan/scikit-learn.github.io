@@ -43,7 +43,7 @@ Logistic regression on raw pixel values is presented for comparison. The
 example shows that the features extracted by the BernoulliRBM help improve the
 classification accuracy.
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-140
+.. GENERATED FROM PYTHON SOURCE LINES 27-141
 
 
 
@@ -59,48 +59,48 @@ classification accuracy.
  .. code-block:: none
 
 
-    [BernoulliRBM] Iteration 1, pseudo-likelihood = -25.39, time = 0.19s
-    [BernoulliRBM] Iteration 2, pseudo-likelihood = -23.77, time = 0.28s
-    [BernoulliRBM] Iteration 3, pseudo-likelihood = -22.94, time = 0.25s
-    [BernoulliRBM] Iteration 4, pseudo-likelihood = -21.89, time = 0.26s
-    [BernoulliRBM] Iteration 5, pseudo-likelihood = -21.54, time = 0.23s
-    [BernoulliRBM] Iteration 6, pseudo-likelihood = -21.19, time = 0.25s
-    [BernoulliRBM] Iteration 7, pseudo-likelihood = -20.74, time = 0.24s
-    [BernoulliRBM] Iteration 8, pseudo-likelihood = -20.47, time = 0.24s
-    [BernoulliRBM] Iteration 9, pseudo-likelihood = -20.42, time = 0.24s
-    [BernoulliRBM] Iteration 10, pseudo-likelihood = -20.15, time = 0.23s
+    [BernoulliRBM] Iteration 1, pseudo-likelihood = -25.57, time = 0.14s
+    [BernoulliRBM] Iteration 2, pseudo-likelihood = -23.68, time = 0.20s
+    [BernoulliRBM] Iteration 3, pseudo-likelihood = -22.74, time = 0.19s
+    [BernoulliRBM] Iteration 4, pseudo-likelihood = -21.92, time = 0.19s
+    [BernoulliRBM] Iteration 5, pseudo-likelihood = -21.48, time = 0.19s
+    [BernoulliRBM] Iteration 6, pseudo-likelihood = -21.01, time = 0.19s
+    [BernoulliRBM] Iteration 7, pseudo-likelihood = -20.90, time = 0.19s
+    [BernoulliRBM] Iteration 8, pseudo-likelihood = -20.66, time = 0.18s
+    [BernoulliRBM] Iteration 9, pseudo-likelihood = -20.37, time = 0.18s
+    [BernoulliRBM] Iteration 10, pseudo-likelihood = -20.27, time = 0.18s
     Logistic regression using RBM features:
                   precision    recall  f1-score   support
 
                0       0.99      0.98      0.99       174
-               1       0.91      0.93      0.92       184
-               2       0.94      0.95      0.95       166
+               1       0.90      0.93      0.92       184
+               2       0.95      0.94      0.94       166
                3       0.94      0.88      0.91       194
-               4       0.96      0.95      0.95       186
-               5       0.94      0.91      0.92       181
-               6       0.98      0.97      0.97       207
-               7       0.94      0.99      0.97       154
-               8       0.90      0.89      0.90       182
-               9       0.87      0.93      0.90       169
+               4       0.97      0.93      0.95       186
+               5       0.94      0.91      0.93       181
+               6       0.97      0.98      0.97       207
+               7       0.94      0.99      0.96       154
+               8       0.87      0.90      0.88       182
+               9       0.86      0.91      0.88       169
 
-        accuracy                           0.94      1797
-       macro avg       0.94      0.94      0.94      1797
-    weighted avg       0.94      0.94      0.94      1797
+        accuracy                           0.93      1797
+       macro avg       0.93      0.93      0.93      1797
+    weighted avg       0.93      0.93      0.93      1797
 
 
     Logistic regression using raw pixel features:
                   precision    recall  f1-score   support
 
-               0       0.90      0.92      0.91       174
+               0       0.90      0.91      0.91       174
                1       0.60      0.58      0.59       184
-               2       0.76      0.85      0.80       166
-               3       0.78      0.79      0.78       194
-               4       0.82      0.84      0.83       186
-               5       0.76      0.76      0.76       181
+               2       0.75      0.85      0.80       166
+               3       0.78      0.78      0.78       194
+               4       0.81      0.84      0.83       186
+               5       0.75      0.76      0.75       181
                6       0.90      0.87      0.89       207
                7       0.85      0.88      0.87       154
-               8       0.67      0.58      0.62       182
-               9       0.75      0.76      0.75       169
+               8       0.67      0.59      0.63       182
+               9       0.75      0.76      0.76       169
 
         accuracy                           0.78      1797
        macro avg       0.78      0.78      0.78      1797
@@ -130,6 +130,7 @@ classification accuracy.
     from sklearn.model_selection import train_test_split
     from sklearn.neural_network import BernoulliRBM
     from sklearn.pipeline import Pipeline
+    from sklearn.preprocessing import minmax_scale
     from sklearn.base import clone
 
 
@@ -172,7 +173,7 @@ classification accuracy.
     X, y = datasets.load_digits(return_X_y=True)
     X = np.asarray(X, 'float32')
     X, Y = nudge_dataset(X, y)
-    X = (X - np.min(X, 0)) / (np.max(X, 0) + 0.0001)  # 0-1 scaling
+    X = minmax_scale(X, feature_range=(0, 1))  # 0-1 scaling
 
     X_train, X_test, Y_train, Y_test = train_test_split(
         X, Y, test_size=0.2, random_state=0)
@@ -234,7 +235,7 @@ classification accuracy.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  9.644 seconds)
+   **Total running time of the script:** ( 0 minutes  6.189 seconds)
 
 
 .. _sphx_glr_download_auto_examples_neural_networks_plot_rbm_logistic_classification.py:
