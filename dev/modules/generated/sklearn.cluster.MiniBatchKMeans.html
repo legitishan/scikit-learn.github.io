@@ -174,7 +174,7 @@
 <h1><a class="reference internal" href="../classes.html#module-sklearn.cluster" title="sklearn.cluster"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.cluster</span></code></a>.MiniBatchKMeans<a class="headerlink" href="#sklearn-cluster-minibatchkmeans" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="sklearn.cluster.MiniBatchKMeans">
-<em class="property">class </em><code class="sig-prename descclassname">sklearn.cluster.</code><code class="sig-name descname">MiniBatchKMeans</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n_clusters</span><span class="o">=</span><span class="default_value">8</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">init</span><span class="o">=</span><span class="default_value">'k-means++'</span></em>, <em class="sig-param"><span class="n">max_iter</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">batch_size</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">compute_labels</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">random_state</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">tol</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">max_no_improvement</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">init_size</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n_init</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">reassignment_ratio</span><span class="o">=</span><span class="default_value">0.01</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/138da7ea9/sklearn/cluster/_kmeans.py#L1500"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.MiniBatchKMeans" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sklearn.cluster.</code><code class="sig-name descname">MiniBatchKMeans</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n_clusters</span><span class="o">=</span><span class="default_value">8</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">init</span><span class="o">=</span><span class="default_value">'k-means++'</span></em>, <em class="sig-param"><span class="n">max_iter</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">batch_size</span><span class="o">=</span><span class="default_value">1024</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">compute_labels</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">random_state</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">tol</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">max_no_improvement</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">init_size</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n_init</span><span class="o">=</span><span class="default_value">3</span></em>, <em class="sig-param"><span class="n">reassignment_ratio</span><span class="o">=</span><span class="default_value">0.01</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8c4589b23/sklearn/cluster/_kmeans.py#L1408"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.MiniBatchKMeans" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mini-Batch K-Means clustering.</p>
 <p>Read more in the <a class="reference internal" href="../clustering.html#mini-batch-kmeans"><span class="std std-ref">User Guide</span></a>.</p>
 <dl class="field-list">
@@ -197,7 +197,12 @@ random state and return an initialization.</p>
 <dt><strong>max_iter</strong><span class="classifier">int, default=100</span></dt><dd><p>Maximum number of iterations over the complete dataset before
 stopping independently of any early stopping criterion heuristics.</p>
 </dd>
-<dt><strong>batch_size</strong><span class="classifier">int, default=100</span></dt><dd><p>Size of the mini batches.</p>
+<dt><strong>batch_size</strong><span class="classifier">int, default=1024</span></dt><dd><p>Size of the mini batches.
+For faster compuations, you can set the <code class="docutils literal notranslate"><span class="pre">batch_size</span></code> greater than
+256 * number of cores to enable parallelism on all cores.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 1.0: </span><code class="docutils literal notranslate"><span class="pre">batch_size</span></code> default changed from 100 to 1024.</p>
+</div>
 </dd>
 <dt><strong>verbose</strong><span class="classifier">int, default=0</span></dt><dd><p>Verbosity mode.</p>
 </dd>
@@ -226,17 +231,19 @@ max_no_improvement to None.</p>
 initialization (sometimes at the expense of accuracy): the
 only algorithm is initialized by running a batch KMeans on a
 random subset of the data. This needs to be larger than n_clusters.</p>
-<p>If <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">init_size=</span> <span class="pre">3</span> <span class="pre">*</span> <span class="pre">batch_size</span></code>.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the heuristic is <code class="docutils literal notranslate"><span class="pre">init_size</span> <span class="pre">=</span> <span class="pre">3</span> <span class="pre">*</span> <span class="pre">batch_size</span></code> if
+<code class="docutils literal notranslate"><span class="pre">3</span> <span class="pre">*</span> <span class="pre">batch_size</span> <span class="pre">&lt;</span> <span class="pre">n_clusters</span></code>, else <code class="docutils literal notranslate"><span class="pre">init_size</span> <span class="pre">=</span> <span class="pre">3</span> <span class="pre">*</span> <span class="pre">n_clusters</span></code>.</p>
 </dd>
 <dt><strong>n_init</strong><span class="classifier">int, default=3</span></dt><dd><p>Number of random initializations that are tried.
 In contrast to KMeans, the algorithm is only run once, using the
 best of the <code class="docutils literal notranslate"><span class="pre">n_init</span></code> initializations as measured by inertia.</p>
 </dd>
-<dt><strong>reassignment_ratio</strong><span class="classifier">float, default=0.01</span></dt><dd><p>Control the fraction of the maximum number of counts for a
-center to be reassigned. A higher value means that low count
-centers are more easily reassigned, which means that the
-model will take longer to converge, but should converge in a
-better clustering.</p>
+<dt><strong>reassignment_ratio</strong><span class="classifier">float, default=0.01</span></dt><dd><p>Control the fraction of the maximum number of counts for a center to
+be reassigned. A higher value means that low count centers are more
+easily reassigned, which means that the model will take longer to
+converge, but should converge in a better clustering. However, too high
+a value may cause convergence issues, especially with a small batch
+size.</p>
 </dd>
 </dl>
 </dd>
@@ -244,14 +251,21 @@ better clustering.</p>
 <dd class="field-even"><dl>
 <dt><strong>cluster_centers_</strong><span class="classifier">ndarray of shape (n_clusters, n_features)</span></dt><dd><p>Coordinates of cluster centers.</p>
 </dd>
-<dt><strong>labels_</strong><span class="classifier">int</span></dt><dd><p>Labels of each point (if compute_labels is set to True).</p>
+<dt><strong>labels_</strong><span class="classifier">ndarray of shape (n_samples,)</span></dt><dd><p>Labels of each point (if compute_labels is set to True).</p>
 </dd>
 <dt><strong>inertia_</strong><span class="classifier">float</span></dt><dd><p>The value of the inertia criterion associated with the chosen
-partition (if compute_labels is set to True). The inertia is
-defined as the sum of square distances of samples to their nearest
-neighbor.</p>
+partition if compute_labels is set to True. If compute_labels is set to
+False, it’s an approximation of the inertia based on an exponentially
+weighted average of the batch inertiae.
+The inertia is defined as the sum of square distances of samples to
+their cluster center, weighted by the sample weights if provided.</p>
 </dd>
-<dt><strong>n_iter_</strong><span class="classifier">int</span></dt><dd><p>Number of batches processed.</p>
+<dt><strong>n_iter_</strong><span class="classifier">int</span></dt><dd><p>Number of iterations over the full dataset.</p>
+</dd>
+<dt><strong>n_steps_</strong><span class="classifier">int</span></dt><dd><p>Number of minibatches processed.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.0.</span></p>
+</div>
 </dd>
 <dt><strong>counts_</strong><span class="classifier">ndarray of shape (n_clusters,)</span></dt><dd><p>Weigth sum of each cluster.</p>
 <div class="deprecated">
@@ -301,10 +315,10 @@ neighbor.</p>
 <span class="gp">... </span>                         <span class="n">batch_size</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
 <span class="gp">... </span>                         <span class="n">max_iter</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">kmeans</span><span class="o">.</span><span class="n">cluster_centers_</span>
-<span class="go">array([[3.95918367, 2.40816327],</span>
-<span class="go">       [1.12195122, 1.3902439 ]])</span>
+<span class="go">array([[1.19..., 1.22...],</span>
+<span class="go">       [4.03..., 2.46...]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">kmeans</span><span class="o">.</span><span class="n">predict</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
-<span class="go">array([1, 0], dtype=int32)</span>
+<span class="go">array([0, 1], dtype=int32)</span>
 </pre></div>
 </div>
 <p class="rubric">Methods</p>
@@ -345,19 +359,21 @@ neighbor.</p>
 </table>
 <dl class="py method">
 <dt id="sklearn.cluster.MiniBatchKMeans.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/138da7ea9/sklearn/cluster/_kmeans.py#L1731"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.MiniBatchKMeans.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8c4589b23/sklearn/cluster/_kmeans.py#L1728"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.MiniBatchKMeans.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the centroids on X by chunking it into mini-batches.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>X</strong><span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Training instances to cluster. It must be noted that the data
 will be converted to C ordering, which will cause a memory copy
-if the given data is not C-contiguous.</p>
+if the given data is not C-contiguous.
+If a sparse matrix is passed, a copy will be made if it’s not in
+CSR format.</p>
 </dd>
 <dt><strong>y</strong><span class="classifier">Ignored</span></dt><dd><p>Not used, present here for API consistency by convention.</p>
 </dd>
 <dt><strong>sample_weight</strong><span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>The weights for each observation in X. If None, all observations
-are assigned equal weight (default: None).</p>
+are assigned equal weight.</p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.20.</span></p>
 </div>
@@ -374,7 +390,7 @@ are assigned equal weight (default: None).</p>
 
 <dl class="py method">
 <dt id="sklearn.cluster.MiniBatchKMeans.fit_predict">
-<code class="sig-name descname">fit_predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/138da7ea9/sklearn/cluster/_kmeans.py#L1148"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.MiniBatchKMeans.fit_predict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit_predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8c4589b23/sklearn/cluster/_kmeans.py#L1158"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.MiniBatchKMeans.fit_predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute cluster centers and predict cluster index for each sample.</p>
 <p>Convenience method; equivalent to calling fit(X) followed by
 predict(X).</p>
@@ -401,7 +417,7 @@ are assigned equal weight.</p>
 
 <dl class="py method">
 <dt id="sklearn.cluster.MiniBatchKMeans.fit_transform">
-<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/138da7ea9/sklearn/cluster/_kmeans.py#L1173"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.MiniBatchKMeans.fit_transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8c4589b23/sklearn/cluster/_kmeans.py#L1183"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.MiniBatchKMeans.fit_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute clustering and transform X to cluster-distance space.</p>
 <p>Equivalent to fit(X).transform(X), but more efficiently implemented.</p>
 <dl class="field-list simple">
@@ -427,7 +443,7 @@ are assigned equal weight.</p>
 
 <dl class="py method">
 <dt id="sklearn.cluster.MiniBatchKMeans.get_params">
-<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/138da7ea9/sklearn/base.py#L179"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.MiniBatchKMeans.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8c4589b23/sklearn/base.py#L179"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.MiniBatchKMeans.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -448,18 +464,21 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt id="sklearn.cluster.MiniBatchKMeans.partial_fit">
-<code class="sig-name descname">partial_fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/138da7ea9/sklearn/cluster/_kmeans.py#L1909"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.MiniBatchKMeans.partial_fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">partial_fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8c4589b23/sklearn/cluster/_kmeans.py#L1868"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.MiniBatchKMeans.partial_fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update k means estimate on a single mini-batch X.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Coordinates of the data points to cluster. It must be noted that
-X will be copied if it is not C-contiguous.</p>
+<dt><strong>X</strong><span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>Training instances to cluster. It must be noted that the data
+will be converted to C ordering, which will cause a memory copy
+if the given data is not C-contiguous.
+If a sparse matrix is passed, a copy will be made if it’s not in
+CSR format.</p>
 </dd>
 <dt><strong>y</strong><span class="classifier">Ignored</span></dt><dd><p>Not used, present here for API consistency by convention.</p>
 </dd>
 <dt><strong>sample_weight</strong><span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>The weights for each observation in X. If None, all observations
-are assigned equal weight (default: None).</p>
+are assigned equal weight.</p>
 </dd>
 </dl>
 </dd>
@@ -473,7 +492,7 @@ are assigned equal weight (default: None).</p>
 
 <dl class="py method">
 <dt id="sklearn.cluster.MiniBatchKMeans.predict">
-<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/138da7ea9/sklearn/cluster/_kmeans.py#L1987"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.MiniBatchKMeans.predict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8c4589b23/sklearn/cluster/_kmeans.py#L1951"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.MiniBatchKMeans.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Predict the closest cluster each sample in X belongs to.</p>
 <p>In the vector quantization literature, <code class="docutils literal notranslate"><span class="pre">cluster_centers_</span></code> is called
 the code book and each value returned by <code class="docutils literal notranslate"><span class="pre">predict</span></code> is the index of
@@ -484,7 +503,7 @@ the closest code in the code book.</p>
 <dt><strong>X</strong><span class="classifier">{array-like, sparse matrix} of shape (n_samples, n_features)</span></dt><dd><p>New data to predict.</p>
 </dd>
 <dt><strong>sample_weight</strong><span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>The weights for each observation in X. If None, all observations
-are assigned equal weight (default: None).</p>
+are assigned equal weight.</p>
 </dd>
 </dl>
 </dd>
@@ -499,7 +518,7 @@ are assigned equal weight (default: None).</p>
 
 <dl class="py method">
 <dt id="sklearn.cluster.MiniBatchKMeans.score">
-<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/138da7ea9/sklearn/cluster/_kmeans.py#L1257"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.MiniBatchKMeans.score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8c4589b23/sklearn/cluster/_kmeans.py#L1264"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.MiniBatchKMeans.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Opposite of the value of X on the K-means objective.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -524,7 +543,7 @@ are assigned equal weight.</p>
 
 <dl class="py method">
 <dt id="sklearn.cluster.MiniBatchKMeans.set_params">
-<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/138da7ea9/sklearn/base.py#L203"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.MiniBatchKMeans.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8c4589b23/sklearn/base.py#L203"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.MiniBatchKMeans.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as <a class="reference internal" href="sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="sklearn.pipeline.Pipeline"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>). The latter have
@@ -548,7 +567,7 @@ possible to update each component of a nested object.</p>
 
 <dl class="py method">
 <dt id="sklearn.cluster.MiniBatchKMeans.transform">
-<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/138da7ea9/sklearn/cluster/_kmeans.py#L1201"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.MiniBatchKMeans.transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scikit-learn/scikit-learn/blob/8c4589b23/sklearn/cluster/_kmeans.py#L1207"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sklearn.cluster.MiniBatchKMeans.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform X to a cluster-distance space.</p>
 <p>In the new space, each dimension is the distance to the cluster
 centers. Note that even if X is sparse, the array returned by
